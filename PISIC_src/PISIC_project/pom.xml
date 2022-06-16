@@ -202,7 +202,40 @@
 		    <artifactId>gson</artifactId>
 		    <version>2.9.0</version>
 		</dependency>
-		
+
+		<!-- json & jackson -->        
+		<dependency>
+		    <groupId>com.googlecode.json-simple</groupId>
+		    <artifactId>json-simple</artifactId>
+		    <version>1.1.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.11.0</version>
+		</dependency>
+		<dependency> 
+		    <groupId>org.codehaus.jackson</groupId> 
+		    <artifactId>jackson-mapper-asl</artifactId> 
+		    <version>1.9.13</version>     
+		</dependency>
+		<!-- geocoder -->
+		<dependency>
+		  <groupId>com.google.code.geocoder-java</groupId>
+		  <artifactId>geocoder-java</artifactId>
+		  <version>0.16</version>
+		</dependency>
+		<!-- read excel file -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.7</version>
+		</dependency>
 	</dependencies>
     <build>
         <plugins>
