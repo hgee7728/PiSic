@@ -32,7 +32,7 @@ public class AdviceLog {
 		// 매개인자 log 찍기
 		Object[] args = pjp.getArgs();
 		for(int i = 0 ; i <args.length ; i++) {
-			logger.info("\t\t\t-args["+i+"]" + args[i] + "\n");
+			logger.info("\t\t\t-args["+i+"]" + args[i]);
 		}
 		
 		// 메소드 실행시간
@@ -56,7 +56,7 @@ public class AdviceLog {
 		// 매개인자 log 찍기
 		Object[] args = pjp.getArgs();
 		for(int i = 0 ; i <args.length ; i++) {
-			logger.info("\t\t-args["+i+"]" + args[i] + "\n");
+			logger.info("\t\t-args["+i+"]" + args[i]);
 		}
 		
 		// 메소드 실행시간
@@ -80,7 +80,7 @@ public class AdviceLog {
 		// 매개인자 log 찍기
 		Object[] args = pjp.getArgs();
 		for(int i = 0 ; i <args.length ; i++) {
-			logger.info("\t-args["+i+"]" + args[i] + "\n");
+			logger.info("\t-args["+i+"]" + args[i]);
 		}
 		
 		// 메소드 실행시간
