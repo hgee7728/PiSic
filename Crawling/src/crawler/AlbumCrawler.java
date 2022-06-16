@@ -102,7 +102,6 @@ public class AlbumCrawler {
 					}
 					String listscToString = listsc.toString();
 					System.out.println(listscToString);
-					
 					j++;
 				} else {
 					break;
