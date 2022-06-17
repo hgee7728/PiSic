@@ -1,15 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>메인</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<title>Main Page</title>
 </head>
 <body>
-메인화면이야
+메인페이지야~
 <br>
 <button type="button" id="insert">회원가입</button>
 <script>
