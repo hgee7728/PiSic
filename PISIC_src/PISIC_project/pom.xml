@@ -236,6 +236,26 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.7</version>
 		</dependency>
+		
+		<!-- cloudinary-core -->
+		<dependency>
+		    <groupId>com.cloudinary</groupId>
+		    <artifactId>cloudinary-core</artifactId>
+		    <version>1.32.2</version>
+		</dependency>
+		
+		<!-- cloudinary-http44 -->
+		<dependency>
+		    <groupId>com.cloudinary</groupId>
+		    <artifactId>cloudinary-http44</artifactId>
+		    <version>1.32.2</version>
+		</dependency>
+		<dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-taglib</artifactId>
+            <version>1.14.0</version>
+        </dependency>
+      
 	</dependencies>
     <build>
         <plugins>

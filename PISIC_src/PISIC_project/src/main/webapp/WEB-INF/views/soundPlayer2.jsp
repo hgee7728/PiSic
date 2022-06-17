@@ -24,9 +24,43 @@ $(document).ready(function(){
 		{
 			title:"Cro Magnon Man",
 			artist:"The Stark Palace",
-			mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3",
-			oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg",
+			mp3:"http://res.cloudinary.com/dj5umvpkd/video/upload/v1654026634/upload/Play%20Dead%20-%20NEFFEX.mp3",
 			poster: "http://www.jplayer.org/audio/poster/The_Stark_Palace_640x360.png"
+		},
+		{
+			title:"Your Face",
+			artist:"The Stark Palace",
+			mp3:"http://www.jplayer.org/audio/mp3/TSP-05-Your_face.mp3",
+			oga:"http://www.jplayer.org/audio/ogg/TSP-05-Your_face.ogg",
+			poster: "http://www.jplayer.org/audio/poster/The_Stark_Palace_640x360.png"
+		},
+		{
+			title:"Hidden",
+			artist:"Miaow",
+			free: true,
+			mp3:"http://res.cloudinary.com/dj5umvpkd/video/upload/v1654026634/upload/Play%20Dead%20-%20NEFFEX.mp3",
+			poster: "http://www.jplayer.org/audio/poster/Miaow_640x360.png"
+		},
+		{
+			title:"Cyber Sonnet",
+			artist:"The Stark Palace",
+			mp3:"http://www.jplayer.org/audio/mp3/TSP-07-Cybersonnet.mp3",
+			oga:"http://www.jplayer.org/audio/ogg/TSP-07-Cybersonnet.ogg",
+			poster: "http://www.jplayer.org/audio/poster/The_Stark_Palace_640x360.png"
+		},
+		{
+			title:"Tempered Song",
+			artist:"Miaow",
+			mp3:"http://www.jplayer.org/audio/mp3/Miaow-01-Tempered-song.mp3",
+			oga:"http://www.jplayer.org/audio/ogg/Miaow-01-Tempered-song.ogg",
+			poster: "http://www.jplayer.org/audio/poster/Miaow_640x360.png"
+		},
+		{
+			title:"Lentement",
+			artist:"Miaow",
+			mp3:"http://www.jplayer.org/audio/mp3/Miaow-03-Lentement.mp3",
+			oga:"http://www.jplayer.org/audio/ogg/Miaow-03-Lentement.ogg",
+			poster: "http://www.jplayer.org/audio/poster/Miaow_640x360.png"
 		}
 	], {
 		playlistOptions: {
