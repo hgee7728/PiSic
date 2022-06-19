@@ -6,8 +6,12 @@
 </settings>
 <typeAliases>
 	<typeAlias type="kh.spring.pisic.member.domain.Member" alias="Member"/>
+	<typeAlias type="kh.spring.pisic.sound.domain.Artist" alias="Artist"/>
+	<typeAlias type="kh.spring.pisic.sound.domain.Album" alias="Album"/>
+	<typeAlias type="kh.spring.pisic.sound.domain.Sound" alias="Sound"/>
 </typeAliases>
 <mappers>
 	<mapper resource="mappers/member-mapper.xml"/>
+	<mapper resource="mappers/crawling-mapper.xml"/>
 </mappers>
 </configuration>
