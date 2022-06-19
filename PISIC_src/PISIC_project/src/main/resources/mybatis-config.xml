@@ -9,6 +9,7 @@
 	<typeAlias type="kh.spring.pisic.sound.domain.Artist" alias="Artist"/>
 	<typeAlias type="kh.spring.pisic.sound.domain.Album" alias="Album"/>
 	<typeAlias type="kh.spring.pisic.sound.domain.Sound" alias="Sound"/>
+	<typeAlias type="kh.spring.pisic.sound.domain.AssociationAS" alias="AssociationAS"/>
 </typeAliases>
 <mappers>
 	<mapper resource="mappers/member-mapper.xml"/>

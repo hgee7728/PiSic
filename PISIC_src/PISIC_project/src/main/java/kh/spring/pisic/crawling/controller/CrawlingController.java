@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kh.spring.pisic.crawling.model.service.CrawlingService;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
+import kh.spring.pisic.sound.domain.AssociationAS;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.common.PisicUtil;
 
@@ -49,39 +50,48 @@ public class CrawlingController {
 		Document docart = Jsoup.connect(linkhref).get();
 
 		// 아티스트 명
-		Elements name = docart.selectXpath("//*[@id=\"container\"]/header/div/h1");
+//		Elements name = docart.selectXpath("//*[@id=\"container\"]/header/div/h1");
+		Document docartname = Jsoup.connect("https://www.genie.co.kr/search/searchArtist?query=" + artist + "&Coll=").get();
+		Elements name = docartname.selectXpath("//*[@id=\"body-content\"]/div[4]/div[4]/div[1]/div/p/span[1]/a");
+		String geartlink = name.attr("onclick");
+		String nsubNo1 = geartlink.substring(0, geartlink.lastIndexOf("'"));
+		String nsubNo2 = nsubNo1.substring(nsubNo1.lastIndexOf("'") + 1);
+		Document gedocartde = Jsoup.connect("https://www.genie.co.kr/detail/artistInfo?xxnm=" + nsubNo2).get();
+		
 		// 국적
-		int b = 1;
+		int a = 1;
 		String con = "";
 		while (true) {
-			Elements conTh = docart
-					.selectXpath("//*[@id=\"contentArea\"]/section[1]/div/div[1]/table/tbody/tr[" + b + "]/th");
-			Elements conTd = docart
-					.selectXpath("//*[@id=\"contentArea\"]/section[1]/div/div[1]/table/tbody/tr[" + b + "]/td");
-			// conTh가 존재하면
-			if (conTh.size() > 0) {
-				// conTh의 text가 국적 이면
-				if (conTh.text().equals("국적")) {
-					con = conTd.text();
+			Elements conImg = gedocartde
+					.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + a + "]/span[1]/img");
+			Elements conspan = gedocartde
+					.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + a + "]/span[2]");
+			// conImg가 존재하면
+			if (conImg.size() > 0) {
+				// conImg의 alt가 국적 이면
+				if (conImg.attr("alt").equals("국적")) {
+					con = conspan.text();
 					break;
-				// conTh의 text가 국적이 아니면
+				// conImg의 text가 국적이 아니면
 				} else {
-					b++;
+					a++;
 				}
-			// conTh가 존재하지 않으면
+			// conImg가 존재하지 않으면
 			} else {
 				break;
 			}
 		}
 		// 활동유형
-		Elements type = docart.selectXpath("//*[@id=\"contentArea\"]/section[1]/div/div[1]/table/tbody/tr[1]/td");
+//		Elements type = docart.selectXpath("//*[@id=\"contentArea\"]/section[1]/div/div[1]/table/tbody/tr[1]/td");
+		Elements type = gedocartde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[1]/span[2]");
+		
 		// 그룹멤버
 		ArrayList<String> listM = new ArrayList<String>();
-		int m = 1;
-		int e = 1;
+		int b = 1;
+		int c = 1;
 		while (true) {
 			Elements memberTh = docart
-					.selectXpath("//*[@id=\"contentArea\"]/section[1]/div/div[1]/table/tbody/tr[" + m + "]/th");
+					.selectXpath("//*[@id=\"contentArea\"]/section[1]/div/div[1]/table/tbody/tr[" + b + "]/th");
 			// memberTh가 존재하면
 			if (memberTh.size() > 0) {
 				// memberTh의 text가 멤버 이면
@@ -89,21 +99,21 @@ public class CrawlingController {
 					while (true) {
 						// 멤버 각 1명의 이름
 						Elements memberTdA = docart
-								.selectXpath("//*[@id=\"contentArea\"]/section[1]/div/div[1]/table/tbody/tr[" + m
-										+ "]/td/a[" + e + "]");
+								.selectXpath("//*[@id=\"contentArea\"]/section[1]/div/div[1]/table/tbody/tr[" + b
+										+ "]/td/a[" + c + "]");
 						// memberTdA 가 존재하면
 						if (memberTdA.size() > 0) {
 							listM.add(memberTdA.text());
-							e++;
+							c++;
 						// memberTdA 가 존재하지 않으면
 						} else {
-							m++;
+							b++;
 							break;
 						}
 					}
 				// memberTh의 text가 멤버가 아니면
 				} else {
-					m++;
+					b++;
 				}
 			// memberTh가 존재하지 않으면
 			} else {
@@ -130,21 +140,21 @@ public class CrawlingController {
 		Document docMeldetail = Jsoup.connect("https://www.melon.com/artist/detail.htm?artistId=" + subNo2).get();
 		// 소속사명
 		String enter = "";
-		int q = 1;
+		int d = 1;
 		while (true) {
 			// *[@id="conts"]/div[4]/h3
 			// *[@id="conts"]/div[5]/h3
 //			Elements enterDt = docMeldetail.selectXpath("");
-			Elements enterDt = docMeldetail.selectXpath("//*[@id=\"conts\"]/div[6]/dl/dt[" + q + "]");
+			Elements enterDt = docMeldetail.selectXpath("//*[@id=\"conts\"]/div[6]/dl/dt[" + d + "]");
 			// enterDt가 존재하면
 			if (enterDt.size() > 0) {
 				// enterDt의 text가 소속사명 이면
 				if (enterDt.text().equals("소속사명")) {
-					enter = docMeldetail.selectXpath("//*[@id=\"conts\"]/div[6]/dl/dd[" + q + "]").text();
+					enter = docMeldetail.selectXpath("//*[@id=\"conts\"]/div[6]/dl/dd[" + d + "]").text();
 					break;
 				// enterDt의 text가 소속사명이 아니면
 				} else {
-					q++;
+					d++;
 				}
 			// enterDt가 존재하지 않으면
 			} else {
@@ -153,10 +163,10 @@ public class CrawlingController {
 		}
 		// 그룹명
 		ArrayList<String> listG = new ArrayList<String>();
-		int u = 1;
-		int y = 1;
+		int e = 1;
+		int f = 1;
 		while (true) {
-			Elements groupNameDt = docMeldetail.selectXpath("//*[@id=\"conts\"]/div[6]/dl/dt[" + u + "]");
+			Elements groupNameDt = docMeldetail.selectXpath("//*[@id=\"conts\"]/div[6]/dl/dt[" + e + "]");
 			// groupNameDt가 존재하면
 			if (groupNameDt.size() > 0) {
 				// groupNameDt의 text가 소속사명 이면
@@ -168,20 +178,20 @@ public class CrawlingController {
 						// *[@id="conts"]/div[6]/dl/dd[6]/a[1]
 						// *[@id="conts"]/div[6]/dl/dd[6]/a[2]
 						Elements groupNameDdA = docMeldetail
-								.selectXpath("//*[@id=\"conts\"]/div[6]/dl/dd[" + u + "]/a[" + y + "]");
+								.selectXpath("//*[@id=\"conts\"]/div[6]/dl/dd[" + e + "]/a[" + f + "]");
 						// groupNameTdA 가 존재하면
 						if (groupNameDdA.size() > 0) {
 							listG.add(groupNameDdA.text());
-							y++;
+							f++;
 						// groupNameTdA 가 존재하지 않으면
 						} else {
-							u++;
+							e++;
 							break;
 						}
 					}
 				// groupNameDt의 text가 소속사명이 아니면
 				} else {
-					u++;
+					e++;
 				}
 			// groupNameDt가 존재하지 않으면
 			} else {
@@ -257,9 +267,13 @@ public class CrawlingController {
 		System.out.println(strArtIntro.getBytes().length);
 		String strArtIntro1 = "";
 		String strArtIntro2 = "";
-		if (strArtIntro.length() > 1500) {
-			strArtIntro1 = strArtIntro.substring(0, 1500);
-			strArtIntro2 = strArtIntro.substring(1500, strArtIntro.length());
+		if (strArtIntro.length() > 1700) {
+			strArtIntro1 = strArtIntro.substring(0, 1700);
+			if (strArtIntro.length() > 3400) {
+				strArtIntro2 = strArtIntro.substring(1700, 3400);
+			} else {
+				strArtIntro2 = strArtIntro.substring(1700, strArtIntro.length());
+			}
 			at.setArtist_info1(strArtIntro1);
 			at.setArtist_info2(strArtIntro2);
 		} else {
@@ -292,7 +306,7 @@ public class CrawlingController {
 	}
 	
 	@PostMapping("/insertB")
-	public ModelAndView insertB(ModelAndView mv, @RequestParam(name = "artist") String artistText, Sound sd, Album am)
+	public ModelAndView insertB(ModelAndView mv, @RequestParam(name = "artist") String artistText, Sound sd, Album am, Artist at, AssociationAS as)
 			throws IOException {
 		// 아티스트 검색
 		String artist = artistText;
@@ -307,8 +321,10 @@ public class CrawlingController {
 		Document docart = Jsoup.connect(linkhref).get();
 
 		// 아티스트 명
-		Elements name = docart.selectXpath("//*[@id=\"container\"]/header/div/h1");
-		System.out.println("아티스트명 : " + name.text());
+//		Elements name = docart.selectXpath("//*[@id=\"container\"]/header/div/h1");
+//		System.out.println("아티스트명 : " + name.text());
+		Document docartname = Jsoup.connect("https://www.genie.co.kr/search/searchArtist?query=" + artist + "&Coll=").get();
+		Elements name = docartname.selectXpath("//*[@id=\"body-content\"]/div[4]/div[4]/div[1]/div/p/span[1]/a");
 		
 		// artist 아티스트 검색 링크
 		Document doc1 = Jsoup.connect("https://www.genie.co.kr/search/searchAlbum?query=" + artist + "&Coll=").get();
@@ -318,9 +334,9 @@ public class CrawlingController {
 		//*[@id="body-content"]/div[4]/div[4]/div/ul/li[2]/dl/dt/a
 		//*[@id="body-content"]/div[4]/div[4]/div/ul/li[3]/dl/dt/a
 		
-		for(int i = 1; i < 6; i++) {
-			Elements albumlink = doc1.selectXpath("//*[@id=\"body-content\"]/div[4]/div[4]/div/ul/li[" + i + "]/dl/dt/a");
-			String albumlinknum = albumlink.attr("onClick");
+		for(int g = 1; g < 6; g++) {
+			Elements albumlink = doc1.selectXpath("//*[@id=\"body-content\"]/div[4]/div[4]/div/ul/li[" + g + "]/dl/dt/a");
+			String albumlinknum = albumlink.attr("onclick");
 			
 			String subNo1 = albumlinknum.substring(0, albumlinknum.lastIndexOf("'"));
 			String subNo2 = subNo1.substring(subNo1.lastIndexOf("'") + 1);
@@ -416,25 +432,32 @@ public class CrawlingController {
 					String strsongly = songly.text();
 					String strsongly1 = "";
 					String strsongly2 = "";
-					if (strsongly.length() > 1500) {
-						strsongly1 = strsongly.substring(0, 1500);
-						strsongly2 = strsongly.substring(1500, strsongly.length());
+					if (strsongly.length() > 1700) {
+						strsongly1 = strsongly.substring(0, 1700);
+						if (strsongly.length() > 3400) {
+							strsongly2  = strsongly.substring(1700, 3400);
+						} else {
+							strsongly2 = strsongly.substring(1700, strsongly.length());
+						}
+						sd.setS_lyrics1(strsongly1);
+						sd.setS_lyrics2(strsongly2);
 					} else {
-						
+						sd.setS_lyrics1(strsongly);
+						sd.setS_lyrics2(strsongly2);
 					}
 					
 					// 앨범명
 					String strsongalname = "";
-					int c = 1;
+					int h = 1;
 					while (true) {
-						Elements songalnameImg = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + c + "]/span[1]/img");
+						Elements songalnameImg = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + h + "]/span[1]/img");
 						if (songalnameImg.size() > 0) {
 							if (songalnameImg.attr("src").equals("//image.genie.co.kr/imageg/web/detail/txt_6.png")) {
-								Elements songalname = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + c + "]/span[2]/a");
+								Elements songalname = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + h + "]/span[2]/a");
 								strsongalname = songalname.text();
 								break;
 							} else {
-								c++;
+								h++;
 							}
 						} else {
 							break;
@@ -443,16 +466,16 @@ public class CrawlingController {
 					
 					// 장르
 					String strsongtype = "";
-					int d = 1;
+					int i = 1;
 					while (true) {
-						Elements songtypeImg = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + d + "]/span[1]/img");
+						Elements songtypeImg = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + i + "]/span[1]/img");
 						if (songtypeImg.size() > 0) {
 							if (songtypeImg.attr("alt").equals("장르")) {
-								Elements songtype = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + d + "]/span[2]");
+								Elements songtype = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + i + "]/span[2]");
 								strsongtype = songtype.text();
 								break;
 							} else {
-								d++;
+								i++;
 							}
 						} else {
 							break;
@@ -461,24 +484,63 @@ public class CrawlingController {
 					
 					// 작사가
 					ArrayList<String> listsw = new ArrayList<String>();
-					int a = 1;
+					int l = 1;
 					int k = 1;
 					while(true) {
-						Elements songwImg = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + a + "]/span[1]/img");
+						Elements songwImg = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + l + "]/span[1]/img");
 						if (songwImg.size() > 0) {
 							if (songwImg.attr("alt").equals("작사가")) {
 								while (true) {
-									Elements songw = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + a + "]/span[2]/a[" + k + "]");
+									Elements songw = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + l + "]/span[2]/a[" + k + "]");
 									if (songw.size() > 0) {
 										listsw.add(songw.text());
+										int selectA = service.selectA(songw.text());
+										if (selectA == 0) {
+											String songwlink = songw.attr("onclick");
+											String wsubNo1 = songwlink.substring(0, songwlink.lastIndexOf("'"));
+											String wsubNo2 = wsubNo1.substring(wsubNo1.lastIndexOf("'") + 1);
+											Document gedocartwde = Jsoup.connect("https://www.genie.co.kr/detail/artistInfo?xxnm=" + wsubNo2).get();
+											Elements wname = gedocartwde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/h2");
+											Elements wtype = gedocartwde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[1]/span[2]");
+											Elements wpic = gedocartwde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[1]/a/span/img");
+											int m = 1;
+											String wcon = "";
+											while (true) {
+												Elements conImg = gedocartwde
+														.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + m + "]/span[1]/img");
+												Elements conspan = gedocartwde
+														.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + m + "]/span[2]");
+												// conImg가 존재하면
+												if (conImg.size() > 0) {
+													// conImg의 alt가 국적 이면
+													if (conImg.attr("alt").equals("국적")) {
+														wcon = conspan.text();
+														break;
+													// conImg의 text가 국적이 아니면
+													} else {
+														m++;
+													}
+												// conImg가 존재하지 않으면
+												} else {
+													break;
+												}
+											}
+											at.setArtist_name(wname.text());
+											at.setArtist_type(wtype.text());
+											at.setArtist_profile(wpic.attr("src"));
+											at.setArtist_nation(wcon);
+											if(wname.text() != null && !wname.text().equals("")) {
+												int insertA = service.insertA(at);
+											}
+										}
 										k++;
 									} else {
-										a++;
+										l++;
 										break;
 									}
 								}
 							} else {
-								a++;
+								l++;
 							}
 						} else {
 							break;
@@ -488,24 +550,63 @@ public class CrawlingController {
 					
 					// 작곡가
 					ArrayList<String> listsc = new ArrayList<String>();
-					int b = 1;
-					int h = 1;
+					int o = 1;
+					int n = 1;
 					while(true) {
-						Elements songcImg = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + b + "]/span[1]/img");
+						Elements songcImg = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + o + "]/span[1]/img");
 						if (songcImg.size() > 0) {
 							if (songcImg.attr("alt").equals("작곡가")) {
 								while (true) {
-									Elements songc = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + b + "]/span[2]/a[" + h + "]");
+									Elements songc = doc3.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + o + "]/span[2]/a[" + n + "]");
 									if (songc.size() > 0) {
 										listsc.add(songc.text());
-										h++;		
+										int selectA = service.selectA(songc.text());
+										if (selectA == 0) {
+											String songclink = songc.attr("onclick");
+											String csubNo1 = songclink.substring(0, songclink.lastIndexOf("'"));
+											String csubNo2 = csubNo1.substring(csubNo1.lastIndexOf("'") + 1);
+											Document gedocartcde = Jsoup.connect("https://www.genie.co.kr/detail/artistInfo?xxnm=" + csubNo2).get();
+											Elements cname = gedocartcde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/h2");
+											Elements ctype = gedocartcde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[1]/span[2]");
+											Elements cpic = gedocartcde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[1]/a/span/img");
+											int p = 1;
+											String ccon = "";
+											while (true) {
+												Elements conImg = gedocartcde
+														.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + p + "]/span[1]/img");
+												Elements conspan = gedocartcde
+														.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[" + p + "]/span[2]");
+												// conImg가 존재하면
+												if (conImg.size() > 0) {
+													// conImg의 alt가 국적 이면
+													if (conImg.attr("alt").equals("국적")) {
+														ccon = conspan.text();
+														break;
+													// conImg의 text가 국적이 아니면
+													} else {
+														p++;
+													}
+												// conImg가 존재하지 않으면
+												} else {
+													break;
+												}
+											}
+											at.setArtist_name(cname.text());
+											at.setArtist_type(ctype.text());
+											at.setArtist_profile(cpic.attr("src"));
+											at.setArtist_nation(ccon);
+											if(cname.text() != null && !cname.text().equals("")) {
+												int insertA = service.insertA(at);
+											}
+										}
+										n++;		
 									} else {
-										b++;
+										o++;
 										break;
 									}
 								}
 							} else {
-								b++;
+								o++;
 							}
 						} else {
 							break;
@@ -516,6 +617,12 @@ public class CrawlingController {
 					System.out.println("앨범명 : " + strsongalname);
 					System.out.println("장르 : " + strsongtype);
 					System.out.println("노래 제목 : " + strsongname);
+					sd.setS_age_yn("N");
+					if (strsongname.length() > 3) {
+						if (strsongname.substring(0, 3).equals("19금")) {
+							sd.setS_age_yn("Y");
+						}
+					}
 					System.out.println("노래 가사 : " + strsongly);
 					System.out.println("노래 가사1 : " + strsongly1);
 					System.out.println("------------------------");
@@ -524,6 +631,40 @@ public class CrawlingController {
 					System.out.println(strsongly.getBytes().length);
 					System.out.println("작사가 : " + listswToString);
 					System.out.println("작곡가 : " + listscToString);
+					
+					sd.setA_name(strsongalname);
+					sd.setG_name(strsongtype);
+					sd.setS_name(strsongname);
+					sd.setS_no(j);
+					
+					as.setS_name(strsongname);
+					as.setA_name(strsongalname);
+					as.setArtist_name(artname);
+					
+					int selectG = service.selectG(sd);
+					if (selectG == 0) {
+						int insertG = service.insertG(sd);
+					}
+					int insertS = service.insertS(sd);
+					int insertSinger = service.insertSinger(as);
+					
+					for (String str : listsw) {
+						System.out.print(str);
+						as.setArtist_name(str);
+						int selectA = service.selectA(str);
+						if (selectA > 0) {
+							int insertSoundWriter = service.insertSoundWriter(as);
+						}
+					}
+					
+					for (String str : listsc) {
+						System.out.print(str);
+						as.setArtist_name(str);
+						int selectA = service.selectA(str);
+						if (selectA >  0) {
+							int insertSoundComposer = service.insertSoundComposer(as);	
+						}
+					}
 					j++;
 				} else {
 					break;

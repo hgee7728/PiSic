@@ -47,4 +47,75 @@
 		, (SELECT artist_no FROM artist WHERE artist_name = #{artist_name})
 		)
 	</insert>
+	
+	<insert id="insertG" parameterType="Sound">
+		INSERT INTO
+		GENRE
+		VALUES
+		(
+		(SELECT NVL(MAX(g_no), 0) + 1 FROM genre)
+		, #{g_name}
+		)
+	</insert>
+	
+	<insert id="insertS" parameterType="Sound">
+		INSERT INTO
+		SOUND
+		VALUES
+		(
+		#{s_no}
+		, (SELECT a_no FROM ALBUM WHERE a_name = #{a_name})
+		, #{s_name}
+		, #{s_lyrics1}
+		, #{s_lyrics2}
+		, #{s_age_yn}
+		, #{s_path}
+		, (SELECT g_no FROM GENRE WHERE g_name = #{g_name})
+		)
+	</insert>
+	
+	<insert id="insertSinger" parameterType="AssociationAS">
+		INSERT INTO
+		SINGER
+		VALUES
+		(
+		(SELECT s_no FROM SOUND WHERE s_name = #{s_name} AND a_no = (SELECT a_no FROM ALBUM WHERE a_name = #{a_name}))
+		, (SELECT a_no FROM ALBUM WHERE a_name = #{a_name})
+		, (SELECT artist_no FROM ARTIST WHERE artist_name = #{artist_name})
+		)
+	</insert>
+	
+	<insert id="insertSoundWriter" parameterType="AssociationAS">
+		INSERT INTO
+		SOUND_WRITER
+		VALUES
+		(
+		(SELECT s_no FROM SOUND WHERE s_name = #{s_name} AND a_no = (SELECT a_no FROM ALBUM WHERE a_name = #{a_name}))
+		, (SELECT a_no FROM ALBUM WHERE a_name = #{a_name})
+		, (SELECT artist_no FROM ARTIST WHERE artist_name = #{artist_name})
+		)
+	</insert>
+	
+	<insert id="insertSoundComposer" parameterType="AssociationAS">
+		INSERT INTO
+		SOUND_COMPOSER
+		VALUES
+		(
+		(SELECT s_no FROM SOUND WHERE s_name = #{s_name} AND a_no = (SELECT a_no FROM ALBUM WHERE a_name = #{a_name}))
+		, (SELECT a_no FROM ALBUM WHERE a_name = #{a_name})
+		, (SELECT artist_no FROM ARTIST WHERE artist_name = #{artist_name})
+		)
+	</insert>
+	
+	<select id="selectA" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM ARTIST
+		WHERE artist_name = #{art}
+	</select>
+	
+	<select id="selectG" parameterType="Sound" resultType="_int">
+		SELECT COUNT(*)
+		FROM GENRE
+		WHERE g_name = #{g_name}
+	</select>
 </mapper>

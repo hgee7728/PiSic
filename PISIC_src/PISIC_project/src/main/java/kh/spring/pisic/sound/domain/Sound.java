@@ -13,6 +13,10 @@ public class Sound {
 	private String s_path;
 	private int g_no;
 	
+//	crawling-field
+	private String a_name;
+	private String g_name;
+	
 	@Override
 	public String toString() {
 		return "Sound [s_no=" + s_no + ", a_no=" + a_no + ", s_name=" + s_name + ", s_lyrics1=" + s_lyrics1
@@ -82,4 +86,21 @@ public class Sound {
 	public void setG_no(int g_no) {
 		this.g_no = g_no;
 	}
+
+	public String getA_name() {
+		return a_name;
+	}
+
+	public void setA_name(String a_name) {
+		this.a_name = a_name;
+	}
+
+	public String getG_name() {
+		return g_name;
+	}
+
+	public void setG_name(String g_name) {
+		this.g_name = g_name;
+	}
+	
 }

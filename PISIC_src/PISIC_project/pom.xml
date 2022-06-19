@@ -237,6 +237,13 @@
 			<version>3.7</version>
 		</dependency>
 		
+		<!-- org.jsoup/jsoup -->
+		<dependency>
+		    <groupId>org.jsoup</groupId>
+		    <artifactId>jsoup</artifactId>
+		    <version>1.14.3</version>
+		</dependency>
+		
 		<!-- cloudinary-core -->
 		<dependency>
 		    <groupId>com.cloudinary</groupId>
