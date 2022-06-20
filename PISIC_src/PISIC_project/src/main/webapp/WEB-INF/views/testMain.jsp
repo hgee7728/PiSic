@@ -20,10 +20,7 @@
 	<input type="file" name="upload">
 	<button type="submit">노래 업로드</button>
 </form>
-<form action="<%=request.getContextPath() %>/sound/test" method="post" enctype="multipart/form-data">
-	<input type="file" name="upload">
-	<button type="submit">테스트 업로드</button>
-</form>
+
 <script>
 
 

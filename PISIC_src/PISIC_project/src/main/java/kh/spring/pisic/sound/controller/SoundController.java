@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import com.cloudinary.utils.ObjectUtils;
 
 @Controller
 @RequestMapping("/sound")
+@PropertySource("classpath:cloudinary.properties") // properties 파일 등록
 public class SoundController {
 	
 	@PostMapping("/play")
@@ -36,6 +39,13 @@ public class SoundController {
 		return mv;
 		
 	}
+	// properties 파일 내 설정된 변수 불러오기
+	@Value("${cloud_name}")
+	private String cloud_name;
+	@Value("${api_key}")
+	private String api_key;
+	@Value("${api_secret}")
+	private String api_secret;
 	
 	@PostMapping("/upload")
 	public ModelAndView uploadSound(
@@ -43,17 +53,17 @@ public class SoundController {
 			, HttpServletRequest request
 			, @RequestParam(name="upload", required = false) MultipartFile multiFile
 			) {
-		// cloudinary 사용을 위해 등록
-		// TODO 추후 bean 설정 및 암호화 필요
+		// cloudinary 사용을 위해 등록(properties 파일 이용)
 		Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-				"cloud_name", "dj5umvpkd",
-				"api_key", "725653185777922",
-				"api_secret", "zLHx--j6uWJB2iGwJyrj01kzmQI",
+				"cloud_name", cloud_name,
+				"api_key", api_key,
+				"api_secret", api_secret,
 				"secure", true));
+		// 파일이 저장될 폴더 이름
 		String fileSavePath = "upload";
+		// 업로드 될 경로
 		String uploadPath = request.getSession().getServletContext().getRealPath(fileSavePath);
 		System.out.println("uploadPath: " + uploadPath);
-		String rootPath = request.getSession().getServletContext().getRealPath("/");
 		
 		// metadata안 폴더 만들기
 		File folder = new File(uploadPath);
@@ -62,11 +72,10 @@ public class SoundController {
 		}
 		String orgFileName = multiFile.getOriginalFilename(); // 전송되어오기전 client에서 파일이름
 		String type = multiFile.getContentType(); // 전송된 파일의 타입
-		String upload = multiFile.getName(); // 서버에 저장된 파일이름
 		System.out.println("오리지날 네임:" + orgFileName);
 		System.out.println("type: " +type);
-		System.out.println("서버에 저장된 파일이름 :" + upload);
 		
+		// metadata 안에 파일 저장
 		try {
 			multiFile.transferTo(new File(uploadPath +"/"+ orgFileName));
 		} catch (IllegalStateException e1) {
@@ -74,6 +83,8 @@ public class SoundController {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		
+		// 저장된 파일 가지고 cloudinary에 저장
 		File newFile = new File(uploadPath + "/" + orgFileName);
 		Map uploadResult = null;
 		try {
@@ -85,8 +96,9 @@ public class SoundController {
 			e.printStackTrace();
 		}
 		
+		// cloudinary에 저장된 url
 		String url = (String)uploadResult.get("url");
-		System.out.println(url);
+		System.out.println("url: " + url);
 
 
 		
