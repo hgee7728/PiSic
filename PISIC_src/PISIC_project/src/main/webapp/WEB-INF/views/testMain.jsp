@@ -21,6 +21,9 @@
 	<input type="file" name="upload">
 	<button type="submit">노래 업로드</button>
 </form>
+<br>
+<button type="button" id="playlist">플레이리스트</button>
+<button type="button" id="albumDetail">앨범상세조회</button>
 <script>
 
 
@@ -39,13 +42,12 @@ $("#btn_player").click(function(){
 	frm.method="post";
 	frm.submit();
 });
-<%-- $("#btn_player2").click(function(){
-	window.open('', 'SoundPlayer', 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no');
-	frm.action="<%=request.getContextPath() %>/sound/play2";
-	frm.target="SoundPlayer";
-	frm.method="post";
-	frm.submit();
-}); --%>
+$("#playlist").click(function(){
+	location.href="<%=request.getContextPath() %>/sound/playlist"
+});
+$("#albumDetail").click(function(){
+	location.href="<%=request.getContextPath() %>/sound/albumDetail"
+});
 </script>
 </body>
 </html>

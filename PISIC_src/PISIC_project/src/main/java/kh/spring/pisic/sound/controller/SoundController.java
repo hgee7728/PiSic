@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -108,11 +109,13 @@ public class SoundController {
 		return mv;
 	}
 	
-	@PostMapping("/test")
-	public String testUpload(
-			@RequestParam(name="upload", required = false) MultipartFile file
-			) {
-		return "redirect:/";
+	@GetMapping("/playlist")
+	public String pageMyPlaylist() {
+		return "myPlaylist";
+	}
+	@GetMapping("/albumDetail")
+	public String pageAlbumDetail() {
+		return "albumDetail";
 	}
 
 }
