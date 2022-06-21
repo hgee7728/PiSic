@@ -245,7 +245,8 @@ public class CrawlingController {
 		String strArtEnter = enter;
 		System.out.println("소속사 : " + strArtEnter);
 		// 활동유형
-		String strArtType = type.text();
+		String strArtTypeb = type.text();
+		String strArtType = strArtTypeb.substring(strArtTypeb.lastIndexOf("/") + 1);
 		System.out.println("활동유형 : " + strArtType);
 		// 그룹명
 		String strArtGroupname = "";
@@ -501,8 +502,54 @@ public class CrawlingController {
 											String wsubNo2 = wsubNo1.substring(wsubNo1.lastIndexOf("'") + 1);
 											Document gedocartwde = Jsoup.connect("https://www.genie.co.kr/detail/artistInfo?xxnm=" + wsubNo2).get();
 											Elements wname = gedocartwde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/h2");
-											Elements wtype = gedocartwde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[1]/span[2]");
+											Elements wtypeb = gedocartwde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[1]/span[2]");
+											String wtype = wtypeb.text().substring(wtypeb.text().lastIndexOf("/") + 1);
 											Elements wpic = gedocartwde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[1]/a/span/img");
+//											int q = 3;
+//											int s = 1;
+//											while (true) {
+//												Elements wgroupImg = gedocartwde.selectXpath("//*[@id=\"body-content\"]/div[" + q + "]/div[1]/h3/img");
+//												if (wgroupImg.size() > 0) {
+//													if (wgroupImg.attr("alt").equals("아티스트 소개")) {
+//														while (true) {
+//															Elements wgroupdiv = gedocartwde.selectXpath("//*[@id=\"body-content\"]/div[" + q + "]/div[2]/div/div[" + s + "]");
+//															Elements wgroupspan = gedocartwde.selectXpath("//*[@id=\"body-content\"]/div[" + q + "]/div[2]/div/div[" + s + "]/span");
+//															if (wgroupdiv.size() > 0) {
+//																if (wgroupdiv.text().length() > 4) {
+//																	if ((wgroupdiv.text().substring(0, 2).equals("소속") || wgroupdiv.text().substring(0, 2).equals("그룹") || wgroupdiv.text().substring(0, 4).equals("소속그룹")) && !wgroupdiv.text().substring(0, 3).equals("소속사")) {
+//																		at.setArtist_group(wgroupdiv.text().substring(wgroupdiv.text().lastIndexOf(":" + 1)));
+//																		q++;
+//																		break;
+//																	} else if (wgroupspan.size() > 0) {
+//																		if (wgroupspan.text().length() > 4) {
+//																			if ((wgroupspan.text().substring(0, 2).equals("소속") || wgroupspan.text().substring(0, 2).equals("그룹") || wgroupspan.text().substring(0, 4).equals("소속그룹")) && !wgroupspan.text().substring(0, 3).equals("소속사")) {
+//																				at.setArtist_group(wgroupspan.text().substring(wgroupspan.text().lastIndexOf(":" + 1)));
+//																				q++;
+//																				break;
+//																			} else {
+//																				s++;
+//																			}
+//																		} else {
+//																			s++;
+//																		}
+//																	} else {
+//																		s++;
+//																	}
+//																} else {
+//																	s++;
+//																}
+//															} else {
+//																q++;
+//																break;
+//															}
+//														}
+//													} else {
+//														q++;
+//													}
+//												} else {
+//													break;
+//												}
+//											}
 											int m = 1;
 											String wcon = "";
 											while (true) {
@@ -526,7 +573,7 @@ public class CrawlingController {
 												}
 											}
 											at.setArtist_name(wname.text());
-											at.setArtist_type(wtype.text());
+											at.setArtist_type(wtype);
 											at.setArtist_profile(wpic.attr("src"));
 											at.setArtist_nation(wcon);
 											if(wname.text() != null && !wname.text().equals("")) {
@@ -567,8 +614,54 @@ public class CrawlingController {
 											String csubNo2 = csubNo1.substring(csubNo1.lastIndexOf("'") + 1);
 											Document gedocartcde = Jsoup.connect("https://www.genie.co.kr/detail/artistInfo?xxnm=" + csubNo2).get();
 											Elements cname = gedocartcde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/h2");
-											Elements ctype = gedocartcde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[1]/span[2]");
+											Elements ctypeb = gedocartcde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[2]/ul/li[1]/span[2]");
+											String ctype = ctypeb.text().substring(ctypeb.text().lastIndexOf("/") + 1);
 											Elements cpic = gedocartcde.selectXpath("//*[@id=\"body-content\"]/div[2]/div[1]/a/span/img");
+//											int r = 3;
+//											int t = 1;
+//											while (true) {
+//												Elements cgroupImg = gedocartcde.selectXpath("//*[@id=\"body-content\"]/div[" + r + "]/div[1]/h3/img");
+//												if (cgroupImg.size() > 0) {
+//													if (cgroupImg.attr("alt").equals("아티스트 소개")) {
+//														while (true) {
+//															Elements cgroupdiv = gedocartcde.selectXpath("//*[@id=\"body-content\"]/div[" + r + "]/div[2]/div/div[" + t + "]");
+//															Elements cgroupspan = gedocartcde.selectXpath("//*[@id=\"body-content\"]/div[" + r + "]/div[2]/div/div[" + t + "]/span");
+//															if (cgroupdiv.size() > 0) {
+//																if (cgroupdiv.text().length() > 4) {
+//																	if ((cgroupdiv.text().substring(0, 2).equals("소속") || cgroupdiv.text().substring(0, 2).equals("그룹") || cgroupdiv.text().substring(0, 4).equals("소속그룹")) && !cgroupdiv.text().substring(0, 3).equals("소속사")) {
+//																		at.setArtist_group(cgroupdiv.text().substring(cgroupdiv.text().lastIndexOf(":" + 1)));
+//																		r++;
+//																		break;
+//																	} else if (cgroupspan.size() > 0) {
+//																		if (cgroupspan.text().length() > 4) {
+//																			if ((cgroupspan.text().substring(0, 2).equals("소속") || cgroupspan.text().substring(0, 2).equals("그룹") || cgroupspan.text().substring(0, 4).equals("소속그룹")) && !cgroupspan.text().substring(0, 3).equals("소속사")) {
+//																				at.setArtist_group(cgroupspan.text().substring(cgroupspan.text().lastIndexOf(":" + 1)));
+//																				r++;
+//																				break;
+//																			} else {
+//																				t++;
+//																			}
+//																		} else {
+//																			t++;
+//																		}
+//																	} else {
+//																		t++;
+//																	}		
+//																} else {
+//																	t++;
+//																}
+//															} else {
+//																r++;
+//																break;
+//															}
+//														}
+//													} else {
+//														r++;
+//													}
+//												} else {
+//													break;
+//												}
+//											}
 											int p = 1;
 											String ccon = "";
 											while (true) {
@@ -592,7 +685,7 @@ public class CrawlingController {
 												}
 											}
 											at.setArtist_name(cname.text());
-											at.setArtist_type(ctype.text());
+											at.setArtist_type(ctype);
 											at.setArtist_profile(cpic.attr("src"));
 											at.setArtist_nation(ccon);
 											if(cname.text() != null && !cname.text().equals("")) {
