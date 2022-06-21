@@ -2,6 +2,7 @@ package kh.spring.pisic.sound.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,20 +26,21 @@ public class SoundController {
 	
 	@PostMapping("/play")
 	public ModelAndView musicPlayer( ModelAndView mv
-			, @RequestParam("post_data") String postData
+			, @RequestParam("sound_data") String[] soundData
+			, @RequestParam("hidden_data") String[] hiddenData
 			) {
+		
+		for(int i = 0 ; i < soundData.length ; i++) {
+			System.out.println(soundData[i]);
+			System.out.println(hiddenData[i]);
+		}
+		
 		mv.setViewName("soundPlayer");
 		return mv;
 		
 	}
-	@PostMapping("/play2")
-	public ModelAndView musicPlayer2( ModelAndView mv
-			, @RequestParam("post_data") String postData
-			) {
-		mv.setViewName("soundPlayer2");
-		return mv;
-		
-	}
+	
+	
 	// properties 파일 내 설정된 변수 불러오기
 	@Value("${cloud_name}")
 	private String cloud_name;
