@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<link href="<%=request.getContextPath()%>/resources/css/testMap.css"
+<link href="<%=request.getContextPath()%>/resources/assets/css/testMap.css"
 	rel="stylesheet" type="text/css">
 <title>좌표로 주소를 얻어내기</title>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
