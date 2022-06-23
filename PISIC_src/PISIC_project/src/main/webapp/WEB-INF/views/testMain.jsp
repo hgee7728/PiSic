@@ -23,10 +23,14 @@
 </form>
 <br>
 <button type="button" id="playlist">플레이리스트</button>
-<button type="button" id="albumDetail">앨범상세조회</button>
+<form action="<%=request.getContextPath() %>/sound/albumDetail" method="get">
+	<input type="text" name="a_no" value="1">
+	<button type="submit" >앨범상세조회</button>
+</form>
+
+
+
 <script>
-
-
 //post로 새창 열기
 // 체크된 체크박스만 value 2개씩 들고 가기
 $("#btn_player").click(function(){
@@ -45,9 +49,7 @@ $("#btn_player").click(function(){
 $("#playlist").click(function(){
 	location.href="<%=request.getContextPath() %>/sound/playlist"
 });
-$("#albumDetail").click(function(){
-	location.href="<%=request.getContextPath() %>/sound/albumDetail"
-});
+
 </script>
 </body>
 </html>

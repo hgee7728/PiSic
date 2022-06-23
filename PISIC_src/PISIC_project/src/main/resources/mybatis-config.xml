@@ -14,5 +14,6 @@
 <mappers>
 	<mapper resource="mappers/member-mapper.xml"/>
 	<mapper resource="mappers/crawling-mapper.xml"/>
+	<mapper resource="mappers/sound-mapper.xml"/>
 </mappers>
 </configuration>

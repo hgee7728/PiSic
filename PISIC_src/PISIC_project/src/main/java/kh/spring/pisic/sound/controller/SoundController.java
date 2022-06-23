@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
@@ -20,10 +21,18 @@ import org.springframework.web.servlet.ModelAndView;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
+import kh.spring.pisic.sound.domain.Album;
+import kh.spring.pisic.sound.model.service.SoundService;
+import kh.spring.pisic.sound.model.service.SoundServiceImpl;
+
 @Controller
 @RequestMapping("/sound")
 @PropertySource("classpath:cloudinary.properties") // properties 파일 등록
 public class SoundController {
+	
+	@Autowired
+	private SoundService service;
+	
 	
 	@PostMapping("/play")
 	public ModelAndView musicPlayer( ModelAndView mv
@@ -113,9 +122,18 @@ public class SoundController {
 	public String pageMyPlaylist() {
 		return "myPlaylist";
 	}
+	
 	@GetMapping("/albumDetail")
-	public String pageAlbumDetail() {
-		return "albumDetail";
+	public ModelAndView pageAlbumDetail(
+			ModelAndView mv
+			,@RequestParam(name="a_no", required = false) String a_no
+			) {
+		
+		Album result = service.selectAlbum(a_no);
+		
+		mv.addObject("album", result);
+		mv.setViewName("albumDetail");
+		return mv;
 	}
 
 }

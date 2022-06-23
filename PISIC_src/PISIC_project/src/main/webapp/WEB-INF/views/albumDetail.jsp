@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/reset.css">
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +10,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Corona Admin</title>
+<title>Album Detail</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -32,23 +35,90 @@
 <!-- End layout styles -->
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-.title_p {
-	font-size: 36px;
-}
-
 .content_div1 {
 	display: flex;
+	margin: 30px 0px 30px 0px;
 }
 
 .main_img_div {
 	margin-right: 20px;
 }
 
+table.intro_table tr > td:nth-child(1){
+	width:50px;
+} 
+.content_info {
+	vertical-align: middle;
+}
+
 .content_div2 {
 	clear: both;
+	margin: 30px 0px 30px 0px;
+}
+table.sound_list  tr > td:nth-child(1),
+table.sound_list  tr > td:nth-child(2),
+table.sound_list  tr > td:nth-child(3),
+table.sound_list  tr > td:nth-child(7),
+table.sound_list  tr > td:nth-child(8),
+table.sound_list  tr > td:nth-child(9){
+	width: 5%;
+}
+table.sound_list  tr > td:nth-child(7),
+table.sound_list  tr > td:nth-child(8),
+table.sound_list  tr > td:nth-child(9){
+	text-align:center;
+}
+
+table.sound_list {
+	
+}
+.list_icon{
+	font-size:30px;
+	margin: 0px 5px;
 }
 </style>
+<script>
+$(function(){
+	var content = $(".intro_box");
+	 
+    var content_txt = content.text();
+    var content_html = content.html();
+    var content_txt_short = content_txt.substring(0,100)+"...";
+    
+    if(content_txt.length >= 100){
+        content.html(content_txt_short)
+        
+    }else{
+        $(".btn_more").hide()
+    }
+    
+    $(".btn_more").click(toggle_content);
+    function toggle_content(){
+        if($(this).hasClass('short')){
+            // 접기 상태
+            $(this).html('더보기');
+            content.html(content_txt_short)
+            $(this).removeClass('short');
+        }else{
+            // 더보기 상태
+            $(this).html('접기');
+            content.html(content_html);
+            $(this).addClass('short');
+
+        }
+    }
+    
+    $("#check_all").click(function(){
+    	if($('#check_all').is(':checked')){
+    		$('input:checkbox').prop('checked',true);
+    	} else {
+    		$('input:checkbox').prop('checked',false);
+    	}
+    })
+});
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -62,36 +132,62 @@
 			<div class="main-panel">
 				<div class="content-wrapper">
 					<div class="title_div">
-						<p class="title_p">앨범정보</p>
+						<h2 class="card-title">앨범정보</h4>
 					</div>
 					<div class="content_div1">
 						<div class="main_img_div">
 							<img id="main_img"
 								src="//image.genie.co.kr/Y/IMAGE/IMG_ALBUM/081/260/027/81260027_1566538606488_1_600x600.JPG/dims/resize/Q_80,0"
-								width="250" height="250">
+								width="300" height="300">
 						</div>
-						<div>
-							<p>앨범이름</p>
-							<p>가수명:</p>
-							<p>발매일:</p>
-							<p>발매사:</p>
-							<p>기획사:</p>
+						<div class="content_info  card">
+							<div class="card-body">
+								<table class="table intro_table">
+									<thead>
+										<tr>
+											<th colspan="2">${album.a_name}</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>가수명 :</td>
+											<td>${album.artist_name}</td>
+										</tr>
+										<tr>
+											<td>발매일 :</td>
+											<td>${album.a_date}</td>
+										</tr>
+										<tr>
+											<td>발매사 :</td>
+											<td>${album.a_publishing}</td>
+										</tr>
+										<tr>
+											<td>기획사 :</td>
+											<td>${album.a_agency}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 					<div class="content_div2">
 						<div>
-							<p>앨범 소개</p>
+							<h4 class="card-title">앨범 소개</h4>
+
 						</div>
-						<hr>
-						<div>
-							<p></p>
+						<hr color="white">
+						<blockquote class="blockquote">
+						<div class="intro_box">
+							<p class="intro">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+
+The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+						</div>
+						</blockquote>
+						<div style="text-align:center">
+							<button type="button" class="btn btn-outline-light btn-fw btn_more">더보기</button>
 						</div>
 					</div>
 					<div class="content_div3">
-						<div>
-							<p>수록곡</p>
-						</div>
-						<hr>
 						<div>
 							<button type="button" class="btn btn-info btn-fw">선택재생</button>
 							<button type="button" class="btn btn-info btn-fw">선택담기</button>
@@ -102,23 +198,24 @@
 									<div class="card-body">
 										<h4 class="card-title">수록곡</h4>
 										<div class="table-responsive">
-											<table class="table">
+											<table class="table sound_list">
 												<thead>
 													<tr>
-														<th>
+														<td>
 															<div class="form-check form-check-muted m-0">
 																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input">
+																	type="checkbox" class="form-check-input" id="check_all">
 																</label>
 															</div>
-														</th>
-														<th>Client Name</th>
-														<th>Order No</th>
-														<th>Product Cost</th>
-														<th>Project</th>
-														<th>Payment Mode</th>
-														<th>Start Date</th>
-														<th>Payment Status</th>
+														</td>
+														<td>No</td>
+														<td></td>
+														<td>노래명</td>
+														<td>가수명</td>
+														<td>앨범명</td>
+														<td>듣기</td>
+														<td>좋아요</td>
+														<td>담기</td>
 													</tr>
 												</thead>
 												<tbody>
@@ -126,22 +223,137 @@
 														<td>
 															<div class="form-check form-check-muted m-0">
 																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input">
+																	type="checkbox" class="form-check-input sound_checkbox">
 																</label>
 															</div>
 														</td>
-														<td><img src="<%=request.getContextPath()%>/resources/assets/images/faces/face1.jpg"
-															alt="image" /> <span class="pl-2">Henry Klein</span></td>
-														<td>02312</td>
-														<td>$14,500</td>
-														<td>Dashboard</td>
-														<td>Credit card</td>
-														<td>04 Dec 2019</td>
+														<td>1</span></td>
+														<td><img
+															src="<%=request.getContextPath()%>/resources/assets/images/faces/face1.jpg"
+															alt="image" /></td>
+														<td>노래1</td>
+														<td>가수1</td>
+														<td>앨범1</td>
 														<td>
-															<div class="badge badge-outline-success">Approved</div>
+															<i class="mdi mdi-play list_icon"></i>
+														</td>
+														<td>
+															<i class="mdi mdi-heart list_icon like_after"></i>
+															<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+														</td>
+														<td>
+															<i class="mdi mdi-plus-box list_icon"></i>
+															<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
 														</td>
 													</tr>
-													
+													<tr>
+														<td>
+															<div class="form-check form-check-muted m-0">
+																<label class="form-check-label"> <input
+																	type="checkbox" class="form-check-input sound_checkbox">
+																</label>
+															</div>
+														</td>
+														<td>1</span></td>
+														<td><img
+															src="<%=request.getContextPath()%>/resources/assets/images/faces/face1.jpg"
+															alt="image" /></td>
+														<td>노래2</td>
+														<td>가수2</td>
+														<td>앨범2</td>
+														<td>
+															<i class="mdi mdi-play list_icon"></i>
+														</td>
+														<td>
+															<i class="mdi mdi-heart list_icon like_after"></i>
+															<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+														</td>
+														<td>
+															<i class="mdi mdi-plus-box list_icon"></i>
+															<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-muted m-0">
+																<label class="form-check-label"> <input
+																	type="checkbox" class="form-check-input sound_checkbox">
+																</label>
+															</div>
+														</td>
+														<td>1</span></td>
+														<td><img
+															src="<%=request.getContextPath()%>/resources/assets/images/faces/face1.jpg"
+															alt="image" /></td>
+														<td>노래2</td>
+														<td>가수2</td>
+														<td>앨범2</td>
+														<td>
+															<i class="mdi mdi-play list_icon"></i>
+														</td>
+														<td>
+															<i class="mdi mdi-heart list_icon like_after"></i>
+															<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+														</td>
+														<td>
+															<i class="mdi mdi-plus-box list_icon"></i>
+															<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-muted m-0">
+																<label class="form-check-label"> <input
+																	type="checkbox" class="form-check-input sound_checkbox">
+																</label>
+															</div>
+														</td>
+														<td>1</span></td>
+														<td><img
+															src="<%=request.getContextPath()%>/resources/assets/images/faces/face1.jpg"
+															alt="image" /></td>
+														<td>노래2</td>
+														<td>가수2</td>
+														<td>앨범2</td>
+														<td>
+															<i class="mdi mdi-play list_icon"></i>
+														</td>
+														<td>
+															<i class="mdi mdi-heart list_icon like_after"></i>
+															<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+														</td>
+														<td>
+															<i class="mdi mdi-plus-box list_icon"></i>
+															<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-muted m-0">
+																<label class="form-check-label"> <input
+																	type="checkbox" class="form-check-input sound_checkbox">
+																</label>
+															</div>
+														</td>
+														<td>1</span></td>
+														<td><img
+															src="<%=request.getContextPath()%>/resources/assets/images/faces/face1.jpg"
+															alt="image" /></td>
+														<td>노래2</td>
+														<td>가수2</td>
+														<td>앨범2</td>
+														<td>
+															<i class="mdi mdi-play list_icon"></i>
+														</td>
+														<td>
+															<i class="mdi mdi-heart list_icon like_after"></i>
+															<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+														</td>
+														<td>
+															<i class="mdi mdi-plus-box list_icon"></i>
+															<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
+														</td>
+													</tr>
 												</tbody>
 											</table>
 										</div>
@@ -149,6 +361,9 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="content_div4">
+					
 					</div>
 
 				</div>

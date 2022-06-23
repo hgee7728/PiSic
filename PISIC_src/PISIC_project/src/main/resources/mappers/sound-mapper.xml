@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sound">
+
+<!-- 앨범상세조회 -->
+<select id="selectAlbum" resultType="Album">
+	select a.*, art.artist_name artist_name from album a join artist art on a.artist_no = art.artist_no where a.a_no=#{a_no}
+</select>
+</mapper>
