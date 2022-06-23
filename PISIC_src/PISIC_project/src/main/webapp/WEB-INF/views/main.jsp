@@ -78,7 +78,7 @@
 		<!-- partial -->
 		<div class="container-fluid page-body-wrapper">
 			<!-- partial:partials/_navbar.html -->
-			<%-- <jsp:include page="_navbar.jsp" /> --%>
+			<jsp:include page="_navbar.jsp" />
 			<!-- partial -->
 			<div class="main-panel">
 				<div class="content-wrapper">

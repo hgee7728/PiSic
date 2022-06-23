@@ -7889,7 +7889,7 @@ pre {
   width: 100%;
   padding-right: 0.75rem;
   padding-left: 0.75rem;
-  margin-right: auto;
+  /* margin-right: auto; */
   margin-left: auto; }
 
 @media (min-width: 576px) {
@@ -20378,7 +20378,7 @@ div.tagsinput {
       .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini {
         display: none; }
         .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini img {
-          width: calc(70px - 50px);
+          width: calc(70px - 20px);
           max-width: 100%;
           height: 28px;
           margin: auto; }
@@ -20628,6 +20628,7 @@ div.tagsinput {
   padding: 0;
   width: 244px;
   z-index: 11;
+  position: fixed;
   transition: width 0.25s ease, background 0.25s ease;
   -webkit-transition: width 0.25s ease, background 0.25s ease;
   -moz-transition: width 0.25s ease, background 0.25s ease;
@@ -20655,13 +20656,13 @@ div.tagsinput {
       .sidebar .sidebar-brand-wrapper .sidebar-brand img {
         width: calc(244px - 120px);
         max-width: 100%;
-        height: 28px;
+        height: 49px;
         margin: auto;
         vertical-align: middle; }
       .sidebar .sidebar-brand-wrapper .sidebar-brand.brand-logo-mini {
         display: none; }
         .sidebar .sidebar-brand-wrapper .sidebar-brand.brand-logo-mini img {
-          width: calc(70px - 50px);
+          width: calc(70px - 20px);
           max-width: 100%;
           height: 28px;
           margin: auto; }
@@ -20930,12 +20931,12 @@ div.tagsinput {
     top: 70px;
     bottom: 0;
     overflow: auto;
-    right: -244px;
+    left: -244px;
     -webkit-transition: all 0.25s ease-out;
     -o-transition: all 0.25s ease-out;
     transition: all 0.25s ease-out; }
     .sidebar-offcanvas.active {
-      right: 0; } }
+      left: 0; } }
 
 .sidebar-tinted .sidebar {
   background: #fa424a; }

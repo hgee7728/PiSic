@@ -46,12 +46,10 @@ public class MemberController {
 		return mv;
 	}
 	
-	
-	
-	
-	
-	
-	
+	@GetMapping("/login")
+	public String pageLogin() {
+		return "member/login";
+	}
 	
 	@ExceptionHandler(Exception.class)
 	private ModelAndView handlerBoardException(Exception e) { // 얘가 최상이라 아래거로 들어갈 일 없어.

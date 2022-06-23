@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-    <a class="sidebar-brand brand-logo" href="index.html"><img src="<%=request.getContextPath()%>/resources/assets/images/logo.svg" alt="logo" /></a>
-    <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="<%=request.getContextPath()%>/resources/assets/images/logo-mini.svg" alt="logo" /></a>
+    <a class="sidebar-brand brand-logo" href="<%=request.getContextPath()%>/"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo.png" alt="logo" /></a>
+    <a class="sidebar-brand brand-logo-mini" href="<%=request.getContextPath()%>/"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo-mini.png" alt="logo" /></a>
   </div>
   <ul class="nav">
     <li class="nav-item profile">
@@ -55,39 +55,36 @@
         </div>
       </div>
     </li>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="<%=request.getContextPath()%>/member/login">
+        <span class="menu-icon">
+          <i class="mdi mdi-playlist-play"></i>
+        </span>
+        <span class="menu-title">LOGIN</span>
+      </a>
+    </li>
+    <li class="nav-item w-100">
+      <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+        <input type="text" class="form-control" placeholder="Search products">
+      </form>
+    </li>
     <li class="nav-item nav-category">
-      <span class="nav-link">Navigation</span>
+      <span class="nav-link">MENU</span>
     </li>
     <li class="nav-item menu-items">
       <a class="nav-link" href="index.html">
         <span class="menu-icon">
           <i class="mdi mdi-speedometer"></i>
         </span>
-        <span class="menu-title">Dashboard</span>
+        <span class="menu-title">MAIN</span>
       </a>
-    </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-        <span class="menu-icon">
-          <i class="mdi mdi-laptop"></i>
-        </span>
-        <span class="menu-title">Basic UI Elements</span>
-        <i class="menu-arrow"></i>
-      </a>
-      <div class="collapse" id="ui-basic">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
-        </ul>
-      </div>
     </li>
     <li class="nav-item menu-items">
       <a class="nav-link" href="pages/forms/basic_elements.html">
         <span class="menu-icon">
           <i class="mdi mdi-playlist-play"></i>
         </span>
-        <span class="menu-title">Form Elements</span>
+        <span class="menu-title">PISIC CHART</span>
       </a>
     </li>
     <li class="nav-item menu-items">
@@ -95,7 +92,7 @@
         <span class="menu-icon">
           <i class="mdi mdi-table-large"></i>
         </span>
-        <span class="menu-title">Tables</span>
+        <span class="menu-title">PICK YOUR MUSIC</span>
       </a>
     </li>
     <li class="nav-item menu-items">
@@ -103,32 +100,43 @@
         <span class="menu-icon">
           <i class="mdi mdi-chart-bar"></i>
         </span>
-        <span class="menu-title">Charts</span>
+        <span class="menu-title">PJ LOUNGE</span>
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="pages/icons/mdi.html">
+      <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
         <span class="menu-icon">
-          <i class="mdi mdi-contacts"></i>
+          <i class="mdi mdi-laptop"></i>
         </span>
-        <span class="menu-title">Icons</span>
-      </a>
-    </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-        <span class="menu-icon">
-          <i class="mdi mdi-security"></i>
-        </span>
-        <span class="menu-title">User Pages</span>
+        <span class="menu-title">MY MUSIC</span>
         <i class="menu-arrow"></i>
       </a>
-      <div class="collapse" id="auth">
+      <div class="collapse" id="ui-basic">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
+          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">내 플레이 리스트</a></li>
+          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">좋아하는 아티스트</a></li>
+          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">좋아하는 노래</a></li>
+          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">최근 들은 노래</a></li>
+          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">많이 들은 노래</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item nav-category">
+      <span class="nav-link">SUB</span>
+    </li>
+    <li class="nav-item menu-items">
+      <a class="nav-link" data-toggle="collapse" href="#membership" aria-expanded="false" aria-controls="membership">
+        <span class="menu-icon">
+          <i class="mdi mdi-laptop"></i>
+        </span>
+        <span class="menu-title">PISIC MEMBERSHIP</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="membership">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html">이용권 구매</a></li>
+          <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html">이용권 해지</a></li>
+          <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html">결제내역</a></li>
         </ul>
       </div>
     </li>
@@ -137,8 +145,23 @@
         <span class="menu-icon">
           <i class="mdi mdi-file-document-box"></i>
         </span>
-        <span class="menu-title">Documentation</span>
+        <span class="menu-title">MY PAGE</span>
       </a>
+    </li>
+        <li class="nav-item menu-items">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-icon">
+          <i class="mdi mdi-security"></i>
+        </span>
+        <span class="menu-title">CUSTOMER SERVICE</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html">자주묻는 질몬</a></li>
+          <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html">1:1 문의</a></li>
+        </ul>
+      </div>
     </li>
   </ul>
 </nav>
