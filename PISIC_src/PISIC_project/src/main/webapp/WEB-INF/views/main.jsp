@@ -40,26 +40,33 @@
 .artistimg {
 	display: grid;
 	grid-template-columns: auto auto;
-	grid-gap: 10px;
+	grid-gap: 20px;
+	margin: 10px;
 }
 
 .one {
-	grid-column: 1;
-	grid-row: 1;
+	grid-column: 1/3;
+	grid-row: 1/3;
+	width: 300px;
+ 	align-self : center;
 }
-
 .two {
-	grid-column: 2;
+	grid-column: 3;
 	grid-row: 1;
 }
 
 .three {
-	grid-column: 1;
-	grid-row: 2;
+	grid-column: 4;
+	grid-row: 1;
 }
 
 .four {
-	grid-column: 2;
+	grid-column: 3;
+	grid-row: 2;
+}
+
+.five {
+	grid-column: 4;
 	grid-row: 2;
 }
 </style>
@@ -99,29 +106,22 @@
 							</div>
 						</div>
 					</div>
-					<h4 class="card-title">PISIC ARTIST</h4>
+					<h4 class="card-title">PISICs ARTIST</h4>
 					<div class="row">
-
-						<div class="col-md-6 gradient-corona-img img-fluid">
-							<img
-								src="<%=request.getContextPath()%>/resources/assets/images/dashboard/Group126@2x.png"
-								alt="">
-						</div>
 						<div class="col-lg-6 ">
 							<!-- TODO hg : 랜덤으로 아티스트 사진 등록하기 -->
 							<div class="row artistimg">
 								<img
-									src="<%=request.getContextPath()%>/resources/assets/images/dashboard/Group126@2x.png"
-									alt="" class="col-md-6 gradient-corona-img img-fluid one">
-								<img
-									src="<%=request.getContextPath()%>/resources/assets/images/dashboard/Group126@2x.png"
-									alt="" class="col-md-6 gradient-corona-img img-fluid two">
-								<img
-									src="<%=request.getContextPath()%>/resources/assets/images/dashboard/Group126@2x.png"
-									alt="" class="col-md-6 gradient-corona-img img-fluid three">
-								<img
-									src="<%=request.getContextPath()%>/resources/assets/images/dashboard/Group126@2x.png"
-									alt="" class="col-md-6 gradient-corona-img img-fluid four">
+									src="https://image.bugsm.co.kr/artist/images/200/802291/80229195.jpg?version=20220427063911.0"
+									alt="" class=" gradient-corona-img  one"> <img
+									src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/365/80441365_1650950486919_26_200x200.JPG/dims/resize/Q_80,0"
+									alt="" class=" gradient-corona-img  two"> <img
+									src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/365/80441365_1650950486919_26_200x200.JPG/dims/resize/Q_80,0"
+									alt="" class=" gradient-corona-img  three"> <img
+									src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/366/80441366_1650950454192_17_200x200.JPG/dims/resize/Q_80,0"
+									alt="" class=" gradient-corona-img  four"> <img
+									src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/366/80441366_1650950454192_17_200x200.JPG/dims/resize/Q_80,0"
+									alt="" class=" gradient-corona-img  five">
 							</div>
 						</div>
 					</div>
