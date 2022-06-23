@@ -13,7 +13,7 @@ public class SoundDao {
 	private SqlSession session;
 	
 	public Album selectAlbum(String a_no) {
-		return session.selectOne("sound.selectAlbum",a_no);
+		return session.selectOne("Sound.selectAlbum",a_no);
 	}
 
 }

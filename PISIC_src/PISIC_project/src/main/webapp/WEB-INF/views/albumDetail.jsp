@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <link rel="stylesheet"
-	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/reset.css">
+	href="<%=request.getContextPath()%>/resources/assets/css/reset.css">
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -137,7 +137,7 @@ $(function(){
 					<div class="content_div1">
 						<div class="main_img_div">
 							<img id="main_img"
-								src="//image.genie.co.kr/Y/IMAGE/IMG_ALBUM/081/260/027/81260027_1566538606488_1_600x600.JPG/dims/resize/Q_80,0"
+								src="${album.a_cover }"
 								width="300" height="300">
 						</div>
 						<div class="content_info  card">
@@ -178,9 +178,7 @@ $(function(){
 						<hr color="white">
 						<blockquote class="blockquote">
 						<div class="intro_box">
-							<p class="intro">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-
-The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+						${album.a_introduce1}${album.a_introduce2}
 						</div>
 						</blockquote>
 						<div style="text-align:center">
@@ -219,6 +217,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 													</tr>
 												</thead>
 												<tbody>
+												<c:forEach items="${ album.sound}" var="list">
 													<tr>
 														<td>
 															<div class="form-check form-check-muted m-0">
@@ -229,11 +228,11 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 														</td>
 														<td>1</span></td>
 														<td><img
-															src="<%=request.getContextPath()%>/resources/assets/images/faces/face1.jpg"
+															src="${album.a_cover }"
 															alt="image" /></td>
-														<td>노래1</td>
-														<td>가수1</td>
-														<td>앨범1</td>
+														<td>${list.s_name }</td>
+														<td>${list.artist_name}</td>
+														<td>${album.a_name }</td>
 														<td>
 															<i class="mdi mdi-play list_icon"></i>
 														</td>
@@ -246,114 +245,8 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 															<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
 														</td>
 													</tr>
-													<tr>
-														<td>
-															<div class="form-check form-check-muted m-0">
-																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input sound_checkbox">
-																</label>
-															</div>
-														</td>
-														<td>1</span></td>
-														<td><img
-															src="<%=request.getContextPath()%>/resources/assets/images/faces/face1.jpg"
-															alt="image" /></td>
-														<td>노래2</td>
-														<td>가수2</td>
-														<td>앨범2</td>
-														<td>
-															<i class="mdi mdi-play list_icon"></i>
-														</td>
-														<td>
-															<i class="mdi mdi-heart list_icon like_after"></i>
-															<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
-														</td>
-														<td>
-															<i class="mdi mdi-plus-box list_icon"></i>
-															<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div class="form-check form-check-muted m-0">
-																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input sound_checkbox">
-																</label>
-															</div>
-														</td>
-														<td>1</span></td>
-														<td><img
-															src="<%=request.getContextPath()%>/resources/assets/images/faces/face1.jpg"
-															alt="image" /></td>
-														<td>노래2</td>
-														<td>가수2</td>
-														<td>앨범2</td>
-														<td>
-															<i class="mdi mdi-play list_icon"></i>
-														</td>
-														<td>
-															<i class="mdi mdi-heart list_icon like_after"></i>
-															<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
-														</td>
-														<td>
-															<i class="mdi mdi-plus-box list_icon"></i>
-															<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div class="form-check form-check-muted m-0">
-																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input sound_checkbox">
-																</label>
-															</div>
-														</td>
-														<td>1</span></td>
-														<td><img
-															src="<%=request.getContextPath()%>/resources/assets/images/faces/face1.jpg"
-															alt="image" /></td>
-														<td>노래2</td>
-														<td>가수2</td>
-														<td>앨범2</td>
-														<td>
-															<i class="mdi mdi-play list_icon"></i>
-														</td>
-														<td>
-															<i class="mdi mdi-heart list_icon like_after"></i>
-															<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
-														</td>
-														<td>
-															<i class="mdi mdi-plus-box list_icon"></i>
-															<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div class="form-check form-check-muted m-0">
-																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input sound_checkbox">
-																</label>
-															</div>
-														</td>
-														<td>1</span></td>
-														<td><img
-															src="<%=request.getContextPath()%>/resources/assets/images/faces/face1.jpg"
-															alt="image" /></td>
-														<td>노래2</td>
-														<td>가수2</td>
-														<td>앨범2</td>
-														<td>
-															<i class="mdi mdi-play list_icon"></i>
-														</td>
-														<td>
-															<i class="mdi mdi-heart list_icon like_after"></i>
-															<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
-														</td>
-														<td>
-															<i class="mdi mdi-plus-box list_icon"></i>
-															<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-														</td>
-													</tr>
+												</c:forEach>
+													
 												</tbody>
 											</table>
 										</div>

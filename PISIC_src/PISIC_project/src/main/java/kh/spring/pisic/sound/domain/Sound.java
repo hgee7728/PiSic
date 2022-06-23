@@ -12,6 +12,7 @@ public class Sound {
 	private String s_age_yn;
 	private String s_path;
 	private int g_no;
+	private String artist_name;
 	
 //	crawling-field
 	private String a_name;
@@ -20,11 +21,20 @@ public class Sound {
 	@Override
 	public String toString() {
 		return "Sound [s_no=" + s_no + ", a_no=" + a_no + ", s_name=" + s_name + ", s_lyrics1=" + s_lyrics1
-				+ ", s_lyrics2=" + s_lyrics2 + ", s_age_yn=" + s_age_yn + ", s_path=" + s_path + ", g_no=" + g_no + "]";
+				+ ", s_lyrics2=" + s_lyrics2 + ", s_age_yn=" + s_age_yn + ", s_path=" + s_path + ", g_no=" + g_no
+				+ ", artist_name=" + artist_name + ", a_name=" + a_name + ", g_name=" + g_name + "]";
 	}
 
 	public int getS_no() {
 		return s_no;
+	}
+
+	public String getArtist_name() {
+		return artist_name;
+	}
+
+	public void setArtist_name(String artist_name) {
+		this.artist_name = artist_name;
 	}
 
 	public void setS_no(int s_no) {

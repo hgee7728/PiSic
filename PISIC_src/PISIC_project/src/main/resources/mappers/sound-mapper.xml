@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="sound">
+<mapper namespace="Sound">
 
-<!-- 앨범상세조회 -->
-<select id="selectAlbum" resultType="Album">
-	select a.*, art.artist_name artist_name from album a join artist art on a.artist_no = art.artist_no where a.a_no=#{a_no}
+<resultMap type="Album" id="AlbumResultMap">
+	<collection column="a_no" property="sound" select="selectAlbumSound"></collection>
+</resultMap>
+
+
+<!-- 앨범상세조회-앨범정보 -->
+<select id="selectAlbum" resultMap="AlbumResultMap">
+	select album.*, art.artist_name
+	from album album join artist art on album.artist_no = art.artist_no 
+	where album.a_no=#{a_no}
+</select>
+
+<!-- 앨범상세조회-수록곡 -->
+<select id="selectAlbumSound" resultType="Sound">
+	select sound.*, artist.artist_name 
+	from sound sound join album album on sound.a_no=album.a_no 
+	join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no 
+	join artist artist on singer.artist_no = artist.artist_no where album.a_no=#{a_no}
 </select>
 </mapper>

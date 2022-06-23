@@ -1,6 +1,7 @@
 package kh.spring.pisic.sound.domain;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ public class Album {
 	private String a_introduce1;
 	private String a_introduce2;
 	private int artist_no;
+	private List<Sound> sound;
 	
 //	crawling-field
 	private String artist_name;
@@ -23,8 +25,10 @@ public class Album {
 	public String toString() {
 		return "Album [a_no=" + a_no + ", a_name=" + a_name + ", a_cover=" + a_cover + ", a_date=" + a_date
 				+ ", a_publishing=" + a_publishing + ", a_agency=" + a_agency + ", a_introduce1=" + a_introduce1
-				+ ", a_introduce2=" + a_introduce2 + ", artist_no=" + artist_no + ", artist_name=" + artist_name + "]";
+				+ ", a_introduce2=" + a_introduce2 + ", artist_no=" + artist_no + ", artist_name=" + artist_name
+				+ ", sound=" + sound + "]";
 	}
+
 
 	public int getA_no() {
 		return a_no;
@@ -104,5 +108,13 @@ public class Album {
 
 	public void setArtist_name(String artist_name) {
 		this.artist_name = artist_name;
+	}
+
+	public List<Sound> getSound() {
+		return sound;
+	}
+
+	public void setSound(List<Sound> sound) {
+		this.sound = sound;
 	}
 }
