@@ -21,4 +21,9 @@
 	join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no 
 	join artist artist on singer.artist_no = artist.artist_no where album.a_no=#{a_no}
 </select>
+
+<!-- 한곡 재생 -->
+<select id="selectSound" parameterType="Sound">
+	select s_path from sound where s_no=#{s_no} and a_no=#{a_no}
+</select>
 </mapper>

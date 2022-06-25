@@ -78,6 +78,8 @@ table.sound_list {
 	font-size:30px;
 	margin: 0px 5px;
 }
+
+
 </style>
 <script>
 $(function(){
@@ -117,6 +119,46 @@ $(function(){
     		$('input:checkbox').prop('checked',false);
     	}
     })
+    
+    function playOne(s_no,a_no){
+    		console.log("한곡재생");
+    		let frm = document.createElement('form');
+    	    
+    	    let input_s_no;
+    	    obj = document.createElement('input');
+    	    obj.setAttribute('type', 'hidden');
+    	    obj.setAttribute('name', 's_no');
+    	    obj.setAttribute('value', s_no);
+    		let input_a_no;
+    	    obj = document.createElement('input');
+    	    obj.setAttribute('type', 'hidden');
+    	    obj.setAttribute('name', 'a_no');
+    	    obj.setAttribute('value', a_no);
+    	    
+    	    frm.appendChild(input_s_no);
+    	    frm.appendChild(input_a_no);
+    	    frm.setAttribute('method', 'post');
+    	    frm.setAttribute('action', '<%=request.getContextPath() %>/sound/playOne');
+    	    document.body.appendChild(frm);
+    	    frm.submit();
+    }
+    function playOne1(){
+    	console.log("들어오냐");
+    }
+    
+    $("#select_play").click(function(){
+    	$("[name=s_no]").each(function(){
+    		if(!(this.checked)){
+    			$(this).next("[name=a_no]").remove();
+    		} 
+    		console.log(this.checked);
+    	})
+    	window.open('', 'SoundPlayer', 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no');
+    	frm.action="<%=request.getContextPath() %>/sound/play";
+    	frm.target="SoundPlayer";
+    	frm.method="post";
+    	frm.submit();
+    });
 });
 </script>
 </head>
@@ -132,7 +174,7 @@ $(function(){
 			<div class="main-panel">
 				<div class="content-wrapper">
 					<div class="title_div">
-						<h2 class="card-title">앨범정보</h4>
+						<h2 class="card-title">앨범정보</h2>
 					</div>
 					<div class="content_div1">
 						<div class="main_img_div">
@@ -187,7 +229,7 @@ $(function(){
 					</div>
 					<div class="content_div3">
 						<div>
-							<button type="button" class="btn btn-info btn-fw">선택재생</button>
+							<button type="button" id="select_play" class="btn btn-info btn-fw">선택재생</button>
 							<button type="button" class="btn btn-info btn-fw">선택담기</button>
 						</div>
 						<div class="row ">
@@ -217,36 +259,38 @@ $(function(){
 													</tr>
 												</thead>
 												<tbody>
-												<c:forEach items="${ album.sound}" var="list">
-													<tr>
-														<td>
-															<div class="form-check form-check-muted m-0">
-																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input sound_checkbox">
-																</label>
-															</div>
-														</td>
-														<td>1</span></td>
-														<td><img
-															src="${album.a_cover }"
-															alt="image" /></td>
-														<td>${list.s_name }</td>
-														<td>${list.artist_name}</td>
-														<td>${album.a_name }</td>
-														<td>
-															<i class="mdi mdi-play list_icon"></i>
-														</td>
-														<td>
-															<i class="mdi mdi-heart list_icon like_after"></i>
-															<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
-														</td>
-														<td>
-															<i class="mdi mdi-plus-box list_icon"></i>
-															<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-														</td>
-													</tr>
-												</c:forEach>
-													
+												<form name="sound_frm">
+													<c:forEach items="${ album.sound}" var="list">
+														<tr>
+															<td>
+																<div class="form-check form-check-muted m-0">
+																	<label class="form-check-label"> <input
+																		type="checkbox" class="form-check-input sound_checkbox" value="${list.s_no }" name="s_no">
+																	</label>
+																	<input type="hidden" value="${album.a_no }" name="a_no">
+																</div>
+															</td>
+															<td>${list.s_no }</span></td>
+															<td><img
+																src="${album.a_cover }"
+																alt="image" /></td>
+															<td>${list.s_name }</td>
+															<td>${list.artist_name}</td>
+															<td>${album.a_name }</td>
+															<td>
+																<a href="javascript:playOne1()"><i class="mdi mdi-play list_icon"></i></a>
+															</td>
+															<td>
+																<a href=""><i class="mdi mdi-heart list_icon like_after"></i></a>
+																<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+															</td>
+															<td>
+																<a href=""><i class="mdi mdi-plus-box list_icon"></i></a>
+																<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
+															</td>
+														</tr>
+													</c:forEach>
+												</form>
 												</tbody>
 											</table>
 										</div>

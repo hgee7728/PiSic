@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kh.spring.pisic.sound.domain.Album;
+import kh.spring.pisic.sound.domain.Sound;
 
 @Repository
 public class SoundDao {
@@ -16,4 +17,7 @@ public class SoundDao {
 		return session.selectOne("Sound.selectAlbum",a_no);
 	}
 
+	public String selectSound(Sound sound) {
+		return session.selectOne("Sound.selectSound",sound);
+	}
 }

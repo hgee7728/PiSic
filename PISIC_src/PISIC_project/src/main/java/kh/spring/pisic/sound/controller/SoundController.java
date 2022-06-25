@@ -22,6 +22,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
 import kh.spring.pisic.sound.domain.Album;
+import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.model.service.SoundService;
 import kh.spring.pisic.sound.model.service.SoundServiceImpl;
 
@@ -48,6 +49,16 @@ public class SoundController {
 		mv.setViewName("soundPlayer");
 		return mv;
 		
+	}
+	
+	@PostMapping("/playOne")
+	public ModelAndView soundPlayerOne(
+			ModelAndView mv
+			, Sound sound
+			) {
+		String soundUrl = service.selectSound(sound);
+		System.out.println("soundUrl : " + soundUrl);
+		return mv;
 	}
 	
 	
