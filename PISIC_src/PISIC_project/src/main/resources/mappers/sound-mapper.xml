@@ -3,6 +3,7 @@
 <mapper namespace="Sound">
 
 <resultMap type="Album" id="AlbumResultMap">
+	<result column="a_no" property="a_no"/>
 	<collection column="a_no" property="sound" select="selectAlbumSound"></collection>
 </resultMap>
 
@@ -25,5 +26,17 @@
 <!-- 한곡 재생 -->
 <select id="selectSound" parameterType="Sound">
 	select s_path from sound where s_no=#{s_no} and a_no=#{a_no}
+</select>
+
+<!-- 선택 재생 -->
+<select id="selectSoundList" parameterType="java.util.List" resultType="Sound">
+	select s_name from sound where a_no in
+			<foreach collection="list" item="list" open="(" separator="," close=")">
+				#{list.a_no}
+			</foreach>
+		and s_no in
+			<foreach collection="list" item="list" open="(" separator="," close=")">
+				#{list.s_no}
+			</foreach>
 </select>
 </mapper>

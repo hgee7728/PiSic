@@ -3,6 +3,7 @@ package kh.spring.pisic.sound.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,18 +35,26 @@ public class SoundController {
 	@Autowired
 	private SoundService service;
 	
+	@Autowired
+	private List<Sound> soundList;
+	
 	
 	@PostMapping("/play")
 	public ModelAndView musicPlayer( ModelAndView mv
-			, @RequestParam("sound_data") String[] soundData
-			, @RequestParam("hidden_data") String[] hiddenData
+			, @RequestParam("a_no") int[] a_no
+			, @RequestParam("s_no") int[] s_no
+			, Sound sound
 			) {
 		
-		for(int i = 0 ; i < soundData.length ; i++) {
-			System.out.println(soundData[i]);
-			System.out.println(hiddenData[i]);
+		for(int i = 0 ; i < s_no.length ; i++) {
+			System.out.println(s_no[i]);
+			System.out.println(a_no[i]);
+			sound.setS_no(s_no[i]);
+			sound.setA_no(a_no[i]);
+			soundList.add(sound);
 		}
-		
+		System.out.println("[[[soundList]]] : "+soundList);
+//		mv.addObject("playList",service.selectSoundList(soundList));
 		mv.setViewName("soundPlayer");
 		return mv;
 		
@@ -129,10 +138,10 @@ public class SoundController {
 		return mv;
 	}
 	
-	@GetMapping("/playlist")
-	public String pageMyPlaylist() {
-		return "myPlaylist";
-	}
+//	@GetMapping("/playlist")
+//	public String pageMyPlaylist() {
+//		return "myPlaylist";
+//	}
 	
 	@GetMapping("/albumDetail")
 	public ModelAndView pageAlbumDetail(
@@ -140,9 +149,7 @@ public class SoundController {
 			,@RequestParam(name="a_no", required = false) String a_no
 			) {
 		
-		Album result = service.selectAlbum(a_no);
-		
-		mv.addObject("album", result);
+		mv.addObject("album", service.selectAlbum(a_no));
 		mv.setViewName("albumDetail");
 		return mv;
 	}

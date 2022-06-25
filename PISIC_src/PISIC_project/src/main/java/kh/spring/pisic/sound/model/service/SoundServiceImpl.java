@@ -1,5 +1,8 @@
 package kh.spring.pisic.sound.model.service;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,11 @@ public class SoundServiceImpl implements SoundService{
 	@Override
 	public String selectSound(Sound sound) {
 		return  dao.selectSound(sound);
+	}
+
+	@Override
+	public List<Album> selectSoundList(List<Sound> soundList) {
+		return dao.selectSoundList(soundList);
 	}
 
 }
