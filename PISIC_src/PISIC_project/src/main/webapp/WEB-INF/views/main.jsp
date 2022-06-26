@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,17 +40,19 @@
 <style>
 .artistimg {
 	display: grid;
-	grid-template-columns: auto auto;
+	grid-template-columns: auto auto auto auto;
 	grid-gap: 20px;
 	margin: 10px;
+	place-items: center;
 }
 
 .one {
 	grid-column: 1/3;
 	grid-row: 1/3;
-	width: 300px;
- 	align-self : center;
+	width: 340px;
+	align-self: center;
 }
+
 .two {
 	grid-column: 3;
 	grid-row: 1;
@@ -106,24 +109,33 @@
 							</div>
 						</div>
 					</div>
-					<h4 class="card-title">PISICs ARTIST</h4>
-					<div class="row">
-						<div class="col-lg-6 ">
-							<!-- TODO hg : 랜덤으로 아티스트 사진 등록하기 -->
-							<div class="row artistimg">
-								<img
-									src="https://image.bugsm.co.kr/artist/images/200/802291/80229195.jpg?version=20220427063911.0"
-									alt="" class=" gradient-corona-img  one"> <img
-									src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/365/80441365_1650950486919_26_200x200.JPG/dims/resize/Q_80,0"
-									alt="" class=" gradient-corona-img  two"> <img
-									src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/365/80441365_1650950486919_26_200x200.JPG/dims/resize/Q_80,0"
-									alt="" class=" gradient-corona-img  three"> <img
-									src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/366/80441366_1650950454192_17_200x200.JPG/dims/resize/Q_80,0"
-									alt="" class=" gradient-corona-img  four"> <img
-									src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/366/80441366_1650950454192_17_200x200.JPG/dims/resize/Q_80,0"
-									alt="" class=" gradient-corona-img  five">
-							</div>
-						</div>
+					<h4 class="card-title">PISIC ARTIST</h4>
+					<!-- TODO hg : 랜덤으로 아티스트 사진 등록하기 -->
+					<div class="row artistimg">
+					
+					<c:forEach items="${artistRandom }" var="artist">
+					<img alt="" src="${artist.artist_profile }" class="gradient-corona-img">
+					</c:forEach>
+					
+					
+					
+						<!-- 
+						<img
+							src="https://image.bugsm.co.kr/artist/images/200/802291/80229195.jpg?version=20220427063911.0"
+							alt="" class=" gradient-corona-img  one"> 
+						<img
+							src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/365/80441365_1650950486919_26_200x200.JPG/dims/resize/Q_80,0"
+							alt="" class=" gradient-corona-img  two"> 
+						<img
+							src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/365/80441365_1650950486919_26_200x200.JPG/dims/resize/Q_80,0"
+							alt="" class=" gradient-corona-img  three"> 
+						<img
+							src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/366/80441366_1650950454192_17_200x200.JPG/dims/resize/Q_80,0"
+							alt="" class=" gradient-corona-img  four"> 
+						<img
+							src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/366/80441366_1650950454192_17_200x200.JPG/dims/resize/Q_80,0"
+							alt="" class=" gradient-corona-img  five">
+					 -->
 					</div>
 
 					<br>
