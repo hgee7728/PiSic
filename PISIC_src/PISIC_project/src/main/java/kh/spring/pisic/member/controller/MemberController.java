@@ -1,5 +1,7 @@
 package kh.spring.pisic.member.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,36 @@ public class MemberController {
 	@GetMapping("/login")
 	public String pageLogin() {
 		return "member/login";
+	}
+	
+	@PostMapping("/login")
+	public ModelAndView selectLogin(ModelAndView mv
+			, Member member
+			, RedirectAttributes rttr
+			, HttpSession session
+			) {
+//?		if (pwEncoding.matches(null, null))
+		
+//암호화	member.setPasswd(pwEncoding.encode(member.getPasswd()));
+		Member result = service.selectLogin(member);
+		if (result == null) {
+			rttr.addFlashAttribute("msg", "로그인에 실패했습니다. 아이디와 패스워드를 다시 확인하고 로그인 시도해 주세요.");
+			mv.setViewName("redirect:/member/login");
+			System.out.println("로그인 실패");
+			return mv;
+		}
+		session.setAttribute("loginSsInfo", result);
+		rttr.addFlashAttribute("msg", result.getM_name() + "님 로그인 되었습니다.");
+		System.out.println("로그인 성공");
+		mv.setViewName("redirect:/");
+		return mv;
+	}
+	
+	@GetMapping("/logout")
+	public String pageLogout(
+			HttpSession session) {
+		session.removeAttribute("loginSsInfo");
+		return "redirect:/";
 	}
 	
 	@ExceptionHandler(Exception.class)

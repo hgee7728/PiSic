@@ -13,6 +13,11 @@ public class MemberDao {
 	private SqlSession session;
 	
 	public int insertMember(Member member) {
-		return session.insert("Member.insertMember",member);
+		return session.insert("Member.insertMember", member);
 	}
+	
+	public Member selectLogin(Member member) {
+		return session.selectOne("Member.selectLogin", member);
+	}
+
 }

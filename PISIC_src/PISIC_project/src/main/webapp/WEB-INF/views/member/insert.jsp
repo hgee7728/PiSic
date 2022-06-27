@@ -23,7 +23,9 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
   <style>
-
+  	.content-wrapper {
+  		max-width: 900px;
+  	}
   </style>
   </head>
   <body>
@@ -112,10 +114,18 @@
                       </div>
                       <p class="card-description">주소</p>
                       <div class="form-group">
+                        <label for="InputAddress">주소</label>
+	                    <input type="text" class="form-control" id="InputAddress" placeholder="Address" name="m_address" required>               
+                      </div>
+                      <div class="form-group">
+                        <label for="InputAddressDetail">상세주소</label>
+	                    <input type="text" class="form-control" id="InputAddressDetail" placeholder="AddressDetail" name="m_address_detail" required>
+                      </div>
+                      <div class="form-group">
                         <label>프로필사진</label>
                         <input type="file" name="img[]" class="file-upload-default">
                         <div class="input-group col-xs-12">
-                          <input type="text" class="form-control file-upload-info" disabled placeholder="프로필사진">
+                          <input type="text" class="form-control file-upload-info" disabled placeholder="Profile">
                           <span class="input-group-append">
                             <button class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
                           </span>

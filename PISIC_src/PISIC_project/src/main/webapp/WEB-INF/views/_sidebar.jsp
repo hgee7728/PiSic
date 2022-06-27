@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
     <a class="sidebar-brand brand-logo" href="<%=request.getContextPath()%>/"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo.png" alt="logo" /></a>
@@ -14,7 +15,14 @@
             <span class="count bg-success"></span>
           </div>
           <div class="profile-name">
-            <h5 class="mb-0 font-weight-normal">Henrydd Klein</h5>
+            <h5 class="mb-0 font-weight-normal">
+	        <c:if test="${not empty loginSsInfo}">
+	        	${loginSsInfo.m_name }
+	        </c:if>
+	        <c:if test="${empty loginSsInfo}">
+	        	로그인
+	        </c:if>
+            </h5>
             <span>Gold Member</span>
           </div>
         </div>
@@ -55,12 +63,22 @@
         </div>
       </div>
     </li>
+    <c:if test="${empty loginSsInfo}">
     <li class="nav-item menu-items">
       <a class="nav-link" href="<%=request.getContextPath()%>/member/login">
         <span class="menu-icon">
           <i class="mdi mdi-playlist-play"></i>
         </span>
-        <span class="menu-title">LOGIN</span>
+        	<span class="menu-title">LOGIN</span>
+    </c:if>
+    <c:if test="${not empty loginSsInfo}">
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="<%=request.getContextPath()%>/member/logout">
+        <span class="menu-icon">
+          <i class="mdi mdi-playlist-play"></i>
+        </span>
+        	<span class="menu-title">LOGOUT</span>
+    </c:if>
       </a>
     </li>
     <li class="nav-item w-100">
@@ -72,7 +90,7 @@
       <span class="nav-link">MENU</span>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="index.html">
+      <a class="nav-link" href="<%=request.getContextPath()%>/">
         <span class="menu-icon">
           <i class="mdi mdi-speedometer"></i>
         </span>
@@ -82,7 +100,7 @@
     <li class="nav-item menu-items">
       <a class="nav-link" href="pages/forms/basic_elements.html">
         <span class="menu-icon">
-          <i class="mdi mdi-playlist-play"></i>
+          <i class="mdi mdi-chart-bar"></i>
         </span>
         <span class="menu-title">PISIC CHART</span>
       </a>
@@ -122,12 +140,12 @@
       </div>
     </li>
     <li class="nav-item nav-category">
-      <span class="nav-link">SUB</span>
+      <span class="nav-link"></span>
     </li>
     <li class="nav-item menu-items">
       <a class="nav-link" data-toggle="collapse" href="#membership" aria-expanded="false" aria-controls="membership">
         <span class="menu-icon">
-          <i class="mdi mdi-laptop"></i>
+          <i class="mdi mdi-square-inc-cash"></i>
         </span>
         <span class="menu-title">PISIC MEMBERSHIP</span>
         <i class="menu-arrow"></i>
@@ -143,7 +161,7 @@
     <li class="nav-item menu-items">
       <a class="nav-link" href="documentation">
         <span class="menu-icon">
-          <i class="mdi mdi-file-document-box"></i>
+          <i class="mdi mdi-account"></i>
         </span>
         <span class="menu-title">MY PAGE</span>
       </a>

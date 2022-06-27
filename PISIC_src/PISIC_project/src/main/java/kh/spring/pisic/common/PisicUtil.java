@@ -63,4 +63,12 @@ public class PisicUtil {
 			return "";
 		}
 	}
+	
+	public static boolean isExistData(Object obj) {
+		if(obj == null)
+			return false;
+		if(obj.equals(""))
+			return false;
+		return true;
+	}
 }
