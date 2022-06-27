@@ -27,7 +27,7 @@ public class SoundServiceImpl implements SoundService{
 	}
 
 	@Override
-	public List<Album> selectSoundList(List<Sound> soundList) {
+	public List<Sound> selectSoundList(List<Sound> soundList) {
 		return dao.selectSoundList(soundList);
 	}
 

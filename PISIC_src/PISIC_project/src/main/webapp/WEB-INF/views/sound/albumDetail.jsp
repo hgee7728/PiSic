@@ -165,7 +165,7 @@ $(function(){
 <body>
 	<div class="container-scroller">
 		<!-- partial:partials/_sidebar.html -->
-		<jsp:include page="_sidebar.jsp" />
+		<jsp:include page="../_sidebar.jsp" />
 		<!-- partial -->
 		<div class="container-fluid page-body-wrapper">
 			<!-- partial:partials/_navbar.html -->
@@ -238,6 +238,7 @@ $(function(){
 									<div class="card-body">
 										<h4 class="card-title">수록곡</h4>
 										<div class="table-responsive">
+										<form name="sound_frm">
 											<table class="table sound_list">
 												<thead>
 													<tr>
@@ -259,7 +260,6 @@ $(function(){
 													</tr>
 												</thead>
 												<tbody>
-												<form name="sound_frm">
 													<c:forEach items="${ album.sound}" var="list">
 														<tr>
 															<td>
@@ -270,7 +270,7 @@ $(function(){
 																	<input type="hidden" value="${album.a_no }" name="a_no">
 																</div>
 															</td>
-															<td>${list.s_no }</span></td>
+															<td>${list.s_no }</td>
 															<td><img
 																src="${album.a_cover }"
 																alt="image" /></td>
@@ -290,9 +290,9 @@ $(function(){
 															</td>
 														</tr>
 													</c:forEach>
-												</form>
 												</tbody>
 											</table>
+											</form>
 										</div>
 									</div>
 								</div>
@@ -306,7 +306,7 @@ $(function(){
 				</div>
 				<!-- content-wrapper ends -->
 				<!-- partial:partials/_footer.html -->
-				<jsp:include page="_footer.jsp" />
+				<jsp:include page="../_footer.jsp" />
 				<!-- partial -->
 			</div>
 			<!-- main-panel ends -->

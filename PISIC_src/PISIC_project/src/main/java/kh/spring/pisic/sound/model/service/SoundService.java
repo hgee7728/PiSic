@@ -10,6 +10,6 @@ public interface SoundService {
 	
 	public Album selectAlbum(String a_no);
 	public String selectSound(Sound sound);
-	public List<Album> selectSoundList(List<Sound> soundList);
+	public List<Sound> selectSoundList(List<Sound> soundList);
 	
 }

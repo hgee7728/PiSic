@@ -16,18 +16,20 @@
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
-
+	//console.log("${soundList}"); 
+	/* var soundList = "${soundList}";
+	console.log("var soundList : " + soundList);
+	console.log("sound[0] : " + soundList[s_name]); */
+	/* var result_name = soundList.map(function(object, index){
+		return object.s_name
+	});
+	console.log(result_name); */
+	
+	// jPlayer API
 	var myPlaylist = new jPlayerPlaylist({
 		jPlayer: "#jquery_jplayer_N",
 		cssSelectorAncestor: "#jp_container_N"
 	}, [
-		{
-			title:"Cro Magnon Man",
-			artist:"The Stark Palace",
-			mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3",
-			oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg",
-			poster: "http://www.jplayer.org/audio/poster/The_Stark_Palace_640x360.png"
-		}
 		
 	], {
 		playlistOptions: {
@@ -41,7 +43,29 @@ $(document).ready(function(){
 		keyEnabled: true,
 		audioFullScreen: true
 	});
+	
+	var sound_data = '${soundList}';
+	//console.log("sound_data : "+sound_data);
+	var obj = JSON.parse(sound_data);
+	//console.log("obj : "+obj);
+	for (key in sound_data) {
+		  var value = sound_data[key]
 
+		  console.log("key : " + key);
+		  console.log("value : " + value);
+		}
+	for(var i = 0 ; i < 5 ; i++){
+		myPlaylist.add({
+			title: i,
+			artist:"Miaow",
+			free:true,
+			mp3:"http://www.jplayer.org/audio/mp3/Miaow-07-Bubble.mp3",
+			oga:"http://www.jplayer.org/audio/ogg/Miaow-07-Bubble.ogg",
+			poster: "http://www.jplayer.org/audio/poster/Miaow_640x360.png"
+		});
+	};
+		
+	
 
 	// 플레이 리스트 선택 지우기
 	
@@ -105,10 +129,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-[[${mk }]]
-<c:forEach items="${ck }" var="i">
-[[${i }]]
-</c:forEach>
+[[[${soundList}]]]
 
 <div id="jp_container_N" class="jp-video jp-video-270p" role="application" aria-label="media player">
 	<div class="jp-type-playlist">
@@ -166,6 +187,7 @@ $(document).ready(function(){
 			<input type="hidden" name="id" id="sid" value="aaa">
 			<button type="button" id="btn">테스트버튼</button>
 			<button type="button" id="current_name">현재곡 뭐야</button>
+			
 </body>
 
 <script type="text/javascript">

@@ -30,13 +30,13 @@
 
 <!-- 선택 재생 -->
 <select id="selectSoundList" parameterType="java.util.List" resultType="Sound">
-	select s_name from sound where a_no in
-			<foreach collection="list" item="list" open="(" separator="," close=")">
-				#{list.a_no}
-			</foreach>
-		and s_no in
-			<foreach collection="list" item="list" open="(" separator="," close=")">
-				#{list.s_no}
-			</foreach>
+	select s_name, s_path, artist.artist_name  from sound sound 
+	join album album on sound.a_no = album.a_no
+	join singer singer on sound.s_no = singer.s_no and sound.a_no = singer.a_no
+	join artist artist on singer.artist_no = artist.artist_no
+	where (sound.a_no, sound.s_no) in
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			(#{item.a_no},#{item.s_no})
+		</foreach>
 </select>
 </mapper>
