@@ -30,7 +30,7 @@
 
 <!-- 선택 재생 -->
 <select id="selectSoundList" parameterType="java.util.List" resultType="Sound">
-	select s_name, s_path, artist.artist_name  from sound sound 
+	select s_name, s_path, artist.artist_name, album.a_cover  from sound sound 
 	join album album on sound.a_no = album.a_no
 	join singer singer on sound.s_no = singer.s_no and sound.a_no = singer.a_no
 	join artist artist on singer.artist_no = artist.artist_no
@@ -38,5 +38,6 @@
 		<foreach collection="list" item="item" open="(" separator="," close=")">
 			(#{item.a_no},#{item.s_no})
 		</foreach>
+	order by sound.s_no asc
 </select>
 </mapper>

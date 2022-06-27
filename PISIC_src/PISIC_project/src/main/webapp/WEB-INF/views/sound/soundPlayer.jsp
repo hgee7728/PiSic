@@ -43,25 +43,31 @@ $(document).ready(function(){
 		keyEnabled: true,
 		audioFullScreen: true
 	});
-	
+	console.log("soundList : "+'${soundList}');
 	var sound_data = '${soundList}';
-	//console.log("sound_data : "+sound_data);
+	console.log("sound_data : "+sound_data);
+	console.log("sound_data[0] : "+sound_data[0]);
+	console.log("sound_data[1] : "+sound_data[1]);
 	var obj = JSON.parse(sound_data);
-	//console.log("obj : "+obj);
-	for (key in sound_data) {
+	//var obj = JSON.parse(JSON.stringify(sound_data));
+	console.log("obj : "+obj);
+	console.log("obj[0]앨범커버 : "+obj[0].a_cover);
+	console.log("obj[1]앨범커버 : "+obj[1].a_cover);
+	/* for (key in sound_data) {
 		  var value = sound_data[key]
 
 		  console.log("key : " + key);
 		  console.log("value : " + value);
-		}
-	for(var i = 0 ; i < 5 ; i++){
+	} */
+	var sound_obj = JSON.parse(sound_data);
+	console.log("sound_obj.le")
+	for(var i = 0 ; i < sound_obj.length ; i++){
+		console.log("s_name["+i+"] : " + sound_obj[i].s_name);
 		myPlaylist.add({
-			title: i,
-			artist:"Miaow",
-			free:true,
-			mp3:"http://www.jplayer.org/audio/mp3/Miaow-07-Bubble.mp3",
-			oga:"http://www.jplayer.org/audio/ogg/Miaow-07-Bubble.ogg",
-			poster: "http://www.jplayer.org/audio/poster/Miaow_640x360.png"
+			title: sound_obj[i].s_name,
+			artist: sound_obj[i].artist_name,
+			mp3: sound_obj[i].s_path,
+			poster: sound_obj[i].a_cover
 		});
 	};
 		

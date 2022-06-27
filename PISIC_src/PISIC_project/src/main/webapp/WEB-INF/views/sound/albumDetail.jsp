@@ -71,8 +71,8 @@ table.sound_list  tr > td:nth-child(9){
 	text-align:center;
 }
 
-table.sound_list {
-	
+.intro_box {
+	font-size:14px;
 }
 .list_icon{
 	font-size:30px;
@@ -214,7 +214,7 @@ $(function(){
 					</div>
 					<div class="content_div2">
 						<div>
-							<h4 class="card-title">앨범 소개</h4>
+							<h3 class="card-title">앨범 소개</h3>
 
 						</div>
 						<hr color="white">
@@ -236,7 +236,7 @@ $(function(){
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-										<h4 class="card-title">수록곡</h4>
+										<h3 class="card-title">수록곡</h3>
 										<div class="table-responsive">
 										<form name="sound_frm">
 											<table class="table sound_list">
