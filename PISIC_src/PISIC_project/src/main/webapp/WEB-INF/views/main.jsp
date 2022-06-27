@@ -38,6 +38,11 @@
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 
 <style>
+.map {
+	display: block;
+	margin: 0px auto;
+}
+
 .artistimg {
 	display: grid;
 	grid-template-columns: auto auto auto auto;
@@ -46,29 +51,29 @@
 	place-items: center;
 }
 
-.one {
+img:nth-child(2) {
 	grid-column: 1/3;
 	grid-row: 1/3;
 	width: 340px;
 	align-self: center;
 }
 
-.two {
+img:nth-child(3) {
 	grid-column: 3;
 	grid-row: 1;
 }
 
-.three {
+img:nth-child(4) {
 	grid-column: 4;
 	grid-row: 1;
 }
 
-.four {
+img:nth-child(5) {
 	grid-column: 3;
 	grid-row: 2;
 }
 
-.five {
+img:nth-child(6) {
 	grid-column: 4;
 	grid-row: 2;
 }
@@ -76,13 +81,9 @@
 </head>
 <body>
 	<div class="container-scroller">
-		<!-- partial:partials/_sidebar.html -->
 		<jsp:include page="_sidebar.jsp" />
-		<!-- partial -->
 		<div class="container-fluid page-body-wrapper">
-			<!-- partial:partials/_navbar.html -->
 			<jsp:include page="_navbar.jsp" />
-			<!-- partial -->
 			<div class="main-panel">
 				<div class="content-wrapper">
 					<div class="row">
@@ -110,41 +111,23 @@
 						</div>
 					</div>
 					<h4 class="card-title">PISIC ARTIST</h4>
-					<!-- TODO hg : 랜덤으로 아티스트 사진 등록하기 -->
+
 					<div class="row artistimg">
-					
-					<c:forEach items="${artistRandom }" var="artist">
-					<img alt="" src="${artist.artist_profile }" class="gradient-corona-img">
-					</c:forEach>
-					
-					
-					
-						<!-- 
-						<img
-							src="https://image.bugsm.co.kr/artist/images/200/802291/80229195.jpg?version=20220427063911.0"
-							alt="" class=" gradient-corona-img  one"> 
-						<img
-							src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/365/80441365_1650950486919_26_200x200.JPG/dims/resize/Q_80,0"
-							alt="" class=" gradient-corona-img  two"> 
-						<img
-							src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/365/80441365_1650950486919_26_200x200.JPG/dims/resize/Q_80,0"
-							alt="" class=" gradient-corona-img  three"> 
-						<img
-							src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/366/80441366_1650950454192_17_200x200.JPG/dims/resize/Q_80,0"
-							alt="" class=" gradient-corona-img  four"> 
-						<img
-							src="//image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/441/366/80441366_1650950454192_17_200x200.JPG/dims/resize/Q_80,0"
-							alt="" class=" gradient-corona-img  five">
-					 -->
+
+						<c:forEach items="${artistRandom }" var="artist">
+							<img alt="" src="${artist.artist_profile }"
+								class="gradient-corona-img card">
+						</c:forEach>
+
 					</div>
 
 					<br>
 
 					<h4 class=" card-title">
 						실시간 TOP 10
-						<p class="card-description">
-							<i class="mdi mdi-reload"></i>
-							<code>yyyy년 mm월 dd일 hh:mm:ss</code>
+						<p>
+							<i type="button" class="mdi mdi-reload btn_reload"></i>
+							<code>${serverTime}</code>
 						</p>
 					</h4>
 
@@ -187,39 +170,115 @@
 						<div class="col-md-6 corona-gradient-card">
 							<h4 class="card-title">ALL TIME SCOROBBLES</h4>
 							<!-- TODO mg : total count 등록하기 -->
+
+
 						</div>
 
 						<div class="col-lg-6 corona-gradient-card">
 							<h4 class="card-title">지역별 플레이리스트 보기</h4>
-							<div class="card-body">
-								<!-- TODO hg : 서울 지역구 지도 등록하기 -->
-								<img
-									src="<%=request.getContextPath()%>/resources/assets/images/dashboard/seoul_map(1).JPG"
-									alt="" class="img-fluid">
+							<div class="card">
+								<div class="card-body">
+
+									<img
+										src="<%=request.getContextPath()%>/resources/assets/images/main/mapamp.gif"
+										alt="" class="img-fluid map" usemap="#map">
+									<!-- TODO hg : 클릭 범위 넓히기 -->
+									<map name="map" id="map">
+										<area shape="rect" coords="283,35,317,91"
+											href="http://www.dobong.go.kr/WDB_DEV/MF030301/MF030301search.asp"
+											target="_blank" title="새창으로 열립니다." alt="도봉구">
+										<area shape="rect" coords="260,92,294,108"
+											href="http://www.gangbuk.go.kr/www/contents.do?key=305"
+											target="_blank" title="새창으로 열립니다." alt="강북구">
+										<area shape="rect" coords="322,44,362,95"
+											href="https://www.nowon.kr/www/user/orgnzt/BD_selectOrgnzt.do"
+											target="_blank" title="새창으로 열립니다." alt="노원구">
+										<area shape="rect" coords="170,110,206,127"
+											href="http://www.ep.go.kr/CmsWeb/viewPage.req?idx=PG0000004276"
+											target="_blank" title="새창으로 열립니다." alt="은평구">
+										<area shape="rect" coords="260,138,298,154"
+											href="http://www.sb.go.kr/PageLink.do?link=forward:/sb_new/seongbukgu/organization/organization.do&tempParam1=&menuNo=07000000&subMenuNo=07040000&thirdMenuNo=&fourthMenuNo="
+											target="_blank" title="새창으로 열립니다." alt="성북구">
+										<area shape="rect" coords="344,145,382,162"
+											href="http://www.jungnang.go.kr/portal/bbs/list/B0000389.do?dept=01&menuNo=201180"
+											target="_blank" title="새창으로 열립니다." alt="중랑구">
+										<area shape="rect" coords="171,170,220,187"
+											href="http://www.sdm.go.kr/wesdm/info/organization.do"
+											target="_blank" title="새창으로 열립니다." alt="서대문구">
+										<area shape="rect" coords="226,162,262,178"
+											href="http://www.jongno.go.kr/Main.do?menuId=1917&amp;menuNo=1917"
+											target="_blank" title="새창으로 열립니다." alt="종로구">
+										<area shape="rect" coords="298,163,342,179"
+											href="http://www.ddm.go.kr/ddm/organization.jsp"
+											target="_blank" title="새창으로 열립니다." alt="동대문구">
+										<area shape="rect" coords="58,185,92,204"
+											href="https://www.gangseo.seoul.kr/gs050201" target="_blank"
+											title="새창으로 열립니다." alt="강서구">
+										<area shape="rect" coords="150,190,190,207"
+											href="https://www.mapo.go.kr/site/main/content/mapo040301"
+											target="_blank" title="새창으로 열립니다." alt="마포구">
+										<area shape="rect" coords="245,191,272,207"
+											href="http://www.junggu.seoul.kr/content.do?cmsid=14066"
+											target="_blank" title="새창으로 열립니다." alt="중구">
+										<area shape="rect" coords="289,199,324,215"
+											href="https://www.sd.go.kr/main/selectEmpList.do?key=2015"
+											target="_blank" title="새창으로 열립니다." alt="성동구">
+										<area shape="rect" coords="226,226,261,242"
+											href="https://www.yongsan.go.kr/portal/member/user/orgcht.do?menuNo=200203"
+											target="_blank" title="새창으로 열립니다." alt="용산구">
+										<area shape="rect" coords="334,211,372,227"
+											href="https://www.gwangjin.go.kr/portal/main/contents.do?menuNo=200202"
+											target="_blank" title="새창으로 열립니다." alt="광진구">
+										<area shape="rect" coords="393,201,430,217"
+											href="https://www.gangdong.go.kr/site/contents/koRenew/html03/html00/html00/index01.html"
+											target="_blank" title="새창으로 열립니다." alt="강동구">
+										<area shape="rect" coords="93,239,133,258"
+											href="http://www.yangcheon.go.kr/site/yangcheon/ex/dept/org_map.do"
+											target="_blank" title="새창으로 열립니다." alt="양천구">
+										<area shape="rect" coords="146,237,189,253"
+											href="https://www.ydp.go.kr/www/contents.do?key=2901&"
+											target="_blank" title="새창으로 열립니다." alt="영등포구">
+										<area shape="rect" coords="188,260,226,277"
+											href="http://www.dongjak.go.kr/portal/main/contents.do?menuNo=200655"
+											target="_blank" title="새창으로 열립니다." alt="동작구">
+										<area shape="rect" coords="250,281,290,298"
+											href="http://www.seocho.go.kr/site/seocho/05/10503010100002015062601.jsp"
+											target="_blank" title="새창으로 열립니다." alt="서초구">
+										<area shape="rect" coords="299,264,336,281"
+											href="http://www.gangnam.go.kr/dept/user/find.do?mid=FM040603"
+											target="_blank" title="새창으로 열립니다." alt="강남구">
+										<area shape="rect" coords="356,251,393,269"
+											href="https://www.songpa.go.kr/www/contents.do?key=2355&"
+											target="_blank" title="새창으로 열립니다." alt="송파구">
+										<area shape="rect" coords="85,272,122,290"
+											href="http://www.guro.go.kr/www/selectEmplDeptWebList.do?key=1816&"
+											target="_blank" title="새창으로 열립니다." alt="구로구">
+										<area shape="rect" coords="137,298,175,315"
+											href="http://www.geumcheon.go.kr/program/wooriGC/staffOffice.jsp?menuID=001004003001001"
+											target="_blank" title="새창으로 열립니다." alt="금천구">
+										<area shape="rect" coords="190,306,226,323"
+											href="http://www.gwanak.go.kr/site/gwanak/11/11103010000002016051207.jsp"
+											target="_blank" title="새창으로 열립니다." alt="관악구">
+									</map>
+								</div>
+
 							</div>
 						</div>
 					</div>
 
-
-
-
-
 				</div>
-				<!-- content-wrapper ends -->
-				<!-- partial:partials/_footer.html -->
 				<jsp:include page="_footer.jsp" />
-				<!-- partial -->
 			</div>
-			<!-- main-panel ends -->
 		</div>
-		<!-- page-body-wrapper ends -->
 	</div>
-	<!-- container-scroller -->
-	<!-- plugins:js -->
+	<script>
+		document.querySelector(".btn_reload").onclick = function() {
+			location.reload();
+		}
+	</script>
+
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/vendors/js/vendor.bundle.base.js"></script>
-	<!-- endinject -->
-	<!-- Plugin js for this page -->
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/vendors/chart.js/Chart.min.js"></script>
 	<script
@@ -230,8 +289,6 @@
 		src="<%=request.getContextPath()%>/resources/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.carousel.min.js"></script>
-	<!-- End plugin js for this page -->
-	<!-- inject:js -->
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/js/off-canvas.js"></script>
 	<script
@@ -241,10 +298,8 @@
 		src="<%=request.getContextPath()%>/resources/assets/js/settings.js"></script>
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/js/todolist.js"></script>
-	<!-- endinject -->
-	<!-- Custom js for this page -->
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/js/dashboard.js"></script>
-	<!-- End custom js for this page -->
+
 </body>
 </html>
