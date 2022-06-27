@@ -14,6 +14,9 @@ public class Sound {
 	private int g_no;
 	private String artist_name;
 	
+	private String a_cover;
+	
+	
 //	crawling-field
 	private String a_name;
 	private String g_name;
@@ -22,7 +25,8 @@ public class Sound {
 	public String toString() {
 		return "Sound [s_no=" + s_no + ", a_no=" + a_no + ", s_name=" + s_name + ", s_lyrics1=" + s_lyrics1
 				+ ", s_lyrics2=" + s_lyrics2 + ", s_age_yn=" + s_age_yn + ", s_path=" + s_path + ", g_no=" + g_no
-				+ ", artist_name=" + artist_name + ", a_name=" + a_name + ", g_name=" + g_name + "]";
+				+ ", artist_name=" + artist_name + ", a_cover=" + a_cover + ", a_name=" + a_name + ", g_name=" + g_name
+				+ "]";
 	}
 
 	public int getS_no() {
@@ -111,6 +115,14 @@ public class Sound {
 
 	public void setG_name(String g_name) {
 		this.g_name = g_name;
+	}
+
+	public String getA_cover() {
+		return a_cover;
+	}
+
+	public void setA_cover(String a_cover) {
+		this.a_cover = a_cover;
 	}
 	
 }

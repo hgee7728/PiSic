@@ -27,7 +27,7 @@ public class SoundDao {
 	}
 	
 	// 선택 재생
-	public List<Album> selectSoundList(List<Sound> soundList) {
+	public List<Sound> selectSoundList(List<Sound> soundList) {
 		return session.selectList("Sound.selectSoundList",soundList);
 	}
 }

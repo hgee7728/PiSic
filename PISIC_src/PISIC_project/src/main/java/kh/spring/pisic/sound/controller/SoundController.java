@@ -2,6 +2,7 @@ package kh.spring.pisic.sound.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.google.gson.Gson;
 
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Sound;
@@ -35,27 +37,34 @@ public class SoundController {
 	@Autowired
 	private SoundService service;
 	
-	@Autowired
-	private List<Sound> soundList;
+//	@Autowired
+//	private List<Sound> soundList;
+//	
+//	@Autowired
+//	private Sound sound;
 	
 	
 	@PostMapping("/play")
 	public ModelAndView musicPlayer( ModelAndView mv
 			, @RequestParam("a_no") int[] a_no
 			, @RequestParam("s_no") int[] s_no
-			, Sound sound
 			) {
 		
+		List<Sound> soundList = new ArrayList<Sound>();
+		
+		
 		for(int i = 0 ; i < s_no.length ; i++) {
-			System.out.println(s_no[i]);
+			Sound sound = new Sound();
 			System.out.println(a_no[i]);
-			sound.setS_no(s_no[i]);
+			System.out.println(s_no[i]);
 			sound.setA_no(a_no[i]);
+			sound.setS_no(s_no[i]);
 			soundList.add(sound);
 		}
 		System.out.println("[[[soundList]]] : "+soundList);
-//		mv.addObject("playList",service.selectSoundList(soundList));
-		mv.setViewName("soundPlayer");
+		System.out.println("Gson : "+new Gson().toJson(service.selectSoundList(soundList)));
+		mv.addObject("soundList",new Gson().toJson(service.selectSoundList(soundList)));
+		mv.setViewName("sound/soundPlayer");
 		return mv;
 		
 	}
@@ -150,7 +159,7 @@ public class SoundController {
 			) {
 		
 		mv.addObject("album", service.selectAlbum(a_no));
-		mv.setViewName("albumDetail");
+		mv.setViewName("sound/albumDetail");
 		return mv;
 	}
 
