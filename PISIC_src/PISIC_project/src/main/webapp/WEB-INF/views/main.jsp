@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,13 +11,10 @@
 <link
 	href="<%=request.getContextPath()%>/resources/assets/css/reset.css"
 	rel="stylesheet" type="text/css">
-<!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/css/vendor.bundle.base.css">
-<!-- endinject -->
-<!-- Plugin css for this page -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/jvectormap/jquery-jvectormap.css">
 <link rel="stylesheet"
@@ -27,15 +23,13 @@
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.carousel.min.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.theme.default.min.css">
-<!-- End plugin css for this page -->
-<!-- inject:css -->
-<!-- endinject -->
 <!-- Layout styles -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/css/style.css">
-<!-- End layout styles -->
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
+
+
 
 <style>
 .map {
@@ -76,6 +70,82 @@ img:nth-child(5) {
 img:nth-child(6) {
 	grid-column: 4;
 	grid-row: 2;
+}
+</style>
+
+<style>
+.popup-wrap {
+	background-color: rgba(0, 0, 0, .3);
+	color: black;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+	padding: 15px;
+}
+
+.popup {
+	width: 100%;
+	max-width: 400px;
+	border-radius: 10px;
+	overflow: hidden;
+	background-color: #8f5fe8;
+	box-shadow: 5px 10px 10px 1px rgba(0, 0, 0, .3);
+}
+
+.popup-head {
+	width: 100%;
+	height: 50px;
+	display: flex; /
+	align-items: center;
+	justify-content: center;
+	line-height: 50px;
+}
+
+.popup-body {
+	width: 100%;
+	background-color: #ffffff;
+}
+
+.body-content {
+	width: 100%;
+	padding: 30px;
+}
+
+.body-titlebox {
+	text-align: center;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.body-contentbox {
+	word-break: break-word;
+	overflow-y: auto;
+	max-height: 1000px;
+}
+
+.popup-foot {
+	width: 100%;
+	height: 50px;
+}
+
+.pop-btn {
+	display: inline-flex;
+	width: 50%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	float: left;
+	color: #ffffff;
+	cursor: pointer;
+}
+
+.pop-btn.confirm {
+	border-right: 1px solid #3b5fbf;
 }
 </style>
 </head>
@@ -271,7 +341,49 @@ img:nth-child(6) {
 			</div>
 		</div>
 	</div>
+
+	<div class="container">
+		<div class="popup-wrap" id="modal">
+			<div class="popup">
+				<div class="popup-head">
+					<span class="head-title">WELCOME PISIC</span>
+				</div>
+				<div class="popup-body">
+					<div class="body-content">
+						<div class="body-titlebox">
+							<h3>PISIC 이용권</h3>
+							<h1>지금 결제하면 누구나 12개월 무료</h1>
+							<br>
+						</div>
+						<div class="body-contentbox">
+							<p>첫 PISIC 멤버쉽 구독자는 12개월 무료로 이용 가능!</p>
+							<p>지금 바로 구매해보세요!!</p>
+
+						</div>
+					</div>
+				</div>
+				<div class="popup-foot">
+					<span class="pop-btn confirm" id="confirm">이용권 구매 바로가기</span> <span
+						class="pop-btn close" id="close"><i class="mdi mdi-close"></i></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 	<script>
+		window.onload = function() {
+
+			document.querySelector('.popup-wrap').style.display = 'flex';
+
+			function closeModal() {
+				document.querySelector('.popup-wrap').style.display = 'none';
+			}
+
+			document.querySelector('.close')
+					.addEventListener('click', closeModal);
+		};
+
 		document.querySelector(".btn_reload").onclick = function() {
 			location.reload();
 		}
