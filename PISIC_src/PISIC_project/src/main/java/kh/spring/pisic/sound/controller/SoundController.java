@@ -44,6 +44,7 @@ public class SoundController {
 //	private Sound sound;
 	
 	
+	// 음악 재생
 	@PostMapping("/play")
 	public ModelAndView musicPlayer( ModelAndView mv
 			, @RequestParam("a_no") int[] a_no
@@ -52,7 +53,7 @@ public class SoundController {
 		
 		List<Sound> soundList = new ArrayList<Sound>();
 		
-		
+		// 들고 온 데이터 domain형태로 list 시키기
 		for(int i = 0 ; i < s_no.length ; i++) {
 			Sound sound = new Sound();
 			System.out.println(a_no[i]);
@@ -63,20 +64,12 @@ public class SoundController {
 		}
 		System.out.println("[[[soundList]]] : "+soundList);
 		System.out.println("Gson : "+new Gson().toJson(service.selectSoundList(soundList)));
+		
+		// list<domain> 형태 JSON형태로 바꿔 보내기
 		mv.addObject("soundList",new Gson().toJson(service.selectSoundList(soundList)));
 		mv.setViewName("sound/soundPlayer");
 		return mv;
 		
-	}
-	
-	@PostMapping("/playOne")
-	public ModelAndView soundPlayerOne(
-			ModelAndView mv
-			, Sound sound
-			) {
-		String soundUrl = service.selectSound(sound);
-		System.out.println("soundUrl : " + soundUrl);
-		return mv;
 	}
 	
 	
@@ -163,4 +156,14 @@ public class SoundController {
 		return mv;
 	}
 
+	@GetMapping("/soundDetail")
+	public ModelAndView pageSoundDetail(
+			ModelAndView mv
+			, Sound sound
+			) {
+		
+		mv.addObject("sound", service.selectSound(sound));
+		mv.setViewName("sound/soundDetail");
+		return mv;
+	}
 }

@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8" />
 <!-- Website Design By: www.happyworm.com -->
-<title>Demo : The jPlayerPlaylist Object</title>
+<title>PISIC Player</title>
 <link href="<%=request.getContextPath() %>/resources/jPlayer/dist/skin/pink.flag/css/jplayer.pink.flag.min.css" rel="stylesheet" type="text/css" />
 <%-- <link href="<%=request.getContextPath() %>/resources/jPlayer/dist/skin/blue.monday/css/jplayer.blue.monday.min.css" rel="stylesheet" type="text/css" /> --%>
 <script type="text/javascript" src="<%=request.getContextPath() %>/resources/jPlayer/lib/jquery.min.js"></script>
@@ -16,15 +16,6 @@
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
-	//console.log("${soundList}"); 
-	/* var soundList = "${soundList}";
-	console.log("var soundList : " + soundList);
-	console.log("sound[0] : " + soundList[s_name]); */
-	/* var result_name = soundList.map(function(object, index){
-		return object.s_name
-	});
-	console.log(result_name); */
-	
 	// jPlayer API
 	var myPlaylist = new jPlayerPlaylist({
 		jPlayer: "#jquery_jplayer_N",
@@ -43,26 +34,15 @@ $(document).ready(function(){
 		keyEnabled: true,
 		audioFullScreen: true
 	});
-	console.log("soundList : "+'${soundList}');
+	
+	// JSON 형태로 넘겨 받은 데이터 OBJECT 형태로 변환 
 	var sound_data = '${soundList}';
-	console.log("sound_data : "+sound_data);
-	console.log("sound_data[0] : "+sound_data[0]);
-	console.log("sound_data[1] : "+sound_data[1]);
 	var obj = JSON.parse(sound_data);
-	//var obj = JSON.parse(JSON.stringify(sound_data));
-	console.log("obj : "+obj);
-	console.log("obj[0]앨범커버 : "+obj[0].a_cover);
-	console.log("obj[1]앨범커버 : "+obj[1].a_cover);
-	/* for (key in sound_data) {
-		  var value = sound_data[key]
-
-		  console.log("key : " + key);
-		  console.log("value : " + value);
-	} */
 	var sound_obj = JSON.parse(sound_data);
-	console.log("sound_obj.le")
+	
+	// 받은 노래 데이터로 플레이 리스트 만들기
 	for(var i = 0 ; i < sound_obj.length ; i++){
-		console.log("s_name["+i+"] : " + sound_obj[i].s_name);
+		// jPlayer
 		myPlaylist.add({
 			title: sound_obj[i].s_name,
 			artist: sound_obj[i].artist_name,
@@ -70,51 +50,21 @@ $(document).ready(function(){
 			poster: sound_obj[i].a_cover
 		});
 	};
-		
+	// 자동재생 on
+	//myPlaylist.option("autoPlay", true);
 	
-
-	// 플레이 리스트 선택 지우기
-	
-	//모두 지우기
-	$("#playlist-remove").click(function() {
-		myPlaylist.remove();
+	// 재생 버튼
+	$("#playlist-play").click(function() {
+		myPlaylist.play();
 	});
-	// 맨 뒤에서 2번째 지우기
-	$("#playlist-remove--2").click(function() {
-		myPlaylist.remove(-2);
+	// 일시 정지
+	$("#playlist-pause").click(function() {
+		myPlaylist.pause();
 	});
-	// 맨 뒤에꺼 지우기
-	$("#playlist-remove--1").click(function() {
-		myPlaylist.remove(-1);
-	});
-	// 현재 재생곡 지우기
-	$("#playlist-remove-0").click(function() {
-		myPlaylist.remove(0);
-	});
-	// 다음 곡 지우기
-	$("#playlist-remove-1").click(function() {
-		myPlaylist.remove(1);
-	});
-	// 다다음곡 지우기
-	$("#playlist-remove-2").click(function() {
-		myPlaylist.remove(2);
-	});
-
-	// 셔플, 기본값 true
+	// 셔플하고 재생
 	$("#playlist-shuffle").click(function() {
-		myPlaylist.shuffle();
-	});
-	// 섞인 경우, 다시 섞지 않아
-	$("#playlist-shuffle-false").click(function() {
-		myPlaylist.shuffle(false);
-	});
-	// 셔플, 셔플하고 재생 true,true
-	$("#playlist-shuffle-true").click(function() {
-		//myPlaylist.shuffle(true);
 		myPlaylist.shuffle(true,true);
 	});
-
-	
 	// 다음곡 재생
 	$("#playlist-next").click(function() {
 		myPlaylist.next();
@@ -123,20 +73,25 @@ $(document).ready(function(){
 	$("#playlist-previous").click(function() {
 		myPlaylist.previous();
 	});
-
 	// 일시 정지
 	$("#playlist-pause").click(function() {
 		myPlaylist.pause();
 	});
-
-
 });
 //]]>
 </script>
+<style>
+	img#jp_poster_0{
+		width:480px !important;
+		height:350px !important;
+	}
+	div#jquery_jplayer_N{
+		width:480px !important;
+		height:350px !important;
+	}
+</style>
 </head>
 <body>
-[[[${soundList}]]]
-
 <div id="jp_container_N" class="jp-video jp-video-270p" role="application" aria-label="media player">
 	<div class="jp-type-playlist">
 		<div id="jquery_jplayer_N" class="jp-jplayer"></div>

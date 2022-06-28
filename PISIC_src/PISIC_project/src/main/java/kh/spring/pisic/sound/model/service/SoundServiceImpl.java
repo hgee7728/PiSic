@@ -22,7 +22,7 @@ public class SoundServiceImpl implements SoundService{
 	}
 
 	@Override
-	public String selectSound(Sound sound) {
+	public Sound selectSound(Sound sound) {
 		return  dao.selectSound(sound);
 	}
 

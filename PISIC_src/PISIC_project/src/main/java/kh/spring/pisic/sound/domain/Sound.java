@@ -1,5 +1,7 @@
 package kh.spring.pisic.sound.domain;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,7 +14,7 @@ public class Sound {
 	private String s_age_yn;
 	private String s_path;
 	private int g_no;
-	private String artist_name;
+	private List<String> artist_name;
 	
 	private String a_cover;
 	
@@ -31,14 +33,6 @@ public class Sound {
 
 	public int getS_no() {
 		return s_no;
-	}
-
-	public String getArtist_name() {
-		return artist_name;
-	}
-
-	public void setArtist_name(String artist_name) {
-		this.artist_name = artist_name;
 	}
 
 	public void setS_no(int s_no) {
@@ -123,6 +117,14 @@ public class Sound {
 
 	public void setA_cover(String a_cover) {
 		this.a_cover = a_cover;
+	}
+
+	public List<String> getArtist_name() {
+		return artist_name;
+	}
+
+	public void setArtist_name(List<String> artist_name) {
+		this.artist_name = artist_name;
 	}
 	
 }

@@ -7,25 +7,53 @@
 	<collection column="a_no" property="sound" select="selectAlbumSound"></collection>
 </resultMap>
 
+<resultMap type="Sound" id="soundSingerResultMap">
+	<result column="s_no" property="s_no"/>
+	<result column="a_no" property="a_no"/>
+	<result column="s_name" property="s_name"/>
+	<result column="s_lyrics1" property="s_lyrics1"/>
+	<result column="s_lyrics2" property="s_lyrics2"/>
+	<result column="s_age_yn" property="s_age_yn"/>
+	<result column="s_path" property="s_path"/>
+	<result column="g_no" property="g_no"/>
+	<result column="a_cover" property="a_cover"/>
+	<result column="a_name" property="a_name"/>
+	<result column="g_name" property="g_name"/>
+	<collection column="{a_no=a_no,s_no=s_no}" property="artist_name" select="soundSingerList"></collection>
+</resultMap>
 
-<!-- 앨범상세조회-앨범정보 -->
+<!-- 앨범상세조회 - 앨범정보 -->
 <select id="selectAlbum" resultMap="AlbumResultMap">
 	select album.*, art.artist_name
 	from album album join artist art on album.artist_no = art.artist_no 
 	where album.a_no=#{a_no}
 </select>
 
-<!-- 앨범상세조회-수록곡 -->
-<select id="selectAlbumSound" resultType="Sound">
-	select sound.*, artist.artist_name 
+<!-- 앨범상세조회 - 수록곡 -->
+<select id="selectAlbumSound" resultMap="soundSingerResultMap">
+	select sound.* 
 	from sound sound join album album on sound.a_no=album.a_no 
 	join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no 
-	join artist artist on singer.artist_no = artist.artist_no where album.a_no=#{a_no}
+	join artist artist on singer.artist_no = artist.artist_no 
+	where album.a_no=#{a_no}
 </select>
 
-<!-- 한곡 재생 -->
-<select id="selectSound" parameterType="Sound">
-	select s_path from sound where s_no=#{s_no} and a_no=#{a_no}
+<!-- 곡 - 가수 -->
+<select id="soundSingerList" parameterType="java.util.Map" resultType="string">
+	select artist.artist_name
+	from sound sound
+	join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no
+	join artist artist on singer.artist_no = artist.artist_no 
+	where sound.a_no=#{a_no} and sound.s_no=#{s_no} 
+</select>
+
+<!-- 곡 상세조회 - 곡정보 -->
+<select id="selectSound" parameterType="Sound" resultType="Sound">
+	select sound.*, artist.artist_name from sound sound 
+	join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no
+	join artist artist on singer.artist_no = artist.artist_no
+	join album album on sound_a_no = album.a_no
+	where sound.a_no=#{a_no} and sound.s_no=#{s_no} 
 </select>
 
 <!-- 선택 재생 -->

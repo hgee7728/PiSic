@@ -21,8 +21,8 @@ public class SoundDao {
 		return session.selectOne("Sound.selectAlbum",a_no);
 	}
 
-	// 한곡재생
-	public String selectSound(Sound sound) {
+	// 곡 상세조회
+	public Sound selectSound(Sound sound) {
 		return session.selectOne("Sound.selectSound",sound);
 	}
 	

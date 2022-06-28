@@ -10,7 +10,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Album Detail</title>
+<title>Sound Detail</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -113,7 +113,7 @@ $(function(){
         }
     }
     
-    // 체크박스 전체선택
+ 	// 체크박스 전체선택
     $("#check_all").click(function(){
     	if($('#check_all').is(':checked')){
     		$('input:checkbox').prop('checked',true);
@@ -145,7 +145,7 @@ $(function(){
 //한곡 재생 - post방식으로 a태그 이용해서 이동
 function playOne(a_no,s_no){
 	console.log("한곡재생");
-
+	
 	var frm = document.createElement('form');
     var input_s_no = document.createElement('input');
     input_s_no.setAttribute('type', 'hidden');
@@ -179,8 +179,7 @@ function playOne(a_no,s_no){
 			<div class="main-panel">
 				<div class="content-wrapper">
 					<div class="title_div">
-						<h2 class="card-title">앨범정보</h2>
-						${album.sound}
+						<h2 class="card-title">곡 정보</h2>
 					</div>
 					<div class="content_div1">
 						<div class="main_img_div">
@@ -266,27 +265,25 @@ function playOne(a_no,s_no){
 													</tr>
 												</thead>
 												<tbody>
-													<c:forEach items="${ album.sound}" var="svo">
+													<c:forEach items="${ album.sound}" var="list">
 														<tr>
 															<td>
 																<div class="form-check form-check-muted m-0">
 																	<label class="form-check-label"> <input
-																		type="checkbox" class="form-check-input sound_checkbox" value="${svo.s_no }" name="s_no">
+																		type="checkbox" class="form-check-input sound_checkbox" value="${list.s_no }" name="s_no">
 																	</label>
 																	<input type="hidden" value="${album.a_no }" name="a_no">
 																</div>
 															</td>
-															<td>${svo.s_no }</td>
-															<td><img src="${album.a_cover }" alt="image" /></td>
-															<td>${svo.s_name}</td>
-															<td>
-																<c:forEach items="${ svo.artist_name}" var="singer">
-																${singer} 
-																</c:forEach>
-															</td>
+															<td>${list.s_no }</td>
+															<td><img
+																src="${album.a_cover }"
+																alt="image" /></td>
+															<td>${list.s_name }</td>
+															<td>${list.artist_name}</td>
 															<td>${album.a_name }</td>
 															<td>
-																<a href="javascript:playOne('${svo.a_no }','${svo.s_no}')"><i class="mdi mdi-play list_icon"></i></a>
+																<a href="javascript:playOne('${list.a_no }','${list.s_no}')"><i class="mdi mdi-play list_icon"></i></a>
 															</td>
 															<td>
 																<a href=""><i class="mdi mdi-heart list_icon like_after"></i></a>
