@@ -4,10 +4,10 @@
 
 <resultMap type="Album" id="AlbumResultMap">
 	<result column="a_no" property="a_no"/>
-	<collection column="a_no" property="sound" select="selectAlbumSound"></collection>
+	<collection column="a_no" property="sounds" select="selectAlbumSound"></collection>
 </resultMap>
 
-<resultMap type="Sound" id="soundSingerResultMap">
+<resultMap type="Sound" id="soundResultMap">
 	<result column="s_no" property="s_no"/>
 	<result column="a_no" property="a_no"/>
 	<result column="s_name" property="s_name"/>
@@ -19,7 +19,9 @@
 	<result column="a_cover" property="a_cover"/>
 	<result column="a_name" property="a_name"/>
 	<result column="g_name" property="g_name"/>
-	<collection column="{a_no=a_no,s_no=s_no}" property="artist_name" select="soundSingerList"></collection>
+	<collection column="{a_no=a_no,s_no=s_no}" property="artist_names" select="soundSingerList"></collection>
+	<collection column="{a_no=a_no,s_no=s_no}" property="sound_writers" select="soundWriterList"></collection>
+	<collection column="{a_no=a_no,s_no=s_no}" property="sound_composers" select="soundComposerList"></collection>
 </resultMap>
 
 <!-- 앨범상세조회 - 앨범정보 -->
@@ -30,11 +32,9 @@
 </select>
 
 <!-- 앨범상세조회 - 수록곡 -->
-<select id="selectAlbumSound" resultMap="soundSingerResultMap">
+<select id="selectAlbumSound" resultMap="soundResultMap">
 	select sound.* 
 	from sound sound join album album on sound.a_no=album.a_no 
-	join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no 
-	join artist artist on singer.artist_no = artist.artist_no 
 	where album.a_no=#{a_no}
 </select>
 
@@ -44,15 +44,26 @@
 	from sound sound
 	join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no
 	join artist artist on singer.artist_no = artist.artist_no 
-	where sound.a_no=#{a_no} and sound.s_no=#{s_no} 
+	where sound.a_no=#{a_no} and sound.s_no=#{s_no}
+</select>
+
+<!-- 곡 - 작사가 -->
+<select id="soundWriterList" parameterType="java.util.Map" resultType="string">
+	select artist.artist_name from sound_writer writer join artist artist using(artist_no)
+	where writer.a_no=#{a_no} and writer.s_no=#{s_no} 
+</select>
+
+<!-- 곡 - 작곡가 -->
+<select id="soundComposerList" parameterType="java.util.Map" resultType="string">
+	select artist.artist_name from sound_composer composer join artist artist using(artist_no)
+	where composer.a_no=#{a_no} and composer.s_no=#{s_no}
 </select>
 
 <!-- 곡 상세조회 - 곡정보 -->
-<select id="selectSound" parameterType="Sound" resultType="Sound">
-	select sound.*, artist.artist_name from sound sound 
-	join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no
-	join artist artist on singer.artist_no = artist.artist_no
-	join album album on sound_a_no = album.a_no
+<select id="selectSound" parameterType="Sound" resultMap="soundResultMap">
+	select (select count(*) from sound_like where sound.a_no=1 and sound.s_no=1) cnt_like, sound.*, album.a_cover, album.a_name
+	from sound sound 
+	join album album on sound.a_no = album.a_no
 	where sound.a_no=#{a_no} and sound.s_no=#{s_no} 
 </select>
 

@@ -184,7 +184,7 @@ function playOne(a_no,s_no){
 					<div class="content_div1">
 						<div class="main_img_div">
 							<img id="main_img"
-								src="${album.a_cover }"
+								src="${sound.a_cover }"
 								width="300" height="300">
 						</div>
 						<div class="content_info  card">
@@ -192,25 +192,52 @@ function playOne(a_no,s_no){
 								<table class="table intro_table">
 									<thead>
 										<tr>
-											<th colspan="2">${album.a_name}</th>
+											<th colspan="2">${sound.s_name}</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
+											<td>앨범명 :</td>
+											<td>${sound.a_name}</td>
+										</tr>
+										<tr>
 											<td>가수명 :</td>
-											<td>${album.artist_name}</td>
+											<td>
+												<c:forEach items="${sound.artist_names }" var="singer">
+												${singer}
+												</c:forEach>
+											</td>
 										</tr>
 										<tr>
-											<td>발매일 :</td>
-											<td>${album.a_date}</td>
+											<td>작사 :</td>
+											<td>
+												<c:forEach items="${sound.sound_writers }" var="writer">
+												${writer}
+												</c:forEach>
+											</td>
 										</tr>
 										<tr>
-											<td>발매사 :</td>
-											<td>${album.a_publishing}</td>
+											<td>작곡 :</td>
+											<td>
+												<c:forEach items="${sound.sound_composers }" var="composer">
+												${composer}
+												</c:forEach>
+											</td>
 										</tr>
 										<tr>
-											<td>기획사 :</td>
-											<td>${album.a_agency}</td>
+											<td>좋아요</td>
+											<td>
+												<div style="text-align:justify">
+												${sound.cnt_like }
+												<i class="mdi mdi-heart list_icon like_after"></i>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<button type="button" id="select_play" class="btn btn-info btn-fw">선택재생</button>
+												<button type="button" class="btn btn-info btn-fw">선택담기</button>
+											</td>
 										</tr>
 									</tbody>
 								</table>
@@ -219,13 +246,13 @@ function playOne(a_no,s_no){
 					</div>
 					<div class="content_div2">
 						<div>
-							<h3 class="card-title">앨범 소개</h3>
+							<h3 class="card-title">가사</h3>
 
 						</div>
 						<hr color="white">
 						<blockquote class="blockquote">
 						<div class="intro_box">
-						${album.a_introduce1}${album.a_introduce2}
+						${sound.s_lyrics1}${sound.s_lyrics2}
 						</div>
 						</blockquote>
 						<div style="text-align:center">
@@ -233,76 +260,8 @@ function playOne(a_no,s_no){
 						</div>
 					</div>
 					<div class="content_div3">
-						<div>
-							<button type="button" id="select_play" class="btn btn-info btn-fw">선택재생</button>
-							<button type="button" class="btn btn-info btn-fw">선택담기</button>
-						</div>
-						<div class="row ">
-							<div class="col-12 grid-margin">
-								<div class="card">
-									<div class="card-body">
-										<h3 class="card-title">수록곡</h3>
-										<div class="table-responsive">
-										<form name="sound_frm">
-											<table class="table sound_list">
-												<thead>
-													<tr>
-														<td>
-															<div class="form-check form-check-muted m-0">
-																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input" id="check_all">
-																</label>
-															</div>
-														</td>
-														<td>No</td>
-														<td></td>
-														<td>노래명</td>
-														<td>가수명</td>
-														<td>앨범명</td>
-														<td>듣기</td>
-														<td>좋아요</td>
-														<td>담기</td>
-													</tr>
-												</thead>
-												<tbody>
-													<c:forEach items="${ album.sound}" var="list">
-														<tr>
-															<td>
-																<div class="form-check form-check-muted m-0">
-																	<label class="form-check-label"> <input
-																		type="checkbox" class="form-check-input sound_checkbox" value="${list.s_no }" name="s_no">
-																	</label>
-																	<input type="hidden" value="${album.a_no }" name="a_no">
-																</div>
-															</td>
-															<td>${list.s_no }</td>
-															<td><img
-																src="${album.a_cover }"
-																alt="image" /></td>
-															<td>${list.s_name }</td>
-															<td>${list.artist_name}</td>
-															<td>${album.a_name }</td>
-															<td>
-																<a href="javascript:playOne('${list.a_no }','${list.s_no}')"><i class="mdi mdi-play list_icon"></i></a>
-															</td>
-															<td>
-																<a href=""><i class="mdi mdi-heart list_icon like_after"></i></a>
-																<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
-															</td>
-															<td>
-																<a href=""><i class="mdi mdi-plus-box list_icon"></i></a>
-																<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-															</td>
-														</tr>
-													</c:forEach>
-												</tbody>
-											</table>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						
+						
 					</div>
 					<div class="content_div4">
 					

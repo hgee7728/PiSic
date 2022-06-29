@@ -16,7 +16,7 @@ public class Album {
 	private String a_introduce1;
 	private String a_introduce2;
 	private int artist_no;
-	private List<Sound> sound;
+	private List<Sound> sounds;
 	
 //	crawling-field
 	private String artist_name;
@@ -25,8 +25,8 @@ public class Album {
 	public String toString() {
 		return "Album [a_no=" + a_no + ", a_name=" + a_name + ", a_cover=" + a_cover + ", a_date=" + a_date
 				+ ", a_publishing=" + a_publishing + ", a_agency=" + a_agency + ", a_introduce1=" + a_introduce1
-				+ ", a_introduce2=" + a_introduce2 + ", artist_no=" + artist_no + ", artist_name=" + artist_name
-				+ ", sound=" + sound + "]";
+				+ ", a_introduce2=" + a_introduce2 + ", artist_no=" + artist_no + ", sounds=" + sounds
+				+ ", artist_name=" + artist_name + "]";
 	}
 
 
@@ -110,11 +110,15 @@ public class Album {
 		this.artist_name = artist_name;
 	}
 
-	public List<Sound> getSound() {
-		return sound;
+
+	public List<Sound> getSounds() {
+		return sounds;
 	}
 
-	public void setSound(List<Sound> sound) {
-		this.sound = sound;
+
+	public void setSounds(List<Sound> sounds) {
+		this.sounds = sounds;
 	}
+
+	
 }

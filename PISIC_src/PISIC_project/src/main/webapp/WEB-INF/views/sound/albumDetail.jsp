@@ -180,7 +180,6 @@ function playOne(a_no,s_no){
 				<div class="content-wrapper">
 					<div class="title_div">
 						<h2 class="card-title">앨범정보</h2>
-						${album.sound}
 					</div>
 					<div class="content_div1">
 						<div class="main_img_div">
@@ -234,7 +233,7 @@ function playOne(a_no,s_no){
 						</div>
 					</div>
 					<div class="content_div3">
-						<div>
+						<div class="select_btns">
 							<button type="button" id="select_play" class="btn btn-info btn-fw">선택재생</button>
 							<button type="button" class="btn btn-info btn-fw">선택담기</button>
 						</div>
@@ -266,27 +265,27 @@ function playOne(a_no,s_no){
 													</tr>
 												</thead>
 												<tbody>
-													<c:forEach items="${ album.sound}" var="svo">
+													<c:forEach items="${ album.sounds}" var="sounds">
 														<tr>
 															<td>
 																<div class="form-check form-check-muted m-0">
 																	<label class="form-check-label"> <input
-																		type="checkbox" class="form-check-input sound_checkbox" value="${svo.s_no }" name="s_no">
+																		type="checkbox" class="form-check-input sound_checkbox" value="${sounds.s_no }" name="s_no">
 																	</label>
 																	<input type="hidden" value="${album.a_no }" name="a_no">
 																</div>
 															</td>
-															<td>${svo.s_no }</td>
+															<td>${sounds.s_no }</td>
 															<td><img src="${album.a_cover }" alt="image" /></td>
-															<td>${svo.s_name}</td>
+															<td>${sounds.s_name}</td>
 															<td>
-																<c:forEach items="${ svo.artist_name}" var="singer">
+																<c:forEach items="${ sounds.artist_names}" var="singer">
 																${singer} 
 																</c:forEach>
 															</td>
 															<td>${album.a_name }</td>
 															<td>
-																<a href="javascript:playOne('${svo.a_no }','${svo.s_no}')"><i class="mdi mdi-play list_icon"></i></a>
+																<a href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i class="mdi mdi-play list_icon"></i></a>
 															</td>
 															<td>
 																<a href=""><i class="mdi mdi-heart list_icon like_after"></i></a>

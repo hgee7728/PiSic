@@ -24,8 +24,13 @@
 <br>
 <button type="button" id="playlist">플레이리스트</button>
 <form action="<%=request.getContextPath() %>/sound/albumDetail" method="get">
-	<input type="text" name="a_no" value="1">
+	앨범번호<input type="text" name="a_no" value="1">
 	<button type="submit" >앨범상세조회</button>
+</form>
+<form action="<%=request.getContextPath() %>/sound/soundDetail" method="get">
+	앨범번호<input type="text" name="a_no" value="1">
+	노래번호<input type="text" name="s_no" value="1">
+	<button type="submit" >곡상세조회</button>
 </form>
 
 

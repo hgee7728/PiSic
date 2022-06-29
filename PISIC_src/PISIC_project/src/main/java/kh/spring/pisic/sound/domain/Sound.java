@@ -14,7 +14,10 @@ public class Sound {
 	private String s_age_yn;
 	private String s_path;
 	private int g_no;
-	private List<String> artist_name;
+	private List<String> artist_names;
+	private List<String> sound_writers;
+	private List<String> sound_composers;
+	private int cnt_like;
 	
 	private String a_cover;
 	
@@ -27,8 +30,9 @@ public class Sound {
 	public String toString() {
 		return "Sound [s_no=" + s_no + ", a_no=" + a_no + ", s_name=" + s_name + ", s_lyrics1=" + s_lyrics1
 				+ ", s_lyrics2=" + s_lyrics2 + ", s_age_yn=" + s_age_yn + ", s_path=" + s_path + ", g_no=" + g_no
-				+ ", artist_name=" + artist_name + ", a_cover=" + a_cover + ", a_name=" + a_name + ", g_name=" + g_name
-				+ "]";
+				+ ", artist_names=" + artist_names + ", sound_writers=" + sound_writers + ", sound_composers="
+				+ sound_composers + ", cnt_like=" + cnt_like + ", a_cover=" + a_cover + ", a_name=" + a_name
+				+ ", g_name=" + g_name + "]";
 	}
 
 	public int getS_no() {
@@ -119,12 +123,38 @@ public class Sound {
 		this.a_cover = a_cover;
 	}
 
-	public List<String> getArtist_name() {
-		return artist_name;
+	public List<String> getArtist_names() {
+		return artist_names;
 	}
 
-	public void setArtist_name(List<String> artist_name) {
-		this.artist_name = artist_name;
+	public void setArtist_names(List<String> artist_names) {
+		this.artist_names = artist_names;
 	}
+
+	public List<String> getSound_writers() {
+		return sound_writers;
+	}
+
+	public void setSound_writers(List<String> sound_writers) {
+		this.sound_writers = sound_writers;
+	}
+
+	public List<String> getSound_composers() {
+		return sound_composers;
+	}
+
+	public void setSound_composers(List<String> sound_composers) {
+		this.sound_composers = sound_composers;
+	}
+
+	public int getCnt_like() {
+		return cnt_like;
+	}
+
+	public void setCnt_like(int cnt_like) {
+		this.cnt_like = cnt_like;
+	}
+
+	
 	
 }
