@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import kh.spring.pisic.artist.model.service.ArtistService;
+import kh.spring.pisic.sound.domain.Artist;
 
 @Controller
 public class MainController {
@@ -20,7 +21,7 @@ public class MainController {
 	
 	@GetMapping("/") 
 	public ModelAndView MainPage(ModelAndView mv, Model model) { 
-		List<kh.spring.pisic.sound.domain.Artist> artistRandom = service.selectArtistRandom();
+		List<Artist> artistRandom = service.selectArtistRandom();
 		mv.addObject("artistRandom", artistRandom);
 		
 		Date date = new Date();

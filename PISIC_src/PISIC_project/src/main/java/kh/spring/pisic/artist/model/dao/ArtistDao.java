@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kh.spring.pisic.sound.domain.Artist;
+
 
 @Repository
 public class ArtistDao {
@@ -13,7 +15,7 @@ public class ArtistDao {
 	@Autowired
 	private SqlSession session;
 	
-	public List<kh.spring.pisic.sound.domain.Artist> selectArtistRandom() {
+	public List<Artist> selectArtistRandom() {
 		return session.selectList("Artist.selectArtistRandom");
 	}
 

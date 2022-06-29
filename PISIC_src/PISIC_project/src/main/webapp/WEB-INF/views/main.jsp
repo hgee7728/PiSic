@@ -104,6 +104,8 @@ img:nth-child(6) {
 	align-items: center;
 	justify-content: center;
 	line-height: 50px;
+	color: white;
+	font-size: 30px;
 }
 
 .popup-body {
@@ -133,9 +135,9 @@ img:nth-child(6) {
 	height: 50px;
 }
 
-.pop-btn {
+.pop-btn.close {
 	display: inline-flex;
-	width: 50%;
+	width: 15%;
 	height: 100%;
 	justify-content: center;
 	align-items: center;
@@ -145,7 +147,16 @@ img:nth-child(6) {
 }
 
 .pop-btn.confirm {
-	border-right: 1px solid #3b5fbf;
+	display: inline-flex;
+	width: 85%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	float: left;
+	color: #ffffff;
+	cursor: pointer;
+	border-right: 1px solid #ffffff;
+	font-size: 20px;
 }
 </style>
 </head>
@@ -351,13 +362,14 @@ img:nth-child(6) {
 				<div class="popup-body">
 					<div class="body-content">
 						<div class="body-titlebox">
-							<h3>PISIC 이용권</h3>
-							<h1>지금 결제하면 누구나 12개월 무료</h1>
+							<h4>PISIC 이용권 구매 이벤트</h4>
+							<br>
+							<h1 style="font-style: italic;">지금 결제하면 누구나 12개월 무료</h1>
 							<br>
 						</div>
 						<div class="body-contentbox">
-							<p>첫 PISIC 멤버쉽 구독자는 12개월 무료로 이용 가능!</p>
-							<p>지금 바로 구매해보세요!!</p>
+							<p>PISIC 멤버쉽에 처음 가입하는 구독자는 12개월 무료로 이용 가능합니다. 지금 바로 아래 버튼을 눌러
+								구매 페이지로 이동해보세요!!</p>
 
 						</div>
 					</div>
@@ -380,8 +392,8 @@ img:nth-child(6) {
 				document.querySelector('.popup-wrap').style.display = 'none';
 			}
 
-			document.querySelector('.close')
-					.addEventListener('click', closeModal);
+			document.querySelector('.close').addEventListener('click',
+					closeModal);
 		};
 
 		document.querySelector(".btn_reload").onclick = function() {
