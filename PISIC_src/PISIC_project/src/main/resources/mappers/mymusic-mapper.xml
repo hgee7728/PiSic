@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="MyMusic">
+
+<resultMap type="MyMusic" id="MyMusicResultMap">
+	<collection column="m_id" property="sounds" select="selectSound"></collection>
+</resultMap>
+
+<resultMap type="Sound" id="soundResultMap">
+	<collection column="{m_id=m_id, l_no=l_no}" property="artist_names" select="soundSingerList"></collection>
+	<collection column="{m_id=m_id, l_no=l_no}" property="sound_writers" select="soundWriterList"></collection>
+	<collection column="{m_id=m_id, l_no=l_no}" property="sound_composers" select="soundComposerList"></collection>
+</resultMap>
+
+<!-- 내 플레이 리스트 조회 -->
+<!-- <select id="selectPlaylist" resultMap="MyMusicResultMap">
+	select * from playlist where m_id=#{m_id}
+</select> -->
+
+<!-- 내 플레이 리스트 상세조회 -->
+<select id="selectSound"  resultMap="soundResultMap" parameterType="MyMusic">
+	select sound.* from playlist_content playlist_content
+	join sound sound on playlist_content.s_no = sound.s_no and playlist_content.a_no = sound.a_no
+	where playlist_content.m_id = #{m_id} and playlist_content.l_no = #{l_no}
+</select>
+
+<!-- 곡 - 가수 -->
+<select id="soundSingerList" parameterType="map" resultType="string">
+	select artist.artist_name
+	from sound sound
+	join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no
+	join artist artist on singer.artist_no = artist.artist_no 
+	join playlist_content playlist_content on playlist_content.s_no = sound.s_no and playlist_content.a_no = sound.a_no
+	where playlist_content.m_id=#{m_id} and playlist_content.l_no=#{l_no}
+</select>
+
+<!-- 곡 - 작사가 -->
+<select id="soundWriterList" parameterType="map" resultType="string">
+	select artist.artist_name
+	from sound sound
+	join sound_writer writer on sound.s_no = writer.s_no and sound.a_no = writer.a_no
+	join artist artist on writer.artist_no = artist.artist_no 
+	join playlist_content playlist_content on playlist_content.s_no = sound.s_no and playlist_content.a_no = sound.a_no
+	where playlist_content.m_id=#{m_id} and playlist_content.l_no=#{l_no}
+</select>
+
+<!-- 곡 - 작곡가 -->
+<select id="soundComposerList" parameterType="map" resultType="string">
+	select artist.artist_name
+	from sound sound
+	join sound_composer composer on sound.s_no = composer.s_no and sound.a_no = composer.a_no
+	join artist artist on composer.artist_no = artist.artist_no 
+	join playlist_content playlist_content on playlist_content.s_no = sound.s_no and playlist_content.a_no = sound.a_no
+	where playlist_content.m_id=#{m_id} and playlist_content.l_no=#{l_no}
+</select>
+</mapper>

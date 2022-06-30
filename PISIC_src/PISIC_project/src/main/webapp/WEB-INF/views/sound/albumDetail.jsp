@@ -26,6 +26,8 @@
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.carousel.min.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.theme.default.min.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <!-- End plugin css for this page -->
 <!-- inject:css -->
 <!-- endinject -->
@@ -36,6 +38,8 @@
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script
+		src="<%=request.getContextPath()%>/resources/assets/js/_soundList.js"></script>
 <style>
 .content_div1 {
 	display: flex;
@@ -125,8 +129,6 @@ $(function(){
     	}
     })
     
-
-    
     // 선택 재생
     $("#select_play").click(function(){
     	// 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
@@ -196,6 +198,7 @@ function soundLike(a_no,s_no){
 </script>
 </head>
 <body>
+	<jsp:include page="../commonSoundList.jsp" />
 	<div class="container-scroller">
 		<!-- partial:partials/_sidebar.html -->
 		<jsp:include page="../_sidebar.jsp" />
@@ -263,7 +266,7 @@ function soundLike(a_no,s_no){
 					<div class="content_div3">
 						<div class="select_btns">
 							<button type="button" id="select_play" class="btn btn-info btn-fw">선택재생</button>
-							<button type="button" class="btn btn-info btn-fw">선택담기</button>
+							<button type="button" id="select_insert" class="btn btn-info btn-fw">선택담기</button>
 						</div>
 						<div class="row ">
 							<div class="col-12 grid-margin">
@@ -308,7 +311,7 @@ function soundLike(a_no,s_no){
 															<td>${sounds.s_name}</td>
 															<td>
 																<c:forEach items="${ sounds.artist_names}" var="singer">
-																${singer} 
+																${singer}&nbsp;
 																</c:forEach>
 															</td>
 															<td>${album.a_name }</td>
@@ -320,7 +323,7 @@ function soundLike(a_no,s_no){
 																<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
 															</td>
 															<td>
-																<a href=""><i class="mdi mdi-plus-box list_icon"></i></a>
+																<a href="javascript:playlistInsert('${sounds.a_no }','${sounds.s_no}')"><i class="mdi mdi-plus-box list_icon"></i></a>
 																<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
 															</td>
 														</tr>
