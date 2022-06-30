@@ -61,7 +61,7 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 			<div class="main-panel">
 				<div class="content-wrapper">
 
-					<h2 class=" card-title">PISIC CHART</h2>
+					<h2 class=" card-title">지역별 플레이리스트</h2>
 
 					<br>
 
@@ -78,9 +78,9 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 									<div class="card-body">
 									
 									
-									<!-- TODO hg : 차트이름 변경하기  -->
+									<!-- TODO hg : 지역이름 변경하기 -->
 									
-										<h3 class="card-title">수록곡</h3>
+										<h3 class="card-title">광진구</h3>
 										<div class="table-responsive">
 											<form name="sound_frm">
 												<table class="table sound_list">
