@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <style>
   	.content-wrapper {
   		max-width: 900px;
@@ -54,7 +56,7 @@
                     <h4 class="card-title">회원가입</h4>
                     <form class="forms-sample" action="<%=request.getContextPath() %>/member/insert" method="post">
                       <div class="form-group">
-                      	<label for="InputId">아이디</label>
+                      	<label id="LabelId" for="InputId">아이디 *</label>
                       	<div class="input-group">
 	                        <input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
 	                        <div class="input-group-append">
@@ -63,19 +65,19 @@
                       	</div>
                       </div>
                       <div class="form-group">
-                        <label for="InputPassword1">비밀번호</label>
+                        <label id="LabelPassword1" for="InputPassword1">비밀번호 *</label>
                         <input type="password" class="form-control" id="InputPassword1" placeholder="Password" name="m_password" required>
                       </div>
                       <div class="form-group">
-                        <label for="InputPassword2">비밀번호 확인</label>
+                        <label id="LabelPassword2" for="InputPassword2">비밀번호 확인 *</label>
                         <input type="password" class="form-control" id="InputPassword2" placeholder="Re Password" required>
                       </div>
                       <div class="form-group">
-                        <label for="InputName">이름</label>
+                        <label id="LabelName" for="InputName">이름 *</label>
                         <input type="text" class="form-control" id="InputName" placeholder="Name" name="m_name" required>
                       </div>
                       <div class="form-group">
-                        <label for="InputNickname">닉네임</label>
+                        <label id="LabelNickname" for="InputNickname">닉네임 *</label>
                         <div class="input-group">
 	                        <input type="text" class="form-control" id="InputNickname" placeholder="Nickname" name="m_nickname" required>
 	                        <div class="input-group-append">
@@ -84,7 +86,7 @@
                       	</div>
                       </div>
                       <div class="form-group">
-                        <label for="InputEmail">이메일</label>
+                        <label id="LabelEmail" for="InputEmail">이메일 *</label>
                         <div class="input-group">
 	                        <input type="email" class="form-control" id="InputEmail" placeholder="Email" name="m_email" required>
 	                        <div class="input-group-append">
@@ -93,7 +95,7 @@
                       	</div>
                       </div>
                       <div class="form-group">
-                        <label for="InputPhone">휴대전화</label>
+                        <label id="LabelPhone" for="InputPhone">휴대전화 *</label>
                         <div class="input-group">
 	                        <input type="text" class="form-control" id="InputPhone" placeholder="Phone" name="m_phone" required>
 	                        <div class="input-group-append">
@@ -102,27 +104,65 @@
                       	</div>                  
                       </div>
                       <div class="form-group">
-                        <label for="InputBirth">생년월일</label>
-                        <input type="password" class="form-control" id="InputBirth" placeholder="Date of Birth" name="m_birth" required>
+                        <label id="LabelBirth" for="InputBirth">생년월일 *</label>
+                        <input type="text" class="form-control" id="InputBirth" placeholder="Date of Birth" name="m_birth" required>
                       </div>
                       <div class="form-group">
-                        <label for="SelectGender">성별</label>
+                        <label id="LabelGender" for="SelectGender">성별 *</label>
                         <select class="form-control" id="SelectGender">
                           <option value="M">남성</option>
                           <option value="F">여성</option>
                         </select>
                       </div>
-                      <p class="card-description">주소</p>
                       <div class="form-group">
-                        <label for="InputAddress">주소</label>
-	                    <input type="text" class="form-control" id="InputAddress" placeholder="Address" name="m_address" required>               
+                        <label id="LabelAddress" for="InputAddress">주소 *</label>
+                        <div class="input-group">
+	                        <input type="text" class="form-control" id="InputAddress" placeholder="Address" name="m_address" required>  
+	                        <div class="input-group-append">
+	                          <button class="btn btn-inverse-secondary btn-fw" type="button" onclick="daumPost()">주소찾기</button>
+	                        </div>
+                      	</div>   
                       </div>
                       <div class="form-group">
-                        <label for="InputAddressDetail">상세주소</label>
+                        <label id="LabelAddressDetail" for="InputAddressDetail">상세주소 *</label>
 	                    <input type="text" class="form-control" id="InputAddressDetail" placeholder="AddressDetail" name="m_address_detail" required>
                       </div>
+		      <!-- kakao 우편번호 서비스 -->
+                      <script>
+                      	function daumPost() {
+                      		new daum.Postcode({
+                      			oncomplete: function(data) {
+                      				var fullAddr = '';
+                      				var extraAddr = '';
+                      				
+                      				// 도로명 주소를 선택했을 경우
+                      				if (data.userSelectedType === 'R') {
+                      					fullAddr = data.roadAddress;
+                      				// 지번 주소를 선택했을 경우
+                      				} else {
+                      					fullAddr = data.jibunAddress;
+                      				}
+                      				// 도로명일때 조합
+                      				if (data.userSelectedType === 'R') {
+                      					// 법정동명 추가
+                      					if (data.bname !== '') {
+                      						extraAddr += data.bname;
+                      					}
+                      					// 건물명 추가
+                      					if (data.buildingName !== '') {
+                      						extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                      					}
+                      					// 괄호 추가
+                      					fullAddr += (extraAddr !== '' ? ' (' + extraAddr + ')' : '');
+                      				}
+                      				$("#InputAddress").val(fullAddr);
+                      				$("#InputAddressDetail").focus();
+                      			}
+                      		}).open();
+                      	}
+                      </script>
                       <div class="form-group">
-                        <label>프로필사진</label>
+                        <label id="LabelProfile">프로필사진 *</label>
                         <input type="file" name="img[]" class="file-upload-default">
                         <div class="input-group col-xs-12">
                           <input type="text" class="form-control file-upload-info" disabled placeholder="Profile">
@@ -152,6 +192,174 @@
       </div>
       <!-- page-body-wrapper ends -->
     </div>
+    <!-- 회원가입 from -->
+    <script>
+    	$(document).ready(function(){
+    		var InputId = null;
+    		var InputPw1 = null;
+    		var InputPw2 = null;
+    		var InputName = null;
+    		var InputNickname = null;
+    		var InputEmail = null;
+    		var InputPhone = null;
+    		var InputBirth = null;
+    		var InputAddress = null;
+    		var InputAddressDetail = null;
+    		
+    		$("#InputId").on("blur", function(){
+    			var regexId = /^[0-9a-zA-Z]{7,15}$/;
+    			InputId = $("#InputId").val();
+    			
+    			if (!regexId.test(InputId)) {
+    				if (InputId == '') {
+    					$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-close"></i> (필수 정보입니다.)</span>');
+    				} else {
+    					$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-close"></i> (7 ~ 15자의 영문, 숫자만 사용 가능합니다.)</span>');
+    				}
+    				$("#SpanId").css("color", "red");
+    			} else {
+    				$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanId").css("color", "green");
+    			}
+    		})
+    		
+    		$("#InputPassword1").on("blur", function(){
+    			var regexPw = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+    			InputPw1 = $("#InputPassword1").val();
+    			
+    			if (!regexPw.test(InputPw1)) {
+    				if (InputPw1 == '') {
+    					$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+    				} else {
+    					$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-close"></i> 8 ~ 20자의 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>');
+    				}
+    				$("#SpanPassword1").css("color", "red");
+    			} else {
+    				$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanPassword1").css("color", "green");
+    			}
+    		})
+    		
+    		$("#InputPassword2").on("blur", function(){
+    			InputPw1 = $("#InputPassword1").val();
+    			InputPw2 = $("#InputPassword2").val();
+    			
+    			if (InputPw1 != InputPw2) {
+    				$("#LabelPassword2").html('비밀번호 확인 <span id="SpanPassword2"><i class="mdi mdi-close"></i> 비밀번호가 일치하지 않습니다.</span>');
+    				$("#SpanPassword2").css("color", "red");
+    			} else {
+    				$("#LabelPassword2").html('비밀번호 확인 <span id="SpanPassword2"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanPassword2").css("color", "green");
+    			}
+    		})
+    		
+    		$("#InputName").on("blur", function(){
+    			var regexName = /(^[가-힣]{2,5}$)|(^[a-zA-Z]{2,20}(\s[a-zA-Z]{2,20})?$)/;
+    			InputName = $("#InputName").val();		
+    			
+    			if (!regexName.test(InputName)) {
+    				if (InputName == '') {
+    					$("#LabelName").html('이름 <span id="SpanName"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+    				} else {
+    					$("#LabelName").html('이름 <span id="SpanName"><i class="mdi mdi-close"></i> 한글과 영문 대 소문자를 사용하세요. 한글 : 2~5자, 영문 : 2~20자</span>');
+    				}
+    				$("#SpanName").css("color", "red");
+    			} else {
+    				$("#LabelName").html('이름 <span id="SpanName"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanName").css("color", "green");
+    			}
+    		})
+    		
+    		$("#InputNickname").on("blur", function(){
+    			var regexNickname = /^[가-힣|a-z|A-Z|0-9]{2,15}$/;
+    			InputNickname = $("#InputNickname").val();
+    			
+    			if (!regexNickname.test(InputNickname)) {
+    				if (InputNickname == '') {
+    					$("#LabelNickname").html('닉네임 <span id="SpanNickName"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+    				} else {
+    					$("#LabelNickname").html('닉네임 <span id="SpanNickName"><i class="mdi mdi-close"></i> 2 ~ 15자의 한글, 영문 대 소문자, 숫자를 사용하세요.</span>');
+    				}
+    				$("#SpanNickName").css("color", "red");
+    			} else {
+    				$("#LabelNickname").html('닉네임 <span id="SpanNickName"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanNickName").css("color", "green");
+    			}
+    		})
+    		
+    		$("#InputEmail").on("blur", function(){
+    			var regexEmail = /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
+    			InputEmail = $("#InputEmail").val();		
+    			
+    			if (!regexEmail.test(InputEmail)) {
+    				if (InputEmail == '') {
+    					$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+    				} else {
+    					$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-close"></i> 이메일 형식이 맞지 않습니다.</span>');
+    				}
+    				$("#SpanEmail").css("color", "red");
+    			} else {
+    				$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanEmail").css("color", "green");
+    			}
+    		})
+    		
+    		$("#InputPhone").on("blur", function(){
+    			var regexPhone = /^01([0|1|6|7|8|9])+([0-9]{3,4})+([0-9]{4})$/;
+    			InputPhone = $("#InputPhone").val();
+    			
+    			if (!regexPhone.test(InputPhone)) {
+    				if (InputPhone == '') {
+    					$("#LabelPhone").html('휴대전화 <span id="SpanPhone"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+    				} else {
+    					$("#LabelPhone").html('휴대전화 <span id="SpanPhone"><i class="mdi mdi-close"></i> 휴대전화 형식이 맞지 않습니다. ex)01012345678</span>');
+    				}
+    				$("#SpanPhone").css("color", "red");
+    			} else {
+    				$("#LabelPhone").html('휴대전화 <span id="SpanPhone"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanPhone").css("color", "green");
+    			}
+    		})
+    		
+    		$("#InputBirth").on("blur", function(){
+    			var regexBirth = /^[0-9]{8}$/;
+    			InputBirth = $("#InputBirth").val();		
+    			
+    			if (!regexBirth.test(InputBirth)) {
+    				if (InputBirth == '') {
+    					$("#LabelBirth").html('생년월일 <span id="SpanBirth"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+    				} else {
+    					$("#LabelBirth").html('생년월일 <span id="SpanBirth"><i class="mdi mdi-close"></i> 생년월일 형식이 맞지 않습니다. ex)YYYYMMDD</span>');
+    				}
+    				$("#SpanBirth").css("color", "red");
+    			} else {
+    				$("#LabelBirth").html('생년월일 <span id="SpanBirth"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanBirth").css("color", "green");
+    			}
+    		})
+    		
+    		$("#InputAddress").attr("readonly", true);
+    		InputAddress = $("#InputAddress").val();
+    		
+    		if (InputAddress != '') {
+    			$("#LabelAddress").html('주소 <span id="SpanAddress"><i class="mdi mdi-check"></i></span>');
+    			$("#SpanAddress").css("color", "green");
+    		}
+    		
+    		$("#InputAddressDetail").on("blur", function(){
+    			InputAddressDetail = $("#InputAddressDetail").val();		
+    			
+				if (InputAddressDetail == '') {
+					$("#LabelAddressDetail").html('상세주소 <span id="SpanAddressDetail"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#SpanAddressDetail").css("color", "red");	
+    			} else {
+    				$("#LabelAddressDetail").html('상세주소 <span id="SpanAddressDetail"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanAddressDetail").css("color", "green");
+    			}
+    		})
+    	});
+    </script>
+    
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="<%=request.getContextPath()%>/resources/assets/vendors/js/vendor.bundle.base.js"></script>
