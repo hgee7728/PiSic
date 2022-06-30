@@ -8,11 +8,10 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>1:1 문의 게시판</title>
+
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<title>자주 묻는 질문</title>
-<!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
 <link rel="stylesheet"
@@ -36,9 +35,8 @@
 <!-- End layout styles -->
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
-
 <style>
-/*faq 테이블*/
+/*qna 테이블*/
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -131,7 +129,7 @@ section.notice {
 .board-table .faq_title {
 	line-height: 1.8em;
 }
-/*faq 테이블 제목 클릭 시 나오는 내용*/
+/*qna 테이블 제목 클릭 시 나오는 내용*/
 .container {
 	width: 1100px;
 	margin: 50px;
@@ -180,6 +178,13 @@ section.notice {
 	margin-left: 300px;
 	margin-bottom: 50px;
 }
+
+/*qna 페이징*/
+.pagination__links {
+	text-align: center;
+	float: center;
+	margin-right: 420px;
+}
 </style>
 </head>
 
@@ -200,142 +205,52 @@ section.notice {
 						<div class="page-title">
 							<div class="container2">
 								<h1>고객센터</h1>
-								<h3>자주묻는질문</h3>
+								<h3>1:1 문의게시판</h3>
 							</div>
 						</div>
 						<div class="container">
 							<table class="board-table">
 								<thead>
 									<div class="faq_title">
-										<h3>질문 TOP10</h3>
 										<div class="btn_qna">
-											<button type="submit" class="btn btn-info btn-fw">1:1문의하기</button>
+											<button type="submit" class="btn btn-info btn-fw">문의하기</button>
 										</div>
 									</div>
 									<div class="card-body">
 										<tr>
 											<th scope="col" class="th-num">NO.</th>
 											<th scope="col" class="th-title">제목</th>
-											<th scope="col" class="th-date">수정일</th>
-											<th scope="col" class="th-view">조회수</th>
+											<th scope="col" class="th-date">작성자</th>
+											<th scope="col" class="th-view">등록날짜</th>
 										</tr>
 								</thead>
 								<tbody>
 									<tr class="ctsSbj">
-										<td>7</td>
-										<th><a href="#!">[이용권] 이용권 해지 종류에는 어떤 것이 있고, 어떤 경로를
-												통하여 이용권을 해지할 수 있나요?</a>
+										<td>1</td>
+										<th><a href="#!">a</a>
 											<p>테스트</p></th>
-										<td>2022.06.27</td>
-										<td>79283457</td>
+										<td>작성자</td>
+										<td>2022.08.08</td>
 									</tr>
-									<tr class="contents">
-										<td colspan="4">
-											<div>
-												<p>안녕하세요, 고객님.</p>
-												<p>해지 신청 시, 정기결제해지와 중도해지 중 선택할 수 있습니다.</p>
-												<p class="ctsBold">[해지 경로]정기결제해지/중도해지에 대한 경로는 다음과 같습니다.</p>
-												<p>
-													<br>관련된 세부 사항이 궁금하신 분은 아래 자세히 보기 링크를 클릭하셔서 내용 확인
-													부탁드립니다.
-												</p>
-												<p>
-													<a href="#" target="_blank">▶ <PISIC PISIC MEMBERSHIP>
-														자세히 보러가기</a>
-												</p>
-												<p>감사합니다.</p>
-											</div>
-										</td>
-									</tr>
-
-									<tr class="ctsSbj">
-										<td>6</td>
-										<th><a href="#!">내가 만든 DJ플레이리스트를 삭제할 수 있나요?</a>
-											<p>테스트</p></th>
-										<td>2022.06.27</td>
-										<td>79283457</td>
-									</tr>
-									<tr class="contents">
-										<td colspan="4">
-											<div>
-												<p>안녕하세요, 고객님.</p>
-												<p>
-													DJ플레이리스트는 ‘마이뮤직 > DJ플레이리스트’ 메뉴에서 ‘순서변경/삭제’ 버튼을 통해서 삭제할 수
-													있습니다.<br> 단, 멜론DJ 메뉴 내 ‘명예의 전당’에 선정된 DJ플레이리스트는 삭제가
-													불가능하며, 곡 추가 및 소개글의 수정만 가능합니다.
-												</p>
-												<p>
-													구매 예정인 고객님께서는 웩 참고 부탁드립니다.<br> 웩 죄송합니다.
-												</p>
-												<p>감사합니다.</p>
-											</div>
-										</td>
-									</tr>
-
-									<tr>
-										<td>5</td>
-										<th><a href="#!">ajsldkfjalksdfjlaksdjfl</a>
-											<p>테스트</p></th>
-										<td>2022.06.27</td>
-										<td>79283457</td>
-									</tr>
-
-									<tr>
-										<td>4</td>
-										<th><a href="#!">아아아아ㅏ아아ㅏㅏㅏㅏㅏㅏㅏㅏㅏ</a>
-											<p>테스트</p></th>
-										<td>2022.06.27</td>
-										<td>79283457</td>
-									</tr>
-
-									<tr>
-										<td>3</td>
-										<th><a href="#!">피식 탈퇴방법</a>
-											<p>테스트</p></th>
-										<td>2022.06.27</td>
-										<td>79283457</td>
-									</tr>
-
 									<tr class="ctsSbj">
 										<td>2</td>
-										<th><a href="#!">PISIC MEMBERSIHP 환불 안내</a></th>
-										<td>2022.06.15</td>
-										<td>92839</td>
+										<th><a href="#!">제목</a>
+											<p>테스트</p></th>
+										<td>작성자</td>
+										<td>2022.08.08</td>
 									</tr>
-									<tr class="contents">
-										<td colspan="4">
-											<div>
-												<p>안녕하세요, 피식입니다.</p>
-												<p>
-													※ 내가 만든 DJ플레이리스트도 ‘좋아요’를 하실 수 있습니다.<br> ※ 좋아요 / 좋아요
-													취소는 로그인 후 가능합니다..<br> ※ 좋아요 / 좋아요 취소는 로그인 후 가능합니다.다.<br>
-													감사합니다.
-												</p>
-											</div>
-										</td>
-									</tr>
-									<tr class="ctsSbj">
-										<td>1</td>
-										<th><a href="#!">PISIC 멤버십 이용안내</a></th>
-										<td>2022.06.01</td>
-										<td>74358</td>
-									</tr>
-									<tr class="contents">
-										<td colspan="4">
-											<div>
-												<p>
-													안녕하세요, 피식입니다.<br> ※ 내가 만든 DJ플레이리스트도 ‘좋아요’를 하실 수 있습니다.
-													※ 좋아요 / 좋아요 취소는 로그인 후 가능합니다..<br> ※ 좋아요 / 좋아요 취소는 로그인
-													후 가능합니다.다.<br> 감사합니다.
-												</p>
-												<p>감사합니다.</p>
-											</div>
-										</td>
-									</tr>
+
 							</table>
-
 						</div>
-
+						<!-- 페이징 -->
+						<div class="qnalist_page">
+							<div class="pagination__links">
+								<button type="button" class="btn btn-outline-secondary">1</button>
+								<button type="button" class="btn btn-outline-secondary">2</button>
+								<button type="button" class="btn btn-outline-secondary">3</button>
+								<button type="button" class="btn btn-outline-secondary">4</button>
+							</div>
+						</div>
 					</div>
 			</div>
 		</div>
@@ -382,15 +297,5 @@ section.notice {
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/js/dashboard.js"></script>
 	<!-- End custom js for this page -->
-	<script>
-		$(function() {
-
-			$('.ctsSbj').click(function() {
-				$(this).next('.contents').slideToggle(300);
-			});
-
-		});
-	</script>
-
 </body>
 </html>

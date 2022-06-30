@@ -220,16 +220,16 @@ public class WeatherData {
 			
 			if(category.equals("POP")) result += "%";
 			else if(category.equals("PTY")) {
-				if(result.equals("0")) result = "no";
-				else if(result.equals("1")) result = "rain";
-				else if(result.equals("2")) result = "rain/snow";
-				else if(result.equals("3")) result = "snow";
-				else result = "shower";
+				if(result.equals("0")) result = "강수없음";
+				else if(result.equals("1")) result = "비";
+				else if(result.equals("2")) result = "비/눈";
+				else if(result.equals("3")) result = "눈";
+				else result = "소나기";
 			} else if(category.equals("REH")) result += "%";
 			else if(category.equals("SKY")) {
-				if(val >= 0.0f && val < 6.0f) result = "sunny";//맑음
-				else if(val >= 6.0f && val < 9.0f) result = "cloudy(a lot of clouds)";//구름많음
-				else if(val >= 9.0f && val < 11.0f) result = "cloudy(rain)";//흐림
+				if(val >= 0.0f && val < 6.0f) result = "맑음";//맑음
+				else if(val >= 6.0f && val < 9.0f) result = "구름많음";//구름많음
+				else if(val >= 9.0f && val < 11.0f) result = "흐림";//흐림
 			} else if(category.equals("TMP")) result += "℃";
 			else if(category.equals("UUU")) {
 				if(val > 0) result = "East " + Float.toString(Math.abs(val)) + "m/s";

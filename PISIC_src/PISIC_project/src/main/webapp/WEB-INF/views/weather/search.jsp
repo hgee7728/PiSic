@@ -54,6 +54,10 @@
 					</select> <select name="gu">
 						<option value="관악구">관악구</option>
 						<option value="동작구">동작구</option>
+						<option value="강남구">강남구</option>
+						<option value="강서구">강서구</option>
+						<option value="종로구">종로구</option>
+						<option value="광진구">광진구</option>
 					</select>
 
 					<button type="button" class="btn search">날씨 찾기 얍</button>
@@ -68,6 +72,30 @@
 	</div>
 	<!-- page-body-wrapper ends -->
 	</div>
+		<script>
+		$(".btn.search").on("click", lookup);
+
+		function lookup(idx, item) {
+			console.log(idx);
+			console.log(item);
+			var a = $("select[name=city]").val();
+			var b = $("select[name=gu]").val();
+
+			a = a + "/" + b;
+			console.log(a);
+			$.ajax({
+				url : "${pageContext.request.contextPath}/weather/" + a,
+				type : "post",
+				sucess : function(result) {
+					console.log(result);
+				},
+				error : function(errorcode) {
+					console.log(errorcode);
+				}
+			});
+
+		}
+	</script>
 	<!-- container-scroller -->
 	<!-- plugins:js -->
 	<script
@@ -100,29 +128,6 @@
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/js/dashboard.js"></script>
 	<!-- End custom js for this page -->
-	<script>
-		$(".btn.search").on("click", lookup);
 
-		function lookup(idx, item) {
-			console.log(idx);
-			console.log(item);
-			var a = $("select[name=city]").val();
-			var b = $("select[name=gu]").val();
-
-			a = a + "/" + b;
-			console.log(a);
-			$.ajax({
-				url : "${path}/weather/" + a,
-				type : "post",
-				sucess : function(result) {
-					console.log(result);
-				},
-				error : function(errorcode) {
-					console.log(errorcode);
-				}
-			});
-
-		}
-	</script>
 </body>
 </html>
