@@ -79,4 +79,12 @@
 		</foreach>
 	order by sound.s_no asc
 </select>
+
+<!-- 노래 좋아요 -->
+<insert id="insertLike" parameterType="hashmap">
+	insert into sound_like
+	(m_id, s_no, a_no)
+	values
+	(#{memberVo.m_id}, #{soundVo.s_no}, #{soundVo.a_no})
+</insert>
 </mapper>

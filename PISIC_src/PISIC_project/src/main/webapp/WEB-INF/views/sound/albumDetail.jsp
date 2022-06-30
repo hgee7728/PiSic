@@ -83,7 +83,10 @@ table.sound_list  tr > td:nth-child(9){
 </style>
 <script>
 $(function(){
-	
+	var msg = '${msg}';
+	if(msg){
+		alert(msg);
+	}
 	// 더보기 기능
 	var content = $(".intro_box");
     var content_txt = content.text();
@@ -164,6 +167,31 @@ function playOne(a_no,s_no){
 	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
 	frm.target="SoundPlayer";
     frm.submit();
+};
+
+//노래 좋아요 - ajax
+function soundLike(a_no,s_no){
+	console.log("좋아요");
+	$.ajax({
+		url:"<%=request.getContextPath() %>/sound/like",
+		type:"post",
+		data:{
+			a_no:a_no,
+			s_no:s_no
+			},
+		success: function(result){
+			if(result == "0"){
+				alert("로그인 후 이용해주세요");
+				location.replace("<%=request.getContextPath() %>/member/login");
+			} else if(result == "1"){
+				alert("해당 곡을 좋아요 했습니다.");
+			}
+			
+		},
+		error:function(){
+			
+		}
+	}); //ajax 끝
 };
 </script>
 </head>
@@ -288,7 +316,7 @@ function playOne(a_no,s_no){
 																<a href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i class="mdi mdi-play list_icon"></i></a>
 															</td>
 															<td>
-																<a href=""><i class="mdi mdi-heart list_icon like_after"></i></a>
+																<a href="javascript:soundLike('${sounds.a_no }','${sounds.s_no}')"><i class="mdi mdi-heart list_icon like_after"></i></a>
 																<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
 															</td>
 															<td>

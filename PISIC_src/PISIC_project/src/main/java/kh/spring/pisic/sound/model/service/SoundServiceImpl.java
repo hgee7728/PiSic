@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.model.dao.SoundDao;
@@ -29,6 +30,11 @@ public class SoundServiceImpl implements SoundService{
 	@Override
 	public List<Sound> selectSoundList(List<Sound> soundList) {
 		return dao.selectSoundList(soundList);
+	}
+
+	@Override
+	public int insertLike(Member member, Sound sound) {
+		return dao.insertLike(member,sound);
 	}
 
 }
