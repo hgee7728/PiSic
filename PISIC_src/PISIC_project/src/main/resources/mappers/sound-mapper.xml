@@ -3,10 +3,32 @@
 <mapper namespace="Sound">
 
 <resultMap type="Album" id="AlbumResultMap">
+	<result column="a_no" property="a_no"/>
+	<result column="a_name" property="a_name"/>
+	<result column="a_cover" property="a_cover"/>
+	<result column="a_date" property="a_date"/>
+	<result column="a_publishing" property="a_publishing"/>
+	<result column="a_agency" property="a_agency"/>
+	<result column="a_introduce1" property="a_introduce1"/>
+	<result column="a_introduce2" property="a_introduce2"/>
+	<result column="artist_no" property="artist_no"/>
+	<result column="artist_name" property="artist_name"/>
 	<collection column="a_no" property="sounds" select="selectAlbumSound"></collection>
 </resultMap>
 
 <resultMap type="Sound" id="soundResultMap">
+	<result column="s_no" property="s_no"/>
+	<result column="a_no" property="a_no"/>
+	<result column="s_name" property="s_name"/>
+	<result column="s_lyrics1" property="s_lyrics1"/>
+	<result column="s_lyrics2" property="s_lyrics2"/>
+	<result column="s_age_yn" property="s_age_yn"/>
+	<result column="s_path" property="s_path"/>
+	<result column="g_no" property="g_no"/>
+	<result column="cnt_like" property="cnt_like"/>
+	<result column="a_cover" property="a_cover"/>
+	<result column="a_name" property="a_name"/>
+	<result column="g_name" property="g_name"/>
 	<collection column="{a_no=a_no, s_no=s_no}" property="artist_names" select="soundSingerList"></collection>
 	<collection column="{a_no=a_no, s_no=s_no}" property="sound_writers" select="soundWriterList"></collection>
 	<collection column="{a_no=a_no, s_no=s_no}" property="sound_composers" select="soundComposerList"></collection>

@@ -13,8 +13,8 @@ public class MyMusicDao {
 	@Autowired
 	private SqlSession session;
 	
-	public List<MyMusic> selectPlaylist(String m_id) {
-		return session.selectList("MyMusic.selectPlaylist",m_id);
+	public List<MyMusic> selectPlaylistName(String m_id) {
+		return session.selectList("MyMusic.selectPlaylistName",m_id);
 	}
 	
 

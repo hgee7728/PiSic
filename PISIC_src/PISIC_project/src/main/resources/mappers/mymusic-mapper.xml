@@ -3,14 +3,36 @@
 <mapper namespace="MyMusic">
 
 <resultMap type="MyMusic" id="MyMusicResultMap">
+	<result column="l_no" property="l_no"/>
+	<result column="m_id" property="m_id"/>
+	<result column="l_name" property="l_name"/>
+	<result column="l_private_yn" property="l_private_yn"/>
+	<result column="l_image" property="l_image"/>
 	<collection column="m_id" property="sounds" select="selectSound"></collection>
 </resultMap>
 
 <resultMap type="Sound" id="soundResultMap">
+	<result column="s_no" property="s_no"/>
+	<result column="a_no" property="a_no"/>
+	<result column="s_name" property="s_name"/>
+	<result column="s_lyrics1" property="s_lyrics1"/>
+	<result column="s_lyrics2" property="s_lyrics2"/>
+	<result column="s_age_yn" property="s_age_yn"/>
+	<result column="s_path" property="s_path"/>
+	<result column="g_no" property="g_no"/>
+	<result column="cnt_like" property="cnt_like"/>
+	<result column="a_cover" property="a_cover"/>
+	<result column="a_name" property="a_name"/>
+	<result column="g_name" property="g_name"/>
 	<collection column="{m_id=m_id, l_no=l_no}" property="artist_names" select="soundSingerList"></collection>
 	<collection column="{m_id=m_id, l_no=l_no}" property="sound_writers" select="soundWriterList"></collection>
 	<collection column="{m_id=m_id, l_no=l_no}" property="sound_composers" select="soundComposerList"></collection>
 </resultMap>
+
+<!-- 내 플레이 리스트 목록 -->
+<select id="selectPlaylistName" resultType="MyMusic">
+	select * from playlist where m_id=#{m_id}
+</select>
 
 <!-- 내 플레이 리스트 조회 -->
 <!-- <select id="selectPlaylist" resultMap="MyMusicResultMap">

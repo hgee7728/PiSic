@@ -204,7 +204,7 @@ function playOne(a_no,s_no){
 											<td>가수명 :</td>
 											<td>
 												<c:forEach items="${sound.artist_names }" var="singer">
-												${singer}
+												${singer}&nbsp;
 												</c:forEach>
 											</td>
 										</tr>
@@ -212,7 +212,7 @@ function playOne(a_no,s_no){
 											<td>작사 :</td>
 											<td>
 												<c:forEach items="${sound.sound_writers }" var="writer">
-												${writer}
+												${writer}&nbsp;
 												</c:forEach>
 											</td>
 										</tr>
@@ -220,7 +220,7 @@ function playOne(a_no,s_no){
 											<td>작곡 :</td>
 											<td>
 												<c:forEach items="${sound.sound_composers }" var="composer">
-												${composer}
+												${composer}&nbsp;
 												</c:forEach>
 											</td>
 										</tr>

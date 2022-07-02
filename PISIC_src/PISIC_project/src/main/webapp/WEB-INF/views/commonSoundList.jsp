@@ -18,7 +18,7 @@
 										<i class="mdi mdi-file-document"></i>
 									</div>
 								</div>
-								<div class="preview-item-content d-sm-flex flex-grow">
+								<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">
 									<div class="flex-grow">
 										<h6 class="preview-subject">Admin dashboard design</h6>
 										<p class="text-muted mb-0">Broadcast web app mockup</p>

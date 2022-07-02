@@ -155,10 +155,14 @@ public class SoundController {
 		// 로그인 여부 확인
 		String resultAjax = "";
 		if (session.getAttribute("loginSsInfo") == null) {
-			resultAjax = "0"; 
+			resultAjax = "-1"; 
 		} else {
 			int result = service.insertLike((Member)session.getAttribute("loginSsInfo"),sound);
-			resultAjax = "1";
+			if(result < 1) { // 좋아요 실패
+				resultAjax = "0";
+			} else { // 좋아요 성공
+				resultAjax = "1";
+			}
 		}
 
 		return resultAjax;

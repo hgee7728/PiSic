@@ -69,6 +69,7 @@ table.sound_list  tr > td:nth-child(8),
 table.sound_list  tr > td:nth-child(9){
 	width: 5%;
 }
+table.sound_list  tr > td:nth-child(2),
 table.sound_list  tr > td:nth-child(7),
 table.sound_list  tr > td:nth-child(8),
 table.sound_list  tr > td:nth-child(9){
@@ -145,6 +146,43 @@ $(function(){
     	sound_frm.method="post";
     	sound_frm.submit();
     });
+    
+    /* modal 플레이 리스트 담기 */
+	$("#select_insert").click(function() {
+		$("#playlist_insert_modal").show();
+		$.ajax({
+			url: "<%=request.getContextPath() %>/mymusic/playlist.ax",
+			type: "post",
+			success: function(result) {
+				console.log("0 : "+result[0]);
+				console.log("1 : "+result[1]);
+				var html = "";
+				for(var i = 0; i < result.length; i++){
+					var vo = result[i];
+					html += '<div class="flex-grow">';
+					html +=	'<h6 class="preview-subject">'+vo.l_name+'</h6>';
+					html +=	'<p class="text-muted mb-0">'+Broadcast web app mockup+'</p>';
+					</div>
+					<div class="mr-auto text-sm-right pt-2 pt-sm-0">
+						<p class="text-muted">15 minutes ago</p>
+						<p class="text-muted mb-0">30 tasks, 5 issues</p>
+					</div>';
+					
+				}
+			},
+		}); // ajax 끝
+	});
+	
+	$(".playlist_insert_modal_close").click(function() {
+		$("#playlist_insert_modal").hide();
+	});
+	
+	playlist_insert_modal.addEventListener("click", e => {
+		const evTarget = e.target
+		if (evTarget.classList.contains("playlist_insert_modal_overlay")) {
+			$("#playlist_insert_modal").hide();
+		}
+	});
 });
 
 //한곡 재생 - post방식으로 a태그 이용해서 이동
@@ -182,9 +220,11 @@ function soundLike(a_no,s_no){
 			s_no:s_no
 			},
 		success: function(result){
-			if(result == "0"){
+			if(result == "-1"){
 				alert("로그인 후 이용해주세요");
 				location.replace("<%=request.getContextPath() %>/member/login");
+			} else if(result == "0"){
+				alert("좋아요에 실패했습니다. 다시 시도해주세요.");
 			} else if(result == "1"){
 				alert("해당 곡을 좋아요 했습니다.");
 			}

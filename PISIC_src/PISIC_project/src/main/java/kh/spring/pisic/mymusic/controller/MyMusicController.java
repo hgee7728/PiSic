@@ -23,11 +23,14 @@ public class MyMusicController {
 	
 	@ResponseBody
 	@PostMapping("/playlist.ax")
-	public String selectPlaylist(
+	public List<MyMusic> selectPlaylist(
 			HttpSession session
 			) {
+		System.out.println("ajax 들어옴");
+		
 		Member member = (Member)session.getAttribute("loginSsInfo");
-		List<MyMusic> result = service.selectPlaylist(member.getM_id());
-		return "";
+		System.out.println(member.getM_id());
+		List<MyMusic> result = service.selectPlaylistName(member.getM_id());
+		return result;
 	}
 }

@@ -15,8 +15,8 @@ public class MyMusicServiceImpl implements MyMusicService{
 	private MyMusicDao dao;
 	
 	@Override
-	public List<MyMusic> selectPlaylist(String m_id) {
-		return dao.selectPlaylist(m_id);
+	public List<MyMusic> selectPlaylistName(String m_id) {
+		return dao.selectPlaylistName(m_id);
 	}
 
 }
