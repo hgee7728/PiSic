@@ -14,6 +14,7 @@
 	border-radius: 10px;
 	border: 1px solid black;
 	z-index: 1000;
+	
 }
 
 #playlist_insert_modal .playlist_insert_modal_window {
@@ -27,3 +28,13 @@
 	transform: translate(-50%, -50%);
 	overflow: auto;
 }
+.playlist_insert_modal_new{
+	padding:30px !important;
+}
+.playlist_insert_modal_content p.modal_content {
+	line-height: 40px !important;
+}
+.playlist_insert_modal{
+	overflow: auto !important;
+}
+

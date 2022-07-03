@@ -31,7 +31,7 @@
 
 <!-- 내 플레이 리스트 목록 -->
 <select id="selectPlaylistName" resultType="MyMusic">
-	select * from playlist where m_id=#{m_id}
+	select * from playlist where m_id = #{m_id}
 </select>
 
 <!-- 내 플레이 리스트 조회 -->

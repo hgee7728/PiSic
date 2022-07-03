@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <link rel="stylesheet"
@@ -26,8 +27,6 @@
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.carousel.min.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.theme.default.min.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <!-- End plugin css for this page -->
 <!-- inject:css -->
 <!-- endinject -->
@@ -154,21 +153,24 @@ $(function(){
 			url: "<%=request.getContextPath() %>/mymusic/playlist.ax",
 			type: "post",
 			success: function(result) {
-				console.log("0 : "+result[0]);
-				console.log("1 : "+result[1]);
 				var html = "";
 				for(var i = 0; i < result.length; i++){
 					var vo = result[i];
+					html += '<div class="preview-item border-bottom">';
+					html += '<div class="preview-thumbnail">';
+					html += '<img src='+vo.l_image+' class="modal_content">';
+					html += '</div>';
+					html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
 					html += '<div class="flex-grow">';
-					html +=	'<h6 class="preview-subject">'+vo.l_name+'</h6>';
-					html +=	'<p class="text-muted mb-0">'+Broadcast web app mockup+'</p>';
-					</div>
-					<div class="mr-auto text-sm-right pt-2 pt-sm-0">
-						<p class="text-muted">15 minutes ago</p>
-						<p class="text-muted mb-0">30 tasks, 5 issues</p>
-					</div>';
-					
+					html +=	'<p class="text-muted mb-0 modal_content">'+vo.l_name+'</p></div>';
+					if(vo.l_private_yn == 'Y'){
+						html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
+					} else {
+						html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
+					}
 				}
+				$(".preview-list").nextAll().remove();
+				$(".preview-list").append(html);
 			},
 		}); // ajax 끝
 	});
@@ -234,6 +236,11 @@ function soundLike(a_no,s_no){
 			
 		}
 	}); //ajax 끝
+};
+
+// 새 플레이 리스트 만들기
+function newPlaylist(){
+	alert("눌렀냐");
 };
 </script>
 </head>

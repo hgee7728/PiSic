@@ -14,11 +14,12 @@ public class MyMusic {
 	private String l_private_yn;
 	private String l_image;
 	private List<Sound> sounds;
+	private int cnt;
 	
 	@Override
 	public String toString() {
 		return "MyMusic [l_no=" + l_no + ", m_id=" + m_id + ", l_name=" + l_name + ", l_private_yn=" + l_private_yn
-				+ ", l_image=" + l_image + ", sounds=" + sounds + "]";
+				+ ", l_image=" + l_image + ", sounds=" + sounds + ", cnt=" + cnt + "]";
 	}
 	public int getL_no() {
 		return l_no;
@@ -55,6 +56,12 @@ public class MyMusic {
 	}
 	public void setSounds(List<Sound> sounds) {
 		this.sounds = sounds;
+	}
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
 	}
 	
 	
