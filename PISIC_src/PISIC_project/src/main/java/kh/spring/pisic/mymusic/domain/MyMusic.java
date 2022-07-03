@@ -15,11 +15,14 @@ public class MyMusic {
 	private String l_image;
 	private List<Sound> sounds;
 	private int cnt;
+	private int s_no;
+	private int a_no;
 	
 	@Override
 	public String toString() {
 		return "MyMusic [l_no=" + l_no + ", m_id=" + m_id + ", l_name=" + l_name + ", l_private_yn=" + l_private_yn
-				+ ", l_image=" + l_image + ", sounds=" + sounds + ", cnt=" + cnt + "]";
+				+ ", l_image=" + l_image + ", sounds=" + sounds + ", cnt=" + cnt + ", s_no=" + s_no + ", a_no=" + a_no
+				+ "]";
 	}
 	public int getL_no() {
 		return l_no;
@@ -62,6 +65,18 @@ public class MyMusic {
 	}
 	public void setCnt(int cnt) {
 		this.cnt = cnt;
+	}
+	public int getS_no() {
+		return s_no;
+	}
+	public void setS_no(int s_no) {
+		this.s_no = s_no;
+	}
+	public int getA_no() {
+		return a_no;
+	}
+	public void setA_no(int a_no) {
+		this.a_no = a_no;
 	}
 	
 	

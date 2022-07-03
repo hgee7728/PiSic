@@ -30,10 +30,18 @@
 </resultMap>
 
 <!-- 내 플레이 리스트 목록 -->
-<select id="selectPlaylistName" resultType="MyMusic">
+<select id="selectPlaylist" resultType="MyMusic">
 	select * from playlist where m_id = #{m_id}
 </select>
 
+<!-- 플레이 리스트에 노래 담기 -->
+<insert id="insertSound" parameterType="map">
+	insert all 
+		<foreach collection="list" item="item">
+		into playlist_content values (#{item.l_no}, #{item.m_id}, #{item.s_no}, #{item.a_no})
+		</foreach>
+	select * from dual
+</insert>
 <!-- 내 플레이 리스트 조회 -->
 <!-- <select id="selectPlaylist" resultMap="MyMusicResultMap">
 	select * from playlist where m_id=#{m_id}

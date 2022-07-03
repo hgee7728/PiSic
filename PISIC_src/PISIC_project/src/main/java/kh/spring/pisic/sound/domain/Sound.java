@@ -18,24 +18,12 @@ public class Sound {
 	private List<String> sound_writers;
 	private List<String> sound_composers;
 	private int cnt_like;
-	
+	private int l_no;
+	private String m_id;
 	private String a_cover;
 	
 	
-//	crawling-field
-	private String a_name;
-	private String g_name;
-	
-	@Override
-	public String toString() {
-		return "Sound [s_no=" + s_no + ", a_no=" + a_no + ", s_name=" + s_name + ", s_lyrics1=" + s_lyrics1
-				+ ", s_lyrics2=" + s_lyrics2 + ", s_age_yn=" + s_age_yn + ", s_path=" + s_path + ", g_no=" + g_no
-				+ ", artist_names=" + artist_names + ", sound_writers=" + sound_writers + ", sound_composers="
-				+ sound_composers + ", cnt_like=" + cnt_like + ", a_cover=" + a_cover + ", a_name=" + a_name
-				+ ", g_name=" + g_name + "]";
-	}
-
-	public int getS_no() {
+public int getS_no() {
 		return s_no;
 	}
 
@@ -99,30 +87,6 @@ public class Sound {
 		this.g_no = g_no;
 	}
 
-	public String getA_name() {
-		return a_name;
-	}
-
-	public void setA_name(String a_name) {
-		this.a_name = a_name;
-	}
-
-	public String getG_name() {
-		return g_name;
-	}
-
-	public void setG_name(String g_name) {
-		this.g_name = g_name;
-	}
-
-	public String getA_cover() {
-		return a_cover;
-	}
-
-	public void setA_cover(String a_cover) {
-		this.a_cover = a_cover;
-	}
-
 	public List<String> getArtist_names() {
 		return artist_names;
 	}
@@ -155,6 +119,60 @@ public class Sound {
 		this.cnt_like = cnt_like;
 	}
 
+	public int getL_no() {
+		return l_no;
+	}
+
+	public void setL_no(int l_no) {
+		this.l_no = l_no;
+	}
+
+	public String getM_id() {
+		return m_id;
+	}
+
+	public void setM_id(String m_id) {
+		this.m_id = m_id;
+	}
+
+	public String getA_cover() {
+		return a_cover;
+	}
+
+	public void setA_cover(String a_cover) {
+		this.a_cover = a_cover;
+	}
+
+	public String getA_name() {
+		return a_name;
+	}
+
+	public void setA_name(String a_name) {
+		this.a_name = a_name;
+	}
+
+	public String getG_name() {
+		return g_name;
+	}
+
+	public void setG_name(String g_name) {
+		this.g_name = g_name;
+	}
+
+	//	crawling-field
+	private String a_name;
+	private String g_name;
+	
+	@Override
+	public String toString() {
+		return "Sound [s_no=" + s_no + ", a_no=" + a_no + ", s_name=" + s_name + ", s_lyrics1=" + s_lyrics1
+				+ ", s_lyrics2=" + s_lyrics2 + ", s_age_yn=" + s_age_yn + ", s_path=" + s_path + ", g_no=" + g_no
+				+ ", artist_names=" + artist_names + ", sound_writers=" + sound_writers + ", sound_composers="
+				+ sound_composers + ", cnt_like=" + cnt_like + ", l_no=" + l_no + ", m_id=" + m_id + ", a_cover="
+				+ a_cover + ", a_name=" + a_name + ", g_name=" + g_name + "]";
+	}
+
+	
 	
 	
 }
