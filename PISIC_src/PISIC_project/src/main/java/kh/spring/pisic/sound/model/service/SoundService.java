@@ -13,5 +13,7 @@ public interface SoundService {
 	public List<Sound> selectSoundList(List<Sound> soundList);
 	public int insertLike(Member member, Sound sound);
 	public Album selectSoundAlbum(Sound sound);
+	public int checkLike(Member member, Sound sound);
+	public int deleteLike(Member member, Sound sound);
 	
 }

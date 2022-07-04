@@ -147,7 +147,17 @@ public class SoundController {
 		mv.setViewName("sound/soundDetail");
 		return mv;
 	}
-
+	
+	// 아티스트 상세조회
+	@GetMapping("/artistDetail")
+	public ModelAndView selectArtistDetail(ModelAndView mv, @RequestParam(name="artist_no", required = false) String artist_no) {
+		
+		// db 다녀오기 TODO
+		mv.addObject("artist_no",artist_no); // db 다녀오고 지울거야
+		mv.setViewName("sound/artistDetail");
+		return mv;
+	}
+	
 	// 노래 좋아요 - ajax
 	@PostMapping(value = "/like", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
@@ -156,16 +166,26 @@ public class SoundController {
 		// 로그인 여부 확인
 		String resultAjax = "";
 		if (session.getAttribute("loginSsInfo") == null) {
-			resultAjax = "-1"; 
+			resultAjax = "-2"; 
 		} else {
-			int result = service.insertLike((Member)session.getAttribute("loginSsInfo"),sound);
-			if(result < 1) { // 좋아요 실패
-				resultAjax = "0";
-			} else { // 좋아요 성공
-				resultAjax = "1";
+			// 좋아요 여부 확인
+			Member member = (Member)session.getAttribute("loginSsInfo");
+			if(service.checkLike(member,sound) > 0) { // 좋아요가 되어있는 경우
+				int result = service.deleteLike(member,sound);
+				if(result < 1) { // 좋아요 취소 실패
+					resultAjax = "-1";
+				} else { // 좋아요 취소 성공
+					resultAjax = "0";
+				}
+			} else { // 좋아요가 안되어있는 경우
+				int result = service.insertLike((Member)session.getAttribute("loginSsInfo"),sound);
+				if(result < 1) { // 좋아요 실패
+					resultAjax = "1";
+				} else { // 좋아요 성공
+					resultAjax = "2";
+				}
 			}
 		}
-
 		return resultAjax;
 	}
 

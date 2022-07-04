@@ -35,13 +35,29 @@ public class SoundDao {
 	// 노래 좋아요 - ajax
 	public int insertLike(Member member, Sound sound) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("memberVo", member);
-		map.put("soundVo", sound);
+		map.put("member", member);
+		map.put("sound", sound);
 		return session.insert("Sound.insertLike",map);
 	}
 	
 	// 곡 상세조회 - 수록 앨범
 	public Album selectSoundAlbum(Sound sound) {
 		return session.selectOne("Sound.selectSoundAlbum",sound.getA_no());
+	}
+	
+	// 노래 좋아요 여부 확인
+	public int checkLike(Member member, Sound sound) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("member", member);
+		map.put("sound", sound);
+		return session.selectOne("Sound.checkLike",map);
+	}
+	
+	// 노래 좋아요 취소
+	public int deleteLike(Member member, Sound sound) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("member", member);
+		map.put("sound", sound);
+		return session.delete("Sound.deleteLike",map);
 	}
 }

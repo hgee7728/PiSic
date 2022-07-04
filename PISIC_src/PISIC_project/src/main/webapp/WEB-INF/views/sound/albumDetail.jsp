@@ -82,6 +82,9 @@ table.sound_list  tr > td:nth-child(9){
 	font-size:30px;
 	margin: 0px 5px;
 }
+table.sound_list a {
+	color:#6c7293;
+} 
 
 
 </style>
@@ -177,6 +180,7 @@ $(function(){
 	});
     
 	
+    // 모달창 끄기 2가지
 	$(".playlist_insert_modal_close").click(function() {
 		$("#playlist_insert_modal").hide();
 	});
@@ -187,6 +191,9 @@ $(function(){
 			$("#playlist_insert_modal").hide();
 		}
 	});
+	
+	// 미니 버튼들 a태그 색상 바꾸기
+	$("i.mdi").parent('a').css('color','#8f5fe8');
 });
 
 //한곡 재생 - post방식으로 a태그 이용해서 이동
@@ -224,12 +231,16 @@ function soundLike(a_no,s_no){
 			s_no:s_no
 			},
 		success: function(result){
-			if(result == "-1"){
+			if(result == "-2"){
 				alert("로그인 후 이용해주세요");
 				location.replace("<%=request.getContextPath() %>/member/login");
+			} else if(result == "-1"){
+				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 			} else if(result == "0"){
-				alert("좋아요에 실패했습니다. 다시 시도해주세요.");
+				alert("해당 곡을 좋아요를 취소했습니다.");
 			} else if(result == "1"){
+				alert("해당 곡을 좋아요를 실패 했습니다. 다시 시도해주세요.");
+			} else if(result == "2"){
 				alert("해당 곡을 좋아요 했습니다.");
 			}
 			
@@ -338,6 +349,17 @@ function playlistSelectInsertDo(l_no){
 // 새 플레이 리스트 만들기
 function newPlaylist(){
 	alert("눌렀냐");
+};
+
+// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
+function selectSoundDetail(a_no, s_no){
+	location.href = "<%=request.getContextPath() %>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
+};
+function selectArtistDetail(artist_no){
+	location.href = "<%=request.getContextPath() %>/sound/artistDetail?artist_no=" + artist_no;
+};
+function selectAlbumDetail(a_no){
+	location.href = "<%=request.getContextPath() %>/sound/albumDetail?a_no=" + a_no;
 };
 </script>
 </head>
@@ -452,13 +474,13 @@ function newPlaylist(){
 															</td>
 															<td>${sounds.s_no }</td>
 															<td><img src="${album.a_cover }" alt="image" /></td>
-															<td>${sounds.s_name}</td>
+															<td><a href="javascript:selectSoundDetail('${sounds.a_no }','${sounds.s_no}')">${sounds.s_name}</a></td>
 															<td>
 																<c:forEach items="${ sounds.singers}" var="singer">
-																${singer.artist_name}&nbsp;
+																<a href="javascript:selectArtistDetail('${singer.artist_no}')">${singer.artist_name}</a>&nbsp;
 																</c:forEach>
 															</td>
-															<td>${album.a_name }</td>
+															<td><a href="javascript:selectAlbumDetail('${sounds.a_no }')">${sounds.a_name }</a></td>
 															<td>
 																<a href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i class="mdi mdi-play list_icon"></i></a>
 															</td>

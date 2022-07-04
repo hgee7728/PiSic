@@ -46,7 +46,7 @@
 <!-- 앨범상세조회 - 수록곡 -->
 <select id="selectAlbumSound" resultMap="soundResultMap">
 	select sound.s_no, sound.a_no, sound.s_name, 
-	sound.s_lyrics1, sound.s_lyrics2, sound.s_age_yn, sound.s_path, album.artist_no
+	sound.s_lyrics1, sound.s_lyrics2, sound.s_age_yn, sound.s_path, album.artist_no, album.a_name
 	from sound sound
 	join album album on sound.a_no=album.a_no 
 	where album.a_no=#{a_no}
@@ -120,6 +120,29 @@
 	insert into sound_like
 	(m_id, s_no, a_no)
 	values
-	(#{memberVo.m_id}, #{soundVo.s_no}, #{soundVo.a_no})
+	(#{member.m_id}, #{sound.s_no}, #{sound.a_no})
 </insert>
+
+<!-- 노래 좋아요 여부 확인 -->
+<select id="checkLike" parameterType="hashmap" resultType="_int">
+	select count(*) from sound_like 
+	where m_id = #{member.m_id}
+	and a_no = #{sound.a_no} 
+	and s_no = #{sound.s_no}
+</select>
+
+<!-- 노래 좋아요 취소 -->
+<delete id="deleteLike" parameterType="hashmap">
+	delete from sound_like
+	where m_id = #{member.m_id}
+	and a_no = #{sound.a_no} 
+	and s_no = #{sound.s_no}
+</delete>
+
+
+
+
+
+
+
 </mapper>
