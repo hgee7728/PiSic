@@ -3,6 +3,7 @@
 <mapper namespace="Artist">
 
 <select id="selectArtistRandom" resultType="Artist">
+<!-- 아티스트 랜덤 선택 : 메인  -->
 <![CDATA[
 select artist_profile from( 
     select artist_profile from artist

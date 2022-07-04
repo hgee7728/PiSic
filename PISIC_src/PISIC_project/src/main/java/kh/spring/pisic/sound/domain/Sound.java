@@ -21,6 +21,7 @@ public class Sound {
 	private int l_no;
 	private String m_id;
 	private String a_cover;
+	private int chart;
 	
 	
 public int getS_no() {
@@ -41,6 +42,14 @@ public int getS_no() {
 
 	public String getS_name() {
 		return s_name;
+	}
+
+	public int getChart() {
+		return chart;
+	}
+
+	public void setChart(int chart) {
+		this.chart = chart;
 	}
 
 	public void setS_name(String s_name) {
@@ -162,15 +171,18 @@ public int getS_no() {
 	//	crawling-field
 	private String a_name;
 	private String g_name;
-	
+
+
 	@Override
 	public String toString() {
 		return "Sound [s_no=" + s_no + ", a_no=" + a_no + ", s_name=" + s_name + ", s_lyrics1=" + s_lyrics1
 				+ ", s_lyrics2=" + s_lyrics2 + ", s_age_yn=" + s_age_yn + ", s_path=" + s_path + ", g_no=" + g_no
 				+ ", artist_names=" + artist_names + ", sound_writers=" + sound_writers + ", sound_composers="
 				+ sound_composers + ", cnt_like=" + cnt_like + ", l_no=" + l_no + ", m_id=" + m_id + ", a_cover="
-				+ a_cover + ", a_name=" + a_name + ", g_name=" + g_name + "]";
+				+ a_cover + ", chart=" + chart + ", a_name=" + a_name + ", g_name=" + g_name + "]";
 	}
+	
+	
 
 	
 	

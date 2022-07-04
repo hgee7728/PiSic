@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-    <a class="sidebar-brand brand-logo" href="<%=request.getContextPath()%>/main"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo.png" alt="logo" /></a>
-    <a class="sidebar-brand brand-logo-mini" href="<%=request.getContextPath()%>/main"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo-mini.png" alt="logo" /></a>
+    <a class="sidebar-brand brand-logo" href="<%=request.getContextPath()%>/"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo.png" alt="logo" /></a>
+    <a class="sidebar-brand brand-logo-mini" href="<%=request.getContextPath()%>/"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo-mini.png" alt="logo" /></a>
   </div>
   <ul class="nav">
     <li class="nav-item profile">
@@ -113,7 +113,7 @@
       <span class="nav-link">MENU</span>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/main">
+      <a class="nav-link" href="<%=request.getContextPath()%>/">
         <span class="menu-icon">
           <i class="mdi mdi-speedometer"></i>
         </span>
@@ -121,7 +121,7 @@
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/chart/chartMain">
+      <a class="nav-link" href="<%=request.getContextPath()%>/chart/">
         <span class="menu-icon">
           <i class="mdi mdi-chart-bar"></i>
         </span>
@@ -129,7 +129,7 @@
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/pymusic/pymusicMain">
+      <a class="nav-link" href="<%=request.getContextPath()%>/pymusic/">
         <span class="menu-icon">
           <i class="mdi mdi-table-large"></i>
         </span>

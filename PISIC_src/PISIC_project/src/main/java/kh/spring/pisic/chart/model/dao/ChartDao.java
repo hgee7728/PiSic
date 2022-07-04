@@ -17,4 +17,8 @@ public class ChartDao {
 	public List<Sound> selectChartMain(){
 		return session.selectList("Chart.selectChartMain");
 	}
+	
+	public List<Sound> selectMainTopten(){
+		return session.selectList("Chart.selectMainTopten");
+	}
 }

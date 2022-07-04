@@ -18,4 +18,9 @@ public class ChartServiceImpl implements ChartService{
 		return dao.selectChartMain();
 	}
 
+	@Override
+	public List<Sound> selectMainTopten() {
+		return dao.selectMainTopten();
+	}
+
 }

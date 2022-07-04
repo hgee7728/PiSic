@@ -45,10 +45,19 @@
 	place-items: center;
 }
 
+.artistRan {
+	background-color: #2A3038;
+	width: 240px;
+	height: 240px;
+	padding: 5px;
+	border-radius: 5px;
+}
+
 img:nth-child(2) {
 	grid-column: 1/3;
 	grid-row: 1/3;
-	width: 340px;
+	width: 400px;
+	height: 400px;
 	align-self: center;
 }
 
@@ -158,6 +167,22 @@ img:nth-child(6) {
 	border-right: 1px solid #ffffff;
 	font-size: 20px;
 }
+
+table.sound_list  tr>td:nth-child(1), table.sound_list  tr>td:nth-child(2),
+	table.sound_list  tr>td:nth-child(3), table.sound_list  tr>td:nth-child(7),
+	table.sound_list  tr>td:nth-child(8), table.sound_list  tr>td:nth-child(9)
+	{
+	width: 5%;
+}
+
+table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
+	table.sound_list  tr>td:nth-child(9) {
+	text-align: center;
+}
+.list_icon {
+	font-size: 30px;
+	margin: 0px 5px;
+}
 </style>
 </head>
 <body>
@@ -174,8 +199,8 @@ img:nth-child(6) {
 									<div class="row align-items-center">
 										<div class="col-4 col-sm-3 col-xl-2">
 											<img
-												src="<%=request.getContextPath()%>/resources/assets/images/dashboard/Group126@2x.png"
-												class="gradient-corona-img img-fluid" alt="">
+												src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo.png" alt="logo"
+												class="gradient-corona-img img-fluid">
 										</div>
 										<div class="col-5 col-sm-7 col-xl-8 p-0">
 											<h4 class="mb-1 mb-sm-0">Explore Top Music Powered by
@@ -196,8 +221,9 @@ img:nth-child(6) {
 					<div class="row artistimg">
 
 						<c:forEach items="${artistRandom }" var="artist">
+
 							<img alt="" src="${artist.artist_profile }"
-								class="gradient-corona-img card">
+								class="gradient-corona-img card-body artistRan">
 						</c:forEach>
 
 					</div>
@@ -216,29 +242,43 @@ img:nth-child(6) {
 						<div class="card-body">
 
 							<div class="table-responsive">
-								<table class="table" style="text-align: center;">
+								<table class="table sound_list">
 									<thead>
 										<tr>
-											<th>순위</th>
-											<th>앨범커버</th>
-											<th>노래제목</th>
-											<th>가수</th>
-											<th>앨범명</th>
+											
+											<td>순위</td>
+											<td></td>
+											<td>노래명</td>
+											<td>가수명</td>
+											<td>앨범명</td>
+											<td>듣기</td>
+											<td>좋아요</td>
 										</tr>
 									</thead>
 									<tbody>
 
 
 										<!-- TODO hg : 순위 for문 돌리기 -->
-										<tr>
-											<td>1</td>
-											<td><img
-												src="<%=request.getContextPath()%>/resources/assets/images/dashboard/Group126@2x.png"
-												alt="image" /></td>
-											<td>LOVE</td>
-											<td>몬스타엑스</td>
-											<td>shape of love</td>
-										</tr>
+										<c:forEach items="${ chartTopten}" var="sounds">
+											<tr>
+												<td>${sounds.chart }</td>
+												<td><img src="${sounds.a_cover }" alt="image" /></td>
+												<td>${sounds.s_name}</td>
+												<td><c:forEach items="${ sounds.artist_names}"
+														var="singer">
+																${singer}&nbsp;
+																</c:forEach></td>
+												<td>${sounds.a_name }</td>
+												<td><a
+													href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i
+														class="mdi mdi-play list_icon"></i></a></td>
+												<td><a
+													href="javascript:soundLike('${sounds.a_no }','${sounds.s_no}')"><i
+														class="mdi mdi-heart list_icon like_after"></i></a> <!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+												</td>
+												
+											</tr>
+										</c:forEach>
 
 
 									</tbody>
@@ -246,6 +286,7 @@ img:nth-child(6) {
 							</div>
 						</div>
 					</div>
+					<br>
 
 					<div class="row">
 						<div class="col-md-6 corona-gradient-card">
