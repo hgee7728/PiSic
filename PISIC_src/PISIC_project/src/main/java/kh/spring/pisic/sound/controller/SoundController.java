@@ -131,7 +131,7 @@ public class SoundController {
 
 	// 앨범 상세조회
 	@GetMapping("/albumDetail")
-	public ModelAndView pageAlbumDetail(ModelAndView mv, @RequestParam(name = "a_no", required = false) String a_no) {
+	public ModelAndView selectAlbumDetail(ModelAndView mv, @RequestParam(name = "a_no", required = false) String a_no) {
 
 		mv.addObject("album", service.selectAlbum(a_no));
 		mv.setViewName("sound/albumDetail");
@@ -140,7 +140,7 @@ public class SoundController {
 
 	// 곡 상세조회
 	@GetMapping("/soundDetail")
-	public ModelAndView pageSoundDetail(ModelAndView mv, Sound sound) {
+	public ModelAndView selectSoundDetail(ModelAndView mv, Sound sound) {
 
 		mv.addObject("sound", service.selectSound(sound));
 		mv.setViewName("sound/soundDetail");

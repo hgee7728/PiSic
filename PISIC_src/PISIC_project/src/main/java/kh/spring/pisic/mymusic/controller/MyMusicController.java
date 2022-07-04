@@ -33,7 +33,7 @@ public class MyMusicController {
 	public List<MyMusic> selectPlaylist(
 			HttpSession session
 			) {
-		System.out.println("ajax 들어옴");
+		System.out.println("플레이 리스트 목록 ajax 들어옴");
 		
 		Member member = (Member)session.getAttribute("loginSsInfo");
 		System.out.println(member.getM_id());
@@ -46,12 +46,12 @@ public class MyMusicController {
 	@PostMapping("/insertSound")
 	public String insertSound(
 			ModelAndView mv
-			, @RequestParam("a_no") int[] a_no
-			, @RequestParam("s_no") int[] s_no
-			, @RequestParam("l_no") int l_no
+			, @RequestParam(name="a_no", required = false) String[] a_no
+			, @RequestParam(name="s_no", required = false) String[] s_no
+			, @RequestParam(name="l_no", required = false) String l_no
 			, HttpSession session
 			) {
-		
+
 		List<Sound> soundList = new ArrayList<Sound>();
 		Member member = (Member)session.getAttribute("loginSsInfo");
 		// 들고 온 데이터 domain형태로 list 시키기
@@ -59,9 +59,13 @@ public class MyMusicController {
 			Sound sound = new Sound();
 			System.out.println(a_no[i]);
 			System.out.println(s_no[i]);
-			sound.setA_no(a_no[i]);
-			sound.setS_no(s_no[i]);
-			sound.setL_no(l_no);
+			try {
+				sound.setA_no(Integer.parseInt(a_no[i]));
+				sound.setS_no(Integer.parseInt(s_no[i]));
+				sound.setL_no(Integer.parseInt(l_no));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
 			sound.setM_id(member.getM_id());
 			soundList.add(sound);
 		}

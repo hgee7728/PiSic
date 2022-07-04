@@ -19,7 +19,6 @@
 
 #playlist_insert_modal .playlist_insert_modal_window {
 	border-radius: 10px;
-	border: 1px solid black;
 	width: 600px;
 	height: 700px;
 	position: fixed;

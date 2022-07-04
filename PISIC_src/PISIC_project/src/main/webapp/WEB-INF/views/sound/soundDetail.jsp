@@ -122,8 +122,6 @@ $(function(){
     	}
     })
     
-
-    
     // 선택 재생
     $("#select_play").click(function(){
     	// 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
@@ -266,7 +264,6 @@ function playOne(a_no,s_no){
 					<div class="content_div4">
 					
 					</div>
-
 				</div>
 				<!-- content-wrapper ends -->
 				<!-- partial:partials/_footer.html -->

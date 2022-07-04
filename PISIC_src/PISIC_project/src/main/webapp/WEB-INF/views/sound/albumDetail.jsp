@@ -135,7 +135,7 @@ $(function(){
     	$("[name=s_no]").each(function(){
     		if(!(this.checked)){
     			console.log("히든 지우기");
-    			$(this).next("[name=a_no]").remove();
+    			$(this).parent().next("[name=a_no]").remove();
     		} 
     		console.log(this.checked);
     	});
@@ -296,7 +296,7 @@ function playlistSelectInsertDo(l_no){
 	$("input[name=s_no]").each(function(){
 		if(!(this.checked)){
 			console.log("히든 지우기");
-			$(this).next("input[name=a_no]").remove();
+			$(this).parent().next("input[name=a_no]").remove();
 		} 
 		console.log(this.checked);
 	});
@@ -308,19 +308,20 @@ function playlistSelectInsertDo(l_no){
 	$('input[name="a_no"]').each(function(){
 		a_noArray.push($(this).val());
     });
-	console.log("s_noArray : "+s_noArray);
-	console.log("a_noArray : "+a_noArray);
+	console.log("s_noArray: "+s_noArray);
+	console.log("a_noArray: "+a_noArray);
 	var ajaxData = {
-			"s_no" : s_noArray,
-			"a_no" : a_noArray,
-			"l_no" : l_no
+			s_no : s_noArray,
+			a_no : a_noArray,
+			l_no : l_no
 	}
 	
-	
-	<%-- $.ajax({
+	$.ajax({
 		url: "<%=request.getContextPath() %>/mymusic/insertSound",
 		type: "post",
-		data:ajaxData,
+		dataType: "json",
+		data: ajaxData,
+		traditional:true,
 		success: function(result) {
 			if(result == "0"){
 				alert("곡 담기에 실패 했습니다. 다시 시도해주세요.");
@@ -331,7 +332,7 @@ function playlistSelectInsertDo(l_no){
 		error:function(){
 			
 		}
-	}); // ajax 끝 --%>
+	}); // ajax 끝
 }
 
 // 새 플레이 리스트 만들기
@@ -443,8 +444,8 @@ function newPlaylist(){
 														<tr>
 															<td>
 																<div class="form-check form-check-muted m-0">
-																	<label class="form-check-label"> <input
-																		type="checkbox" class="form-check-input sound_checkbox" value="${sounds.s_no }" name="s_no">
+																	<label class="form-check-label"> 
+																		<input type="checkbox" class="form-check-input sound_checkbox" value="${sounds.s_no }" name="s_no">
 																	</label>
 																	<input type="hidden" value="${album.a_no }" name="a_no">
 																</div>
