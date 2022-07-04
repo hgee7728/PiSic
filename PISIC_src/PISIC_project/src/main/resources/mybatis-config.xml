@@ -18,5 +18,6 @@
 	<mapper resource="mappers/sound-mapper.xml"/>
 	<mapper resource="mappers/artist-mapper.xml"/>
 	<mapper resource="mappers/mymusic-mapper.xml"/>
+	<mapper resource="mappers/chart-mapper.xml"/>
 </mappers>
 </configuration>

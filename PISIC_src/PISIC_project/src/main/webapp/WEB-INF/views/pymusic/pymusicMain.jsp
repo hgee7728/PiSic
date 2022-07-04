@@ -26,6 +26,11 @@
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 <style>
+.grid-5 {
+	flex: 0 0 20%;
+	max-width: 20%;
+}
+
 .content {
 	text-align: center;
 }
@@ -129,7 +134,7 @@
 					<br> <br>
 					<h3>날씨별</h3>
 					<div class="row ">
-						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -138,7 +143,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -147,7 +152,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -156,7 +161,16 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<div>
+										<button class="btn btn_genre">천둥번개</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -170,7 +184,7 @@
 					<br> <br>
 					<h3>성별/연령대별</h3>
 					<div class="row ">
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -179,16 +193,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
-							<div class="card">
-								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">10대 남</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -197,7 +202,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -206,7 +211,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -215,7 +220,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -224,7 +229,8 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
+
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -233,16 +239,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
-							<div class="card">
-								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">10대 여</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -251,7 +248,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -260,7 +257,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>
@@ -269,7 +266,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-2 col-sm-6 grid-margin stretch-card">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<div>

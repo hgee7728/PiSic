@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/chart")
 public class ChartController {
 	
-	@GetMapping(value = {"/", "/chartMain"}) 
+	@GetMapping("/") 
 	public String MainPage() { 
 
 		return "chart/chartMain"; 
