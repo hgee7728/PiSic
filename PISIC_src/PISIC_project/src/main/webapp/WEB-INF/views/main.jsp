@@ -264,9 +264,8 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 												<td>${sounds.chart }</td>
 												<td><img src="${sounds.a_cover }" alt="image" /></td>
 												<td>${sounds.s_name}</td>
-												<td><c:forEach items="${ sounds.artist_names}"
-														var="singer">
-																${singer}&nbsp;
+												<td><<c:forEach items="${ sounds.singers}" var="singer">
+																${singer.artist_name}&nbsp;
 																</c:forEach></td>
 												<td>${sounds.a_name }</td>
 												<td><a

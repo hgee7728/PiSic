@@ -15,7 +15,7 @@
 		<result column="g_name" property="g_name" />
 		<result column="chart" property="chart" />
 		<collection column="{a_no=a_no, s_no=s_no}"
-			property="artist_names" select="soundSingerList"></collection>
+			property="singers" select="soundSingerList"></collection>
 	</resultMap>
 
 	<!-- 메인 페이지 chart -->
@@ -56,11 +56,11 @@
 	</select>
 	
 	<select id="soundSingerList" parameterType="map"
-		resultType="string">
-		select artist.artist_name
+		resultType="Singer">
+		select artist.artist_name, artist.artist_no
 		from sound sound
 		join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no
-		join artist artist on singer.artist_no = artist.artist_no
+		join artist artist on singer.artist_no = artist.artist_no 
 		where sound.a_no=#{a_no} and sound.s_no=#{s_no}
 	</select>
 

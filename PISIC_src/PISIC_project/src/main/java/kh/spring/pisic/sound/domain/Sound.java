@@ -142,6 +142,5 @@ public class Sound {
 	public void setG_name(String g_name) {
 		this.g_name = g_name;
 	}
-
 	
 }
