@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>로그인</title>
+    <title>Corona Admin</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/vendors/css/vendor.bundle.base.css">
@@ -22,7 +22,8 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
-  <style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <style>
   	.col-md-6.grid-margin.stretch-card {
   		max-width: 600px;
   	}
@@ -33,12 +34,6 @@
   		margin: 0 auto;
     	display: block;
   	}
-  	.btn.btn-inverse-secondary.btn-fw {
-  		flex: 0 0 33.33333%;
-  		min-width: 120px !important;
-  		max-width: 120px !important;
-  		margin: 0 auto;
-  	}
   	.row {
   		margin-top: 0.75rem;
   	}
@@ -47,8 +42,7 @@
 			max-width: 70%;
 		}
   	}
-	
-  </style> 
+  </style>
   </head>
   <body>
     <div class="container-scroller">
@@ -61,40 +55,36 @@
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
-          	<div class="page-header">
-              <h2 class="card-title">LOGIN</h2>
+            <div class="page-header">
+              <h2 class="card-title">FIND PW</h2>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="#">회원</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">로그인</li>
+                  <li class="breadcrumb-item active" aria-current="page">비밀번호 변경</li>
                 </ol>
               </nav>
             </div>
             <div class="col-md-6 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">로그인</h4>
-                    <p class="card-description">로그인</p>
-                    <form class="forms-sample" action="<%=request.getContextPath() %>/member/login" method="post">
+                    <h4 class="card-title">비밀번호 변경</h4>
+                    <p class="card-description">비밀번호 변경</p>
+                    <form class="forms-sample" action="<%=request.getContextPath() %>/member/findPwA" method="post">
+                      <input type="hidden" value="${member.m_id}" name="m_id">
                       <div class="form-group row">
-                        <label for="InputId" class="col-sm-3 col-form-label">아이디</label>
+                        <label id="LabelPassword1" for="InputPassword1" class="col-sm-3 col-form-label">비밀번호</label>
                         <div class="col-sm-9">
-                          <input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
+                          <input type="password" class="form-control" id="InputPassword1" placeholder="Password" name="m_password" required>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="InputPassword" class="col-sm-3 col-form-label">비밀번호</label>
+                        <label id="LabelPassword2" for="InputPassword2" class="col-sm-3 col-form-label">비밀번호 확인</label>
                         <div class="col-sm-9">
-                          <input type="password" class="form-control" id="InputPassword" placeholder="Password" name="m_password" required>
+                          <input type="password" class="form-control" id="InputPassword2" placeholder="Re Password" required>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-info btn-fw">로그인</button>
+                      <button type="submit" class="btn btn-info btn-fw">비밀번호 변경</button>
                     </form>
-                    <div class="row">
-	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/findId'">아이디 찾기</button>
-	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/findPw'">비밀번호 찾기</button>
-	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/insert'">회원가입</button>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -108,6 +98,51 @@
       </div>
       <!-- page-body-wrapper ends -->
     </div>
+    <script>
+    var InputPw1 = null;
+	var InputPw2 = null;
+	
+	var FlagPw1 = false;
+	var FlagPw2 = false;
+	
+	    $(document).ready(function(){
+	    	// 비밀번호
+    		$("#InputPassword1").on("keyup", function(){
+    			var regexPw = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+    			InputPw1 = $("#InputPassword1").val();
+    			
+    			if (!regexPw.test(InputPw1)) {
+    				if (InputPw1 == '') {
+    					$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+    				} else {
+    					$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-close"></i> 8 ~ 20자의 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>');
+    				}
+    				FlagPw1 = false;
+    				$("#SpanPassword1").css("color", "red");
+    			} else {
+    				$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanPassword1").css("color", "green");
+    				FlagPw1 = true;
+    			}
+    		})
+    		
+    		// 비밀번호 확인
+    		$("#InputPassword2").on("keyup", function(){
+    			InputPw1 = $("#InputPassword1").val();
+    			InputPw2 = $("#InputPassword2").val();
+    			
+    			if (InputPw1 != InputPw2) {
+    				$("#LabelPassword2").html('비밀번호 확인 <span id="SpanPassword2"><i class="mdi mdi-close"></i> 비밀번호가 일치하지 않습니다.</span>');
+    				$("#SpanPassword2").css("color", "red");
+    				FlagPw2 = false;
+    			} else {
+    				$("#LabelPassword2").html('비밀번호 확인 <span id="SpanPassword2"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanPassword2").css("color", "green");
+    				FlagPw2 = false;
+    			}
+    		})
+	    });
+    </script>
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="<%=request.getContextPath()%>/resources/assets/vendors/js/vendor.bundle.base.js"></script>

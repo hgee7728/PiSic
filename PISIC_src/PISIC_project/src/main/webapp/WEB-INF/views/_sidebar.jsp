@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-    <a class="sidebar-brand brand-logo" href="<%=request.getContextPath()%>/"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo.png" alt="logo" /></a>
-    <a class="sidebar-brand brand-logo-mini" href="<%=request.getContextPath()%>/"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo-mini.png" alt="logo" /></a>
+    <a class="sidebar-brand brand-logo" href="<%=request.getContextPath()%>/main"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo.png" alt="logo" /></a>
+    <a class="sidebar-brand brand-logo-mini" href="<%=request.getContextPath()%>/main"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo-mini.png" alt="logo" /></a>
   </div>
   <ul class="nav">
     <li class="nav-item profile">
@@ -105,7 +105,7 @@
     </c:if>
       
     <li class="nav-item w-100">
-      <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+      <form class="nav-link mt-2 mt-md-0 d-lg-flex search">
         <input type="text" class="form-control" placeholder="Search products">
       </form>
     </li>
@@ -113,7 +113,7 @@
       <span class="nav-link">MENU</span>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/">
+      <a class="nav-link" href="<%=request.getContextPath()%>/main">
         <span class="menu-icon">
           <i class="mdi mdi-speedometer"></i>
         </span>
@@ -121,7 +121,7 @@
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/chart/">
+      <a class="nav-link" href="<%=request.getContextPath()%>/chart/chartMain">
         <span class="menu-icon">
           <i class="mdi mdi-chart-bar"></i>
         </span>
@@ -129,7 +129,7 @@
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/pymusic/">
+      <a class="nav-link" href="<%=request.getContextPath()%>/pymusic/pymusicMain">
         <span class="menu-icon">
           <i class="mdi mdi-table-large"></i>
         </span>
@@ -205,7 +205,7 @@
       </a>
       <div class="collapse" id="auth">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/faq/list">자주묻는 질몬</a></li>
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/faq/list">자주묻는 질문</a></li>
           <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/qna/list">1:1 문의</a></li>
         </ul>
       </div>

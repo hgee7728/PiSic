@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/pymusic")
 public class PickLocationController {
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = {"/", "/pymusicMain"}, method = RequestMethod.GET)
 	public String mainPage() {
 		return "pymusic/pymusicMain";
 	}

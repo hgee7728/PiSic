@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>로그인</title>
+    <title>아이디찾기</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/vendors/css/vendor.bundle.base.css">
@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
-  <style>
+   <style>
   	.col-md-6.grid-margin.stretch-card {
   		max-width: 600px;
   	}
@@ -33,12 +33,6 @@
   		margin: 0 auto;
     	display: block;
   	}
-  	.btn.btn-inverse-secondary.btn-fw {
-  		flex: 0 0 33.33333%;
-  		min-width: 120px !important;
-  		max-width: 120px !important;
-  		margin: 0 auto;
-  	}
   	.row {
   		margin-top: 0.75rem;
   	}
@@ -47,8 +41,7 @@
 			max-width: 70%;
 		}
   	}
-	
-  </style> 
+  </style>
   </head>
   <body>
     <div class="container-scroller">
@@ -61,40 +54,41 @@
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
-          	<div class="page-header">
-              <h2 class="card-title">LOGIN</h2>
+            <div class="page-header">
+              <h2 class="card-title">FIND ID</h2>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="#">회원</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">로그인</li>
+                  <li class="breadcrumb-item active" aria-current="page">아이디 찾기</li>
                 </ol>
               </nav>
             </div>
             <div class="col-md-6 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">로그인</h4>
-                    <p class="card-description">로그인</p>
-                    <form class="forms-sample" action="<%=request.getContextPath() %>/member/login" method="post">
+                    <h4 class="card-title">아이디 찾기</h4>
+                    <p class="card-description">아이디 찾기</p>
+                    <form class="forms-sample" action="<%=request.getContextPath() %>/member/findId" method="post">
                       <div class="form-group row">
-                        <label for="InputId" class="col-sm-3 col-form-label">아이디</label>
+                        <label for="InputBirth" class="col-sm-3 col-form-label">생년월일</label>
                         <div class="col-sm-9">
-                          <input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
+                          <input type="text" class="form-control" id="InputBirth" placeholder="Date of Birth" name="m_birth" required>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="InputPassword" class="col-sm-3 col-form-label">비밀번호</label>
+                        <label for="InputEmail" class="col-sm-3 col-form-label">이메일</label>
                         <div class="col-sm-9">
-                          <input type="password" class="form-control" id="InputPassword" placeholder="Password" name="m_password" required>
+                          <input type="email" class="form-control" id="InputEmail" placeholder="Email" name="m_email" required>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-info btn-fw">로그인</button>
+                      <div class="form-group row">
+                        <label for="InputPhone" class="col-sm-3 col-form-label">휴대전화</label>
+                        <div class="col-sm-9">
+                          <input type="text" class="form-control" id="InputPhone" placeholder="Phone" name="m_phone" required>
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-info btn-fw">아이디 찾기</button>
                     </form>
-                    <div class="row">
-	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/findId'">아이디 찾기</button>
-	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/findPw'">비밀번호 찾기</button>
-	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/insert'">회원가입</button>
-                    </div>
                   </div>
                 </div>
               </div>

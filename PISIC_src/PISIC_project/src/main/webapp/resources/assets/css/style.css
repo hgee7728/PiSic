@@ -20629,6 +20629,9 @@ div.tagsinput {
   width: 244px;
   z-index: 11;
   position: fixed;
+  top: 70px;
+  bottom: 0;
+  overflow: auto;
   transition: width 0.25s ease, background 0.25s ease;
   -webkit-transition: width 0.25s ease, background 0.25s ease;
   -moz-transition: width 0.25s ease, background 0.25s ease;
@@ -20672,7 +20675,7 @@ div.tagsinput {
     flex-wrap: nowrap;
     flex-direction: column;
     margin-bottom: 60px;
-    padding-top: 70px; }
+    /* padding-top: 70px; */ }
     @media (max-width: 992px) {
       .sidebar .nav {
         padding-top: 0; } }
@@ -20691,7 +20694,7 @@ div.tagsinput {
         display: flex;
         -webkit-align-items: center;
         align-items: center;
-        white-space: nowrap;
+        /* white-space: nowrap; */
         padding: 0.8rem 10px 0.8rem 1.188rem;
         color: #6c7293;
         -webkit-transition-duration: 0.45s;

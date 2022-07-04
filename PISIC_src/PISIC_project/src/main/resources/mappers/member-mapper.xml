@@ -14,5 +14,39 @@
 		FROM member
 		WHERE m_id = #{m_id} AND m_password = #{m_password}
 	</select>
-
+	<select id="idCheck" parameterType="string" resultType="_int">
+		SELECT count(*)
+		FROM member
+		WHERE m_id = #{m_id}
+	</select>
+	<select id="nicknameCheck" parameterType="string" resultType="_int">
+		SELECT count(*)
+		FROM member
+		WHERE m_nickname = #{m_nickname}
+	</select>
+	<select id="emailCheck" parameterType="string" resultType="_int">
+		SELECT count(*)
+		FROM member
+		WHERE m_email = #{m_email}
+	</select>
+	<select id="phoneCheck" parameterType="_int" resultType="_int">
+		SELECT count(*)
+		FROM member
+		WHERE m_phone = #{m_phone}
+	</select>
+	<select id="findId" parameterType="Member" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE m_birth = #{m_birth} AND m_email = #{m_email} AND m_phone = #{m_phone}
+	</select>
+	<select id="findPw" parameterType="Member" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE m_id = #{m_id} AND m_birth = #{m_birth} AND m_email = #{m_email} AND m_phone = #{m_phone}
+	</select>
+	<update id="findPwA" parameterType="Member">
+		UPDATE member
+		SET m_password = #{m_password}
+		WHERE m_id = #{m_id}
+	</update>
 </mapper>

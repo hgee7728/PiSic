@@ -48,10 +48,10 @@
   	}
   </style>
   <style>
-  	/* .uploadcare--widget__button, .uploadcare--widget__file-name, 
+  	.uploadcare--widget__button, .uploadcare--widget__file-name, 
   	.uploadcare--widget__file-size, .uploadcare--widget__text {
     	display: none;
-	} */
+	}
   </style>
   </head>
   <body>
@@ -81,12 +81,7 @@
                     <form class="forms-sample" action="<%=request.getContextPath() %>/member/insert" method="post">
                       <div class="form-group">
                       	<label id="LabelId" for="InputId">아이디 *</label>
-                      	<div class="input-group">
-	                        <input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
-	                        <div class="input-group-append">
-	                          <button class="btn btn-inverse-secondary btn-fw" type="button">중복확인</button>
-	                        </div>
-                      	</div>
+                      	<input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
                       </div>
                       <div class="form-group">
                         <label id="LabelPassword1" for="InputPassword1">비밀번호 *</label>
@@ -102,30 +97,15 @@
                       </div>
                       <div class="form-group">
                         <label id="LabelNickname" for="InputNickname">닉네임 *</label>
-                        <div class="input-group">
-	                        <input type="text" class="form-control" id="InputNickname" placeholder="Nickname" name="m_nickname" required>
-	                        <div class="input-group-append">
-	                          <button class="btn btn-inverse-secondary btn-fw" type="button">중복확인</button>
-	                        </div>
-                      	</div>
+                        <input type="text" class="form-control" id="InputNickname" placeholder="Nickname" name="m_nickname" required>
                       </div>
                       <div class="form-group">
                         <label id="LabelEmail" for="InputEmail">이메일 *</label>
-                        <div class="input-group">
-	                        <input type="email" class="form-control" id="InputEmail" placeholder="Email" name="m_email" required>
-	                        <div class="input-group-append">
-	                          <button class="btn btn-inverse-secondary btn-fw" type="button">중복확인</button>
-	                        </div>
-                      	</div>
+                        <input type="email" class="form-control" id="InputEmail" placeholder="Email" name="m_email" required>
                       </div>
                       <div class="form-group">
                         <label id="LabelPhone" for="InputPhone">휴대전화 *</label>
-                        <div class="input-group">
-	                        <input type="text" class="form-control" id="InputPhone" placeholder="Phone" name="m_phone" required>
-	                        <div class="input-group-append">
-	                          <button class="btn btn-inverse-secondary btn-fw" type="button">중복확인</button>
-	                        </div>
-                      	</div>                  
+                        <input type="text" class="form-control" id="InputPhone" placeholder="Phone" name="m_phone" required>               
                       </div>
                       <div class="form-group">
                         <label id="LabelBirth" for="InputBirth">생년월일 *</label>
@@ -186,7 +166,7 @@
                       	}
                       </script>
                       <div class="form-group">
-                        <label id="LabelProfile">프로필사진 *</label>
+                        <label id="LabelProfile">프로필사진</label>
                         <div class="input-group">
                           <img id="ImgProfilePre" src="<%=request.getContextPath()%>/resources/assets/images/DummyImage.png">
                           <span class="input-group-append">
@@ -225,6 +205,17 @@
 		var InputAddress = null;
 		var InputAddressDetail = null;
 		var InputProfile = null;
+
+		var FlagId = false;
+		var FlagPw1 = false;
+		var FlagPw2 = false;
+		var FlagName = false;
+		var FlagNickname = false;
+		var FlagEmail = false;
+		var FlagPhone = false;
+		var FlagBirth = false;
+		var FlagAddress = false;
+		var FlagAddressDetail = false;
 		
     	$(document).ready(function(){
     		// 아이디
@@ -234,14 +225,35 @@
     			
     			if (!regexId.test(InputId)) {
     				if (InputId == '') {
-    					$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-close"></i> (필수 정보입니다.)</span>');
+    					$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
     				} else {
-    					$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-close"></i> (7 ~ 15자의 영문, 숫자만 사용 가능합니다.)</span>');
+    					$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-close"></i> 7 ~ 15자의 영문, 숫자만 사용 가능합니다.</span>');
     				}
     				$("#SpanId").css("color", "red");
+    				FlagId = false;
     			} else {
-    				$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-check"></i></span>');
-    				$("#SpanId").css("color", "green");
+    				$.ajax({
+    					url: "<%=request.getContextPath()%>/member/idCheck.ax",
+    					data: {
+    					    m_id: $("#InputId").val()
+    					},
+    					type: "post",
+    					success: function(result){
+    					    console.log(result);
+    					    if (result == 1) {
+    			    			$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-delta"></i> 중복된 아이디가 있습니다.</span>');
+    			        		$("#SpanId").css("color", "yellow");
+    			        		FlagId = false;
+    			    		} else {
+    			    			$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-check"></i></span>');
+    			        		$("#SpanId").css("color", "green");
+    			        		FlagId = true;
+    			    		}
+    					},
+    					error: function(error){
+    					    console.log(error);
+    				    }
+    		    	});
     			}
     		})
     		
@@ -256,10 +268,12 @@
     				} else {
     					$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-close"></i> 8 ~ 20자의 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>');
     				}
+    				FlagPw1 = false;
     				$("#SpanPassword1").css("color", "red");
     			} else {
     				$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-check"></i></span>');
     				$("#SpanPassword1").css("color", "green");
+    				FlagPw1 = true;
     			}
     		})
     		
@@ -271,9 +285,11 @@
     			if (InputPw1 != InputPw2) {
     				$("#LabelPassword2").html('비밀번호 확인 <span id="SpanPassword2"><i class="mdi mdi-close"></i> 비밀번호가 일치하지 않습니다.</span>');
     				$("#SpanPassword2").css("color", "red");
+    				FlagPw2 = false;
     			} else {
     				$("#LabelPassword2").html('비밀번호 확인 <span id="SpanPassword2"><i class="mdi mdi-check"></i></span>');
     				$("#SpanPassword2").css("color", "green");
+    				FlagPw2 = false;
     			}
     		})
     		
@@ -288,10 +304,12 @@
     				} else {
     					$("#LabelName").html('이름 <span id="SpanName"><i class="mdi mdi-close"></i> 한글과 영문 대 소문자를 사용하세요. 한글 : 2~5자, 영문 : 2~20자</span>');
     				}
+    				FlagName = false;
     				$("#SpanName").css("color", "red");
     			} else {
     				$("#LabelName").html('이름 <span id="SpanName"><i class="mdi mdi-check"></i></span>');
     				$("#SpanName").css("color", "green");
+    				FlagName = true;
     			}
     		})
     		
@@ -306,10 +324,32 @@
     				} else {
     					$("#LabelNickname").html('닉네임 <span id="SpanNickName"><i class="mdi mdi-close"></i> 2 ~ 15자의 한글, 영문 대 소문자, 숫자를 사용하세요.</span>');
     				}
+    				FlagNickname = false;
     				$("#SpanNickName").css("color", "red");
     			} else {
-    				$("#LabelNickname").html('닉네임 <span id="SpanNickName"><i class="mdi mdi-check"></i></span>');
-    				$("#SpanNickName").css("color", "green");
+    				$.ajax({
+    					url: "<%=request.getContextPath()%>/member/nicknameCheck.ax",
+    					data: {
+    					    m_nickname: $("#InputNickname").val()
+    					},
+    					type: "post",
+    					success: function(result){
+    					    console.log(result);
+    					    if (result == 1) {
+    			    			$("#LabelNickname").html('닉네임 <span id="SpanNickName"><i class="mdi mdi-delta"></i> 중복된 닉네임이 있습니다.</span>');
+    			        		$("#SpanNickName").css("color", "yellow");
+    			        		FlagNickname = false;
+    			    		} else {
+    			    			$("#LabelNickname").html('닉네임 <span id="SpanNickName"><i class="mdi mdi-check"></i></span>');
+    		    				$("#SpanNickName").css("color", "green");
+    		    				FlagNickname = true;
+    			        		
+    			    		}
+    					},
+    					error: function(error){
+    					    console.log(error);
+    				    }
+    		    	});
     			}
     		})
     		
@@ -322,12 +362,34 @@
     				if (InputEmail == '') {
     					$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
     				} else {
-    					$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-close"></i> 이메일 형식이 맞지 않습니다. ex)pisic1234@gmail.com</span>');
+    					$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-close"></i> 이메일 형식이 맞지 않습니다. ex)pisic1234@pisic.com</span>');
     				}
+    				FlagEmail = false;
     				$("#SpanEmail").css("color", "red");
     			} else {
-    				$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-check"></i></span>');
-    				$("#SpanEmail").css("color", "green");
+    				$.ajax({
+    					url: "<%=request.getContextPath()%>/member/emailCheck.ax",
+    					data: {
+    					    m_email: $("#InputEmail").val()
+    					},
+    					type: "post",
+    					success: function(result){
+    					    console.log(result);
+    					    if (result == 1) {
+    			    			$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-delta"></i> 중복된 이메일이 있습니다.</span>');
+    			        		$("#SpanEmail").css("color", "yellow");
+    			        		FlagEmail = false;
+    			    		} else {
+    			    			$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-check"></i></span>');
+    		    				$("#SpanEmail").css("color", "green");
+    		    				FlagEmail = true;
+    			        		
+    			    		}
+    					},
+    					error: function(error){
+    					    console.log(error);
+    				    }
+    		    	});
     			}
     		})
     		
@@ -342,10 +404,31 @@
     				} else {
     					$("#LabelPhone").html('휴대전화 <span id="SpanPhone"><i class="mdi mdi-close"></i> 휴대전화 형식이 맞지 않습니다. ex)01012345678</span>');
     				}
+    				FlagPhone = false;
     				$("#SpanPhone").css("color", "red");
     			} else {
-    				$("#LabelPhone").html('휴대전화 <span id="SpanPhone"><i class="mdi mdi-check"></i></span>');
-    				$("#SpanPhone").css("color", "green");
+    				$.ajax({
+    					url: "<%=request.getContextPath()%>/member/phoneCheck.ax",
+    					data: {
+    					    m_phone: $("#InputPhone").val()
+    					},
+    					type: "post",
+    					success: function(result){
+    					    console.log(result);
+    					    if (result == 1) {
+    					    	$("#LabelPhone").html('휴대전화 <span id="SpanPhone"><i class="mdi mdi-delta"></i> 중복된 휴대전화 번호가 있습니다.</span>');
+    			        		$("#SpanPhone").css("color", "yellow");
+    			        		FlagPhone = false;
+    			    		} else {
+    			    			$("#LabelPhone").html('휴대전화 <span id="SpanPhone"><i class="mdi mdi-check"></i></span>');
+    		    				$("#SpanPhone").css("color", "green");
+    		    				FlagPhone = true;
+    			    		}
+    					},
+    					error: function(error){
+    					    console.log(error);
+    				    }
+    		    	});
     			}
     		})
     		
@@ -360,10 +443,12 @@
     				} else {
     					$("#LabelBirth").html('생년월일 <span id="SpanBirth"><i class="mdi mdi-close"></i> 생년월일 형식이 맞지 않습니다. ex)YYYYMMDD</span>');
     				}
+    				FlagBirth = false;
     				$("#SpanBirth").css("color", "red");
     			} else {
     				$("#LabelBirth").html('생년월일 <span id="SpanBirth"><i class="mdi mdi-check"></i></span>');
     				$("#SpanBirth").css("color", "green");
+    				FlagBirth = true;
     			}
     		})
     		
@@ -374,6 +459,11 @@
     		if (InputAddress != '') {
     			$("#LabelAddress").html('주소 <span id="SpanAddress"><i class="mdi mdi-check"></i></span>');
     			$("#SpanAddress").css("color", "green");
+    			FlagAddress = true;
+    		} else if (InputAddress == '') {
+    			FlagAddress = false;
+    		} else {
+    			FlagAddress = false;
     		}
     		
     		// 상세주소
@@ -382,10 +472,12 @@
     			
 				if (InputAddressDetail == '') {
 					$("#LabelAddressDetail").html('상세주소 <span id="SpanAddressDetail"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-					$("#SpanAddressDetail").css("color", "red");	
+					$("#SpanAddressDetail").css("color", "red");
+					FlagAddressDetail = false;
     			} else {
     				$("#LabelAddressDetail").html('상세주소 <span id="SpanAddressDetail"><i class="mdi mdi-check"></i></span>');
     				$("#SpanAddressDetail").css("color", "green");
+    				FlagAddressDetail = true;
     			}
     		})
     		
@@ -411,11 +503,10 @@
 		    	console.log(info.cdnUrl);
 		    	var fileUrl = info.cdnUrl;
 			    	$.ajax({
-				    	url: "<%=request.getContextPath()%>/member/profileUpdate.do",
+				    	url: "<%=request.getContextPath()%>/member/profileUpdate.ax",
 				    	data: {
 				    		fileUrl: fileUrl
 				    	},
-				    	async: false,
 				    	type: "post",
 				    	success: function(result){
 				    		console.log(result);
@@ -425,7 +516,6 @@
 				    		$("#InputProfile").attr("value", fileUrl);
 				    	},
 				    	error: function(error){
-				    		console.log(error);
 				    		$("#ImgProfilePre").attr("src", fileUrl);
 				    		$("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-close"></i> 다시 시도해 주세요.</span>');
 				    		$("#SpanProfile").css("color", "red");

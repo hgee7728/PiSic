@@ -20,7 +20,7 @@ public class ChartController {
 	@Autowired
 	private ChartService serviceC;
 
-	@GetMapping("/")
+	@GetMapping(value = {"/", "/chartMain"})
 	public ModelAndView MainPage(ModelAndView mv, Model model) {
 		List<Sound> chartTopten = serviceC.selectMainTopten();
 		mv.addObject("chartTopten", chartTopten);

@@ -23,7 +23,7 @@ public class MainController {
 	@Autowired
 	private ChartService serviceC;
 	
-	@GetMapping("/") 
+	@GetMapping(value = {"/", "/main"})
 	public ModelAndView MainPage(ModelAndView mv, Model model) { 
 		List<Artist> artistRandom = serviceA.selectArtistRandom();
 		mv.addObject("artistRandom", artistRandom);

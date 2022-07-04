@@ -22,4 +22,39 @@ public class MemberServiceImpl implements MemberService{
 		return dao.selectLogin(member);
 	}
 
+	@Override
+	public int idCheck(String m_id) {
+		return dao.idCheck(m_id);
+	}
+
+	@Override
+	public int nicknameCheck(String m_nickname) {
+		return dao.nicknameCheck(m_nickname);
+	}
+
+	@Override
+	public int emailCheck(String m_email) {
+		return dao.emailCheck(m_email);
+	}
+
+	@Override
+	public int phoneCheck(int m_phone) {
+		return dao.phoneCheck(m_phone);
+	}
+
+	@Override
+	public Member findId(Member member) {
+		return dao.findId(member);
+	}
+
+	@Override
+	public Member findPw(Member member) {
+		return dao.findPw(member);
+	}
+
+	@Override
+	public int findPwA(Member member) {
+		return dao.findPwA(member);
+	}
+
 }
