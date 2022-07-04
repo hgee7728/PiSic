@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,12 +40,13 @@ public class MemberController {
 		int result = service.insertMember(member);
 		if(result < 1) {
 			rttr.addFlashAttribute("msg","회원가입 실패");
+			System.out.println("가입실패");
 			mv.setViewName("redirect:/");
 		} else {
 			rttr.addFlashAttribute("msg","회원가입 성공");
+			System.out.println("가입성공");
 			mv.setViewName("redirect:/");
 		}
-	
 		return mv;
 	}
 	
@@ -83,6 +85,13 @@ public class MemberController {
 		session.removeAttribute("loginSsInfo");
 		return "redirect:/";
 	}
+	
+	@PostMapping("/profileUpdate.do")
+	public String profile(
+			@RequestParam (name = "fileUrl", required = false) String filename) {
+		return filename;
+	}
+	
 	
 	@ExceptionHandler(Exception.class)
 	private ModelAndView handlerBoardException(Exception e) { // 얘가 최상이라 아래거로 들어갈 일 없어.

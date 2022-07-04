@@ -23,7 +23,28 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
   <style>
-  	
+  	.stretch-card {
+  		margin: 0 auto;
+  	}
+  	.btn.btn-info.btn-fw {
+  		margin: 0 auto;
+    	display: block;
+  	}
+  	.btn.btn-inverse-secondary.btn-fw {
+  		flex: 0 0 33.33333%;
+  		min-width: 120px !important;
+  		max-width: 120px !important;
+  		margin: 0 auto;
+  	}
+  	.row {
+  		margin-top: 0.75rem;
+  	}
+  	@media (min-width: 768px) {
+  		.col-md-6 {
+			max-width: 70%;
+		}
+  	}
+	
   </style> 
   </head>
   <body>
@@ -38,7 +59,7 @@
         <div class="main-panel">
           <div class="content-wrapper">
           	<div class="page-header">
-              <h3 class="page-title">로그인</h3>
+              <h2 class="card-title">LOGIN</h2>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="#">회원</a></li>
@@ -66,6 +87,11 @@
                       </div>
                       <button type="submit" class="btn btn-info btn-fw">로그인</button>
                     </form>
+                    <div class="row">
+	                    <button type="button" class="btn btn-inverse-secondary btn-fw">아이디 찾기</button>
+	                    <button type="button" class="btn btn-inverse-secondary btn-fw">비밀번호 찾기</button>
+	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/insert'">회원가입</button>
+                    </div>
                   </div>
                 </div>
               </div>

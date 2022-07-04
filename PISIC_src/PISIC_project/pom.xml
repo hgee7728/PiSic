@@ -258,11 +258,18 @@
 		    <version>1.32.2</version>
 		</dependency>
 		<dependency>
-            <groupId>com.cloudinary</groupId>
-            <artifactId>cloudinary-taglib</artifactId>
-            <version>1.14.0</version>
-        </dependency>
-      
+	            <groupId>com.cloudinary</groupId>
+	            <artifactId>cloudinary-taglib</artifactId>
+	            <version>1.14.0</version>
+	        </dependency>
+	
+	        <!-- uploadcare -->
+	        <dependency>
+			<groupId>com.uploadcare</groupId>
+			<artifactId>uploadcare</artifactId>
+			<version>3.5.1</version>
+		</dependency>
+		
 	</dependencies>
     <build>
         <plugins>

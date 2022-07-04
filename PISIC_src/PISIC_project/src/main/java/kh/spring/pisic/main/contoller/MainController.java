@@ -19,7 +19,7 @@ public class MainController {
 	private ArtistService service;
 
 	
-	@GetMapping("/") 
+	@GetMapping(value = {"/", "/main"}) 
 	public ModelAndView MainPage(ModelAndView mv, Model model) { 
 		List<Artist> artistRandom = service.selectArtistRandom();
 		mv.addObject("artistRandom", artistRandom);

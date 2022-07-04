@@ -24,10 +24,34 @@
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
   <style>
   	.content-wrapper {
   		max-width: 900px;
   	}
+  	.btn.btn-info.btn-fw {
+  		margin: 0 auto;
+    	display: block;
+  	}
+  	.btn.btn-inverse-secondary.btn-fw {
+  		
+  	}
+  	#ImgProfilePre {
+  		margin-right: 10px;
+  		width: calc(100% - 160px);
+  		border-radius: 2px;
+  	}
+  	@media (max-width: 321px) {
+  		#ImgProfilePre {
+			max-width: 172px;
+		}
+  	}
+  </style>
+  <style>
+  	/* .uploadcare--widget__button, .uploadcare--widget__file-name, 
+  	.uploadcare--widget__file-size, .uploadcare--widget__text {
+    	display: none;
+	} */
   </style>
   </head>
   <body>
@@ -109,7 +133,7 @@
                       </div>
                       <div class="form-group">
                         <label id="LabelGender" for="SelectGender">성별 *</label>
-                        <select class="form-control" id="SelectGender">
+                        <select class="form-control" id="SelectGender" name="m_gender">
                           <option value="M">남성</option>
                           <option value="F">여성</option>
                         </select>
@@ -127,7 +151,7 @@
                         <label id="LabelAddressDetail" for="InputAddressDetail">상세주소 *</label>
 	                    <input type="text" class="form-control" id="InputAddressDetail" placeholder="AddressDetail" name="m_address_detail" required>
                       </div>
-		      <!-- kakao 우편번호 서비스 -->
+		      		  <!-- kakao 우편번호 서비스 -->
                       <script>
                       	function daumPost() {
                       		new daum.Postcode({
@@ -163,25 +187,21 @@
                       </script>
                       <div class="form-group">
                         <label id="LabelProfile">프로필사진 *</label>
-                        <input type="file" name="img[]" class="file-upload-default">
-                        <div class="input-group col-xs-12">
-                          <input type="text" class="form-control file-upload-info" disabled placeholder="Profile">
+                        <div class="input-group">
+                          <img id="ImgProfilePre" src="<%=request.getContextPath()%>/resources/assets/images/DummyImage.png">
                           <span class="input-group-append">
-                            <button class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
+                            <button id="BtnProfile" class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
                           </span>
                         </div>
+                        <input type="hidden" id="InputProfile" name="m_profile">
+                        <input type="hidden" id="InputProfileUC" role="uploadcare-uploader" 
+                            data-public-key="183400fad159d76bdf53" data-tabs="file gdrive gphotos"/>
                       </div>
                       <button type="submit" class="btn btn-info btn-fw" id="btn_submit">회원가입</button>
                     </form>
                   </div>
                 </div>
               </div>
-            <form action="<%=request.getContextPath() %>/member/insert" method="post">
-				아이디 :<input type="text" name="m_id" required><br>
-				비밀번호 :<input type="password" name="m_password" required><br>
-				이름 :<input type="text" name="m_name" required><br>
-				<button type="submit">회원가입</button>
-			</form>
           </div>
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
@@ -194,19 +214,21 @@
     </div>
     <!-- 회원가입 from -->
     <script>
+	    var InputId = null;
+		var InputPw1 = null;
+		var InputPw2 = null;
+		var InputName = null;
+		var InputNickname = null;
+		var InputEmail = null;
+		var InputPhone = null;
+		var InputBirth = null;
+		var InputAddress = null;
+		var InputAddressDetail = null;
+		var InputProfile = null;
+		
     	$(document).ready(function(){
-    		var InputId = null;
-    		var InputPw1 = null;
-    		var InputPw2 = null;
-    		var InputName = null;
-    		var InputNickname = null;
-    		var InputEmail = null;
-    		var InputPhone = null;
-    		var InputBirth = null;
-    		var InputAddress = null;
-    		var InputAddressDetail = null;
-    		
-    		$("#InputId").on("blur", function(){
+    		// 아이디
+    		$("#InputId").on("keyup", function(){
     			var regexId = /^[0-9a-zA-Z]{7,15}$/;
     			InputId = $("#InputId").val();
     			
@@ -223,7 +245,8 @@
     			}
     		})
     		
-    		$("#InputPassword1").on("blur", function(){
+    		// 비밀번호
+    		$("#InputPassword1").on("keyup", function(){
     			var regexPw = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
     			InputPw1 = $("#InputPassword1").val();
     			
@@ -240,7 +263,8 @@
     			}
     		})
     		
-    		$("#InputPassword2").on("blur", function(){
+    		// 비밀번호 확인
+    		$("#InputPassword2").on("keyup", function(){
     			InputPw1 = $("#InputPassword1").val();
     			InputPw2 = $("#InputPassword2").val();
     			
@@ -253,7 +277,8 @@
     			}
     		})
     		
-    		$("#InputName").on("blur", function(){
+    		// 이름
+    		$("#InputName").on("keyup", function(){
     			var regexName = /(^[가-힣]{2,5}$)|(^[a-zA-Z]{2,20}(\s[a-zA-Z]{2,20})?$)/;
     			InputName = $("#InputName").val();		
     			
@@ -270,7 +295,8 @@
     			}
     		})
     		
-    		$("#InputNickname").on("blur", function(){
+    		// 닉네임
+    		$("#InputNickname").on("keyup", function(){
     			var regexNickname = /^[가-힣|a-z|A-Z|0-9]{2,15}$/;
     			InputNickname = $("#InputNickname").val();
     			
@@ -287,7 +313,8 @@
     			}
     		})
     		
-    		$("#InputEmail").on("blur", function(){
+    		// 이메일
+    		$("#InputEmail").on("keyup", function(){
     			var regexEmail = /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
     			InputEmail = $("#InputEmail").val();		
     			
@@ -295,7 +322,7 @@
     				if (InputEmail == '') {
     					$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
     				} else {
-    					$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-close"></i> 이메일 형식이 맞지 않습니다.</span>');
+    					$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-close"></i> 이메일 형식이 맞지 않습니다. ex)pisic1234@gmail.com</span>');
     				}
     				$("#SpanEmail").css("color", "red");
     			} else {
@@ -304,8 +331,9 @@
     			}
     		})
     		
-    		$("#InputPhone").on("blur", function(){
-    			var regexPhone = /^01([0|1|6|7|8|9])+([0-9]{3,4})+([0-9]{4})$/;
+    		// 휴대전화
+    		$("#InputPhone").on("keyup", function(){
+    			var regexPhone = /^01([0|1|6|7|8|9]{2})+([0-9]{6,7})$/;
     			InputPhone = $("#InputPhone").val();
     			
     			if (!regexPhone.test(InputPhone)) {
@@ -321,7 +349,8 @@
     			}
     		})
     		
-    		$("#InputBirth").on("blur", function(){
+    		// 생년월일
+    		$("#InputBirth").on("keyup", function(){
     			var regexBirth = /^[0-9]{8}$/;
     			InputBirth = $("#InputBirth").val();		
     			
@@ -338,6 +367,7 @@
     			}
     		})
     		
+    		// 주소
     		$("#InputAddress").attr("readonly", true);
     		InputAddress = $("#InputAddress").val();
     		
@@ -346,7 +376,8 @@
     			$("#SpanAddress").css("color", "green");
     		}
     		
-    		$("#InputAddressDetail").on("blur", function(){
+    		// 상세주소
+    		$("#InputAddressDetail").on("keyup", function(){
     			InputAddressDetail = $("#InputAddressDetail").val();		
     			
 				if (InputAddressDetail == '') {
@@ -357,9 +388,53 @@
     				$("#SpanAddressDetail").css("color", "green");
     			}
     		})
+    		
+    		// 프로필 사진
+    		$("#BtnProfile").on("click", function(){
+	    		$(".uploadcare--widget__button.uploadcare--widget__button_type_open").trigger("click");    			
+    		})
+			
+    		/* uploadcare */
+    	    UPLOADCARE_LOCALE = "ko"
+    	    UPLOADCARE_LOCALE_TRANSLATIONS = {
+    	        buttons: {
+    	            choose: {
+    	                files: {
+    	                    one: '사진첨부'
+    	                }
+    	            }
+    	        }
+    	    }
+    		
+    		var singleWidget = uploadcare.SingleWidget('[role=uploadcare-uploader]');
+	    	singleWidget.onUploadComplete(function(info){
+		    	console.log(info.cdnUrl);
+		    	var fileUrl = info.cdnUrl;
+			    	$.ajax({
+				    	url: "<%=request.getContextPath()%>/member/profileUpdate.do",
+				    	data: {
+				    		fileUrl: fileUrl
+				    	},
+				    	async: false,
+				    	type: "post",
+				    	success: function(result){
+				    		console.log(result);
+				    		$("#ImgProfilePre").attr("src", fileUrl);
+				    		$("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-check"></i></span>');
+				    		$("#SpanProfile").css("color", "green");
+				    		$("#InputProfile").attr("value", fileUrl);
+				    	},
+				    	error: function(error){
+				    		console.log(error);
+				    		$("#ImgProfilePre").attr("src", fileUrl);
+				    		$("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-close"></i> 다시 시도해 주세요.</span>');
+				    		$("#SpanProfile").css("color", "red");
+				    		$("#InputProfile").attr("value", fileUrl);
+			    		}
+	    		});
+    		});
     	});
     </script>
-    
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="<%=request.getContextPath()%>/resources/assets/vendors/js/vendor.bundle.base.js"></script>
