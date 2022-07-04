@@ -12,5 +12,6 @@ public interface SoundService {
 	public Sound selectSound(Sound sound);
 	public List<Sound> selectSoundList(List<Sound> soundList);
 	public int insertLike(Member member, Sound sound);
+	public Album selectSoundAlbum(Sound sound);
 	
 }

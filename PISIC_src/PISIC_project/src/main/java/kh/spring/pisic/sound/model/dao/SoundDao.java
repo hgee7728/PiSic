@@ -22,7 +22,7 @@ public class SoundDao {
 		return session.selectOne("Sound.selectAlbum",a_no);
 	}
 
-	// 곡 상세조회
+	// 곡 상세조회 - 곡정보
 	public Sound selectSound(Sound sound) {
 		return session.selectOne("Sound.selectSound",sound);
 	}
@@ -38,5 +38,10 @@ public class SoundDao {
 		map.put("memberVo", member);
 		map.put("soundVo", sound);
 		return session.insert("Sound.insertLike",map);
+	}
+	
+	// 곡 상세조회 - 수록 앨범
+	public Album selectSoundAlbum(Sound sound) {
+		return session.selectOne("Sound.selectSoundAlbum",sound.getA_no());
 	}
 }

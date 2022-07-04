@@ -142,6 +142,7 @@ public class SoundController {
 	@GetMapping("/soundDetail")
 	public ModelAndView selectSoundDetail(ModelAndView mv, Sound sound) {
 
+		mv.addObject("album", service.selectSoundAlbum(sound));
 		mv.addObject("sound", service.selectSound(sound));
 		mv.setViewName("sound/soundDetail");
 		return mv;

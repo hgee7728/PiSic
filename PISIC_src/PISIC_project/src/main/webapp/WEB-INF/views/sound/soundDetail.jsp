@@ -78,7 +78,9 @@ table.sound_list  tr > td:nth-child(9){
 	font-size:30px;
 	margin: 0px 5px;
 }
-
+.album_div{
+	padding:0px 15px;
+}
 
 </style>
 <script>
@@ -195,14 +197,10 @@ function playOne(a_no,s_no){
 									</thead>
 									<tbody>
 										<tr>
-											<td>앨범명 :</td>
-											<td>${sound.a_name}</td>
-										</tr>
-										<tr>
 											<td>가수명 :</td>
 											<td>
-												<c:forEach items="${sound.artist_names }" var="singer">
-												${singer}&nbsp;
+												<c:forEach items="${sound.singers }" var="singer">
+												${singer.artist_name}&nbsp;
 												</c:forEach>
 											</td>
 										</tr>
@@ -210,7 +208,7 @@ function playOne(a_no,s_no){
 											<td>작사 :</td>
 											<td>
 												<c:forEach items="${sound.sound_writers }" var="writer">
-												${writer}&nbsp;
+												${writer.artist_name}&nbsp;
 												</c:forEach>
 											</td>
 										</tr>
@@ -218,7 +216,7 @@ function playOne(a_no,s_no){
 											<td>작곡 :</td>
 											<td>
 												<c:forEach items="${sound.sound_composers }" var="composer">
-												${composer}&nbsp;
+												${composer.artist_name}&nbsp;
 												</c:forEach>
 											</td>
 										</tr>
@@ -245,7 +243,6 @@ function playOne(a_no,s_no){
 					<div class="content_div2">
 						<div>
 							<h3 class="card-title">가사</h3>
-
 						</div>
 						<hr color="white">
 						<blockquote class="blockquote">
@@ -258,9 +255,42 @@ function playOne(a_no,s_no){
 						</div>
 					</div>
 					<div class="content_div3">
-						
-						
+						<div>
+							<h3 class="card-title">수록 앨범</h3>
+						</div>
+						<hr color="white">
+						<div class="row album_div">
+							<div class="main_img_div">
+								<img id="main_img"
+									src="${album.a_cover }"
+									width="200" height="200">
+							</div>
+							<div class="content_info  card">
+								<div class="card-body">
+									<table class="table album_table">
+										<thead>
+											<tr>
+												<th>앨범명 :</th>
+												<th>${album.a_name}</th>
+											</tr>
+										</thead>
+										<tbody>
+											
+											<tr>
+												<td>가수명 :</td>
+												<td>${album.artist_name}</td>
+											</tr>
+											<tr>
+												<td>발매일 :</td>
+												<td>${album.a_date}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
 					</div>
+							
 					<div class="content_div4">
 					
 					</div>

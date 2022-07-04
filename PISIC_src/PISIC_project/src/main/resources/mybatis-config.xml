@@ -9,6 +9,9 @@
 	<typeAlias type="kh.spring.pisic.sound.domain.Artist" alias="Artist"/>
 	<typeAlias type="kh.spring.pisic.sound.domain.Album" alias="Album"/>
 	<typeAlias type="kh.spring.pisic.sound.domain.Sound" alias="Sound"/>
+	<typeAlias type="kh.spring.pisic.sound.domain.Singer" alias="Singer"/>
+	<typeAlias type="kh.spring.pisic.sound.domain.Writer" alias="Writer"/>
+	<typeAlias type="kh.spring.pisic.sound.domain.Composer" alias="Composer"/>
 	<typeAlias type="kh.spring.pisic.sound.domain.AssociationAS" alias="AssociationAS"/>
 	<typeAlias type="kh.spring.pisic.mymusic.domain.MyMusic" alias="MyMusic"/>
 </typeAliases>

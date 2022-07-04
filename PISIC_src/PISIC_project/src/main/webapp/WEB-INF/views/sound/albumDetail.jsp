@@ -454,8 +454,8 @@ function newPlaylist(){
 															<td><img src="${album.a_cover }" alt="image" /></td>
 															<td>${sounds.s_name}</td>
 															<td>
-																<c:forEach items="${ sounds.artist_names}" var="singer">
-																${singer}&nbsp;
+																<c:forEach items="${ sounds.singers}" var="singer">
+																${singer.artist_name}&nbsp;
 																</c:forEach>
 															</td>
 															<td>${album.a_name }</td>
