@@ -3,9 +3,13 @@
 <mapper namespace="FaqBoard">
 
 
-<select id="selectFaqList" resultType="Board">
-	    select * from faq order by faq_no desc
+<select id="pageSelectFaq" resultType="FaqBoard">
+	   	    select * from faq
+	order by faq_no desc
 </select>
-
+<select id="selectFaqBoard" resultType="FaqBoard" parameterType="string">
+	select * from faq
+	where faq_no=#{faq_no}
+</select>
 
 </mapper>

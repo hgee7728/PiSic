@@ -17,8 +17,8 @@ public class PjBoardReadAllController {
 	@Autowired
 	private PjBoardServiceImpl service;
 	
-	@GetMapping("/main")
+	@GetMapping("/pjlounge_list")
 	public String mainSelectPj() {
-		return "pjlounge/main";
+		return "pjlounge/pjlounge_list";
 	}
 }

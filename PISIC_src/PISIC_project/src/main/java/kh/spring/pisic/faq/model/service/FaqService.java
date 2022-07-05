@@ -9,5 +9,5 @@ import kh.spring.pisic.faq.domain.FaqBoard;
 public interface FaqService {
 	
 	public List<FaqBoard> selectFaqList();
-	
+	public FaqBoard  selectFaqBoard(String faq_no);
 }

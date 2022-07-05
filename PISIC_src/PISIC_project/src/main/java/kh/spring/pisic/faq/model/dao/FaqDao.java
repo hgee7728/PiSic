@@ -16,16 +16,18 @@ import kh.spring.pisic.faq.model.service.FaqServiceImpl;
 import kh.spring.pisic.faq.domain.FaqBoard;
 
 @Repository
-
 public class FaqDao {
 	@Autowired
 	private SqlSession sqlSession;
 
 	//자주묻는질문 목록
-	public List<FaqBoard> selectFaqList() {
-			return sqlSession.selectList("FaqBoard.selectFaqList");
+	public List<FaqBoard> pageSelectFaq() {
+			return sqlSession.selectList("FaqBoard.pageSelectFaq");
 	}
-//	public FaqBoard selectFaq(String faq_num) {
-//		return sqlSession.selectOne("FaqBoard.selectFaq", faq_num);
-//	}
+
+	public FaqBoard selectFaqBoard(String faq_no) {
+		return sqlSession.selectOne("FaqBoard.selectFaqBoard", faq_no);
+	}
+
+
 }

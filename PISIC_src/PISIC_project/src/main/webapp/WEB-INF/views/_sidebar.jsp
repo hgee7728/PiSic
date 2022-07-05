@@ -137,7 +137,7 @@
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="pages/charts/chartjs.html">
+      <a class="nav-link" href="<%=request.getContextPath()%>/pjlounge/pjlounge_list">
         <span class="menu-icon">
           <i class="mdi mdi-chart-bar"></i>
         </span>
