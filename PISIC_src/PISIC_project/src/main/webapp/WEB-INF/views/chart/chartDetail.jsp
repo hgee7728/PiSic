@@ -47,6 +47,10 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 	font-size: 30px;
 	margin: 0px 5px;
 }
+
+.btn_reload {
+	font-size: 15px;
+}
 </style>
 </head>
 <body>
@@ -61,11 +65,12 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 			<div class="main-panel">
 				<div class="content-wrapper">
 
-					<h2 class=" card-title">PISIC CHART</h2>
-
+					<h2 class=" card-title">
+						PISIC CHART &nbsp&nbsp<i type="button" class="mdi mdi-reload btn_reload">
+							${serverTime} </i>
+					</h2>
 					<br>
-
-
+					<p>PISIC USER 들의 전체 재생 수 기준 랭킹 조회</p>
 					<div class="content_div3">
 						<div class="select_btns">
 							<button type="button" id="select_play"
@@ -76,11 +81,11 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-									
-									
-									<!-- TODO hg : 차트이름 변경하기  -->
-									
-										<h3 class="card-title">수록곡</h3>
+
+
+										<!-- TODO hg : 차트이름 변경하기  -->
+
+										<h3 class="card-title">PISIC TOP 10</h3>
 										<div class="table-responsive">
 											<form name="sound_frm">
 												<table class="table sound_list">
@@ -120,9 +125,9 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td>${sounds.s_name}</td>
-																<td><c:forEach items="${ sounds.artist_names}"
+																<td><c:forEach items="${ sounds.singers}"
 																		var="singer">
-                                                					${singer}&nbsp;
+                                                					${singer.artist_name}&nbsp;
                                                						</c:forEach></td>
 																<td>${sounds.a_name }</td>
 
@@ -156,6 +161,13 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 		</div>
 		<!-- page-body-wrapper ends -->
 	</div>
+
+	<script>
+		document.querySelector(".btn_reload").onclick = function() {
+			location.reload();
+		}
+	</script>
+
 	<!-- container-scroller -->
 	<!-- plugins:js -->
 	<script

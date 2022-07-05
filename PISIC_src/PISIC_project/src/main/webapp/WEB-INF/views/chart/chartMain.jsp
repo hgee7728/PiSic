@@ -69,7 +69,9 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 			<div class="main-panel">
 				<div class="content-wrapper">
 
-					<h2 class=" card-title">PISIC CHART</h2>
+					<h2 class=" card-title">
+						PISIC CHART
+					</h2>
 
 					<br>
 					<div class=" content_div3" style="display: flex;">
@@ -117,9 +119,9 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td>${sounds.s_name}</td>
-																<td><c:forEach items="${ sounds.artist_names}"
+																<td><c:forEach items="${ sounds.singers}"
 																		var="singer">
-                                                					${singer}&nbsp;
+                                                					${singer.artist_name}&nbsp;
                                                						</c:forEach></td>
 																<td>${sounds.a_name }</td>
 
@@ -196,9 +198,9 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td>${sounds.s_name}</td>
-																<td><c:forEach items="${ sounds.artist_names}"
+																<td><c:forEach items="${ sounds.singers}"
 																		var="singer">
-                                                					${singer}&nbsp;
+                                                					${singer.artist_name}&nbsp;
                                                						</c:forEach></td>
 																<td>${sounds.a_name }</td>
 
@@ -277,10 +279,10 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 																<td>${sounds.s_no }</td>
 																<td><img src="${album.a_cover }" alt="image" /></td>
 																<td>${sounds.s_name}</td>
-																<td><c:forEach items="${ sounds.artist_names}"
+																<td><c:forEach items="${ sounds.singers}"
 																		var="singer">
-                                               							${singer} 
-                                                					</c:forEach></td>
+                                                					${singer.artist_name}&nbsp;
+                                               						</c:forEach></td>
 																<td>${album.a_name }</td>
 																<td><a
 																	href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i
@@ -354,10 +356,10 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 																<td>${sounds.s_no }</td>
 																<td><img src="${album.a_cover }" alt="image" /></td>
 																<td>${sounds.s_name}</td>
-																<td><c:forEach items="${ sounds.artist_names}"
+																<td><c:forEach items="${ sounds.singers}"
 																		var="singer">
-                                               							${singer} 
-                                                					</c:forEach></td>
+                                                					${singer.artist_name}&nbsp;
+                                               						</c:forEach></td>
 																<td>${album.a_name }</td>
 																<td><a
 																	href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i
@@ -432,10 +434,10 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 																<td>${sounds.s_no }</td>
 																<td><img src="${album.a_cover }" alt="image" /></td>
 																<td>${sounds.s_name}</td>
-																<td><c:forEach items="${ sounds.artist_names}"
+																<td><c:forEach items="${ sounds.singers}"
 																		var="singer">
-                                               							${singer} 
-                                                					</c:forEach></td>
+                                                					${singer.artist_name}&nbsp;
+                                               						</c:forEach></td>
 																<td>${album.a_name }</td>
 																<td><a
 																	href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i
@@ -476,6 +478,14 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 		</div>
 		<!-- page-body-wrapper ends -->
 	</div>
+
+
+	<script>
+		document.querySelector(".btn_reload").onclick = function() {
+			location.reload();
+		}
+	</script>
+
 	<!-- container-scroller -->
 	<!-- plugins:js -->
 	<script
