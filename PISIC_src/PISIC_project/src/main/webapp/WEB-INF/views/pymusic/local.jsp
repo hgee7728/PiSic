@@ -76,11 +76,11 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-									
-									
-									<!-- TODO hg : 지역이름 변경하기 -->
-									
-										<h3 class="card-title">광진구</h3>
+
+
+										<!-- TODO hg : 차트이름 변경하기  -->
+
+										<h3 class="card-title">PISIC TOP 10</h3>
 										<div class="table-responsive">
 											<form name="sound_frm">
 												<table class="table sound_list">
@@ -105,7 +105,7 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 														</tr>
 													</thead>
 													<tbody>
-														<c:forEach items="${ album.sounds}" var="sounds">
+														<c:forEach items="${pyLocal }" var="sounds">
 															<tr>
 																<td>
 																	<div class="form-check form-check-muted m-0">
@@ -117,23 +117,22 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 																			name="a_no">
 																	</div>
 																</td>
-																<td>${sounds.s_no }</td>
-																<td><img src="${album.a_cover }" alt="image" /></td>
+																<td>${sounds.chart }</td>
+																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td>${sounds.s_name}</td>
-																<td><c:forEach items="${ sounds.artist_names}"
+																<td><c:forEach items="${ sounds.singers}"
 																		var="singer">
-                                                ${singer} 
-                                                </c:forEach></td>
-																<td>${album.a_name }</td>
+                                                					${singer.artist_name}&nbsp;
+                                               						</c:forEach></td>
+																<td>${sounds.a_name }</td>
+
 																<td><a
 																	href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i
 																		class="mdi mdi-play list_icon"></i></a></td>
 																<td><a href=""><i
-																		class="mdi mdi-heart list_icon like_after"></i></a> <!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
-																</td>
+																		class="mdi mdi-heart list_icon like_after"></i></a></td>
 																<td><a href=""><i
-																		class="mdi mdi-plus-box list_icon"></i></a> <!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-																</td>
+																		class="mdi mdi-plus-box list_icon"></i></a></td>
 															</tr>
 														</c:forEach>
 													</tbody>

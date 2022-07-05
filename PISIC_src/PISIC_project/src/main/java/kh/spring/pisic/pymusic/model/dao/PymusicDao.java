@@ -1,4 +1,4 @@
-package kh.spring.pisic.chart.model.dao;
+package kh.spring.pisic.pymusic.model.dao;
 
 import java.util.List;
 
@@ -9,18 +9,11 @@ import org.springframework.stereotype.Repository;
 import kh.spring.pisic.sound.domain.Sound;
 
 @Repository
-public class ChartDao {
-
+public class PymusicDao {
 	@Autowired
 	private SqlSession session;
 	
-	public List<Sound> selectChartDetail(){
-		return session.selectList("Chart.selectChartDetail");
+	public List<Sound> selectPyLocal() {
+		return session.selectList("Pymusic.selectPyLocal");
 	}
-	
-	public List<Sound> selectMainTopten(){
-		return session.selectList("Chart.selectMainTopten");
-	}
-	
-
 }

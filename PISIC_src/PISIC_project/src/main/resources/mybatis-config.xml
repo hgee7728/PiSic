@@ -14,6 +14,7 @@
 	<typeAlias type="kh.spring.pisic.sound.domain.Composer" alias="Composer"/>
 	<typeAlias type="kh.spring.pisic.sound.domain.AssociationAS" alias="AssociationAS"/>
 	<typeAlias type="kh.spring.pisic.mymusic.domain.MyMusic" alias="MyMusic"/>
+	<typeAlias type="kh.spring.pisic.sound.domain.PlayInfo" alias="PlayInfo"/>
 </typeAliases>
 <mappers>
 	<mapper resource="mappers/member-mapper.xml"/>

@@ -19,8 +19,8 @@
 	</resultMap>
 
 	<!-- 메인 페이지 chart -->
-	
-	<select id="selectChartMain" resultType="Sound" resultMap="soundResultMap">
+	<select id="selectChartDetail" resultType="Sound"
+		resultMap="soundResultMap">
 	<![CDATA[
 	select t2.*
 	from (
@@ -36,9 +36,13 @@
 	where chart <=10
 	]]>
 	</select>
-	
+
+
+
+
 	<!-- 차트 메인 페이지 small chart -->
-	<select id="selectMainTopten" resultType="Sound" resultMap="soundResultMap">
+	<select id="selectMainTopten" resultType="Sound"
+		resultMap="soundResultMap">
 	<![CDATA[
 	select t2.*
 	from (
@@ -54,13 +58,103 @@
 	where chart <=3
 	]]>
 	</select>
+
+
+	<select id="selectMonthlyTopten" resultType="Sound"
+		resultMap="soundResultMap">
+	<![CDATA[
+	select t2.*
+	from (
+	select t1.*
+	    , (select artist_name from artist where artist_no = (select artist_no from singer t2 where t2.s_no=t1.s_no and t2.a_no= t1.a_no)) artist_name,
+	    rank() over (partition by s_path order by cnt desc, s_no, a_no ) chart
+	from
+	    (select  a_cover, s_no, a_no, s_name, s_path, a_name, p_date, count(*) cnt 
+	    from sound
+	    join album using(a_no)
+	    join (select p_no, a_no, s_no, p_date from playinfo) using (a_no, s_no)
+	    where p_date <= (select last_day(sysdate) from dual) and p_date > (select add_months((select last_day(sysdate) from dual),-1) from dual)
+	    group by a_cover, s_no, a_no, s_name,a_name,s_path, p_date order by cnt) t1
 	
+	) t2
+	where chart <=3
+	]]>
+	</select>
+
+	<select id="selectWeeklyTopten" resultType="Sound"
+		resultMap="soundResultMap">
+	<![CDATA[
+	select t2.*
+	from (
+	select t1.*
+	    , (select artist_name from artist where artist_no = (select artist_no from singer t2 where t2.s_no=t1.s_no and t2.a_no= t1.a_no)) artist_name,
+	    rank() over (partition by s_path order by cnt desc, s_no, a_no ) chart
+	from
+	    (select  a_cover, s_no, a_no, s_name, s_path, a_name, p_date, count(*) cnt 
+	    from sound
+	    join album using(a_no)
+	    join (select p_no, a_no, s_no, p_date from playinfo) using (a_no, s_no)
+	    where p_date >= (SELECT trunc(SYSDATE, 'd') FROM dual)
+	    group by a_cover, s_no, a_no, s_name,a_name,s_path, p_date order by cnt) t1
+	
+	) t2
+	where chart <=3
+	]]>
+	</select>
+
+
+	<select id="selectDailyTopten" resultType="Sound"
+		resultMap="soundResultMap">
+	<![CDATA[
+	select t2.*
+	from (
+	select t1.*
+	    , (select artist_name from artist where artist_no = (select artist_no from singer t2 where t2.s_no=t1.s_no and t2.a_no= t1.a_no)) artist_name,
+	    rank() over (partition by s_path order by cnt desc, s_no, a_no ) chart
+	from
+	    (select  a_cover, s_no, a_no, s_name, s_path, a_name, p_date, count(*) cnt 
+	    from sound
+	    join album using(a_no)
+	    join (select p_no, a_no, s_no, p_date from playinfo) using (a_no, s_no)
+	    where p_date = sysdate
+	    group by a_cover, s_no, a_no, s_name,a_name,s_path, p_date order by cnt) t1
+	
+	) t2
+	where chart <=3
+	]]>
+	</select>
+
+
+	<select id="selectLikeTopten" resultType="Sound"
+		resultMap="soundResultMap">
+	<![CDATA[
+	select t2.*
+	from (
+	select t1.*
+	    , (select artist_name from artist where artist_no = (select artist_no from singer t2 where t2.s_no=t1.s_no and t2.a_no= t1.a_no)) artist_name,
+	    rank() over (partition by s_path order by cnt desc, s_no, a_no ) chart
+	from
+	    (select  a_cover, s_no, a_no, s_name, s_path, a_name, count(*) cnt 
+	    from sound
+	    join album using(a_no)
+	    join (select a_no, s_no from sound_like) using (a_no, s_no)
+	    group by a_cover, s_no, a_no, s_name,a_name,s_path order by cnt) t1
+	
+	) t2
+	where chart <=3
+	]]>
+	</select>
+
+
+
 	<select id="soundSingerList" parameterType="map"
 		resultType="Singer">
 		select artist.artist_name, artist.artist_no
 		from sound sound
-		join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no
-		join artist artist on singer.artist_no = artist.artist_no 
+		join singer singer on sound.s_no=singer.s_no and
+		sound.a_no=singer.a_no
+		join artist artist on singer.artist_no =
+		artist.artist_no
 		where sound.a_no=#{a_no} and sound.s_no=#{s_no}
 	</select>
 

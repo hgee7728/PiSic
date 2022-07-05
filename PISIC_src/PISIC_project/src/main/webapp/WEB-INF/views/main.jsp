@@ -28,7 +28,10 @@
 	href="<%=request.getContextPath()%>/resources/assets/css/style.css">
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
-
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 
 <style>
@@ -142,6 +145,7 @@ img:nth-child(6) {
 .popup-foot {
 	width: 100%;
 	height: 50px;
+	border-bottom: 1px solid #ffffff;
 }
 
 .pop-btn.close {
@@ -168,6 +172,16 @@ img:nth-child(6) {
 	font-size: 20px;
 }
 
+.popup-footer {
+	text-align: right;
+}
+
+.close-cookie {
+	display: inline-flex; : center;
+	cursor: pointer;
+	color: #ffffff;
+}
+
 table.sound_list  tr>td:nth-child(1), table.sound_list  tr>td:nth-child(2),
 	table.sound_list  tr>td:nth-child(3), table.sound_list  tr>td:nth-child(7),
 	table.sound_list  tr>td:nth-child(8), table.sound_list  tr>td:nth-child(9)
@@ -179,6 +193,7 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 	table.sound_list  tr>td:nth-child(9) {
 	text-align: center;
 }
+
 .list_icon {
 	font-size: 30px;
 	margin: 0px 5px;
@@ -199,8 +214,8 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 									<div class="row align-items-center">
 										<div class="col-4 col-sm-3 col-xl-2">
 											<img
-												src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo.png" alt="logo"
-												class="gradient-corona-img img-fluid">
+												src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo.png"
+												alt="logo" class="gradient-corona-img img-fluid">
 										</div>
 										<div class="col-5 col-sm-7 col-xl-8 p-0">
 											<h4 class="mb-1 mb-sm-0">Explore Top Music Powered by
@@ -245,7 +260,7 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 								<table class="table sound_list">
 									<thead>
 										<tr>
-											
+
 											<td>순위</td>
 											<td></td>
 											<td>노래명</td>
@@ -258,8 +273,7 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 									<tbody>
 
 
-										<!-- TODO hg : 순위 for문 돌리기 -->
-										<c:forEach items="${ chartTopten}" var="sounds">
+										<c:forEach items="${chartDetail}" var="sounds">
 											<tr>
 												<td>${sounds.chart }</td>
 												<td><img src="${sounds.a_cover }" alt="image" /></td>
@@ -273,9 +287,9 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 														class="mdi mdi-play list_icon"></i></a></td>
 												<td><a
 													href="javascript:soundLike('${sounds.a_no }','${sounds.s_no}')"><i
-														class="mdi mdi-heart list_icon like_after"></i></a> <!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+														class="mdi mdi-heart list_icon like_after"></i></a> 
 												</td>
-												
+
 											</tr>
 										</c:forEach>
 
@@ -306,79 +320,79 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 									<!-- TODO hg : 클릭 범위 넓히기 -->
 									<map name="map" id="map">
 										<area shape="rect" coords="283,35,317,91"
-											href="http://www.dobong.go.kr/WDB_DEV/MF030301/MF030301search.asp"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="도봉구">
 										<area shape="rect" coords="260,92,294,108"
-											href="http://www.gangbuk.go.kr/www/contents.do?key=305"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="강북구">
 										<area shape="rect" coords="322,44,362,95"
-											href="https://www.nowon.kr/www/user/orgnzt/BD_selectOrgnzt.do"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="노원구">
 										<area shape="rect" coords="170,110,206,127"
-											href="http://www.ep.go.kr/CmsWeb/viewPage.req?idx=PG0000004276"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="은평구">
 										<area shape="rect" coords="260,138,298,154"
-											href="http://www.sb.go.kr/PageLink.do?link=forward:/sb_new/seongbukgu/organization/organization.do&tempParam1=&menuNo=07000000&subMenuNo=07040000&thirdMenuNo=&fourthMenuNo="
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="성북구">
 										<area shape="rect" coords="344,145,382,162"
-											href="http://www.jungnang.go.kr/portal/bbs/list/B0000389.do?dept=01&menuNo=201180"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="중랑구">
 										<area shape="rect" coords="171,170,220,187"
-											href="http://www.sdm.go.kr/wesdm/info/organization.do"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="서대문구">
 										<area shape="rect" coords="226,162,262,178"
-											href="http://www.jongno.go.kr/Main.do?menuId=1917&amp;menuNo=1917"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="종로구">
 										<area shape="rect" coords="298,163,342,179"
-											href="http://www.ddm.go.kr/ddm/organization.jsp"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="동대문구">
 										<area shape="rect" coords="58,185,92,204"
-											href="https://www.gangseo.seoul.kr/gs050201" target="_blank"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											title="새창으로 열립니다." alt="강서구">
 										<area shape="rect" coords="150,190,190,207"
-											href="https://www.mapo.go.kr/site/main/content/mapo040301"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="마포구">
 										<area shape="rect" coords="245,191,272,207"
-											href="http://www.junggu.seoul.kr/content.do?cmsid=14066"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="중구">
 										<area shape="rect" coords="289,199,324,215"
-											href="https://www.sd.go.kr/main/selectEmpList.do?key=2015"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="성동구">
 										<area shape="rect" coords="226,226,261,242"
-											href="https://www.yongsan.go.kr/portal/member/user/orgcht.do?menuNo=200203"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="용산구">
 										<area shape="rect" coords="334,211,372,227"
-											href="https://www.gwangjin.go.kr/portal/main/contents.do?menuNo=200202"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="광진구">
 										<area shape="rect" coords="393,201,430,217"
-											href="https://www.gangdong.go.kr/site/contents/koRenew/html03/html00/html00/index01.html"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="강동구">
 										<area shape="rect" coords="93,239,133,258"
-											href="http://www.yangcheon.go.kr/site/yangcheon/ex/dept/org_map.do"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="양천구">
 										<area shape="rect" coords="146,237,189,253"
-											href="https://www.ydp.go.kr/www/contents.do?key=2901&"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="영등포구">
 										<area shape="rect" coords="188,260,226,277"
-											href="http://www.dongjak.go.kr/portal/main/contents.do?menuNo=200655"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="동작구">
 										<area shape="rect" coords="250,281,290,298"
-											href="http://www.seocho.go.kr/site/seocho/05/10503010100002015062601.jsp"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="서초구">
 										<area shape="rect" coords="299,264,336,281"
-											href="http://www.gangnam.go.kr/dept/user/find.do?mid=FM040603"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="강남구">
 										<area shape="rect" coords="356,251,393,269"
-											href="https://www.songpa.go.kr/www/contents.do?key=2355&"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="송파구">
 										<area shape="rect" coords="85,272,122,290"
-											href="http://www.guro.go.kr/www/selectEmplDeptWebList.do?key=1816&"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="구로구">
 										<area shape="rect" coords="137,298,175,315"
-											href="http://www.geumcheon.go.kr/program/wooriGC/staffOffice.jsp?menuID=001004003001001"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="금천구">
 										<area shape="rect" coords="190,306,226,323"
-											href="http://www.gwanak.go.kr/site/gwanak/11/11103010000002016051207.jsp"
+											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
 											target="_blank" title="새창으로 열립니다." alt="관악구">
 									</map>
 								</div>
@@ -418,24 +432,59 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 					<span class="pop-btn confirm" id="confirm">이용권 구매 바로가기</span> <span
 						class="pop-btn close" id="close"><i class="mdi mdi-close"></i></span>
 				</div>
+				<div class="popup-footer">
+					<span class="pop-btn close-cookie" id="close-cookie"><i
+						class="mdi mdi-close"></i>&nbsp오늘 하루 보지 않기 &nbsp</span>
+				</div>
 			</div>
 		</div>
 	</div>
 
 
 	<script>
-		window.onload = function() {
+		/* Javascript */
+		var $layerPopup = document.querySelector('.popup-wrap');
+		var $btnLayerPopupClose = document.querySelector('.close');
+		var $btnLayerPopupTodayHide = document.querySelector('.close-cookie');
 
-			document.querySelector('.popup-wrap').style.display = 'flex';
+		//최초 레이어팝업 노출 (todayCookie라는 이름의 쿠키가 존재하지 않으면 레이어 노출)
+		if (!$.cookie('todayCookie')) {
+			layerPopupShow();
+		}
 
-			function closeModal() {
-				document.querySelector('.popup-wrap').style.display = 'none';
+		//레이어팝업 닫기 버튼 클릭
+		$btnLayerPopupClose.addEventListener('click', function() {
+			layerPopupHide(0);
+		});
+
+		//레이어팝업 오늘 하루 보지 않기 버튼 클릭
+		$btnLayerPopupTodayHide.addEventListener('click', function() {
+			layerPopupHide(1);
+		});
+
+		//레이어팝업 노출
+		function layerPopupShow() {
+			$layerPopup.style.display = 'flex'
+		}
+		//레이어팝업 비노출
+		function layerPopupHide(state) {
+			//닫기버튼 오늘하루보지않기 버튼 무관하계 레이어팝업은 닫는다.
+			$layerPopup.style.display = 'none'
+
+			//오늘하루보지않기 버튼을 누른 경우
+			if (state === 1) {
+				//'todayCookie' 이름의 쿠키가 있는지 체크한다.
+				if ($.cookie('todayCookie') == undefined) {
+					//쿠키가 없는 경우 todayCookie 쿠키를 추가
+					$.cookie('todayCookie', 'Y', {
+						expires : 1,
+						path : '/'
+					});
+				}
 			}
+		}
 
-			document.querySelector('.close').addEventListener('click',
-					closeModal);
-		};
-
+		/* 실시간 차트 reload */
 		document.querySelector(".btn_reload").onclick = function() {
 			location.reload();
 		}
@@ -464,6 +513,9 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 		src="<%=request.getContextPath()%>/resources/assets/js/todolist.js"></script>
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/js/dashboard.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 </body>
 </html>

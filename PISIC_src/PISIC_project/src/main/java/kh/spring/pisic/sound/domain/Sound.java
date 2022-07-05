@@ -21,19 +21,25 @@ public class Sound {
 	private int l_no;
 	private String m_id;
 	private String a_cover;
+	
 	private int chart;
+	private List<PlayInfo> playInfo;
 	
 	//	crawling-field
 	private String a_name;
 	private String g_name;
+	
+	
 	@Override
 	public String toString() {
 		return "Sound [s_no=" + s_no + ", a_no=" + a_no + ", s_name=" + s_name + ", s_lyrics1=" + s_lyrics1
 				+ ", s_lyrics2=" + s_lyrics2 + ", s_age_yn=" + s_age_yn + ", s_path=" + s_path + ", g_no=" + g_no
 				+ ", singers=" + singers + ", sound_writers=" + sound_writers + ", sound_composers=" + sound_composers
 				+ ", cnt_like=" + cnt_like + ", l_no=" + l_no + ", m_id=" + m_id + ", a_cover=" + a_cover + ", chart="
-				+ chart + ", a_name=" + a_name + ", g_name=" + g_name + "]";
+				+ chart + ", playInfo=" + playInfo + ", a_name=" + a_name + ", g_name=" + g_name + "]";
 	}
+	
+	
 	public int getS_no() {
 		return s_no;
 	}
@@ -142,5 +148,13 @@ public class Sound {
 	public void setG_name(String g_name) {
 		this.g_name = g_name;
 	}
+	public List<PlayInfo> getPlayInfo() {
+		return playInfo;
+	}
+	public void setPlayInfo(List<PlayInfo> playInfo) {
+		this.playInfo = playInfo;
+	}
+	
+	
 	
 }
