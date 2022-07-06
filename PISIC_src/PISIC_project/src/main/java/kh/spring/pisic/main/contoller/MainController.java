@@ -28,8 +28,7 @@ public class MainController {
 		List<Artist> artistRandom = serviceA.selectArtistRandom();
 		mv.addObject("artistRandom", artistRandom);
 		
-		List<Sound> chartDetail = serviceC.selectChartDetail();
-		mv.addObject("chartDetail", chartDetail);
+		mv.addObject("chartDetail", serviceC.selectChartTopTen("top", 10));
 		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
