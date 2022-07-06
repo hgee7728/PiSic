@@ -60,4 +60,9 @@ public class SoundDao {
 		map.put("sound", sound);
 		return session.delete("Sound.deleteLike",map);
 	}
+	
+	// 관련 아티스트 앨범
+	public List<Album> selectRelArtistAlbum(Sound sound){
+		return session.selectList("Sound.selectRelArtistAlbum",sound);
+	}
 }

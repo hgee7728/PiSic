@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,5 +77,18 @@ public class MyMusicController {
 		} else {
 			return "1";
 		}
+	}
+	
+	// 새 플레이 리스트 만들기
+	@GetMapping("/insertPlaylist")
+	public ModelAndView pageInsertPlaylist(
+			ModelAndView mv
+			, HttpSession session
+			) {
+		// TODO 로그인 여부
+		Member member = (Member)session.getAttribute("loginSsInfo");
+		mv.addObject("member", member);
+		mv.setViewName("mymusic/insertPlaylist");
+		return mv;
 	}
 }

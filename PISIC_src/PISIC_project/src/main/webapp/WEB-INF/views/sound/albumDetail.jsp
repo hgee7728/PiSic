@@ -58,7 +58,7 @@ table.intro_table tr > td:nth-child(1){
 
 .content_div2 {
 	clear: both;
-	margin: 30px 0px 30px 0px;
+	margin: 30px 0px;
 }
 table.sound_list  tr > td:nth-child(1),
 table.sound_list  tr > td:nth-child(2),
@@ -84,7 +84,7 @@ table.sound_list  tr > td:nth-child(9){
 }
 table.sound_list a {
 	color:#6c7293;
-} 
+}
 
 
 </style>
@@ -135,10 +135,10 @@ $(function(){
     // 선택 재생
     $("#select_play").click(function(){
     	// 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
-    	$("[name=s_no]").each(function(){
+    	$("input[name=s_no]").each(function(){
     		if(!(this.checked)){
     			console.log("히든 지우기");
-    			$(this).parent().next("[name=a_no]").remove();
+    			$(this).parent().next("input[name=a_no]").remove();
     		} 
     		console.log(this.checked);
     	});
@@ -152,31 +152,36 @@ $(function(){
     
     /* modal 플레이 리스트 담기 */
 	$("#select_insert").click(function() {
-		$("#playlist_insert_modal").show();
-		$.ajax({
-			url: "<%=request.getContextPath() %>/mymusic/playlist.ax",
-			type: "post",
-			success: function(result) {
-				var html = "";
-				for(var i = 0; i < result.length; i++){
-					var vo = result[i];
-					html += '<div class="preview-item border-bottom">';
-					html += '<div class="preview-thumbnail">';
-					html += '<img src='+vo.l_image+' class="modal_content">';
-					html += '</div>';
-					html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
-					html += '<div class="flex-grow">';
-					html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistSelectInsertDo('+vo.l_no+')">'+vo.l_name+'</a></p></div>';
-					if(vo.l_private_yn == 'Y'){
-						html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
-					} else {
-						html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
+		console.log($('input[name=s_no]:checked').length);
+		if($('input[name=s_no]:checked').length == '0'){
+			alert("곡을 선택하세요.");
+		} else {
+			$("#playlist_insert_modal").show();
+			$.ajax({
+				url: "<%=request.getContextPath() %>/mymusic/playlist.ax",
+				type: "post",
+				success: function(result) {
+					var html = "";
+					for(var i = 0; i < result.length; i++){
+						var vo = result[i];
+						html += '<div class="preview-item border-bottom">';
+						html += '<div class="preview-thumbnail">';
+						html += '<img src='+vo.l_image+' class="modal_content">';
+						html += '</div>';
+						html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
+						html += '<div class="flex-grow">';
+						html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistSelectInsertDo('+vo.l_no+')">'+vo.l_name+'</a></p></div>';
+						if(vo.l_private_yn == 'Y'){
+							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
+						} else {
+							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
+						}
 					}
-				}
-				$(".preview-list").nextAll().remove();
-				$(".preview-list").append(html);
-			},
-		}); // ajax 끝
+					$(".preview-list").nextAll().remove();
+					$(".preview-list").append(html);
+				},
+			}); // ajax 끝
+		}
 	});
     
 	
@@ -251,7 +256,7 @@ function soundLike(a_no,s_no){
 	}); //ajax 끝
 };
 
-// 플레이리스트 담기 모달창
+// 플레이리스트 한곡 담기 모달창
 function playlistInsert(a_no, s_no){
 	$("#playlist_insert_modal").show();
 	$.ajax({
@@ -260,15 +265,15 @@ function playlistInsert(a_no, s_no){
 		success: function(result) {
 			var html = "";
 			for(var i = 0; i < result.length; i++){
-				var vo = result[i];
+				var resultData = result[i];
 				html += '<div class="preview-item border-bottom">';
 				html += '<div class="preview-thumbnail">';
-				html += '<img src='+vo.l_image+' class="modal_content">';
+				html += '<img src='+resultData.l_image+' class="modal_content">';
 				html += '</div>';
 				html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
 				html += '<div class="flex-grow">';
-				html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistInsertDo('+a_no +','+ s_no +','+ vo.l_no +')">'+vo.l_name+'</a></p></div>';
-				if(vo.l_private_yn == 'Y'){
+				html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistInsertDo('+a_no +','+ s_no +','+ resultData.l_no +')">'+resultData.l_name+'</a></p></div>';
+				if(resultData.l_private_yn == 'Y'){
 					html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
 				} else {
 					html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
@@ -313,10 +318,10 @@ function playlistSelectInsertDo(l_no){
 	});
 	var s_noArray = [];
 	var a_noArray = [];
-	$('input[name="s_no"]:checked').each(function(){ //체크된 리스트 저장
+	$('input[name=s_no]:checked').each(function(){ //체크된 리스트 저장
 		s_noArray.push($(this).val());
     });
-	$('input[name="a_no"]').each(function(){
+	$('input[name=a_no]').each(function(){
 		a_noArray.push($(this).val());
     });
 	console.log("s_noArray: "+s_noArray);
@@ -343,12 +348,12 @@ function playlistSelectInsertDo(l_no){
 		error:function(){
 			
 		}
-	}); // ajax 끝
+	});  // ajax 끝
 }
 
 // 새 플레이 리스트 만들기
 function newPlaylist(){
-	alert("눌렀냐");
+	location.href = "<%=request.getContextPath() %>/mymusic/insertPlaylist";
 };
 
 // 제목, 아티스트, 앨범 클릭시 상세조회 페이지
@@ -389,13 +394,13 @@ function selectAlbumDetail(a_no){
 								<table class="table intro_table">
 									<thead>
 										<tr>
-											<th colspan="2">${album.a_name}</th>
+											<th colspan="2"><a href="javascript:selectAlbumDetail('${album.a_no }')">${album.a_name}</a></th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
 											<td>가수명 :</td>
-											<td>${album.artist_name}</td>
+											<td><a href="javascript:selectArtistDetail('${album.artist_no }')">${album.artist_name}</a></td>
 										</tr>
 										<tr>
 											<td>발매일 :</td>

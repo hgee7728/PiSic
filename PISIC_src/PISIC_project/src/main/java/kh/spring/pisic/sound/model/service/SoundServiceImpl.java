@@ -52,5 +52,10 @@ public class SoundServiceImpl implements SoundService{
 	public int deleteLike(Member member, Sound sound) {
 		return dao.deleteLike(member,sound);
 	}
+	// 관련 아티스트 앨범
+	@Override
+	public List<Album> selectRelArtistAlbum(Sound sound) {
+		return dao.selectRelArtistAlbum(sound);
+	}
 
 }

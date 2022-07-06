@@ -15,5 +15,6 @@ public interface SoundService {
 	public Album selectSoundAlbum(Sound sound);
 	public int checkLike(Member member, Sound sound);
 	public int deleteLike(Member member, Sound sound);
+	public List<Album> selectRelArtistAlbum(Sound sound);
 	
 }

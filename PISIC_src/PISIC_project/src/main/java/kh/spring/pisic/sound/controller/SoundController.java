@@ -141,7 +141,8 @@ public class SoundController {
 	// 곡 상세조회
 	@GetMapping("/soundDetail")
 	public ModelAndView selectSoundDetail(ModelAndView mv, Sound sound) {
-
+		
+		mv.addObject("relArtistAlbum",service.selectRelArtistAlbum(sound));
 		mv.addObject("album", service.selectSoundAlbum(sound));
 		mv.addObject("sound", service.selectSound(sound));
 		mv.setViewName("sound/soundDetail");

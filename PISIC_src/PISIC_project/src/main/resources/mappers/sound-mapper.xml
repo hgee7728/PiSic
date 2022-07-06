@@ -38,8 +38,9 @@
 <select id="selectAlbum" resultMap="AlbumResultMap">
 	select album.a_no, album.a_name, album.a_cover, album.a_date, 
 	album.a_publishing, album.a_agency, 
-	album.a_introduce1, album.a_introduce2, art.artist_name
-	from album album join artist art on album.artist_no = art.artist_no 
+	album.a_introduce1, album.a_introduce2, art.artist_name, art.artist_no
+	from album album 
+	join artist art on album.artist_no = art.artist_no 
 	where album.a_no=#{a_no}
 </select>
 
@@ -79,7 +80,7 @@
 
 <!-- 곡 상세조회 - 곡정보 -->
 <select id="selectSound" parameterType="Sound" resultMap="soundResultMap">
-	select (select count(*) from sound_like where sound.a_no=#{a_no} and sound.s_no=#{s_no}) cnt_like, sound.*, album.a_cover
+	select (select count(*) from sound_like where a_no=#{a_no} and s_no=#{s_no}) cnt_like, sound.*, album.a_cover
 	from sound sound 
 	join album album on sound.a_no = album.a_no
 	where sound.a_no=#{a_no} and sound.s_no=#{s_no} 
@@ -94,13 +95,23 @@
 </select>
 
 <!-- 곡 상세조회 - 관련 아티스트 앨범 -->
-<!-- <select id="selectSoundArtistAlbum">
-	select sound.s_name, artist.artist_name, artist.artist_no 
-	from sound sound 
-	join singer singer on sound.a_no = singer.a_no and sound.s_no = singer.s_no 
+<select id="selectRelArtistAlbum" parameterType="Sound" resultType="Album">
+	select singer.artist_no, artist.artist_name, album.a_name, album.a_no, album.a_cover, album.a_date from sound sound 
+	join singer singer on sound.s_no = singer.s_no and sound.a_no = singer.a_no
 	join artist artist on singer.artist_no = artist.artist_no
-	where sound.s_no=1 and sound.a_no = 1
-</select> -->
+	join album album on artist.artist_no = album.artist_no
+	where sound.s_no=#{s_no} and sound.a_no=#{a_no}
+</select>
+
+<!-- 곡 상세조회 - 관련 플레이리스트게시판 -->
+<select id="selectRelBoard" parameterType="Sound">
+	select board.b_no, board.b_title, board.l_no, pl.l_name 
+	from sound sound 
+	join playlist_content pc on sound.s_no = pc.s_no and sound.a_no = pc.a_no
+	join playlist pl on pc.l_no = pl.l_no and pc.m_id = pl.m_id
+	join board board on board.l_no = pl.l_no and board.m_id = pl.m_id
+	where sound.s_no=#{s_no} and sound.a_no=#{a_no}
+</select>
 
 <!-- 선택 재생 -->
 <select id="selectSoundList" parameterType="list" resultType="Sound">
