@@ -18,21 +18,59 @@
 			property="singers" select="soundSingerList"></collection>
 	</resultMap>
 
+
+	<select id="selectChartTopTen" parameterType="hashmap"
+		resultMap="soundResultMap" >
+		select t2.*
+		from (
+		select t1.*
+			, (select artist_name from artist where artist_no = (select artist_no from singer t2 where t2.s_no=t1.s_no and t2.a_no= t1.a_no)) artist_name
+		    ,rank() over (partition by s_path order by cnt desc, s_no, a_no ) chart
+		from
+		    (select  a_cover, s_no, a_no, s_name, s_path, a_name, count(*) cnt 
+		    from sound
+		    join album using(a_no)
+	<choose>
+		<when test='chartType.equals("like")'>
+			join (select a_no, s_no from sound_like) using (a_no, s_no)
+			group by a_cover, s_no, a_no, s_name,a_name,s_path order by cnt) t1
+		</when>
+		<otherwise>
+			join (select p_no, a_no, s_no, p_date from playinfo) using (a_no, s_no)
+			<choose>
+				<when test='chartType.equals("monthly")'>
+					where p_date &lt;= (select last_day(sysdate) from dual) and p_date &gt; (select add_months((select last_day(sysdate) from dual),-1) from dual)
+				</when>
+				<when test='chartType.equals("weekly")'>
+					where p_date &gt;= (SELECT trunc(SYSDATE, 'd') FROM dual)
+				</when>
+				<when test='chartType.equals("daily")'>
+					where p_date = sysdate
+				</when>
+			</choose>
+		    group by a_cover, s_no, a_no, s_name,a_name,s_path, p_date order by cnt) t1
+		</otherwise>
+	</choose>
+		) t2
+		where chart &lt;= #{limit}
+	</select>
+	
 	<!-- 메인 페이지 chart -->
-	<select id="selectChartDetail" resultType="Sound"
-		resultMap="soundResultMap">
-	<![CDATA[
+	<select id="selectChartDetail" parameterType="string"
+		resultMap="soundResultMap" >
+
 	select t2.*
 	from (
 	select t1.*
 	    ,rank() over (partition by s_path order by cnt desc, s_no, a_no ) chart
 	from
-	    (select  a_cover, s_no, a_no, s_name, s_path, a_name, count(*) cnt 
+	    (select  a_cover, s_no, a_no, s_name, s_path, a_name, p_date, count(*) cnt 
 	    from sound
 	    join album using(a_no)
 	    join (select p_no, a_no, s_no from playinfo) using (a_no, s_no)
 	    group by a_cover, s_no, a_no, s_name,a_name,s_path order by cnt) t1
 	) t2
+	<![CDATA[
 	where chart <=10
 	]]>
 	</select>

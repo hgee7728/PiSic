@@ -23,5 +23,10 @@ public class ChartServiceImpl implements ChartService{
 		return dao.selectMainTopten();
 	}
 
+	@Override
+	public List<Sound> selectChartTopTen(String chartType, int limit) {
+		return dao.selectChartTopTen(chartType, limit);
+	}
+
 	
 }

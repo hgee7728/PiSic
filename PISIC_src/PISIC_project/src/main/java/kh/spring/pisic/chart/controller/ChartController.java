@@ -24,10 +24,13 @@ public class ChartController {
 	@GetMapping(value = {"/", "/chartMain"})
 	public ModelAndView MainPage(ModelAndView mv, Model model) {
 		List<Sound> chartTopten = service.selectMainTopten();
-		mv.addObject("chartTopten", chartTopten);
+		mv.addObject("chartMainten", chartTopten);
 		
-		
-		
+		mv.addObject("chartTopten", service.selectChartTopTen("top", 3));
+		mv.addObject("monthlyTopten", service.selectChartTopTen("monthly", 3));
+		mv.addObject("weeklyTopten", service.selectChartTopTen("weekly", 3));
+		mv.addObject("dailyTopten", service.selectChartTopTen("daily", 3));
+		mv.addObject("likeTopten", service.selectChartTopTen("like", 3));
 
 		mv.setViewName("chart/chartMain");
 
@@ -42,9 +45,7 @@ public class ChartController {
 		
 		String formattedDate = dateFormat.format(date);
 		
-		List<Sound> chartDetail = service.selectChartDetail();
-		mv.addObject("chartDetail", chartDetail);
-		
+		mv.addObject("chartDetail", service.selectChartTopTen("top", 10));
 		
 
 		model.addAttribute("serverTime", formattedDate);
