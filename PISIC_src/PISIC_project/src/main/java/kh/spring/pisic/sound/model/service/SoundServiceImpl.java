@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.model.dao.SoundDao;
@@ -56,6 +57,11 @@ public class SoundServiceImpl implements SoundService{
 	@Override
 	public List<Album> selectRelArtistAlbum(Sound sound) {
 		return dao.selectRelArtistAlbum(sound);
+	}
+	// 관련 플레이리스트 공유 게시판 
+	@Override
+	public List<PjBoard> selectRelPlaylistBoard(Sound sound) {
+		return dao.selectRelPlaylistBoard(sound);
 	}
 
 }

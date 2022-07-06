@@ -142,9 +142,14 @@ public class SoundController {
 	@GetMapping("/soundDetail")
 	public ModelAndView selectSoundDetail(ModelAndView mv, Sound sound) {
 		
-		mv.addObject("relArtistAlbum",service.selectRelArtistAlbum(sound));
-		mv.addObject("album", service.selectSoundAlbum(sound));
+		// 곡 기본정보
 		mv.addObject("sound", service.selectSound(sound));
+		// 수록곡 앨범
+		mv.addObject("album", service.selectSoundAlbum(sound));
+		// 관련 아티스트 앨범
+		mv.addObject("relArtistAlbum",service.selectRelArtistAlbum(sound));
+		// 관련 플레이리스트 공유 게시판
+		mv.addObject("relPlaylistBoard",service.selectRelPlaylistBoard(sound));
 		mv.setViewName("sound/soundDetail");
 		return mv;
 	}

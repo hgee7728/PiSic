@@ -54,7 +54,7 @@ table.intro_table tr > td:nth-child(1){
 	vertical-align: middle;
 }
 
-.content_div2,.content_div3,.content_div4 {
+.content_div0 {
 	clear: both;
 	margin: 30px 0px;
 }
@@ -100,6 +100,26 @@ table.sound_list a,table.intro_table a {
 } 
 .content-wrapper a {
 	color:#6c7293;
+}
+.report_div{
+	margin: 0px 15px;
+}
+.report_div p {
+	margin:0;
+}
+.recomment_div{
+	display: table;
+	width:100%;
+}
+.recomment_div textarea, .recomment_div button{
+	display: table-cell;
+	vertical-align: middle;
+}
+.recomment_div {
+	padding: 0px 15px;
+}
+.recomment_content_div {
+	padding: 15px 15px;
 }
 
 </style>
@@ -347,7 +367,7 @@ function selectAlbumDetail(a_no){
 							</div>
 						</div>
 					</div>
-					<div class="content_div2">
+					<div class="content_div0 content_div2">
 						<div>
 							<h3 class="card-title">가사</h3>
 						</div>
@@ -361,7 +381,7 @@ function selectAlbumDetail(a_no){
 							<button type="button" class="btn btn-outline-light btn-fw btn_more">더보기</button>
 						</div>
 					</div>
-					<div class="content_div3">
+					<div class="content_div0 content_div3">
 						<div>
 							<h3 class="card-title">수록 앨범</h3>
 						</div>
@@ -397,7 +417,7 @@ function selectAlbumDetail(a_no){
 							</div>
 						</div>
 					</div>
-					<div class="content_div4">
+					<div class="content_div0 content_div4">
 						<div>
 							<h3 class="card-title">관련 아티스트 앨범</h3>
 						</div>
@@ -435,11 +455,128 @@ function selectAlbumDetail(a_no){
 							</div>
 						</c:forEach>
 					</div>
-					<div class="content_div5">
+					<div class="content_div0 content_div5">
 						<div>
 							<h3 class="card-title">관련 플레이 리스트</h3>
 						</div>
 						<hr color="white">
+						<c:forEach items="${relPlaylistBoard }" var="board">
+							<div class="row album_div">
+								<div class="main_img_div">
+									<%-- <a href="javascript:여기수정('${board.b_no }')"> --%>
+									<img id="main_img" src="${board.l_image }"
+										width="200" height="200">
+									<!-- </a> -->
+								</div>
+								<div class="content_info">
+									<div class="card-body">
+										<table class="table album_table">
+											<thead>
+												<tr>
+													<th>제목 :</th>
+													<th>
+													<%-- <a href="javascript:여기수정('${board.b_no }')"> --%>
+													${board.b_title}
+													<!-- </a> -->
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												
+												<tr>
+													<td>닉네임 :</td>
+													<td>
+													<%-- <a href="javascript:여기수정('${board.b_no }')"> --%>
+													${board.b_writer}
+													<!-- </a> -->
+													</td>
+												</tr>
+												<tr>
+													<td>작성일 :</td>
+													<td>${board.b_date}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</div>
+					<div class="content_div0 content_div6 ">
+						<div>
+							<h3 class="card-title">이 곡의 기록</h3>
+						</div>
+						<hr color="white">
+							<div class="row">
+								<div class="card report_div">
+									<div class="card-body">
+									<p>데일리 감상자수(실시간)</p>
+									<p>${sound.s_name} 위</p>
+									</div>
+								</div>
+								<div class="card report_div">
+									<div class="card-body">
+									<p>어제의 차트 순위</p>
+									<p>${sound.s_name} 위</p>
+									</div>
+								</div>
+								<div class="card report_div">
+									<div class="card-body">
+									<p>최고 순위</p>
+									<p>${sound.s_name}</p>
+									</div>
+								</div>
+							</div>
+					</div>
+					<div class="content_div0 content_div7">
+						<div>
+							<h3 class="card-title">스트리밍 리포트</h3>
+						</div>
+						<hr color="white">
+						<c:choose>
+							<c:when test="${empty loginSsInfo }">
+								<div class="card report_div">
+									<div class="card-body">
+									<p>로그인 후 이용해 주세요</p>
+									</div>
+								</div>
+							</c:when>
+							<c:when test="${not empty loginSsInfo }">
+								<div class="row">
+									<div class="card report_div">
+										<div class="card-body">
+										<p>내가 처음 들은 날</p>
+										<p>${sound.s_name}</p>
+										</div>
+									</div>
+									<div class="card report_div">
+										<div class="card-body">
+										<p>총 감상 횟수</p>
+										<p>${sound.s_name} 회</p>
+										</div>
+									</div>
+								</div>
+							</c:when>
+						</c:choose>
+					</div>
+					<div class="content_div0 content_div8">
+						<div>
+							<h3 class="card-title">댓글</h3>
+						</div>
+						<hr color="white">
+						<div class="recomment_div">
+							<form id="sound_recomment">
+								<textarea rows="5" cols="100" required placeholder="댓글 내용을 입력해주세요."></textarea>
+								<button type="submit" class="btn btn-info btn-fw">댓글 등록</button>
+							</form>
+						</div>
+						<div class="row recomment_content_div">
+							<div class="card">
+								<div class="card-body">
+								
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<!-- content-wrapper ends -->

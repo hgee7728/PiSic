@@ -20,13 +20,14 @@ public class PjBoard {
 	private String m_id;
 	private Timestamp b_date;
 	private String l_no;
-	
+	private String l_image;	
 	
 	
 	@Override
 	public String toString() {
 		return "PjBoard [b_no=" + b_no + ", b_title=" + b_title + ", b_content=" + b_content + ", b_writer=" + b_writer
-				+ ", b_cnt=" + b_cnt + ", m_id=" + m_id + ", b_date=" + b_date + ", l_no=" + l_no + "]";
+				+ ", b_cnt=" + b_cnt + ", m_id=" + m_id + ", b_date=" + b_date + ", l_no=" + l_no + ", l_image="
+				+ l_image + "]";
 	}
 	public int getB_no() {
 		return b_no;
@@ -75,6 +76,12 @@ public class PjBoard {
 	}
 	public void setL_no(String l_no) {
 		this.l_no = l_no;
+	}
+	public String getL_image() {
+		return l_image;
+	}
+	public void setL_image(String l_image) {
+		this.l_image = l_image;
 	}
 	
 	

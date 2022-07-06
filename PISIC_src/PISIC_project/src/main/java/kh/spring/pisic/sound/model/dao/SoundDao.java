@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Sound;
 
@@ -65,4 +66,14 @@ public class SoundDao {
 	public List<Album> selectRelArtistAlbum(Sound sound){
 		return session.selectList("Sound.selectRelArtistAlbum",sound);
 	}
+	
+	// 관련 플레이리스트 공유 게시판
+	public List<PjBoard> selectRelPlaylistBoard(Sound sound) {
+		return session.selectList("Sound.selectRelPlaylistBoard",sound);
+	}
+	
+	
+	
+	
+	
 }

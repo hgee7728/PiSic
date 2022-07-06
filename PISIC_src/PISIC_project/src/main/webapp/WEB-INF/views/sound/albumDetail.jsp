@@ -52,6 +52,9 @@
 table.intro_table tr > td:nth-child(1){
 	width:50px;
 } 
+table.intro_table a {
+	color:#6c7293;
+}
 .content_info {
 	vertical-align: middle;
 }

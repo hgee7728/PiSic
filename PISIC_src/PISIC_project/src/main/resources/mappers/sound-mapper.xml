@@ -104,13 +104,18 @@
 </select>
 
 <!-- 곡 상세조회 - 관련 플레이리스트게시판 -->
-<select id="selectRelBoard" parameterType="Sound">
-	select board.b_no, board.b_title, board.l_no, pl.l_name 
+<select id="selectRelPlaylistBoard" parameterType="Sound" resultType="PjBoard">
+	select board.b_no, board.b_title, board.b_writer
+	, 
+	board.b_date
+	<!-- trunc(board.b_date,'DD') b_date -->
+	, pl.l_image
 	from sound sound 
 	join playlist_content pc on sound.s_no = pc.s_no and sound.a_no = pc.a_no
 	join playlist pl on pc.l_no = pl.l_no and pc.m_id = pl.m_id
 	join board board on board.l_no = pl.l_no and board.m_id = pl.m_id
 	where sound.s_no=#{s_no} and sound.a_no=#{a_no}
+	order by b_no
 </select>
 
 <!-- 선택 재생 -->
