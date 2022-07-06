@@ -40,13 +40,7 @@
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 <style>
-.search-window {
-	float: right;
-}
 
-.content-wrapper {
-	padding: 0;
-}
 </style>
 </head>
 <body>
@@ -57,135 +51,137 @@
 		<div class="container-fluid page-body-wrapper">
 			<!-- partial:partials/_navbar.html -->
 			<jsp:include page="../_navbar.jsp" />
+
 			<!-- partial -->
 			<div class="main-panel">
 				<div class="content-wrapper">
-					<div class="main-panel">
-						<div class="content-wrapper">
-							<h2 class=" card-title">PJ LOUNGE</h2>
-							<br>
-							<h3 class=" card-title">나의 플레이리스트를 공유해보세요</h3>
-							<!-- board seach area -->
-							<div class="board-search">
-								<div class="container">
-									<div class="search-window">
-										<div class="search-wrap">
-											<label for="search" class="blind">PJ 검색하기</label> <input
-												id="search" type="search" name=""
-												placeholder="플레이리스트를 입력해주세요." value="">
-											<button type="submit" class="btn btn-info btn-fw">검색</button>
-										</div>
 
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-									<div class="card">
-										<div class="card-body">
-											<img src="" alt="">
-										</div>
-										<div class="card-body">
-											<span>f</span>
-											<h4>sksksk</h4>
-										</div>
-									</div>
-								</div>
-								<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-									<div class="card">
-										<div class="card-body">
-											<img src="" alt="">
-										</div>
-										<div class="card-body">
-											<span>f</span>
-											<h4>sksksk</h4>
-										</div>
-									</div>
-								</div>
-								<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-									<div class="card">
-										<div class="card-body">
-											<img src="" alt="">
-										</div>
-										<div class="card-body">
-											<span>f</span>
-											<h4>sksksk</h4>
-										</div>
-									</div>
-								</div>
-								<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-									<div class="card">
-										<div class="card-body">
-											<img src="" alt="">
-										</div>
-										<div class="card-body">
-											<span>f</span>
-											<h4>sksksk</h4>
-										</div>
-									</div>
-								</div>
-								<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-									<div class="card">
-										<div class="card-body">
-											<img src="" alt="">
-										</div>
-										<div class="card-body">
-											<span>f</span>
-											<h4>sksksk</h4>
-										</div>
-									</div>
-								</div>
-								<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-									<div class="card">
-										<div class="card-body">
-											<img src="" alt="">
-										</div>
-										<div class="card-body">
-											<span>f</span>
-											<h4>sksksk</h4>
-										</div>
-									</div>
-								</div>
-								<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-									<div class="card">
-										<div class="card-body">
-											<img src="" alt="">
-										</div>
-										<div class="card-body">
-											<span>f</span>
-											<h4>sksksk</h4>
-										</div>
-									</div>
-								</div>
-								<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-									<div class="card">
-										<div class="card-body">
-											<img src="" alt="">
-										</div>
-										<div class="card-body">
-											<span>f</span>
-											<h4>sksksk</h4>
-										</div>
-									</div>
+					<h2 class=" card-title">PJ LOUNGE</h2>
+					<br>
+					<h3 class=" card-title">나의 플레이리스트를 공유해보세요</h3>
+
+					<!-- board seach area -->
+					<div class="board-search">
+						<div class="container">
+							<div class="search-window">
+								<div class="search-wrap">
+									<label for="search" class="blind">PJ 검색하기</label> <input
+										id="search" type="search" name=""
+										placeholder="플레이리스트를 입력해주세요." value="">
+									<button type="submit" class="btn btn-info btn-fw">검색</button>
 								</div>
 							</div>
 						</div>
-
 					</div>
-					<!-- 페이징 -->
-					<div class="qnalist_page">
-						<div class="pagination__links">
-							<button type="button" class="btn btn-outline-secondary">1</button>
-							<button type="button" class="btn btn-outline-secondary">2</button>
-							<button type="button" class="btn btn-outline-secondary">3</button>
-							<button type="button" class="btn btn-outline-secondary">4</button>
+					<div class="row">
+						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<img src="/images/" alt="">
+								</div>
+								<div class="card-body">
+									<span>f</span>
+									<h4>sksksk</h4>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<img src="" alt="">
+								</div>
+								<div class="card-body">
+									<span>f</span>
+									<h4>sksksk</h4>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<img src="" alt="">
+								</div>
+								<div class="card-body">
+									<span>f</span>
+									<h4>sksksk</h4>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<img src="" alt="">
+								</div>
+								<div class="card-body">
+									<span>f</span>
+									<h4>sksksk</h4>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<img src="" alt="">
+								</div>
+								<div class="card-body">
+									<span>f</span>
+									<h4>sksksk</h4>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<img src="" alt="">
+								</div>
+								<div class="card-body">
+									<span>f</span>
+									<h4>sksksk</h4>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<img src="" alt="">
+								</div>
+								<div class="card-body">
+									<span>f</span>
+									<h4>sksksk</h4>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<img src="" alt="">
+								</div>
+								<div class="card-body">
+									<span>f</span>
+									<h4>sksksk</h4>
+								</div>
+							</div>
 						</div>
 					</div>
+								<!-- 페이징 -->
+			<div class="qnalist_page">
+				<div class="pagination__links">
+					<button type="button" class="btn btn-outline-secondary">1</button>
+					<button type="button" class="btn btn-outline-secondary">2</button>
+					<button type="button" class="btn btn-outline-secondary">3</button>
+					<button type="button" class="btn btn-outline-secondary">4</button>
+				</div>
+			</div>
 				</div>
 
 			</div>
 
+
 		</div>
+
+	</div>
+
+	</div>
 
 	</div>
 

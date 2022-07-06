@@ -15,6 +15,7 @@
 	<typeAlias type="kh.spring.pisic.sound.domain.AssociationAS" alias="AssociationAS"/>
 	<typeAlias type="kh.spring.pisic.mymusic.domain.MyMusic" alias="MyMusic"/>
 	<typeAlias type="kh.spring.pisic.sound.domain.PlayInfo" alias="PlayInfo"/>
+ 	<typeAlias type="kh.spring.pisic.faq.domain.FaqBoard" alias="faqBoard"/>
 </typeAliases>
 <mappers>
 	<mapper resource="mappers/member-mapper.xml"/>
@@ -23,5 +24,6 @@
 	<mapper resource="mappers/artist-mapper.xml"/>
 	<mapper resource="mappers/mymusic-mapper.xml"/>
 	<mapper resource="mappers/chart-mapper.xml"/>
+	<mapper resource="mappers/faqBoard-mapper.xml"/>
 </mappers>
 </configuration>
