@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
   <style>
   	.col-md-6.grid-margin.stretch-card {
   		max-width: 600px;
@@ -42,12 +44,15 @@
   	.row {
   		margin-top: 0.75rem;
   	}
+  	.preview-item {
+  		margin-top: 0.75rem;
+  		margin-bottom: 0.75rem;
+  	}
   	@media (min-width: 768px) {
   		.col-md-6 {
 			max-width: 70%;
 		}
   	}
-	
   </style> 
   </head>
   <body>
@@ -75,18 +80,49 @@
                   <div class="card-body">
                     <h4 class="card-title">로그인</h4>
                     <p class="card-description">로그인</p>
+                    <div class="preview-item border-bottom">
+                    	<!-- 
+                    	<ul>
+					      <li onclick="kakaoLogin();">
+					        <a href="javascript:void(0)">
+					            <span>카카오 로그인</span>
+					        </a>
+					      </li>
+					    </ul>
+					    -->
+                    </div>
+                    <script>
+                    function kakaoLogin() {
+                      $.ajax({
+                          url: "<%=request.getContextPath()%>/member/login/getKakaoAuthUrl",
+                          type: "get",
+                          async: false,
+                          dataType: "text",
+                          success: function (res) {
+                              location.href = res;
+                          }
+                      });
+                    }
+
+                    $(document).ready(function() {
+                        var kakaoInfo = '${kakaoInfo}';
+                        if(kakaoInfo != ""){
+                            var data = JSON.parse(kakaoInfo);
+                            "user : \n" + "email : "
+                            + data['email']  
+                            + "\n nickname : " 
+                            + data['nickname']);
+                        }
+                    });                     	
+                    </script>
                     <form class="forms-sample" action="<%=request.getContextPath() %>/member/login" method="post">
-                      <div class="form-group row">
-                        <label for="InputId" class="col-sm-3 col-form-label">아이디</label>
-                        <div class="col-sm-9">
-                          <input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
-                        </div>
+                      <div class="form-group">
+                        <label for="InputId">아이디</label>
+                        <input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
                       </div>
-                      <div class="form-group row">
-                        <label for="InputPassword" class="col-sm-3 col-form-label">비밀번호</label>
-                        <div class="col-sm-9">
-                          <input type="password" class="form-control" id="InputPassword" placeholder="Password" name="m_password" required>
-                        </div>
+                      <div class="form-group">
+                        <label for="InputPassword">비밀번호</label>
+                        <input type="password" class="form-control" id="InputPassword" placeholder="Password" name="m_password" required>
                       </div>
                       <button type="submit" class="btn btn-info btn-fw">로그인</button>
                     </form>

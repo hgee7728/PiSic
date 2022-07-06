@@ -78,7 +78,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">회원가입</h4>
-                    <form class="forms-sample" action="<%=request.getContextPath() %>/member/insert" method="post">
+                    <form id="insertForm" class="forms-sample" action="<%=request.getContextPath() %>/member/insert" method="post">
                       <div class="form-group">
                       	<label id="LabelId" for="InputId">아이디 *</label>
                       	<input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
@@ -121,9 +121,9 @@
                       <div class="form-group">
                         <label id="LabelAddress" for="InputAddress">주소 *</label>
                         <div class="input-group">
-	                        <input type="text" class="form-control" id="InputAddress" placeholder="Address" name="m_address" required>  
+	                        <input type="text" class="form-control" id="InputAddress" placeholder="Address" name="m_address" readonly required>  
 	                        <div class="input-group-append">
-	                          <button class="btn btn-inverse-secondary btn-fw" type="button" onclick="daumPost()">주소찾기</button>
+	                          <button id="BtnAddress" class="btn btn-inverse-secondary btn-fw" type="button" onclick="daumPost()">주소찾기</button>
 	                        </div>
                       	</div>   
                       </div>
@@ -133,34 +133,48 @@
                       </div>
 		      		  <!-- kakao 우편번호 서비스 -->
                       <script>
+              			var FlagAddress = false;
+                      
                       	function daumPost() {
                       		new daum.Postcode({
                       			oncomplete: function(data) {
                       				var fullAddr = '';
                       				var extraAddr = '';
                       				
-                      				// 도로명 주소를 선택했을 경우
+                      				//도로명 주소를 선택했을 경우
                       				if (data.userSelectedType === 'R') {
                       					fullAddr = data.roadAddress;
-                      				// 지번 주소를 선택했을 경우
+                      				//지번 주소를 선택했을 경우
                       				} else {
                       					fullAddr = data.jibunAddress;
                       				}
-                      				// 도로명일때 조합
+                      				//도로명일때 조합
                       				if (data.userSelectedType === 'R') {
-                      					// 법정동명 추가
+                      					//법정동명 추가
                       					if (data.bname !== '') {
                       						extraAddr += data.bname;
                       					}
-                      					// 건물명 추가
+                      					//건물명 추가
                       					if (data.buildingName !== '') {
                       						extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
                       					}
-                      					// 괄호 추가
+                      					//괄호 추가
                       					fullAddr += (extraAddr !== '' ? ' (' + extraAddr + ')' : '');
                       				}
                       				$("#InputAddress").val(fullAddr);
+                      				$("#InputAddress").attr("readonly", false);
+                      				if ($("#InputAddress").val() == fullAddr) {
+                      					$("#LabelAddress").html('주소 <span id="SpanAddress"><i class="mdi mdi-check"></i></span>');
+                            		    $("#SpanAddress").css("color", "green");
+                        		    	FlagAddress = true;
+                      				} else {
+                      					$("#LabelAddress").html('주소 <span id="SpanAddress"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+                        		    	$("#SpanAddress").css("color", "red");
+                            		    FlagAddress = false;
+                      				}
+                      				$("#InputAddress").attr("readonly", true);
                       				$("#InputAddressDetail").focus();
+                      				console.log(FlagAddress);
                       			}
                       		}).open();
                       	}
@@ -177,7 +191,7 @@
                         <input type="hidden" id="InputProfileUC" role="uploadcare-uploader" 
                             data-public-key="183400fad159d76bdf53" data-tabs="file gdrive gphotos"/>
                       </div>
-                      <button type="submit" class="btn btn-info btn-fw" id="btn_submit">회원가입</button>
+                      <input id="InputSubmit" type="button" class="btn btn-info btn-fw" value="회원가입">
                     </form>
                   </div>
                 </div>
@@ -194,32 +208,32 @@
     </div>
     <!-- 회원가입 from -->
     <script>
-	    var InputId = null;
-		var InputPw1 = null;
-		var InputPw2 = null;
-		var InputName = null;
-		var InputNickname = null;
-		var InputEmail = null;
-		var InputPhone = null;
-		var InputBirth = null;
-		var InputAddress = null;
-		var InputAddressDetail = null;
-		var InputProfile = null;
-
-		var FlagId = false;
-		var FlagPw1 = false;
-		var FlagPw2 = false;
-		var FlagName = false;
-		var FlagNickname = false;
-		var FlagEmail = false;
-		var FlagPhone = false;
-		var FlagBirth = false;
-		var FlagAddress = false;
-		var FlagAddressDetail = false;
-		
     	$(document).ready(function(){
+    		var InputId = null;
+    		var InputPw1 = null;
+    		var InputPw2 = null;
+    		var InputName = null;
+    		var InputNickname = null;
+    		var InputEmail = null;
+    		var InputPhone = null;
+    		var InputBirth = null;
+    		var InputAddress = null;
+    		var InputAddressDetail = null;
+    		var InputProfile = null;
+
+    		var FlagId = false;
+    		var FlagPw1 = false;
+    		var FlagPw2 = false;
+    		var FlagName = false;
+    		var FlagNickname = false;
+    		var FlagEmail = false;
+    		var FlagPhone = false;
+    		var FlagBirth = false;
+    		var FlagGender = false;
+    		var FlagAddressDetail = false;
+    		
     		// 아이디
-    		$("#InputId").on("keyup", function(){
+    		$("#InputId").on("input", function FxId(){
     			var regexId = /^[0-9a-zA-Z]{7,15}$/;
     			InputId = $("#InputId").val();
     			
@@ -235,11 +249,10 @@
     				$.ajax({
     					url: "<%=request.getContextPath()%>/member/idCheck.ax",
     					data: {
-    					    m_id: $("#InputId").val()
+    					    m_id: InputId
     					},
     					type: "post",
     					success: function(result){
-    					    console.log(result);
     					    if (result == 1) {
     			    			$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-delta"></i> 중복된 아이디가 있습니다.</span>');
     			        		$("#SpanId").css("color", "yellow");
@@ -253,12 +266,13 @@
     					error: function(error){
     					    console.log(error);
     				    }
-    		    	});
+    		    	})
     			}
+    			console.log(FlagId);
     		})
     		
     		// 비밀번호
-    		$("#InputPassword1").on("keyup", function(){
+    		$("#InputPassword1").on("input", function FxPassword1(){
     			var regexPw = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
     			InputPw1 = $("#InputPassword1").val();
     			
@@ -275,10 +289,11 @@
     				$("#SpanPassword1").css("color", "green");
     				FlagPw1 = true;
     			}
+    			console.log(FlagPw1);
     		})
     		
     		// 비밀번호 확인
-    		$("#InputPassword2").on("keyup", function(){
+    		$("#InputPassword2").on("input", function FxPassword2(){
     			InputPw1 = $("#InputPassword1").val();
     			InputPw2 = $("#InputPassword2").val();
     			
@@ -289,12 +304,13 @@
     			} else {
     				$("#LabelPassword2").html('비밀번호 확인 <span id="SpanPassword2"><i class="mdi mdi-check"></i></span>');
     				$("#SpanPassword2").css("color", "green");
-    				FlagPw2 = false;
+    				FlagPw2 = true;
     			}
+    			console.log(FlagPw2);
     		})
     		
     		// 이름
-    		$("#InputName").on("keyup", function(){
+    		$("#InputName").on("input", function FxName(){
     			var regexName = /(^[가-힣]{2,5}$)|(^[a-zA-Z]{2,20}(\s[a-zA-Z]{2,20})?$)/;
     			InputName = $("#InputName").val();		
     			
@@ -311,10 +327,11 @@
     				$("#SpanName").css("color", "green");
     				FlagName = true;
     			}
+    			console.log(FlagName);
     		})
     		
     		// 닉네임
-    		$("#InputNickname").on("keyup", function(){
+    		$("#InputNickname").on("input", function FxNickname(){
     			var regexNickname = /^[가-힣|a-z|A-Z|0-9]{2,15}$/;
     			InputNickname = $("#InputNickname").val();
     			
@@ -330,11 +347,10 @@
     				$.ajax({
     					url: "<%=request.getContextPath()%>/member/nicknameCheck.ax",
     					data: {
-    					    m_nickname: $("#InputNickname").val()
+    					    m_nickname: InputNickname
     					},
     					type: "post",
     					success: function(result){
-    					    console.log(result);
     					    if (result == 1) {
     			    			$("#LabelNickname").html('닉네임 <span id="SpanNickName"><i class="mdi mdi-delta"></i> 중복된 닉네임이 있습니다.</span>');
     			        		$("#SpanNickName").css("color", "yellow");
@@ -349,13 +365,14 @@
     					error: function(error){
     					    console.log(error);
     				    }
-    		    	});
+    		    	})
     			}
+    			console.log(FlagNickname);
     		})
     		
     		// 이메일
-    		$("#InputEmail").on("keyup", function(){
-    			var regexEmail = /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
+    		$("#InputEmail").on("input", function FxEmail(){
+    			var regexEmail = /^[A-Za-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
     			InputEmail = $("#InputEmail").val();		
     			
     			if (!regexEmail.test(InputEmail)) {
@@ -370,11 +387,10 @@
     				$.ajax({
     					url: "<%=request.getContextPath()%>/member/emailCheck.ax",
     					data: {
-    					    m_email: $("#InputEmail").val()
+    					    m_email: InputEmail
     					},
     					type: "post",
     					success: function(result){
-    					    console.log(result);
     					    if (result == 1) {
     			    			$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-delta"></i> 중복된 이메일이 있습니다.</span>');
     			        		$("#SpanEmail").css("color", "yellow");
@@ -389,13 +405,14 @@
     					error: function(error){
     					    console.log(error);
     				    }
-    		    	});
+    		    	})
     			}
+    			console.log(FlagEmail);
     		})
     		
     		// 휴대전화
-    		$("#InputPhone").on("keyup", function(){
-    			var regexPhone = /^01([0|1|6|7|8|9]{2})+([0-9]{6,7})$/;
+    		$("#InputPhone").on("input", function FxPhone(){
+    			var regexPhone = /^01([0|1|6|7|8|9])+[0-9]{7,8}$/;
     			InputPhone = $("#InputPhone").val();
     			
     			if (!regexPhone.test(InputPhone)) {
@@ -410,11 +427,10 @@
     				$.ajax({
     					url: "<%=request.getContextPath()%>/member/phoneCheck.ax",
     					data: {
-    					    m_phone: $("#InputPhone").val()
+    					    m_phone: InputPhone
     					},
     					type: "post",
     					success: function(result){
-    					    console.log(result);
     					    if (result == 1) {
     					    	$("#LabelPhone").html('휴대전화 <span id="SpanPhone"><i class="mdi mdi-delta"></i> 중복된 휴대전화 번호가 있습니다.</span>');
     			        		$("#SpanPhone").css("color", "yellow");
@@ -428,12 +444,13 @@
     					error: function(error){
     					    console.log(error);
     				    }
-    		    	});
+    		    	})
     			}
+    			console.log(FlagPhone);
     		})
     		
     		// 생년월일
-    		$("#InputBirth").on("keyup", function(){
+    		$("#InputBirth").on("input", function FxBirth(){
     			var regexBirth = /^[0-9]{8}$/;
     			InputBirth = $("#InputBirth").val();		
     			
@@ -450,24 +467,21 @@
     				$("#SpanBirth").css("color", "green");
     				FlagBirth = true;
     			}
+    			console.log(FlagBirth);
+    		})
+    		
+    		// 성별
+    		$("#SelectGender").on("click", function(){
+    			$("#LabelGender").html('성별 <span id="SpanGender"><i class="mdi mdi-check"></i></span>');
+				$("#SpanGender").css("color", "green");
+				FlagGender = true;
     		})
     		
     		// 주소
-    		$("#InputAddress").attr("readonly", true);
     		InputAddress = $("#InputAddress").val();
     		
-    		if (InputAddress != '') {
-    			$("#LabelAddress").html('주소 <span id="SpanAddress"><i class="mdi mdi-check"></i></span>');
-    			$("#SpanAddress").css("color", "green");
-    			FlagAddress = true;
-    		} else if (InputAddress == '') {
-    			FlagAddress = false;
-    		} else {
-    			FlagAddress = false;
-    		}
-    		
     		// 상세주소
-    		$("#InputAddressDetail").on("keyup", function(){
+    		$("#InputAddressDetail").on("keyup", function FxAddressDetail(){
     			InputAddressDetail = $("#InputAddressDetail").val();		
     			
 				if (InputAddressDetail == '') {
@@ -479,10 +493,11 @@
     				$("#SpanAddressDetail").css("color", "green");
     				FlagAddressDetail = true;
     			}
+				console.log(FlagAddressDetail);
     		})
     		
     		// 프로필 사진
-    		$("#BtnProfile").on("click", function(){
+    		$("#BtnProfile").on("input", function(){
 	    		$(".uploadcare--widget__button.uploadcare--widget__button_type_open").trigger("click");    			
     		})
 			
@@ -498,6 +513,7 @@
     	        }
     	    }
     		
+    		/* uploadcare */
     		var singleWidget = uploadcare.SingleWidget('[role=uploadcare-uploader]');
 	    	singleWidget.onUploadComplete(function(info){
 		    	console.log(info.cdnUrl);
@@ -521,8 +537,55 @@
 				    		$("#SpanProfile").css("color", "red");
 				    		$("#InputProfile").attr("value", fileUrl);
 			    		}
-	    		});
+	    		})
     		});
+	    	
+	    	// Flag 확인
+	    	$("#BtnProfile").on("click", function(){
+	    		console.log(FlagId);
+	    		console.log(FlagPw1);
+	    		console.log(FlagPw2);
+	    		console.log(FlagName);
+	    		console.log(FlagNickname);
+	    		console.log(FlagEmail);
+	    		console.log(FlagPhone);
+	    		console.log(FlagBirth);
+	    		console.log(FlagAddress);
+	    		console.log(FlagAddressDetail);
+	    	})
+	    	
+	    	// Submit 유효성 검사
+	    	$("#InputSubmit").on("click", function(){
+		    	if (FlagId == false) {
+		    		$("#InputId").focus();
+		    	} else if (FlagPw1 == false) {
+		    		$("#InputPassword1").focus();
+		    	} else if (FlagPw1 == false) {
+		    		$("#InputPassword2").focus();
+		    	} else if (FlagName == false) {
+		    		$("#InputName").focus();
+		    	} else if (FlagNickname == false) {
+		    		$("#InputNickname").focus();
+		    	} else if (FlagEmail == false) {
+		    		$("#InputEmail").focus();
+		    	} else if (FlagPhone == false) {
+		    		$("#InputPhone").focus();
+		    	} else if (FlagBirth == false) {
+		    		$("#InputBirth").focus();
+		    	} else if (FlagGender == false) {
+		    		$("#LabelGender").html('성별 <span id="SpanGender"><i class="mdi mdi-close"></i> 성별을 선택해 주세요.</span>');
+					$("#SpanGender").css("color", "red");
+					$("#SelectGender").focus();
+		    	} else if (FlagAddress == false) {
+		    		$("#LabelAddress").html('주소 <span id="SpanAddress"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+		        	$("#SpanAddress").css("color", "red");
+		        	$("#InputAddress").focus();
+		    	} else if (FlagAddressDetail == false) {
+		    		$("#InputAddressDetail").focus();
+		    	} else {
+		    		$("#insertForm").submit();
+		    	}
+	    	})
     	});
     </script>
     <!-- container-scroller -->

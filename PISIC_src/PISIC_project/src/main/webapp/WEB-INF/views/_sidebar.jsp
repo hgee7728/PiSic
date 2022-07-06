@@ -7,6 +7,9 @@
     <a class="sidebar-brand brand-logo-mini" href="<%=request.getContextPath()%>/main"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo-mini.png" alt="logo" /></a>
   </div>
   <ul class="nav">
+  	<li class="nav-item nav-category">
+    	<span class="nav-link"></span>
+  	</li>
     <li class="nav-item profile">
       <div class="profile-desc">
         <div class="profile-pic">
