@@ -21,6 +21,7 @@ public class Sound {
 	private int l_no;
 	private String m_id;
 	private String a_cover;
+	private List<SoundRecomment> soundRecomment;
 	
 	private int chart;
 	private List<PlayInfo> playInfo;
@@ -35,8 +36,9 @@ public class Sound {
 		return "Sound [s_no=" + s_no + ", a_no=" + a_no + ", s_name=" + s_name + ", s_lyrics1=" + s_lyrics1
 				+ ", s_lyrics2=" + s_lyrics2 + ", s_age_yn=" + s_age_yn + ", s_path=" + s_path + ", g_no=" + g_no
 				+ ", singers=" + singers + ", sound_writers=" + sound_writers + ", sound_composers=" + sound_composers
-				+ ", cnt_like=" + cnt_like + ", l_no=" + l_no + ", m_id=" + m_id + ", a_cover=" + a_cover + ", chart="
-				+ chart + ", playInfo=" + playInfo + ", a_name=" + a_name + ", g_name=" + g_name + "]";
+				+ ", cnt_like=" + cnt_like + ", l_no=" + l_no + ", m_id=" + m_id + ", a_cover=" + a_cover
+				+ ", soundRecomment=" + soundRecomment + ", chart=" + chart + ", playInfo=" + playInfo + ", a_name="
+				+ a_name + ", g_name=" + g_name + "]";
 	}
 	
 	
@@ -153,6 +155,16 @@ public class Sound {
 	}
 	public void setPlayInfo(List<PlayInfo> playInfo) {
 		this.playInfo = playInfo;
+	}
+
+
+	public List<SoundRecomment> getSoundRecomment() {
+		return soundRecomment;
+	}
+
+
+	public void setSoundRecomment(List<SoundRecomment> soundRecomment) {
+		this.soundRecomment = soundRecomment;
 	}
 	
 	

@@ -44,7 +44,11 @@
 }
 
 .main_img_div {
+	text-align: center;
 	margin-right: 20px;
+}
+.main_img_div.rel_album{
+	margin:0px auto;
 }
 
 table.intro_table tr > td:nth-child(1){
@@ -58,20 +62,6 @@ table.intro_table tr > td:nth-child(1){
 	clear: both;
 	margin: 30px 0px;
 }
-table.sound_list  tr > td:nth-child(1),
-table.sound_list  tr > td:nth-child(2),
-table.sound_list  tr > td:nth-child(3),
-table.sound_list  tr > td:nth-child(7),
-table.sound_list  tr > td:nth-child(8),
-table.sound_list  tr > td:nth-child(9){
-	width: 5%;
-}
-table.sound_list  tr > td:nth-child(7),
-table.sound_list  tr > td:nth-child(8),
-table.sound_list  tr > td:nth-child(9){
-	text-align:center;
-}
-
 .intro_box {
 	font-size:14px;
 }
@@ -86,9 +76,12 @@ table.sound_list  tr > td:nth-child(9){
 	padding:15px 15px;
 	display: flex;
 }
-table.sound_list a,table.intro_table a {
-	color:#6c7293;
+.grid-5 {
+	flex: 0 0 20%;
+	max-width: 20%;
 }
+
+
 .div_like {
 	display: flex;
 	justify-content: space-between;
@@ -103,25 +96,46 @@ table.sound_list a,table.intro_table a {
 }
 .report_div{
 	margin: 0px 15px;
+	text-align: center;
 }
-.report_div p {
-	margin:0;
+
+.recomment_div {
+	margin: 0px 15px;
 }
-.recomment_div{
-	display: table;
-	width:100%;
+.recomment_div textarea{
+	width : 100%;
 }
 .recomment_div textarea, .recomment_div button{
-	display: table-cell;
 	vertical-align: middle;
-}
-.recomment_div {
-	padding: 0px 15px;
 }
 .recomment_content_div {
 	padding: 15px 15px;
 }
-
+.sound_recomment_table img{
+	width: 30px;
+    height: 30px;
+    border-radius: 100%;
+}
+table.sound_recomment_table td{
+	white-space: normal !important;
+}
+table.sound_recomment_table  tr:nth-child(1){
+	text-align:center;
+}
+table.sound_recomment_table  tr > td:nth-child(1){
+	width: 5%;
+}
+table.sound_recomment_table  tr > td:nth-child(2){
+	width: 15%;
+}
+table.sound_recomment_table  tr > td:nth-child(3){
+	width: 50%;
+}
+table.sound_recomment_table  tr > td:nth-child(4),
+table.sound_recomment_table  tr > td:nth-child(5){
+	width: 10%;
+	text-align:center;
+}
 </style>
 <script>
 $(function(){
@@ -214,6 +228,45 @@ $(function(){
 	
 	// 미니 버튼들 a태그 색상 바꾸기
 	$("i.mdi").parent('a').css('color','#8f5fe8');
+	
+	// 댓글 등록
+	$("#insert_recomment").click(function(){
+		console.log("댓글 등록 클릭");
+		$.ajax({
+			url:"<%=request.getContextPath() %>/sound/insertRecomment",
+			type:"post",
+			data:{
+				s_r_content: $("textarea[name=recomment_content]").val(),
+				a_no: $("input[name=a_no]").val(),
+				s_no: $("input[name=s_no]").val()
+				},
+			success: function(result){
+				if(result == "-1"){
+					alert("로그인 후 이용해주세요");
+					location.replace("<%=request.getContextPath() %>/member/login");
+				} else if(result == "0"){
+					alert("댓글 등록에 실패했습니다. 다시 시도해주세요.");
+				} else if(result == "1"){
+					alert("댓글을 등록하였습니다.");
+					location.reload();
+				} 
+			},
+			error:function(){
+				
+			}
+		}); //ajax 끝
+		
+	});
+	
+	// 댓글 100자 제한
+	$('#recomment_content').on('keyup', function() {
+        $('.recomment_cnt').html("("+$(this).val().length+" / 100)");
+ 
+        if($(this).val().length > 100) {
+            $(this).val($(this).val().substring(0, 100));
+            $('.recomment_cnt').html("(100 / 100)");
+        }
+    });
 });
 
 
@@ -235,10 +288,12 @@ function soundLike(a_no,s_no){
 				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 			} else if(result == "0"){
 				alert("해당 곡을 좋아요를 취소했습니다.");
+				location.reload();
 			} else if(result == "1"){
 				alert("해당 곡을 좋아요를 실패 했습니다. 다시 시도해주세요.");
 			} else if(result == "2"){
 				alert("해당 곡을 좋아요 했습니다.");
+				location.reload();
 			}
 			
 		},
@@ -422,38 +477,40 @@ function selectAlbumDetail(a_no){
 							<h3 class="card-title">관련 아티스트 앨범</h3>
 						</div>
 						<hr color="white">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 						<c:forEach items="${relArtistAlbum }" var="album">
-							<div class="row album_div">
-								<div class="main_img_div">
-									<a href="javascript:selectAlbumDetail('${album.a_no }')"><img id="main_img"
-										src="${album.a_cover }"
-										width="200" height="200"></a>
-								</div>
-								<div class="content_info">
-									<div class="card-body">
-										<table class="table album_table">
-											<thead>
-												<tr>
-													<th>앨범명 :</th>
-													<th><a href="javascript:selectAlbumDetail('${album.a_no }')">${album.a_name}</a></th>
-												</tr>
-											</thead>
-											<tbody>
-												
-												<tr>
-													<td>가수명 :</td>
-													<td><a href="javascript:selectArtistDetail('${album.artist_no}')">${album.artist_name}</a></td>
-												</tr>
-												<tr>
-													<td>발매일 :</td>
-													<td>${album.a_date}</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
+						<div class="album_div">
+							<div class="main_img_div rel_album">
+								<a href="javascript:selectAlbumDetail('${album.a_no }')"><img id="main_img"
+									src="${album.a_cover }"
+									width="200" height="200"></a>
+							</div>
+							<div class="content_info">
+								<div class="card-body">
+									<table class="table album_table">
+										<thead>
+											<tr>
+												<th>앨범명 :</th>
+												<th><a href="javascript:selectAlbumDetail('${album.a_no }')">${album.a_name}</a></th>
+											</tr>
+										</thead>
+										<tbody>
+											
+											<tr>
+												<td>가수명 :</td>
+												<td><a href="javascript:selectArtistDetail('${album.artist_no}')">${album.artist_name}</a></td>
+											</tr>
+											<tr>
+												<td>발매일 :</td>
+												<td>${album.a_date}</td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
 							</div>
+						</div>
 						</c:forEach>
+						</div>
 					</div>
 					<div class="content_div0 content_div5">
 						<div>
@@ -510,20 +567,20 @@ function selectAlbumDetail(a_no){
 							<div class="row">
 								<div class="card report_div">
 									<div class="card-body">
-									<p>데일리 감상자수(실시간)</p>
-									<p>${sound.s_name} 위</p>
+									<h4 class="card-title">데일리 감상자수(실시간)</h4>
+									<p class="text-muted mb-0">${sound.s_name} 위</p>
 									</div>
 								</div>
 								<div class="card report_div">
 									<div class="card-body">
-									<p>어제의 차트 순위</p>
-									<p>${sound.s_name} 위</p>
+									<h4 class="card-title">어제의 차트 순위</h4>
+									<p class="text-muted mb-0">${sound.s_name} 위</p>
 									</div>
 								</div>
 								<div class="card report_div">
 									<div class="card-body">
-									<p>최고 순위</p>
-									<p>${sound.s_name}</p>
+									<h4 class="card-title">최고 순위</h4>
+									<p class="text-muted mb-0">${sound.s_name}</p>
 									</div>
 								</div>
 							</div>
@@ -537,7 +594,7 @@ function selectAlbumDetail(a_no){
 							<c:when test="${empty loginSsInfo }">
 								<div class="card report_div">
 									<div class="card-body">
-									<p>로그인 후 이용해 주세요</p>
+									<h4 class="card-title">로그인 후 이용해 주세요</h4>
 									</div>
 								</div>
 							</c:when>
@@ -545,14 +602,21 @@ function selectAlbumDetail(a_no){
 								<div class="row">
 									<div class="card report_div">
 										<div class="card-body">
-										<p>내가 처음 들은 날</p>
-										<p>${sound.s_name}</p>
+										<h4 class="card-title">내가 처음 들은 날</h4>
+										<c:choose>
+											<c:when test="${firstDay == null}">
+												<p class="text-muted mb-0">한번도 들은 적이 없어요~</p>
+											</c:when>
+											<c:otherwise>
+												<p class="text-muted mb-0">${firstDay}</p>
+											</c:otherwise>
+										</c:choose>
 										</div>
 									</div>
 									<div class="card report_div">
 										<div class="card-body">
-										<p>총 감상 횟수</p>
-										<p>${sound.s_name} 회</p>
+										<h4 class="card-title">총 감상 횟수</h4>
+										<p class="text-muted mb-0">${totalListen} 회</p>
 										</div>
 									</div>
 								</div>
@@ -565,17 +629,43 @@ function selectAlbumDetail(a_no){
 						</div>
 						<hr color="white">
 						<div class="recomment_div">
-							<form id="sound_recomment">
-								<textarea rows="5" cols="100" required placeholder="댓글 내용을 입력해주세요."></textarea>
-								<button type="submit" class="btn btn-info btn-fw">댓글 등록</button>
-							</form>
+							<textarea id="recomment_content" name="recomment_content" rows="5" cols="100" required placeholder="댓글 내용을 입력해주세요."></textarea>
+							<div class="recomment_cnt">(1/100)</div>
+							<button type="button" id="insert_recomment" class="btn btn-info btn-fw">댓글 등록</button>
 						</div>
 						<div class="row recomment_content_div">
-							<div class="card">
-								<div class="card-body">
-								
-								</div>
-							</div>
+							<table class="table table-striped sound_recomment_table">
+								<tr>
+									<th></th>
+									<th>작성자</th>
+									<th>내용</th>
+									<th>작성일</th>
+									<th></th>
+								</tr>
+								<c:forEach items="${sound.soundRecomment }" var="recomment">
+									<tr>
+										<c:choose>
+											<c:when test="${recomment.m_profile != null }">
+												<td><img src="${recomment.m_profile }"></td>
+											</c:when>
+											<c:otherwise>
+												<td><img src="<%=request.getContextPath() %>/resources\assets\images\profile.png"></td>
+											</c:otherwise>
+										</c:choose>
+										<td>${recomment.s_r_writer }</td>
+										<td>${recomment.s_r_content }</td>
+										<td>${recomment.s_r_date }</td>
+										<c:choose>
+											<c:when test="${loginSsInfo.m_id == recomment.m_id}">
+												<td><button type="button" class="btn btn-inverse-{#8f5fe8}">삭제</button></td>
+											</c:when>
+											<c:otherwise>
+												<td></td>
+											</c:otherwise>
+										</c:choose>
+									</tr>
+								</c:forEach>
+							</table>
 						</div>
 					</div>
 				</div>

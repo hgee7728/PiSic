@@ -29,6 +29,7 @@
 	<result column="a_cover" property="a_cover"/>
 	<result column="a_name" property="a_name"/>
 	<result column="g_name" property="g_name"/>
+	<collection column="{a_no=a_no, s_no=s_no}" property="soundRecomment" select="selectSoundRecommentList"></collection>
 	<collection column="{a_no=a_no, s_no=s_no}" property="singers" select="soundSingerList"></collection>
 	<collection column="{a_no=a_no, s_no=s_no}" property="sound_writers" select="soundWriterList"></collection>
 	<collection column="{a_no=a_no, s_no=s_no}" property="sound_composers" select="soundComposerList"></collection>
@@ -87,7 +88,7 @@
 </select>
 
 <!-- 곡 상세조회 - 수록 앨범 -->
-<select id="selectSoundAlbum" resultType="Album">
+<select id="selectSoundAlbum" parameterType="Sound" resultType="Album">
 	select album.a_no, album.a_name, album.a_cover, album.a_date, art.artist_name
 	from album album 
 	join artist art on album.artist_no = art.artist_no 
@@ -116,6 +117,39 @@
 	join board board on board.l_no = pl.l_no and board.m_id = pl.m_id
 	where sound.s_no=#{s_no} and sound.a_no=#{a_no}
 	order by b_no
+</select>
+
+<!-- 곡 상세조회 - 내가 처음 들은 날 -->
+<select id="selectSoundFirstDay" parameterType="hashmap" resultType="string">
+	select to_char(p_date,'yyyy-mm-dd') p_date 
+	from (select p_date from playinfo 
+			where s_no=#{sound.s_no} and a_no=#{sound.a_no} and m_id=#{member.m_id} 
+			order by p_date) 
+	where rownum=1
+</select>
+
+<!-- 곡 상세조회 - 총 감상 횟수 -->
+<select id="selectTotalListen" parameterType="hashmap" resultType="int">
+	select count(*) from playinfo 
+	where s_no=#{sound.s_no} and a_no=#{sound.a_no} and m_id=#{member.m_id}
+</select>
+
+<!-- 곡 상세조회 - 댓글쓰기 -->
+<select id="insertSoundRecomment" parameterType="hashmap">
+	insert into sound_recomment 
+	values 
+	( (select nvl(max(s_r_no),0)+1 from sound_recomment)
+	, #{soundRecomment.s_r_content} , #{member.m_nickname}
+	, sysdate, #{soundRecomment.s_no},#{soundRecomment.a_no}, #{member.m_id})
+</select>
+
+<!-- 곡 상세조회 - 댓글 목록 -->
+<select id="selectSoundRecommentList" parameterType="map" resultType="SoundRecomment">
+	select sr.s_r_no, sr.s_r_content, sr.s_r_writer, sr.s_r_date 
+	, member.m_id, member.m_profile
+	from sound_recomment sr
+	join member member on sr.m_id = member.m_id
+	where a_no = #{a_no} and s_no = #{s_no}
 </select>
 
 <!-- 선택 재생 -->

@@ -246,10 +246,12 @@ function soundLike(a_no,s_no){
 				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 			} else if(result == "0"){
 				alert("해당 곡을 좋아요를 취소했습니다.");
+				location.reload();
 			} else if(result == "1"){
 				alert("해당 곡을 좋아요를 실패 했습니다. 다시 시도해주세요.");
 			} else if(result == "2"){
 				alert("해당 곡을 좋아요 했습니다.");
+				location.reload();
 			}
 			
 		},

@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.sound.domain.Sound;
+import kh.spring.pisic.sound.domain.SoundRecomment;
 import kh.spring.pisic.sound.model.service.SoundService;
 
 @Controller
@@ -140,9 +141,9 @@ public class SoundController {
 
 	// 곡 상세조회
 	@GetMapping("/soundDetail")
-	public ModelAndView selectSoundDetail(ModelAndView mv, Sound sound) {
+	public ModelAndView selectSoundDetail(ModelAndView mv, Sound sound, HttpSession session) {
 		
-		// 곡 기본정보
+		// 곡 기본정보 + 댓글
 		mv.addObject("sound", service.selectSound(sound));
 		// 수록곡 앨범
 		mv.addObject("album", service.selectSoundAlbum(sound));
@@ -150,6 +151,16 @@ public class SoundController {
 		mv.addObject("relArtistAlbum",service.selectRelArtistAlbum(sound));
 		// 관련 플레이리스트 공유 게시판
 		mv.addObject("relPlaylistBoard",service.selectRelPlaylistBoard(sound));
+		
+		
+		// 스트리밍 리포트
+		Member member = (Member)session.getAttribute("loginSsInfo");
+		// 내가 처음 들은 날
+		mv.addObject("firstDay",service.selectSoundFirstDay(member,sound));
+		// 총 감상 횟수
+		mv.addObject("totalListen",service.selectTotalListen(member,sound));
+		
+		
 		mv.setViewName("sound/soundDetail");
 		return mv;
 	}
@@ -167,7 +178,7 @@ public class SoundController {
 	// 노래 좋아요 - ajax
 	@PostMapping(value = "/like", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String soundLike(ModelAndView mv, Sound sound, HttpSession session, HttpServletRequest request) {
+	public String soundLike(Sound sound, HttpSession session) {
 
 		// 로그인 여부 확인
 		String resultAjax = "";
@@ -195,7 +206,27 @@ public class SoundController {
 		return resultAjax;
 	}
 
-	
+	// 노래 댓글 등록 - ajax
+	@PostMapping(value = "/insertRecomment", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String insertRecomment(SoundRecomment soundRecomment, HttpSession session) {
+		
+		// 로그인 여부 확인
+		String resultAjax = "";
+		if (session.getAttribute("loginSsInfo") == null) {
+			resultAjax = "-1"; 
+		} else { // 댓글 등록
+			Member member = (Member)session.getAttribute("loginSsInfo");
+			int result = service.insertSoundRecomment(member, soundRecomment);
+			if(result < 1) { // 댓글 등록 실패
+				resultAjax = "0"; 
+			} else { // 댓글 등록 성공
+				resultAjax = "1";
+			}
+		}
+		
+		return resultAjax;
+	}
 	
 	
 	
