@@ -104,7 +104,7 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 														</tr>
 													</thead>
 													<tbody>
-														<c:forEach items="${ chartTopten}" var="sounds">
+														<c:forEach items="${chartTopten}" var="sounds">
 															<tr>
 																<td>
 																	<div class="form-check form-check-muted m-0">

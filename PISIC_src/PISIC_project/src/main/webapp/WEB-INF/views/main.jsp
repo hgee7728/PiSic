@@ -320,80 +320,55 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 									<!-- TODO hg : 클릭 범위 넓히기 -->
 									<map name="map" id="map">
 										<area shape="rect" coords="283,35,317,91"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="도봉구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=10" alt="도봉구">
 										<area shape="rect" coords="260,92,294,108"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="강북구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=3" alt="강북구">
 										<area shape="rect" coords="322,44,362,95"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="노원구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=9" alt="노원구">
 										<area shape="rect" coords="170,110,206,127"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="은평구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=22" alt="은평구">
 										<area shape="rect" coords="260,138,298,154"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="성북구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=17" alt="성북구">
 										<area shape="rect" coords="344,145,382,162"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="중랑구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=25" alt="중랑구">
 										<area shape="rect" coords="171,170,220,187"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="서대문구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=14" alt="서대문구">
 										<area shape="rect" coords="226,162,262,178"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="종로구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=23" alt="종로구">
 										<area shape="rect" coords="298,163,342,179"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="동대문구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=11" alt="동대문구">
 										<area shape="rect" coords="58,185,92,204"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											title="새창으로 열립니다." alt="강서구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=4" alt="강서구">
 										<area shape="rect" coords="150,190,190,207"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="마포구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=13" alt="마포구">
 										<area shape="rect" coords="245,191,272,207"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="중구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=24" alt="중구">
 										<area shape="rect" coords="289,199,324,215"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="성동구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=16" alt="성동구">
 										<area shape="rect" coords="226,226,261,242"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="용산구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=21" alt="용산구">
 										<area shape="rect" coords="334,211,372,227"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="광진구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=6" alt="광진구">
 										<area shape="rect" coords="393,201,430,217"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="강동구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=2" alt="강동구">
 										<area shape="rect" coords="93,239,133,258"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="양천구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=19" alt="양천구">
 										<area shape="rect" coords="146,237,189,253"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="영등포구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=20" alt="영등포구">
 										<area shape="rect" coords="188,260,226,277"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="동작구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=12" alt="동작구">
 										<area shape="rect" coords="250,281,290,298"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="서초구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=15" alt="서초구">
 										<area shape="rect" coords="299,264,336,281"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="강남구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=1" alt="강남구">
 										<area shape="rect" coords="356,251,393,269"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="송파구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=18" alt="송파구">
 										<area shape="rect" coords="85,272,122,290"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="구로구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=7" alt="구로구">
 										<area shape="rect" coords="137,298,175,315"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="금천구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=8" alt="금천구">
 										<area shape="rect" coords="190,306,226,323"
-											href="<%=request.getContextPath()%>/pymusic/pymusicMain"
-											target="_blank" title="새창으로 열립니다." alt="관악구">
+											href="<%=request.getContextPath()%>/pymusic/area?area_code=5" alt="관악구">
 									</map>
 								</div>
 

@@ -61,11 +61,12 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 			<div class="main-panel">
 				<div class="content-wrapper">
 
-					<h2 class=" card-title">지역별 플레이리스트</h2>
-
+					<h2 class=" card-title">
+						Pick Your Genre &nbsp&nbsp<i type="button"
+							class="mdi mdi-reload btn_reload"> ${serverTime} </i>
+					</h2>
 					<br>
-
-
+					<p>장르별 전체 재생 수 기준 랭킹 조회</p>
 					<div class="content_div3">
 						<div class="select_btns">
 							<button type="button" id="select_play"
@@ -77,10 +78,13 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 								<div class="card">
 									<div class="card-body">
 
-
+										
 										<!-- TODO hg : 차트이름 변경하기  -->
-
-										<h3 class="card-title">PISIC TOP 10</h3>
+										<c:set var="genre" value="${pyGenre[1].g_name }"	/>
+										
+										
+										<h3 class="card-title">${genre } TOP 10</h3>
+										
 										<div class="table-responsive">
 											<form name="sound_frm">
 												<table class="table sound_list">
@@ -105,7 +109,7 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 														</tr>
 													</thead>
 													<tbody>
-														<c:forEach items="${pyLocal }" var="sounds">
+														<c:forEach items="${pyGenre}" var="sounds">
 															<tr>
 																<td>
 																	<div class="form-check form-check-muted m-0">
@@ -157,6 +161,8 @@ table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
 		<!-- page-body-wrapper ends -->
 	</div>
 	<!-- container-scroller -->
+	
+
 	<!-- plugins:js -->
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/vendors/js/vendor.bundle.base.js"></script>

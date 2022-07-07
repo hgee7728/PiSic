@@ -15,13 +15,6 @@ public class ChartDao {
 	@Autowired
 	private SqlSession session;
 	
-	public List<Sound> selectChartDetail(){
-		return session.selectList("Chart.selectChartDetail");
-	}
-	
-	public List<Sound> selectMainTopten(){
-		return session.selectList("Chart.selectMainTopten");
-	}
 	public List<Sound> selectChartTopTen(String chartType, int limit) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("chartType", chartType);

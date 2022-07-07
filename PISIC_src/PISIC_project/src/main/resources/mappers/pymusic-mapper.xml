@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Pymusic">
 
-	<resultMap type="Sound" id="soundResultMap">
+	<resultMap type="PlayInfo" id="soundResultMap">
 		<result column="s_no" property="s_no" />
 		<result column="a_no" property="a_no" />
 		<result column="s_name" property="s_name" />
@@ -14,34 +14,57 @@
 		<result column="a_name" property="a_name" />
 		<result column="g_name" property="g_name" />
 		<result column="chart" property="chart" />
+		<result column="area_code" property="area_code"/>
+		<result column="area_name" property="area_name"/>
 		<collection column="{a_no=a_no, s_no=s_no}"
 			property="singers" select="soundSingerList"></collection>
 	</resultMap>
 
-	<select id="selectPyLocal" resultType="Sound" resultMap="soundResultMap">
-	<![CDATA[
-	select t2.*
-	from
-	(select t1.*, 
-	    dense_rank() over (partition by area_code order by cnt desc, s_no, a_no ) chart
-	from
-	(select s_no, a_no, s_name, s_path, area_code, area_name loc, count(*) cnt
-	from playinfo
-	    join sound using(s_no, a_no)
-	    join area using (area_code)
-	where area_code=3
-	group by s_no, a_no, s_name, s_path, area_code, area_name
-	order by cnt) t1) t2
-	where chart<=10
-	]]>
+
+	<select id="selectPyArea" parameterType="hashmap"
+		resultMap="soundResultMap" >
+		select t2.*
+		from (
+		select t1.*
+		    , rank() over (partition by area_code order by cnt desc, s_no, a_no ) chart
+		from
+		    (select  a_cover, s_no, a_no, s_name, s_path, a_name, area_code, area_name, count(*) cnt 
+		    from sound
+		    join album using(a_no)
+		    join (select p_no, a_no, s_no, area_code, area_name from playinfo join area using (area_code)) using (a_no, s_no)
+		    where area_code=#{area_code}
+		    group by a_cover, s_no, a_no, s_name,a_name,s_path, area_code, area_name order by cnt) t1
+		) t2
+		where chart &lt;= 10
 	</select>
 	
+	<select id="selectPyGenre" parameterType="hashmap"
+		resultMap="soundResultMap" >
+	select t2.*
+	from (
+	select t1.*, (select g_name from genre where g_no=t1.g_no) g_name
+	    ,rank() over (partition by g_no order by cnt desc, s_no, a_no ) chart
+	from
+	    (select  a_cover, s_no, a_no, g_no,s_name,s_path, count(*) cnt from (select s_no, a_no, g_no, s_name,s_path from sound where g_no=#{g_no}) 
+	    join album using(a_no)
+	    join (select p_no, a_no, s_no from playinfo) using (a_no, s_no)
+	    group by a_cover, s_no, a_no, g_no, s_name,s_path order by cnt) t1	
+	) t2
+	where chart &lt;= 10		
+	</select>
+	
+	
+
 	<select id="soundSingerList" parameterType="map"
 		resultType="Singer">
 		select artist.artist_name, artist.artist_no
 		from sound sound
-		join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no
-		join artist artist on singer.artist_no = artist.artist_no 
+		join singer singer on sound.s_no=singer.s_no and
+		sound.a_no=singer.a_no
+		join artist artist on singer.artist_no =
+		artist.artist_no
 		where sound.a_no=#{a_no} and sound.s_no=#{s_no}
 	</select>
+
+
 </mapper>

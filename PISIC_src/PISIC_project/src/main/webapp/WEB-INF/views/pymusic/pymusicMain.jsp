@@ -62,7 +62,7 @@
 							<div class="card">
 								<div class="card-body">
 									<div>
-										<button class="btn btn_genre">댄스</button>
+										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=1'">댄스</button>
 									</div>
 								</div>
 							</div>
@@ -71,7 +71,7 @@
 							<div class="card">
 								<div class="card-body">
 									<div>
-										<button class="btn btn_genre">발라드</button>
+										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=2'">발라드</button>
 									</div>
 								</div>
 							</div>
@@ -80,7 +80,7 @@
 							<div class="card">
 								<div class="card-body">
 									<div>
-										<button class="btn btn_genre">락</button>
+										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=3'">락</button>
 									</div>
 								</div>
 							</div>
@@ -89,7 +89,7 @@
 							<div class="card">
 								<div class="card-body">
 									<div>
-										<button class="btn btn_genre">랩/힙합</button>
+										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=4'">랩/힙합</button>
 									</div>
 								</div>
 							</div>
@@ -98,7 +98,7 @@
 							<div class="card">
 								<div class="card-body">
 									<div>
-										<button class="btn btn_genre">R&B/소울</button>
+										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=6'">R&B/소울</button>
 									</div>
 								</div>
 							</div>
@@ -107,7 +107,7 @@
 							<div class="card">
 								<div class="card-body">
 									<div>
-										<button class="btn btn_genre">POP</button>
+										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=7'">POP</button>
 									</div>
 								</div>
 							</div>
@@ -116,7 +116,7 @@
 							<div class="card">
 								<div class="card-body">
 									<div>
-										<button class="btn btn_genre">트로트</button>
+										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=8'">트로트</button>
 									</div>
 								</div>
 							</div>
@@ -125,7 +125,7 @@
 							<div class="card">
 								<div class="card-body">
 									<div>
-										<button class="btn btn_genre">인디</button>
+										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=11'">인디</button>
 									</div>
 								</div>
 							</div>

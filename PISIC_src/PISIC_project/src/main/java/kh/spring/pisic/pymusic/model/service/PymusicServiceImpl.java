@@ -15,7 +15,12 @@ public class PymusicServiceImpl implements PymusicService{
 	private PymusicDao dao;
 
 	@Override
-	public List<Sound> selectPyLocal() {
-		return dao.selectPyLocal();
+	public List<Sound> selectPyArea(int area_code) {
+		return dao.selectPyArea(area_code);
+	}
+
+	@Override
+	public List<Sound> selectPyGenre(int g_no) {
+		return dao.selectPyGenre(g_no);
 	}
 }

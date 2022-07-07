@@ -22,10 +22,8 @@ public class ChartController {
 	private ChartService service;
 
 	@GetMapping(value = {"/", "/chartMain"})
-	public ModelAndView MainPage(ModelAndView mv, Model model) {
-		List<Sound> chartTopten = service.selectMainTopten();
-		mv.addObject("chartMainten", chartTopten);
-		
+	public ModelAndView MainPage(ModelAndView mv) {
+	
 		mv.addObject("chartTopten", service.selectChartTopTen("top", 3));
 		mv.addObject("monthlyTopten", service.selectChartTopTen("monthly", 3));
 		mv.addObject("weeklyTopten", service.selectChartTopTen("weekly", 3));

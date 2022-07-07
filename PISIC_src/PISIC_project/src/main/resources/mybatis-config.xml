@@ -25,6 +25,7 @@
 	<mapper resource="mappers/artist-mapper.xml"/>
 	<mapper resource="mappers/mymusic-mapper.xml"/>
 	<mapper resource="mappers/chart-mapper.xml"/>
+	<mapper resource="mappers/pymusic-mapper.xml"/>
 	<mapper resource="mappers/faqBoard-mapper.xml"/>
 </mappers>
 </configuration>

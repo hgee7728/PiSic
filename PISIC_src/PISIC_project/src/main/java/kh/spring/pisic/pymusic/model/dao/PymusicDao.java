@@ -13,7 +13,13 @@ public class PymusicDao {
 	@Autowired
 	private SqlSession session;
 	
-	public List<Sound> selectPyLocal() {
-		return session.selectList("Pymusic.selectPyLocal");
+	public List<Sound> selectPyArea(int area_code) {
+		return session.selectList("Pymusic.selectPyArea", area_code);
 	}
+	
+	public List<Sound> selectPyGenre(int g_no) {
+		return session.selectList("Pymusic.selectPyGenre", g_no);
+	}
+	
+	
 }
