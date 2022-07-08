@@ -87,8 +87,17 @@ public class MyMusicController {
 			) {
 		// TODO 로그인 여부
 		Member member = (Member)session.getAttribute("loginSsInfo");
-		mv.addObject("member", member);
+		mv.addObject("mymusicList",service.selectPlaylist(member.getM_id()));
 		mv.setViewName("mymusic/insertPlaylist");
+		return mv;
+	}
+	@PostMapping("/insertPlaylist")
+	public ModelAndView insertPlaylist(
+			ModelAndView mv
+			, MyMusic mymusic
+			) {
+		
+		mv.setViewName("redirect:/mymusic/selectPlaylist");
 		return mv;
 	}
 	
@@ -131,6 +140,15 @@ public class MyMusicController {
 		return mv;
 	}
 	
+	// 최근 들은 곡 - ajax
+	@PostMapping("/selectSoundRecent")
+	@ResponseBody
+	public List<Sound> selectSoundRecent(HttpSession session){
+		// TODO 로그인 여부
+		Member member = (Member)session.getAttribute("loginSsInfo");
+		
+		return service.selectSoundRecent(member.getM_id());
+	}
 	
 	
 	

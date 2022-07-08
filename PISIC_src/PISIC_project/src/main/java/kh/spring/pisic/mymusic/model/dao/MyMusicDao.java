@@ -7,7 +7,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.mymusic.domain.MyMusic;
 import kh.spring.pisic.sound.domain.Sound;
 
@@ -29,5 +28,10 @@ public class MyMusicDao {
 	// 플레이 리스트 삭제
 	public int deletePlaylist(List<MyMusic> mymusicList) {
 		return session.delete("MyMusic.deletePlaylist", mymusicList);
+	}
+	
+	// 최근 들은 곡 조회
+	public List<Sound> selectSoundRecent(String m_id) {
+		return session.selectList("MyMusic.selectSoundRecent",m_id);
 	}
 }

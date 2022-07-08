@@ -34,4 +34,10 @@ public class MyMusicServiceImpl implements MyMusicService{
 		return dao.deletePlaylist(mymusicList);
 	}
 
+	// 최근 들은 곡 조회
+	@Override
+	public List<Sound> selectSoundRecent(String m_id) {
+		return dao.selectSoundRecent(m_id);
+	}
+
 }

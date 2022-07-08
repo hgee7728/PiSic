@@ -54,7 +54,7 @@ input[name=playlist_no]{
 	margin-right: 10px;
 }
 table.playlist_table a{
-	color:
+	color:#6c7293;
 }
 </style>
 <script>
