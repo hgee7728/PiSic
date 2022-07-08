@@ -152,6 +152,12 @@
 	where a_no = #{a_no} and s_no = #{s_no}
 </select>
 
+<!-- 곡 상세조회 - 댓글 삭제 -->
+<delete id="deleteSoundRecomment" parameterType="hashmap">
+	delete from sound_recomment 
+	where m_id=#{member.m_id} and s_r_no=#{soundRecomment.s_r_no}
+</delete>
+
 <!-- 선택 재생 -->
 <select id="selectSoundList" parameterType="list" resultType="Sound">
 	select s_name, s_path, artist.artist_name, album.a_cover  from sound sound 

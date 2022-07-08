@@ -42,10 +42,15 @@
 		</foreach>
 	select * from dual
 </insert>
-<!-- 내 플레이 리스트 조회 -->
-<!-- <select id="selectPlaylist" resultMap="MyMusicResultMap">
-	select * from playlist where m_id=#{m_id}
-</select> -->
+
+<!-- 플레이 리스트 삭제 -->
+<delete id="deletePlaylist" parameterType="list">
+	delete from playlist
+	where 
+	<foreach collection="list" item="item" separator="or">
+	(m_id = #{item.m_id} and l_no = #{item.l_no})
+	</foreach>
+</delete>
 
 <!-- 내 플레이 리스트 상세조회 -->
 <select id="selectSound"  resultMap="soundResultMap" parameterType="MyMusic">

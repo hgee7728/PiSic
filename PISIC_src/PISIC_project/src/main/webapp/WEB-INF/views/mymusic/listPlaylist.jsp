@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,49 +33,69 @@
 <!-- End layout styles -->
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
-<script
-	src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-/* 대표사진 사진 변경 */
-UPLOADCARE_LOCALE = "ko"
-UPLOADCARE_LOCALE_TRANSLATIONS = {
-    buttons: {
-        choose: {
-            files: {
-                one: '사진 등록'
-            }
-        }
-    }
-}
-$(function(){
-	
-	var singleWidget = uploadcare.SingleWidget('[role=uploadcare-uploader]');
-	singleWidget.onUploadComplete(function(info){
-		console.log(info.cdnUrl);
-		var fileUrl = info.cdnUrl;
-		$("#main_img").attr("src", fileUrl);
-		$('input[name=l_image]').val(fileUrl);
-
-	}); 
-});
-
-
-</script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-.content_div1 {
-	display: flex;
-	margin: 30px 0px 30px 0px;
+.grid-5 {
+	flex: 0 0 20%;
+	max-width: 20%;
 }
 .main_img_div {
-	margin-right: 20px;
-}
-.img_btn {
 	text-align: center;
-	margin : 10px 0px;
+}
+.content_div{
+	margin-top:30px;
+}
+input[name=playlist_no]{
+	position: relative;
+	top:20px;
+	left:20px;
+}
+.playlist_div{
+	margin-right: 10px;
+}
+table.playlist_table a{
+	color:
 }
 </style>
+<script>
+$(function(){
+	var msg = '${msg}';
+	if(msg){
+		alert(msg);
+	}
+	
+	// 생성된 체크박스와 label 묶어주기
+	var checkbox = $("input[name=l_no]");
+	console.log(checkbox);
+	for(var i = 0 ; i < $("input[name=l_no]").length ; i++){
+		console.log("checkbox"+i+": " + checkbox[i]);
+		checkbox.eq(i).attr('id', 'l_no'+i);
+		checkbox.eq(i).next().children('label').attr('for', 'l_no'+i);
+	}
+	
+	$("#insert_playlist").click(function(){
+		location.href="<%=request.getContextPath() %>/mymusic/insertPlaylist";
+	});
+	$("#delete_playlist").click(function(){
+		if($('input[name=l_no]:checked').length == '0'){
+			alert("플레이리스트를 선택하세요.");
+		} else {
+			var confm = confirm("선택된 플레이리스트를 삭제 하시겠습니까?");
+			if (confm == false) {
+				preventClick(e);
+				alert("취소하셨습니다.")
+			} else {
+				playlist_frm.submit();
+			}
+		}
+	});
+	
+	
+});
+</script>
 </head>
+
+
 <body>
 	<div class="container-scroller">
 		<!-- partial:partials/_sidebar.html -->
@@ -87,48 +107,54 @@ $(function(){
 			<!-- partial -->
 			<div class="main-panel">
 				<div class="content-wrapper">
-					<div class="title_div">
-						<h2 class="card-title">내 플레이 리스트 만들기</h2>
-					</div>
-					<div class="content_div1">
-						<div class="main_img_div">
-						<div>
-							<img id="main_img"  src="<%=request.getContextPath()%>/resources/assets/images/DummyImage.png" width="300"
-								height="300"> 
-								</div>
-								<div class="img_btn">
-								<input type="hidden"
-								role="uploadcare-uploader"
-								data-public-key="43cc829c5d2fae8676a5"
-								data-tabs="file gdrive gphotos" />
-								<input type="hidden" name="l_image">
-								</div>
+					<form method="post" name="playlist_frm" action="<%=request.getContextPath() %>/mymusic/deletePlaylist">
+						<div class="title_div">
+							<h2 class="card-title">내 플레이 리스트</h2>
 						</div>
-						<div class="content_info  card">
-							<div class="card-body">
-								<table class="table intro_table">
-									<thead>
-										<tr>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td colspan="2"><input type="text" class="form-control" placeholder="플레이리스트명"></td>
-										</tr>
-										<tr>
-											<td>공개 여부 :</td>
-											<td></td>
-										</tr>
-									</tbody>
-								</table>
+						<div class="playlist_btn_div">
+							
+								<button type="button" id="insert_playlist" class="btn btn-info btn-fw">추가</button>
+								<button type="button" id="delete_playlist" class="btn btn-info btn-fw">삭제</button>
+							
+						</div>
+						<div class="content_div">
+						<div class="grid-5 col-sm-6 grid-margin stretch-card">
+							<c:forEach items="${listPlaylist }" var="playlist">
+							<div class="playlist_div">
+								<input type="checkbox" name="l_no" value="${playlist.l_no }">
+								<div class="main_img_div">
+									<label><img id="main_img" src="${playlist.l_image }" width="200" height="200"></label>
+								</div>
+								<div class="content_info">
+									<div class="card-body">
+										<table class="table playlist_table">
+											<thead>
+												<tr>
+													<th>플레이리스트명 :</th>
+													<th><a href="javascript:selectAlbumDetail('${playlist.l_name }')">${playlist.l_name}</a></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>공개 여부 :</td>
+													<c:choose>
+														<c:when test="${playlist.l_private_yn == 'Y'}">
+														<td>공개</td>
+														</c:when>
+														<c:when test="${playlist.l_private_yn == 'N'}">
+														<td>비공개</td>
+														</c:when>
+													</c:choose>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							</c:forEach>
 							</div>
 						</div>
-					</div>
-
-
-
-
-
+					</form>
 				</div>
 				<!-- content-wrapper ends -->
 				<!-- partial:partials/_footer.html -->

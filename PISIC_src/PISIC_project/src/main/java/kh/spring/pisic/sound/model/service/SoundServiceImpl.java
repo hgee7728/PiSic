@@ -79,5 +79,10 @@ public class SoundServiceImpl implements SoundService{
 	public int insertSoundRecomment(Member member, SoundRecomment soundRecomment) {
 		return dao.insertSoundRecomment(member, soundRecomment);
 	}
+	// 노래 댓글 삭제 - ajax
+	@Override
+	public int deleteSoundRecomment(Member member, SoundRecomment soundRecomment) {
+		return dao.deleteSoundRecomment(member, soundRecomment);
+	}
 
 }

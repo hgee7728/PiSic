@@ -94,6 +94,12 @@ table.intro_table tr > td:nth-child(1){
 .content-wrapper a {
 	color:#6c7293;
 }
+.playlist_insert_modal_new{
+	text-align: center;
+}
+.rel_album_div{
+	padding: 15px 0px;
+}
 .report_div{
 	margin: 0px 15px;
 	text-align: center;
@@ -212,6 +218,7 @@ $(function(){
 			},
 		}); // ajax 끝
 	});
+	
     
 	
     // 모달창 끄기 2가지
@@ -267,8 +274,36 @@ $(function(){
             $('.recomment_cnt').html("(100 / 100)");
         }
     });
+	
+	// 댓글 삭제
+	$(".btn.delete").click(function(){
+		$.ajax({
+			url:"<%=request.getContextPath() %>/sound/deleteRecomment",
+			type:"post",
+			data:{s_r_no: $("input[name=s_r_no]").val()},
+			success:function(result){
+				console.log(result);
+				if(result == "-1"){
+					alert("로그인 후 이용해주세요");
+					location.replace("<%=request.getContextPath() %>/member/login");
+				} else if(result == "0"){
+					alert("댓글 삭제를 실패했습니다. 다시 시도해주세요.");
+				} else if(result == "1"){
+					alert("댓글을 삭제하였습니다.");
+					location.reload();
+				} 
+			},
+			error:function(error){
+				
+			}
+		}); // ajax 끝
+	});
 });
 
+// 로그인 페이지로
+function goLogin(){
+	location.href="<%=request.getContextPath() %>/member/login"
+}
 
 //노래 좋아요 - ajax
 function soundLike(a_no,s_no){
@@ -479,7 +514,7 @@ function selectAlbumDetail(a_no){
 						<hr color="white">
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 						<c:forEach items="${relArtistAlbum }" var="album">
-						<div class="album_div">
+						<div class="rel_album_div">
 							<div class="main_img_div rel_album">
 								<a href="javascript:selectAlbumDetail('${album.a_no }')"><img id="main_img"
 									src="${album.a_cover }"
@@ -630,10 +665,14 @@ function selectAlbumDetail(a_no){
 						<hr color="white">
 						<div class="recomment_div">
 							<textarea id="recomment_content" name="recomment_content" rows="5" cols="100" required placeholder="댓글 내용을 입력해주세요."></textarea>
-							<div class="recomment_cnt">(1/100)</div>
-							<button type="button" id="insert_recomment" class="btn btn-info btn-fw">댓글 등록</button>
+							<div style="float:right;">
+								<div class="recomment_cnt">(1/100)</div>
+							</div>
+							<div style="clear: both; float: right;">
+								<button type="button" id="insert_recomment" class="btn btn-info btn-fw">댓글 등록</button>
+							</div>
 						</div>
-						<div class="row recomment_content_div">
+						<div class="row recomment_content_div" style="clear: both;">
 							<table class="table table-striped sound_recomment_table">
 								<tr>
 									<th></th>
@@ -657,7 +696,12 @@ function selectAlbumDetail(a_no){
 										<td>${recomment.s_r_date }</td>
 										<c:choose>
 											<c:when test="${loginSsInfo.m_id == recomment.m_id}">
-												<td><button type="button" class="btn btn-inverse-{#8f5fe8}">삭제</button></td>
+											<td>
+												<form action="<%=request.getContextPath() %>/sound/deleteRecomment" method="post">
+													<input type="hidden" name="s_r_no" value="${recomment.s_r_no}">
+													<button class="btn delete" type="button">삭제</button>
+												</form>
+											</td>
 											</c:when>
 											<c:otherwise>
 												<td></td>

@@ -49,18 +49,18 @@ public class SoundController {
 
 	// 음악 재생
 	@PostMapping("/play")
-	public ModelAndView musicPlayer(ModelAndView mv, @RequestParam("a_no") int[] a_no,
-			@RequestParam("s_no") int[] s_no) {
+	public ModelAndView musicPlayer(ModelAndView mv, @RequestParam("a_no") int[] a_noArr,
+			@RequestParam("s_no") int[] s_noArr) {
 
 		List<Sound> soundList = new ArrayList<Sound>();
 
 		// 들고 온 데이터 domain형태로 list 시키기
-		for (int i = 0; i < s_no.length; i++) {
+		for (int i = 0; i < s_noArr.length; i++) {
 			Sound sound = new Sound();
-			System.out.println(a_no[i]);
-			System.out.println(s_no[i]);
-			sound.setA_no(a_no[i]);
-			sound.setS_no(s_no[i]);
+			System.out.println(a_noArr[i]);
+			System.out.println(s_noArr[i]);
+			sound.setA_no(a_noArr[i]);
+			sound.setS_no(s_noArr[i]);
 			soundList.add(sound);
 		}
 		System.out.println("[[[soundList]]] : " + soundList);
@@ -224,12 +224,29 @@ public class SoundController {
 				resultAjax = "1";
 			}
 		}
-		
 		return resultAjax;
 	}
 	
-	
-	
+	// 노래 댓글 삭제 - ajax
+	@PostMapping(value = "/deleteRecomment", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String deleteRecomment(SoundRecomment soundRecomment, HttpSession session) {
+		
+		// 로그인 여부 확인
+		String resultAjax = "";
+		if (session.getAttribute("loginSsInfo") == null) {
+			resultAjax = "-1"; 
+		} else { // 댓글 삭제
+			Member member = (Member)session.getAttribute("loginSsInfo");
+			int result = service.deleteSoundRecomment(member, soundRecomment);
+			if(result < 1) { // 댓글 삭제 실패
+				resultAjax = "0"; 
+			} else { // 댓글 삭제 성공
+				resultAjax = "1";
+			}
+		}
+		return resultAjax;
+	}
 	
 	
 	

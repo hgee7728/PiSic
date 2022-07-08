@@ -157,11 +157,11 @@
       </a>
       <div class="collapse" id="ui-basic">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">내 플레이 리스트</a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">좋아하는 아티스트</a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">좋아하는 노래</a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">최근 들은 노래</a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">많이 들은 노래</a></li>
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/selectPlaylist">내 플레이 리스트</a></li>
+          <li class="nav-item"> <a class="nav-link" href="">좋아하는 아티스트</a></li>
+          <li class="nav-item"> <a class="nav-link" href="">좋아하는 노래</a></li>
+          <li class="nav-item"> <a class="nav-link" href="">최근 들은 노래</a></li>
+          <li class="nav-item"> <a class="nav-link" href="">많이 들은 노래</a></li>
         </ul>
       </div>
     </li>

@@ -96,6 +96,14 @@ public class SoundDao {
 		map.put("soundRecomment", soundRecomment);
 		return session.insert("Sound.insertSoundRecomment", map);
 	}
+	
+	// 노래 댓글 삭제 - ajax
+	public int deleteSoundRecomment(Member member, SoundRecomment soundRecomment) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("member", member);
+		map.put("soundRecomment", soundRecomment);
+		return session.delete("Sound.deleteSoundRecomment", map);
+	}
 
 	
 	
