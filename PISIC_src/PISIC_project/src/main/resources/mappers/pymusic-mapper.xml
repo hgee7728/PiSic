@@ -21,11 +21,10 @@
 	</resultMap>
 
 
-	<select id="selectPyArea" parameterType="hashmap"
-		resultMap="soundResultMap" >
+	<select id="selectPyArea" parameterType="_int" resultMap="soundResultMap" >
 		select t2.*
 		from (
-		select t1.*
+		select distinct t1.*
 		    , rank() over (partition by area_code order by cnt desc, s_no, a_no ) chart
 		from
 		    (select  a_cover, s_no, a_no, s_name, s_path, a_name, area_code, area_name, count(*) cnt 
@@ -38,21 +37,78 @@
 		where chart &lt;= 10
 	</select>
 	
-	<select id="selectPyGenre" parameterType="hashmap"
-		resultMap="soundResultMap" >
-	select t2.*
-	from (
-	select t1.*, (select g_name from genre where g_no=t1.g_no) g_name
-	    ,rank() over (partition by g_no order by cnt desc, s_no, a_no ) chart
-	from
-	    (select  a_cover, s_no, a_no, g_no,s_name,s_path, count(*) cnt from (select s_no, a_no, g_no, s_name,s_path from sound where g_no=#{g_no}) 
-	    join album using(a_no)
-	    join (select p_no, a_no, s_no from playinfo) using (a_no, s_no)
-	    group by a_cover, s_no, a_no, g_no, s_name,s_path order by cnt) t1	
-	) t2
-	where chart &lt;= 10		
+	<select id="selectPyGenre" parameterType="_int" resultMap="soundResultMap" >
+		select t2.*
+		from (
+		select distinct t1.*, (select g_name from genre where g_no=t1.g_no) g_name
+		    ,rank() over (partition by g_no order by cnt desc, s_no, a_no ) chart
+		from
+		    (select  a_cover, s_no, a_no, g_no,s_name,s_path, count(*) cnt from (select s_no, a_no, g_no, s_name,s_path from sound where g_no=#{g_no}) 
+		    join album using(a_no)
+		    join (select p_no, a_no, s_no from playinfo) using (a_no, s_no)
+		    group by a_cover, s_no, a_no, g_no, s_name,s_path order by cnt) t1	
+		) t2
+		where chart &lt;= 10		
 	</select>
 	
+	
+	<select id="selectPyAgender" parameterType="string" resultMap="soundResultMap" >
+		select t2.*
+		from (
+		select distinct t1.*, 
+		    rank() over (partition by m_gender order by cnt desc, s_no, a_no ) chart
+		from
+		(
+		select  a_cover, s_no, a_no, s_name,s_path, m_id, m_birth, m_gender,a_name, count(*) cnt 
+		from 
+			(select s_no, a_no, s_name, s_path from sound) 
+		join (select p_no, a_no, s_no, m_id from playinfo) using (a_no, s_no)
+		join member using (m_id)
+		join album using (a_no)
+		group by a_cover, s_no, a_no, s_name, s_path, m_birth, m_gender, m_id, a_name order by cnt) t1
+		<choose>
+			<when test='agender.equals("101")'>
+				where m_gender= 'M' and m_birth &lt;= (SELECT  to_char(SYSDATE,'YYYYMMDD') FROM dual) 
+					and m_birth &gt; (SELECT  to_char(add_months(SYSDATE, -240),'YYYYMMDD') FROM dual)
+			</when>
+			<when test='agender.equals("201")'>
+				where m_gender= 'M' and m_birth &lt;= (SELECT  to_char(add_months(SYSDATE, -240),'YYYYMMDD') FROM dual) 
+					and m_birth &gt; (SELECT  to_char(add_months(SYSDATE, -360),'YYYYMMDD') FROM dual)
+			</when>
+			<when test='agender.equals("301")'>
+				where m_gender= 'M' and m_birth &lt;= (SELECT  to_char(add_months(SYSDATE, -360),'YYYYMMDD') FROM dual) 
+					and m_birth &gt; (SELECT  to_char(add_months(SYSDATE, -480),'YYYYMMDD') FROM dual)
+			</when>
+			<when test='agender.equals("401")'>
+				where m_gender= 'M' and m_birth &lt;= (SELECT  to_char(add_months(SYSDATE, -480),'YYYYMMDD') FROM dual) 
+					and m_birth &gt; (SELECT  to_char(add_months(SYSDATE, -600),'YYYYMMDD') FROM dual)
+			</when>
+			<when test='agender.equals("501")'>
+				where m_gender= 'M' and m_birth &lt;= (SELECT  to_char(add_months(SYSDATE, -600),'YYYYMMDD') FROM dual)
+			</when>
+			<when test='agender.equals("102")'>
+				where m_gender= 'F' and m_birth &lt;= (SELECT  to_char(SYSDATE,'YYYYMMDD') FROM dual) 
+					and m_birth &gt; (SELECT  to_char(add_months(SYSDATE, -240),'YYYYMMDD') FROM dual)
+			</when>
+			<when test='agender.equals("202")'>
+				where m_gender= 'F' and m_birth &lt;= (SELECT  to_char(add_months(SYSDATE, -240),'YYYYMMDD') FROM dual) 
+					and m_birth &gt; (SELECT  to_char(add_months(SYSDATE, -360),'YYYYMMDD') FROM dual)
+			</when>
+			<when test='agender.equals("302")'>
+				where m_gender= 'F' and m_birth &lt;= (SELECT  to_char(add_months(SYSDATE, -360),'YYYYMMDD') FROM dual) 
+					and m_birth &gt; (SELECT  to_char(add_months(SYSDATE, -480),'YYYYMMDD') FROM dual)
+			</when>
+			<when test='agender.equals("402")'>
+				where m_gender= 'F' and m_birth &lt;= (SELECT  to_char(add_months(SYSDATE, -480),'YYYYMMDD') FROM dual) 
+					and m_birth &gt; (SELECT  to_char(add_months(SYSDATE, -600),'YYYYMMDD') FROM dual)
+			</when>
+			<when test='agender.equals("502")'>
+				where m_gender= 'F' and m_birth &lt;= (SELECT  to_char(add_months(SYSDATE, -600),'YYYYMMDD') FROM dual)
+			</when>	
+		</choose>
+		) t2
+		where chart &lt;= 10		
+	</select>
 	
 
 	<select id="soundSingerList" parameterType="map"

@@ -8,6 +8,7 @@ public interface PymusicService {
 
 	public List<Sound> selectPyArea(int area_code);
 	public List<Sound> selectPyGenre(int g_no);
+	public List<Sound> selectPyAgender(String agender);
 	
 	
 }

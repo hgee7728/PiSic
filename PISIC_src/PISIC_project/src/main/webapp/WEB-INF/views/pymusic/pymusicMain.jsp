@@ -61,72 +61,64 @@
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=1'">댄스</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=1'">댄스</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=2'">발라드</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=2'">발라드</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=3'">락</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=3'">락</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=4'">랩/힙합</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=4'">랩/힙합</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=6'">R&B/소울</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=6'">R&B/소울</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=7'">POP</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=7'">POP</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=8'">트로트</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=8'">트로트</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre" onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=11'">인디</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=11'">인디</button>
 								</div>
 							</div>
 						</div>
@@ -137,45 +129,35 @@
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">맑은날</button>
-									</div>
+									<button class="btn btn_genre">맑은날</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">흐린날</button>
-									</div>
+									<button class="btn btn_genre">흐린날</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">비 오는 날</button>
-									</div>
+									<button class="btn btn_genre">비 오는 날</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">천둥번개</button>
-									</div>
+									<button class="btn btn_genre">천둥번개</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">눈오는 날</button>
-									</div>
+									<button class="btn btn_genre">눈오는 날</button>
 								</div>
 							</div>
 						</div>
@@ -187,45 +169,45 @@
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">10대 남</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/agender?agender=101'">10대
+										남</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">20대 남</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/agender?agender=201'">20대
+										남</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">30대 남</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/agender?agender=301'">30대
+										남</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">40대 남</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/agender?agender=401'">40대
+										남</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">50대 남</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/agender?agender=501'">50대
+										남</button>
 								</div>
 							</div>
 						</div>
@@ -233,45 +215,45 @@
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">10대 여</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/agender?agender=102'">10대
+										여</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">20대 여</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/agender?agender=202'">20대
+										여</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">30대 여</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/agender?agender=302'">30대
+										여</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">40대 여</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/agender?agender=402'">40대
+										여</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">50대 여</button>
-									</div>
+									<button class="btn btn_genre"
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/agender?agender=502'">50대
+										여</button>
 								</div>
 							</div>
 						</div>
@@ -282,72 +264,56 @@
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">0-3</button>
-									</div>
+									<button class="btn btn_genre">0-3</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">3-6</button>
-									</div>
+									<button class="btn btn_genre">3-6</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">6-9</button>
-									</div>
+									<button class="btn btn_genre">6-9</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">9-12</button>
-									</div>
+									<button class="btn btn_genre">9-12</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">12-15</button>
-									</div>
+									<button class="btn btn_genre">12-15</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">15-18</button>
-									</div>
+									<button class="btn btn_genre">15-18</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">18-21</button>
-									</div>
+									<button class="btn btn_genre">18-21</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<div>
-										<button class="btn btn_genre">21-24</button>
-									</div>
+									<button class="btn btn_genre">21-24</button>
 								</div>
 							</div>
 						</div>

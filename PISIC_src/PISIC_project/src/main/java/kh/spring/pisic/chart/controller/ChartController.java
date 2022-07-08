@@ -36,14 +36,14 @@ public class ChartController {
 	}
 
 	@GetMapping("/chartDetail")
-	public ModelAndView DetailPage(ModelAndView mv, Model model) {
+	public ModelAndView DetailPage(ModelAndView mv, Model model, String chartType) {
 
 		Date date = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 기준");
 		
 		String formattedDate = dateFormat.format(date);
 		
-		mv.addObject("chartDetail", service.selectChartTopTen("top", 10));
+		mv.addObject("chartDetail", service.selectChartTopTen(chartType, 10));
 		
 
 		model.addAttribute("serverTime", formattedDate);

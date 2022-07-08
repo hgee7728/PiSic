@@ -23,4 +23,9 @@ public class PymusicServiceImpl implements PymusicService{
 	public List<Sound> selectPyGenre(int g_no) {
 		return dao.selectPyGenre(g_no);
 	}
+
+	@Override
+	public List<Sound> selectPyAgender(String agender) {
+		return dao.selectPyAgender(agender);
+	}
 }

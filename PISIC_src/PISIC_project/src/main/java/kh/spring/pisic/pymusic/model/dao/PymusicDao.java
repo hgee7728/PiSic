@@ -21,5 +21,7 @@ public class PymusicDao {
 		return session.selectList("Pymusic.selectPyGenre", g_no);
 	}
 	
-	
+	public List<Sound> selectPyAgender(String agender) {
+		return session.selectList("Pymusic.selectPyAgender", agender);
+	}
 }

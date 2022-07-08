@@ -54,4 +54,20 @@ public class PymusicController {
 		return mv;
 		
 	}
+	
+	@GetMapping("/agender")
+	public ModelAndView PyAgenderPage (ModelAndView mv, Model model, String agender) {
+		
+		Date date = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 기준");
+		
+		String formattedDate = dateFormat.format(date);
+		
+		mv.addObject("pyAgender", service.selectPyAgender(agender));
+		mv.setViewName("pymusic/agender");
+		model.addAttribute("serverTime", formattedDate);
+
+		return mv;
+		
+	}
 }

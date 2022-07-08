@@ -26,7 +26,7 @@
 		select t1.*
 		    ,rank() over (partition by s_path order by cnt desc, s_no, a_no ) chart
 		from
-		    (select  a_cover, s_no, a_no, s_name, s_path, a_name, count(*) cnt 
+		    (select distinct a_cover, s_no, a_no, s_name, s_path, a_name, count(*) cnt 
 		    from sound
 		    join album using(a_no)
 	<choose>
@@ -38,13 +38,13 @@
 			join (select p_no, a_no, s_no, p_date from playinfo) using (a_no, s_no)
 			<choose>
 				<when test='chartType.equals("monthly")'>
-					where p_date &lt;= (select last_day(sysdate) from dual) and p_date &gt; (select add_months((select last_day(sysdate) from dual),-1) from dual)
+					where p_date &lt;= (select last_day(SYSDATE) from dual) and p_date &gt; (select add_months((select last_day(SYSDATE) from dual),-1) from dual)
 				</when>
 				<when test='chartType.equals("weekly")'>
 					where p_date &gt;= (SELECT trunc(SYSDATE, 'd') FROM dual)
 				</when>
 				<when test='chartType.equals("daily")'>
-					where p_date = sysdate
+					where p_date &lt;= SYSDATE and p_date &gt; (select SYSDATE -1 from dual)
 				</when>
 			</choose>
 		    group by a_cover, s_no, a_no, s_name,a_name,s_path, p_date order by cnt) t1
