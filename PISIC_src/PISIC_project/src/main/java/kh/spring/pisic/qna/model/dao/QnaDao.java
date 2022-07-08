@@ -15,10 +15,12 @@ public class QnaDao {
 	private SqlSession sqlsession;
 	
 	//1:1문의 목록
-	public List<QnaBoard> selectQnaList(){
-			return sqlsession.selectList("QnaBoard.selectQnaList");
+	public List<QnaBoard> pageSelectQna(){
+			return sqlsession.selectList("QnaBoard.pageSelectQna");
 	}
-
+	public QnaBoard selectQnaBoard(String qna_no) {
+		return sqlsession.selectOne("QnaBoard.selectQnaBoard",qna_no);
+	}
 	
 
 }

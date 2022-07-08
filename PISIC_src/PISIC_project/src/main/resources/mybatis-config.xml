@@ -17,7 +17,8 @@
 	<typeAlias type="kh.spring.pisic.sound.domain.PlayInfo" alias="PlayInfo"/>
  	<typeAlias type="kh.spring.pisic.faq.domain.FaqBoard" alias="faqBoard"/>
  	<typeAlias type="kh.spring.pisic.pjboard.domain.PjBoard" alias="PjBoard"/>
- 	<typeAlias type="kh.spring.pisic.sound.domain.SoundRecomment" alias="SoundRecomment"/>
+ 	<typeAlias type="kh.spring.pisic.qna.domain.QnaBoard" alias="QnaBoard"/>
+ 		<typeAlias type="kh.spring.pisic.sound.domain.SoundRecomment" alias="SoundRecomment"/>
 </typeAliases>
 <mappers>
 	<mapper resource="mappers/member-mapper.xml"/>
@@ -28,5 +29,6 @@
 	<mapper resource="mappers/chart-mapper.xml"/>
 	<mapper resource="mappers/pymusic-mapper.xml"/>
 	<mapper resource="mappers/faqBoard-mapper.xml"/>
+	<mapper resource="mappers/qnaBoard-mapper.xml"/>
 </mappers>
 </configuration>

@@ -33,7 +33,8 @@ public class FaqController {
 		return mv;
 	}
 	
-	@GetMapping("/read")
+	
+	@GetMapping("/faqread")
 	public ModelAndView selectFaqBoard(ModelAndView mv
 			, @RequestParam(name="faq_no", required = false) String faq_no 
 			) {

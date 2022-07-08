@@ -6,9 +6,8 @@
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<title>1:1 문의 게시판</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>1:1 문의 글쓰기 페이지</title>
 
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -36,124 +35,8 @@
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 <style>
-/*qna 테이블*/
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
 
-section.notice {
-	padding: 10px;
-}
-
-.page-title {
-	margin-bottom: 60px;
-}
-
-.page-title h1 {
-	font-size: 40px;
-	color: #white;
-	font-weight: 600;
-	text-align: left;
-	margin-bottom: 50px;
-}
-
-.page-title h3 {
-	font-size: 30px;
-	color: #white;
-	font-weight: 600;
-	text-align: left;
-}
-
-#board-list {
-	margin-left: 5px;
-	margin-top: 5px;
-}
-
-.board-table {
-	font-size: 13px;
-	width: 100%;
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
-}
-
-.board-table a {
-	color: #6C7293;
-	display: inline-block;
-	line-height: 1.4;
-	word-break: break-all;
-	vertical-align: middle;
-}
-
-.board-table a:hover {
-	text-decoration: underline;
-}
-
-.board-table th {
-	text-align: center;
-}
-
-.board-table .th-num {
-	width: 100px;
-	text-align: center;
-}
-
-.board-table .th-date {
-	width: 200px;
-}
-
-.board-table .th-view {
-	width: 200px;
-}
-
-.board-table th, .board-table td {
-	padding: 14px 0;
-}
-
-.board-table tbody td {
-	border-top: 1px solid #e7e7e7;
-	text-align: center;
-}
-
-.board-table tbody th {
-	padding-left: 28px;
-	padding-right: 14px;
-	border-top: 1px solid #e7e7e7;
-	text-align: left;
-}
-
-.board-table tbody th p {
-	display: none;
-}
-
-.board-table .faq_title {
-	line-height: 1.8em;
-}
-/*qna 테이블 제목 클릭 시 나오는 내용*/
-.container {
-	width: 1100px;
-	margin: 50px;
-	background-color: #191c24;
-	padding: 1.75rem 1.5625rem;
-}
-
-.container2 {
-	width: 1100px;
-	margin: 70px;
-}
-
-.container2 h1 {
-	font-weight: bold;
-}
-
-.ctsSbj {
-	cursor: pointer;
-}
-
-.ctsSbj:hover {
-	color: #8f5fe8;
-}
-
+/*내용*/
 .contents {
 	text-align: left;
 	display: none;
@@ -167,27 +50,32 @@ section.notice {
 	background-color: #fffff;
 	padding: 100px;
 }
+
+.table th, td {
+	text-align: left;
+}
+
 /*버튼*/
 .board-list btn btn-info btn-fw {
 	margin-left: 500px;
 	margin-top: 50px;
 }
 
-.btn_qna {
+.btn_faq {
 	float: right;
 	margin-left: 300px;
 	margin-bottom: 50px;
 }
 
-/*qna 페이징*/
-.pagination__links {
-	text-align: center;
-	float: center;
-	margin-right: 420px;
+.ctsSbj a {
+	color: #8f5fe8;
+}
+
+.content-wrapper h2, h3 {
+	font-weight: bold;
 }
 </style>
 </head>
-
 <body>
 	<div class="container-scroller">
 		<!-- partial:partials/_sidebar.html -->
@@ -196,67 +84,48 @@ section.notice {
 		<div class="container-fluid page-body-wrapper">
 			<!-- partial:partials/_navbar.html -->
 			<jsp:include page="../_navbar.jsp" />
-
-			<div class="content-wrapper">
-				<section class="notice">
-
-					<!--faq board list area -->
-					<div id="board-list">
-						<div class="page-title">
-							<div class="container2">
-								<h1>고객센터</h1>
-								<h3>1:1 문의게시판</h3>
-							</div>
-						</div>
-						<div class="container">
-							<table class="board-table">
-								<thead>
-									<div class="faq_title">
-										<div class="btn_qna">
-											<button type="submit" class="btn btn-info btn-fw">문의하기</button>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<h2 class=" card-title">고객센터</h2>
+					<br>
+					<h3 class=" card-title">1:1 문의하기</h3>
+					<div class=" content_div1" style="display: flex;">
+						<div class="col-lg-12 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">문의글 등록하기</h4>
+									<form id="writeform" action="<%=request.getContextPath() %>/member/insert" method="post">
+									<div  class="form-group">
+										  <label  for="exampleFormControlInput1">제목</label>          
+										  <input  type="text"  class="form-control"
+											 id="exampleFormControlInput1"  
+									  name="title"
+											placeholder="제목을 작성해주세요.">   
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" name="secret"
+												id="secret"> <label class="form-check-label">비밀글 설정</label>
 										</div>
 									</div>
-									<div class="card-body">
-										<tr>
-											<th scope="col" class="th-num">NO.</th>
-											<th scope="col" class="th-title">제목</th>
-											<th scope="col" class="th-date">작성자</th>
-											<th scope="col" class="th-view">등록날짜</th>
-										</tr>
-								</thead>
-								<tbody>
-									<tr class="ctsSbj">
-										<td>1</td>
-										<th><a href="#!">a</a>
-											<p>테스트</p></th>
-										<td>작성자</td>
-										<td>2022.08.08</td>
-									</tr>
-									<tr class="ctsSbj">
-										<td>2</td>
-										<th><a href="#!">제목</a>
-											<p>테스트</p></th>
-										<td>작성자</td>
-										<td>2022.08.08</td>
-									</tr>
+									<div  class="form-group">
+										  <label  for="exampleFormControlTextarea1">내용</label>            
+										<textarea  class="form-control" id="exampleFormControlTextarea1" name="contents"  rows="10"></textarea>
+									</div>
 
-							</table>
-						</div>
-						<!-- 페이징 -->
-						<div class="qnalist_page">
-							<div class="pagination__links">
-								<button type="button" class="btn btn-outline-secondary">1</button>
-								<button type="button" class="btn btn-outline-secondary">2</button>
-								<button type="button" class="btn btn-outline-secondary">3</button>
-								<button type="button" class="btn btn-outline-secondary">4</button>
+									<div class="btn_qna">
+										<button  type="submit"  class="btn btn-info btn-fw">등록하기</button>
+										<button  type="button"  class="btn btn-info btn-fw">목록으로</button>
+									</div>
+
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>
+				</div>
 			</div>
 		</div>
-		</section>
+		<!-- content-wrapper ends -->
 	</div>
-	<!-- content-wrapper ends -->
 	<!-- partial:partials/_footer.html -->
 	<jsp:include page="../_footer.jsp" />
 	<!-- partial -->

@@ -11,7 +11,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<title>자주묻는질문</title>
+<title>1:1문의게시판</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -30,15 +30,15 @@
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 <style>
-
-
-
 /*내용*/
 .contents {
 	text-align: left;
 	display: none;
 }
 
+.ctsBold {
+	font-weight: bold;
+}
 
 .contents div {
 	background-color: #fffff;
@@ -55,18 +55,28 @@
 	margin-top: 50px;
 }
 
-.btn_faq {
+.btn_qna {
 	float: right;
 	margin-left: 300px;
 	margin-bottom: 50px;
 }
-
+.btn_qna a {
+	text-decoration:none;
+}
 .ctsSbj a {
 	color: #8f5fe8;
 }
 
 .content-wrapper h2, h3 {
 	font-weight: bold;
+}
+
+.element.style {
+	margin-left: 450px;
+}
+.qnalist_page {
+	margin: 0 550px 100px;
+	
 }
 </style>
 </head>
@@ -83,40 +93,42 @@
 				<div class="content-wrapper">
 					<h2 class=" card-title">고객센터</h2>
 					<br>
-					<h3 class=" card-title">자주 묻는 질문</h3>
+					<h3 class=" card-title">1:1 문의 게시판</h3>
 
 					<div class=" content_div1" style="display: flex;">
 						<div class="row" style="width: 100%">
 							<div class="col-lg-12 grid-margin stretch-card">
 								<div class="card">
 									<div class="card-body">
-										<h4 class="card-title">질문 TOP10</h4>
+										<h4 class="card-title">글 등록하기</h4>
 										<div class="table-responsive">
-											<form name="faq_frm">
-												<table class="table faq_list">
+											<form name="qna_frm">
+												<table class="table qna_list">
 													<thead>
 														<tr>
-															<div class="btn_faq">
-																<button type="submit" class="btn btn-info btn-fw">1:1문의하기</button>
+															<div class="btn_qna">
+																<button type="submit" class="btn btn-info btn-fw"><a href="<%=request.getContextPath()%>/qna/qnaWrite?refnum=${qnaBoard.qna_no }">1:1문의하기</a></button>
 															</div>
-															<td>No.</td>
-															<td>제목</td>
-															<td>수정일</td>
-															<td>조회수</td>
+															<th>NO.</th>
+															<th>제목</th>
+															<th>작성자</th>
+															<th>등록날짜</th>
 														</tr>
 
 													</thead>
 													<tbody>
-														<c:forEach items="${faqlist }" var="faqBoard">
+														<c:forEach items="${qnalist }" var="qnaBoard">
 															<tr class="ctsSbj">
-																<th>${faqBoard.faq_no }</th>
-																<td>${faqBoard.faq_title }</td>
-																<td>${faqBoard.faq_date }</td>
-																<td>${faqBoard.faq_cnt }</td>
+																<th>${qnaBoard.qna_no }</th>
+																<c:forEach begin="1" end="${qnaBoard.gr_layer }"> 
+																</c:forEach>
+																<td>${qnaBoard.qna_title }</td>
+																<td>${qnaBoard.m_id }</td>
+																<td>${qnaBoard.qna_date }</td>
 															</tr>
 															<tr class="contents">
 																<td colspan="4">
-																${faqBoard.faq_content }
+																<a href="<%=request.getContextPath()%>/qna/qnaRead?refnum=${qnaBoard.qna_no }">${qnaBoard.qna_title }&nbps;</a>
 																</td>
 															</tr>
 														</c:forEach>
@@ -124,10 +136,21 @@
 												</table>
 											</form>
 										</div>
+
 									</div>
+																			<div class="qnalist_page">
+											<div class="pagination__links">
+												<button type="button" class="btn btn-outline-secondary">1</button>
+												<button type="button" class="btn btn-outline-secondary">2</button>
+												<button type="button" class="btn btn-outline-secondary">3</button>
+												<button type="button" class="btn btn-outline-secondary">4</button>
+											</div>
+										</div>
 								</div>
 							</div>
+
 						</div>
+
 					</div>
 
 					<!-- content-wrapper ends -->
@@ -171,16 +194,6 @@
 		<!-- Custom js for this page -->
 		<script
 			src="<%=request.getContextPath()%>/resources/assets/js/dashboard.js"></script>
-		<!-- End custom js for this page -->
-		<script>
-			$(function() {
-
-				$('.ctsSbj').click(function() {
-					$(this).next('.contents').slideToggle(300);
-				});
-
-			});
-		</script>
 </body>
 
 </html>

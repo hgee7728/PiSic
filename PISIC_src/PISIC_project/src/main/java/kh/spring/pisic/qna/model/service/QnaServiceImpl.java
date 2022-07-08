@@ -14,8 +14,14 @@ public class QnaServiceImpl {
 	@Autowired
 	private QnaDao dao;
 	
-	public List<QnaBoard> selectQnaList(){
-		return dao.selectQnaList();
+
+	public List<QnaBoard> pageSelectQna() {
+		return dao.pageSelectQna();
+	}
+
+
+	public QnaBoard selectQnaBoard(String qna_no) {
+		return dao.selectQnaBoard(qna_no);
 	}
 	
 	

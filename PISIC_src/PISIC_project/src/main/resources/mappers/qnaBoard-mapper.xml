@@ -1,11 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="QNA">
+<mapper namespace="QnaBoard">
   
   
-<select id="selectQnaList" resultType="Board">
-	
+<select id="pageSelectQna" resultType="QnaBoard">
+select * from qna order by origin_no desc, gr_ord asc
 </select>
-  
-  
+
+<insert id="insertQnaBoard" parameterType="QnaBoard">
+	insert into qna (qna_no
+			,qna_title, m_id, qna_content
+			,qna_secret
+			,qna_date
+			,orgin_no
+			,gr_ord
+			,gr_layer
+		) values ( (select nvl(max(qna_no),0)+1 from qna)
+			, #{qna_title}, #{qna_writer}, #{qna_content}
+			, default
+<choose>
+<when test="orgin_no > 0">
+			, (select gr_layer+1 from qna where qna_no=#{orgin_no})
+			, (select orgin_no from qna where qna_no=#{orgin_no})
+			, #{refnum}
+			, (select gr_ord+1 from qna where qna_no=#{orgin_no})
+</when>
+<otherwise>
+			, default
+			, (select nvl(max(qna_no),0)+1 from qna)
+			, (select nvl(max(qna_no),0)+1 from qna)
+			, default
+</otherwise>
+</choose>
+			, default
+	)
+</insert> 
+ <select id="selectQnaBoard" resultType="QnaBoard" parameterType="string">
+	select * from qna
+	where qna_no=#{qna_no}
+</select>
 </mapper>

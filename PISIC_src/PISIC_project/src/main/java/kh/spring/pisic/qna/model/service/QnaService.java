@@ -6,6 +6,7 @@ import kh.spring.pisic.qna.domain.QnaBoard;
 
 public interface QnaService {
 	
-	public List<QnaBoard> selectQnaList();
+	public List<QnaBoard> pageSelectQna();
+	public QnaBoard selectQnaBoard(String qna_no);
 	
 }

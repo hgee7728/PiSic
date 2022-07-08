@@ -11,7 +11,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<title>자주묻는질문</title>
+<title>1:1문의게시판 상세조회</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -29,46 +29,6 @@
 	href="<%=request.getContextPath()%>/resources/assets/css/style.css">
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
-<style>
-
-
-
-/*내용*/
-.contents {
-	text-align: left;
-	display: none;
-}
-
-
-.contents div {
-	background-color: #fffff;
-	padding: 100px;
-}
-
-.table th, td {
-	text-align: left;
-}
-
-/*버튼*/
-.board-list btn btn-info btn-fw {
-	margin-left: 500px;
-	margin-top: 50px;
-}
-
-.btn_faq {
-	float: right;
-	margin-left: 300px;
-	margin-bottom: 50px;
-}
-
-.ctsSbj a {
-	color: #8f5fe8;
-}
-
-.content-wrapper h2, h3 {
-	font-weight: bold;
-}
-</style>
 </head>
 <body>
 	<div class="container-scroller">
@@ -83,52 +43,103 @@
 				<div class="content-wrapper">
 					<h2 class=" card-title">고객센터</h2>
 					<br>
-					<h3 class=" card-title">자주 묻는 질문</h3>
+					<h3 class=" card-title">1:1 문의 게시판</h3>
 
 					<div class=" content_div1" style="display: flex;">
 						<div class="row" style="width: 100%">
 							<div class="col-lg-12 grid-margin stretch-card">
 								<div class="card">
 									<div class="card-body">
-										<h4 class="card-title">질문 TOP10</h4>
-										<div class="table-responsive">
-											<form name="faq_frm">
-												<table class="table faq_list">
+										<h4 class="card-title">글 등록하기</h4>
+							<div><button type="button" onclick="location.href='<%=request.getContextPath() %>/'">홈</button></div>
+
+<c:choose>
+
+	<div>
+<c:if test="${member.m_id eq loginSsInfo.id }">
+	<form id="frmNum">
+		<input type="hidden" name="qna_no" value="${qna.qna_no }">
+		<button type="button" class="btn update">수정</button>
+		<button type="button" class="btn delete">삭제</button>
+	</form>
+	<script>
+		$(".btn.update").click(function(){
+			if($(this).hasClass("update")){
+				frmNum.action="<%=request.getContextPath()%>/qna/update";
+			}else {
+				frmNum.action="<%=request.getContextPath()%>/qna/delete";
+			}
+			frmNum.method="post";
+			frmNum.submit();
+		});
+		
+		$(".btn.delete").click(function(){
+			$.ajax({
+				url:"<%=request.getContextPath()%>/qna/delete",
+				type:"post",
+				data: {qna_no:"${qna.qna_no }"},
+				success:function(result){
+					console.log(result);
+					if(result){
+						alert(result);
+					}
+					location.href="<%=request.getContextPath() %>/qna/qnaList";
+				},
+				error:function(error){
+					
+				}
+			});
+		});
+	</script>
+</c:if>
+		<table class="table qna_list">
 													<thead>
 														<tr>
-															<div class="btn_faq">
-																<button type="submit" class="btn btn-info btn-fw">1:1문의하기</button>
+															<div class="btn_qna">
+																<button type="submit" class="btn btn-info btn-fw"><a href="<%=request.getContextPath()%>/qna/qnaWrite?refnum=${qnaBoard.qna_no }">1:1문의하기</a></button>
 															</div>
-															<td>No.</td>
-															<td>제목</td>
-															<td>수정일</td>
-															<td>조회수</td>
+															<th>NO.</th>
+															<th>제목</th>
+															<th>작성자</th>
+															<th>등록날짜</th>
 														</tr>
 
 													</thead>
 													<tbody>
-														<c:forEach items="${faqlist }" var="faqBoard">
+														<c:forEach items="${qnalist }" var="qnaBoard">
 															<tr class="ctsSbj">
-																<th>${faqBoard.faq_no }</th>
-																<td>${faqBoard.faq_title }</td>
-																<td>${faqBoard.faq_date }</td>
-																<td>${faqBoard.faq_cnt }</td>
+																<th>${qnaBoard.qna_no }</th>
+																<c:forEach begin="1" end="${qnaBoard.gr_layer }"> 
+																</c:forEach>
+																<td>${qnaBoard.qna_title }</td>
+																<td>${qnaBoard.m_id }</td>
+																<td>${qnaBoard.qna_date }</td>
 															</tr>
 															<tr class="contents">
-																<td colspan="4">
-																${faqBoard.faq_content }
-																</td>
+																<td colspan="4">${qnaBoard.qna_content }</td>
 															</tr>
 														</c:forEach>
 													</tbody>
 												</table>
-											</form>
-										</div>
+		<div>
+			내용:${qnaBoard.qna_content }
+		</div>
+
+	</div>
+	<hr>
+
+
+</c:choose>
+
 									</div>
 								</div>
 							</div>
+
 						</div>
+
 					</div>
+
+
 
 					<!-- content-wrapper ends -->
 					<!-- partial:partials/_footer.html -->
@@ -171,16 +182,6 @@
 		<!-- Custom js for this page -->
 		<script
 			src="<%=request.getContextPath()%>/resources/assets/js/dashboard.js"></script>
-		<!-- End custom js for this page -->
-		<script>
-			$(function() {
-
-				$('.ctsSbj').click(function() {
-					$(this).next('.contents').slideToggle(300);
-				});
-
-			});
-		</script>
 </body>
 
 </html>
