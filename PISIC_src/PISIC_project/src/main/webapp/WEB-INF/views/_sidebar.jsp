@@ -191,7 +191,7 @@
       </div>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="documentation">
+      <a class="nav-link" href="<%=request.getContextPath()%>/member/showMyInfo">
         <span class="menu-icon">
           <i class="mdi mdi-account"></i>
         </span>

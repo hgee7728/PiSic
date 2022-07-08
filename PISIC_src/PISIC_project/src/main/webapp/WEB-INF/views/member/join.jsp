@@ -78,7 +78,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">회원가입</h4>
-                    <form id="insertForm" class="forms-sample" action="<%=request.getContextPath() %>/member/insert" method="post">
+                    <form id="insertForm" class="forms-sample" action="<%=request.getContextPath() %>/member/join" method="post">
                       <div class="form-group">
                       	<label id="LabelId" for="InputId">아이디 *</label>
                       	<input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>

@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,12 +43,12 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
-	@GetMapping("/insert")
+	@GetMapping("/join")
 	public String pageInsertMember() {
-		return "member/insert";
+		return "member/join";
 	}
 	
-	@PostMapping("/insert")
+	@PostMapping("/join")
 	public ModelAndView insertMember(
 			ModelAndView mv
 			, Member member
@@ -335,6 +336,26 @@ public class MemberController {
 	@GetMapping("/findPwA")
 	public String pageFindPwA() {
 		return "member/findPwA";
+	}
+	
+	@GetMapping("/showMyInfo")
+	public String pageShowMyInfo() {
+		return "member/showMyInfo";
+	}
+	
+	@GetMapping("/updateMyInfo")
+	public ModelAndView pageUpdateMyInfo(
+			ModelAndView mv) {
+		mv.setViewName("member/updateMyInfo");
+		return mv;
+	}
+	
+	@PostMapping("/updateMyInfo")
+	public ModelAndView updateMyInfo(
+			ModelAndView mv
+			, Member member) {
+		
+		return mv;
 	}
 	
 	@ExceptionHandler(Exception.class)
