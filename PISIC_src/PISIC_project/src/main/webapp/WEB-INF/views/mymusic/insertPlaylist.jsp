@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Corona Admin</title>
+<title>플레이 리스트 만들기</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -69,42 +69,47 @@
 .select_op {
 	color: white;
 }
+
 .grid-2 {
 	flex: 0 0 50%;
 	max-width: 50%;
 }
-.sound_list_div{
-	flex-wrap:nowrap;
+
+.sound_list_div {
+	flex-wrap: nowrap;
 }
-.sound_select_btn{
-	margin-top:20px;
+
+.sound_select_btn {
+	margin-top: 20px;
 }
-table.left_sound_list a, table.right_sound_list a{
-	color:#6c7293;
+
+table.left_sound_list a, table.right_sound_list a {
+	color: #6c7293;
 }
-.list_icon{
-	font-size:30px;
+
+.list_icon {
+	font-size: 30px;
 	margin: 0px 5px;
 }
 
-
-table.sound_list  tr > td:nth-child(1),
-table.sound_list  tr > td:nth-child(2),
-table.sound_list  tr > td:nth-child(3),
-table.sound_list  tr > td:nth-child(6){
+table.sound_list  tr>td:nth-child(1), table.sound_list  tr>td:nth-child(2),
+	table.sound_list  tr>td:nth-child(3), table.sound_list  tr>td:nth-child(6)
+	{
 	width: 5%;
 }
-table.sound_list  tr > td:nth-child(4){
-	width:60%;
-}
-table.sound_list  tr > td:nth-child(5){
-	width:30%;
-}
-table.sound_list  tr > td:nth-child(2),
-table.sound_list  tr > td:nth-child(6){
-	text-align:center;
+
+table.sound_list  tr>td:nth-child(4):hover {
+	overflow: visible;
 }
 
+table.sound_list  tr>td:nth-child(5) {
+	width: 30%;
+}
+
+table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
+	{
+	text-align: center;
+}
 </style>
 <script>
 	/* 대표사진 사진 변경 */
@@ -135,7 +140,7 @@ table.sound_list  tr > td:nth-child(6){
 		// 최근 들은 곡 리스트 불러오기
 		$("#recent_sound").click(function(){
 			$.ajax({
-				url: "<%=request.getContextPath() %>/mymusic/selectSoundRecent",
+				url: "<%=request.getContextPath()%>/mymusic/selectSoundRecent",
 				type: "post",
 				dataType:"json",
 				success: function(result) {
@@ -188,76 +193,166 @@ table.sound_list  tr > td:nth-child(6){
 	    	}
 	    })
 	    
+	    // 선택 옮기기
+	    $("#select_sound_plus").click(function(){
+	    	console.log("선택 담기 클릭");
+	    	if($('table.left_sound_list input[name=s_no]:checked').length == '0'){
+				alert("곡을 선택하세요.");
+			} else {
+				// 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
+		    	$("table.left_sound_list input[name=s_no]").each(function(){
+		    		if(!(this.checked)){
+		    			console.log("히든 지우기");
+		    			$(this).parent().next("table.left_sound_list input[name=a_no]").remove();
+		    		} 
+		    	});
+		    	var s_noArray = [];
+		    	var a_noArray = [];
+		    	$('table.left_sound_list input[name=s_no]:checked').each(function(){ //체크된 리스트 저장
+		    		s_noArray.push($(this).val());
+		        });
+		    	$('table.left_sound_list input[name=a_no]').each(function(){
+		    		a_noArray.push($(this).val());
+		        });
+		    	console.log("s_noArray: "+s_noArray);
+		    	console.log("a_noArray: "+a_noArray);
+		    	var ajaxData = {
+		    			s_no : s_noArray,
+		    			a_no : a_noArray,
+		    	}
+		    	$.ajax({
+					url: "<%=request.getContextPath()%>/mymusic/selectSoundList",
+					type : "post",
+					data : {
+						a_no : a_noArray,
+						s_no : s_noArray
+					},
+					dataType : "json",
+					traditional:true,
+					success : function(result) {
+						console.log(result);
+						var html = "";
+						for (var i = 0; i < result.length; i++) {
+							var resultData = result[i];
+							html += '<tr>';
+							html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
+							html += '<input type="checkbox" class="form-check-input sound_checkbox2" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
+							html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
+							html += '<td></td>';
+							html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
+							html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+ ','+ resultData.s_no+ ')">' + resultData.s_name + '</a></td>'
+							html += '<td>';
+							for (var j = 0; j < resultData.singers.length; j++) {
+								var resultData2 = resultData.singers[j]
+								html += '<a href="javascript:selectArtistDetail('+ resultData2.artist_no+ ')">'+ resultData2.artist_name+ '</a>&nbsp;';
+							}
+							html += '</td>';
+							html += '<td><a id="sound_minus"><i class="mdi mdi-minus-box list_icon"></i></a></td>';
+							html += '</tr>';
+
+						}
+						console.log(html);
+						$("table.right_sound_list tbody").append(html);
+
+						// number 부여하기
+						for (var i = 0; i < $("table.right_sound_list tbody tr").length; i++) {
+							$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(2)').text(i + 1);
+							$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus('+(i+1)+')');
+
+						}
+						// 담으면 전체 선택 해제
+						$('table.left_sound_list input:checkbox').prop('checked',false);
+						// 미니 버튼들 a태그 색상 바꾸기
+						$("i.mdi").parent('a').css('color', '#8f5fe8');
+					},
+				}); // ajax 끝
+			}
+	    });
+		
+		// 선택 빼기
+		$("#select_sound_minus").click(function(){
+			console.log("선택 담기 클릭");
+	    	if($('table.right_sound_list input[name=s_no]:checked').length == '0'){
+				alert("곡을 선택하세요.");
+			} else {
+				// 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
+		    	$("table.right_sound_list input[name=s_no]").each(function(){
+		    		if(!(this.checked)){
+		    			console.log("히든 지우기");
+		    			$(this).parent().next("table.right_sound_list input[name=a_no]").remove();
+		    		} 
+		    	});
+			}
+		});
 	    
-	});
+	    
+	    
+	}); // $(founction(){}) 끝
 	// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
 	function selectSoundDetail(a_no, s_no){
-		location.href = "<%=request.getContextPath() %>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
+		location.href = "<%=request.getContextPath()%>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
 	};
 	function selectArtistDetail(artist_no){
-		location.href = "<%=request.getContextPath() %>/sound/artistDetail?artist_no=" + artist_no;
+		location.href = "<%=request.getContextPath()%>/sound/artistDetail?artist_no=" + artist_no;
 	};
 	
-	// 담을 곡으로 한곡,선택 옮기기
+	// 담을 곡으로 한곡 옮기기
 	function soundPlus(a_no, s_no){
 		$.ajax({
-			url: "<%=request.getContextPath() %>/mymusic/selectSoundList",
-			type: "post",
-			data:{
-				a_no:a_no,
-				s_no:s_no
-			},
-			dataType:"json",
-			success: function(result) {
-				console.log(result);
-				var html = "";
-				for(var i = 0; i < result.length; i++){
-					var resultData = result[i];
-					html += '<tr>';
-					html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
-					html += '<input type="checkbox" class="form-check-input sound_checkbox2" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
-					html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
-					html += '<td></td>';
-					html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
-					html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
-					html += '<td>';
-						for(var j = 0 ; j < resultData.singers.length ; j ++){
-							var resultData2 = resultData.singers[j]
-							html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
+			url: "<%=request.getContextPath()%>/mymusic/selectSoundList",
+					type : "post",
+					data : {
+						a_no : a_no,
+						s_no : s_no
+					},
+					dataType : "json",
+					success : function(result) {
+						console.log(result);
+						var html = "";
+						for (var i = 0; i < result.length; i++) {
+							var resultData = result[i];
+							html += '<tr>';
+							html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
+							html += '<input type="checkbox" class="form-check-input sound_checkbox2" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
+							html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
+							html += '<td></td>';
+							html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
+							html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+ ','+ resultData.s_no+ ')">' + resultData.s_name + '</a></td>'
+							html += '<td>';
+							for (var j = 0; j < resultData.singers.length; j++) {
+								var resultData2 = resultData.singers[j]
+								html += '<a href="javascript:selectArtistDetail('+ resultData2.artist_no+ ')">'+ resultData2.artist_name+ '</a>&nbsp;';
+							}
+							html += '</td>';
+							html += '<td><a id="sound_minus"><i class="mdi mdi-minus-box list_icon"></i></a></td>';
+							html += '</tr>';
+
 						}
-					html += '</td>';
-					html += '<td><a id="sound_minus"><i class="mdi mdi-minus-box list_icon"></i></a></td>';
-					html += '</tr>';
-					
-				
-				}
-				console.log(html);
-				$("table.right_sound_list tbody").append(html);
-				
-				// number 부여하기
-				for(var i = 0 ; i < $("table.right_sound_list tbody tr").length ; i ++){
-					$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(2)').text(i+1);
-					$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus('+(i+1)+')');
-					
-				}
-				// 미니 버튼들 a태그 색상 바꾸기
-				$("i.mdi").parent('a').css('color','#8f5fe8');
-			},
-		}); // ajax 끝
-	}
-	
-	// 한곡 빼기
-	function soundMinus(i){
-		$('table.right_sound_list tbody tr:nth-child('+i+')').remove();
-		
-		// number 부여하기
-		for(var j = 0 ; j < $("table.right_sound_list tbody tr").length ; j ++){
-			$('table.right_sound_list tbody tr:nth-child('+(j+1)+') td:nth-child(2)').text(j+1);
-			$('table.right_sound_list tbody tr:nth-child('+(j+1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus('+(j+1)+')');
-			
-		}
+						console.log(html);
+						$("table.right_sound_list tbody").append(html);
+
+						// number 부여하기
+						for (var i = 0; i < $("table.right_sound_list tbody tr").length; i++) {
+							$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(2)').text(i + 1);
+							$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus('+(i+1)+')');
+
+						}
+						// 미니 버튼들 a태그 색상 바꾸기
+						$("i.mdi").parent('a').css('color', '#8f5fe8');
+					},
+				}); // ajax 끝
 	}
 
+	// 한곡 빼기
+	function soundMinus(i) {
+		$('table.right_sound_list tbody tr:nth-child(' + i + ')').remove();
+
+		// number 부여하기
+		for (var j = 0; j < $("table.right_sound_list tbody tr").length; j++) {
+			$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(2)').text(j + 1);
+			$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus(' + (j + 1) + ')');
+		}
+	}
 </script>
 
 </head>
@@ -275,8 +370,7 @@ table.sound_list  tr > td:nth-child(6){
 					<div class="title_div">
 						<h2 class="card-title">내 플레이 리스트 만들기</h2>
 					</div>
-					<form action="<%=request.getContextPath()%>/mymusic/insertPlaylist"
-						method="post">
+					
 						<div class="content_div1">
 							<div class="main_img_div">
 								<div>
@@ -346,92 +440,92 @@ table.sound_list  tr > td:nth-child(6){
 							</div>
 							<div class="sound_select_btn">
 								<button type="button" id="recent_sound"
-									class="btn btn-info btn-fw">최근 들은 곡</button>
+									class="btn btn-outline-light btn-fw">최근 들은 곡</button>
 								<button type="button" id="often_sound"
-									class="btn btn-info btn-fw">자주 들은 곡</button>
+									class="btn btn-outline-light btn-fw">자주 들은 곡</button>
 								<button type="button" id="like_sound"
-									class="btn btn-info btn-fw">좋아요 곡</button>
+									class="btn btn-outline-light btn-fw">좋아요 곡</button>
 							</div>
 							<div class="row grid-2 sound_list_div">
-							<div class="col-12 grid-margin">
-								<div class="card">
-									<div class="card-body">
-										<h3 class="card-title left_title">리스트를 선택하세요.</h3>
-										<div class="table-responsive">
-											<table class="table left_sound_list sound_list">
-												<thead>
-													<tr>
-														<td>
-															<div class="form-check form-check-muted m-0">
-																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input" id="check_all1">
-																</label>
-															</div>
-														</td>
-														<td>No</td>
-														<td><img 
-										src="<%=request.getContextPath()%>/resources/assets/images/playlist_img.png"></td>
-														<td>노래명</td>
-														<td>가수명</td>
-														<td>담기</td>
-													</tr>
-												</thead>
-												<tbody>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
 							
-							
-							<div class="col-12 grid-margin">
-								<div class="card">
-									<div class="card-body">
-										<h3 class="card-title right_title">담을 곡</h3>
-										<div class="table-responsive">
-											<table class="table right_sound_list sound_list">
-												<thead>
-													<tr>
-														<td>
-															<div class="form-check form-check-muted m-0">
-																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input" id="check_all2">
-																</label>
-															</div>
-														</td>
-														<td>No</td>
-														<td><img 
-										src="<%=request.getContextPath()%>/resources/assets/images/playlist_img.png"></td>
-														<td>노래명</td>
-														<td>가수명</td>
-														<td>빼기</td>
-													</tr>
-												</thead>
-												<tbody>
+								<div class="col-12 grid-margin">
+									<div class="card">
+										<div class="card-body">
+											<div style="display: flex; justify-content: space-between;">
+												<h3 class="card-title left_title">리스트를 선택하세요.</h3>
+												<button id="select_sound_plus" type="button" class="btn btn-info btn-fw" style="height: 30px;">선택 담기</button>
+											</div>
+											<div class="table-responsive">
+											<form name="left_sound_list_frm" method="post">
+												<table class="table left_sound_list sound_list">
+													<thead>
+														<tr>
+															<td>
+																<div class="form-check form-check-muted m-0">
+																	<label class="form-check-label"> <input
+																		type="checkbox" class="form-check-input"
+																		id="check_all1">
+																	</label>
+																</div>
+															</td>
+															<td>No</td>
+															<td><img src="<%=request.getContextPath()%>/resources/assets/images/playlist_img.png"></td>
+															<td>노래명</td>
+															<td>가수명</td>
+															<td>담기</td>
+														</tr>
+													</thead>
+													<tbody>
 													
-												</tbody>
-											</table>
+													</tbody>
+												</table>
+												</form>
+											</div>
 										</div>
 									</div>
 								</div>
+								
+								
+								<div class="col-12 grid-margin">
+									<div class="card">
+										<div class="card-body">
+											<div style="display: flex; justify-content: space-between;">
+												<h3 class="card-title left_title">플레이리스트에 담을 곡</h3>
+												<button id="select_sound_minus" type="button" class="btn btn-info btn-fw" style="height: 30px;">선택 빼기</button>
+											</div>
+											<div class="table-responsive">
+											<form name="right_sound_list_frm" method="post">
+												<table class="table right_sound_list sound_list">
+													<thead>
+														<tr>
+															<td>
+																<div class="form-check form-check-muted m-0">
+																	<label class="form-check-label"> <input
+																		type="checkbox" class="form-check-input"
+																		id="check_all2">
+																	</label>
+																</div>
+															</td>
+															<td>No</td>
+															<td><img src="<%=request.getContextPath()%>/resources/assets/images/playlist_img.png"></td>
+															<td>노래명</td>
+															<td>가수명</td>
+															<td>빼기</td>
+														</tr>
+													</thead>
+													<tbody>
+
+													</tbody>
+												</table>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+								
 							</div>
 						</div>
-
-
-
-
-
-
-
-
-
-
-
-
-						</div>
-
-					</form>
+					
 
 
 

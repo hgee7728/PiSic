@@ -47,29 +47,33 @@ public class MyMusicController {
 	@PostMapping("/insertSound")
 	public String insertSound(
 			ModelAndView mv
-			, @RequestParam(name="a_no", required = false) String[] a_no
-			, @RequestParam(name="s_no", required = false) String[] s_no
+			, @RequestParam(name="a_no", required = false) String[] a_noArr
+			, @RequestParam(name="s_no", required = false) String[] s_noArr
 			, @RequestParam(name="l_no", required = false) String l_no
 			, HttpSession session
 			) {
-
+		System.out.println("s_noArr.length: "+s_noArr.length);
 		List<Sound> soundList = new ArrayList<Sound>();
 		Member member = (Member)session.getAttribute("loginSsInfo");
-		// 들고 온 데이터 domain형태로 list 시키기
-		for (int i = 0; i < s_no.length; i++) {
-			Sound sound = new Sound();
-			System.out.println(a_no[i]);
-			System.out.println(s_no[i]);
-			try {
-				sound.setA_no(Integer.parseInt(a_no[i]));
-				sound.setS_no(Integer.parseInt(s_no[i]));
-				sound.setL_no(Integer.parseInt(l_no));
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
+		// number 파싱 try-catch
+		try {
+			// 들고 온 데이터 domain형태로 list 시키기
+			for (int i = 0; i < s_noArr.length; i++) {
+				Sound sound = new Sound();
+				try {
+					sound.setA_no(Integer.parseInt(a_noArr[i]));
+					sound.setS_no(Integer.parseInt(s_noArr[i]));
+					sound.setL_no(Integer.parseInt(l_no));
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+				sound.setM_id(member.getM_id());
+				soundList.add(sound);
 			}
-			sound.setM_id(member.getM_id());
-			soundList.add(sound);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
 		}
+		
 		System.out.println("[[[soundList]]] : " + soundList);
 		int result = service.insertSound(soundList);
 		if(result < 1) {
@@ -142,19 +146,23 @@ public class MyMusicController {
 	// 플레이 리스트 만들기(담을 곡으로 옮기기) - ajax
 	@PostMapping("/selectSoundList")
 	@ResponseBody
-	public List<Sound> selectSound(@RequestParam(name="a_no", required = false) int[] a_noArr,
-			@RequestParam(name="s_no", required = false) int[] s_noArr) {
+	public List<Sound> selectSound(@RequestParam(name="a_no", required = false) String[] a_noArr,
+			@RequestParam(name="s_no", required = false) String[] s_noArr) {
 		List<Sound> soundList = new ArrayList<Sound>();
-
-		// 들고 온 데이터 domain형태로 list 시키기
-		for (int i = 0; i < s_noArr.length; i++) {
-			Sound sound = new Sound();
-			System.out.println(a_noArr[i]);
-			System.out.println(s_noArr[i]);
-			sound.setA_no(a_noArr[i]);
-			sound.setS_no(s_noArr[i]);
-			soundList.add(sound);
+		
+		// number 파싱 try-catch
+		try {
+			// 들고 온 데이터 domain형태로 list 시키기
+			for (int i = 0; i < s_noArr.length; i++) {
+				Sound sound = new Sound();
+				sound.setA_no(Integer.parseInt(a_noArr[i]));
+				sound.setS_no(Integer.parseInt(s_noArr[i]));
+				soundList.add(sound);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
 		}
+		
 		System.out.println("controller result :" + service.selectSoundList(soundList));
 		return service.selectSoundList(soundList);
 	}

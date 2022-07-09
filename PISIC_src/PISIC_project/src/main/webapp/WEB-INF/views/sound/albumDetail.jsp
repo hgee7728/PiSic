@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <link rel="stylesheet"
@@ -7,6 +6,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
@@ -185,7 +185,7 @@ $(function(){
 							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
 						}
 					}
-					$(".preview-list").nextAll().remove();
+					$(".playlist_insert_modal_content").nextAll().remove();
 					$(".preview-list").append(html);
 				},
 			}); // ajax 끝
@@ -289,7 +289,7 @@ function playlistInsert(a_no, s_no){
 					html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
 				}
 			}
-			$(".preview-list").nextAll().remove();
+			$(".playlist_insert_modal_content").nextAll().remove();
 			$(".preview-list").append(html);
 		},
 	}); // ajax 끝
@@ -369,8 +369,7 @@ function newPlaylist(){
 //로그인 페이지로
 function goLogin(){
 	location.href="<%=request.getContextPath() %>/member/login"
-}
-
+};
 // 제목, 아티스트, 앨범 클릭시 상세조회 페이지
 function selectSoundDetail(a_no, s_no){
 	location.href = "<%=request.getContextPath() %>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
@@ -509,7 +508,7 @@ function selectAlbumDetail(a_no){
 																<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
 															</td>
 															<td>
-																<a href="javascript:playlistInsert(${sounds.a_no },'${sounds.s_no})"><i class="mdi mdi-plus-box list_icon"></i></a>
+																<a href="javascript:playlistInsert(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-plus-box list_icon"></i></a>
 																<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
 															</td>
 														</tr>

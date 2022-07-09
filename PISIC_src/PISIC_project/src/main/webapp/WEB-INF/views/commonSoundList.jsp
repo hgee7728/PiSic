@@ -13,8 +13,7 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="preview-list">
-							<div
-								class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">
+							<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">
 								<div class="flex-grow playlist_insert_modal_new">
 									<h5 class="preview-subject">
 										<c:choose>
