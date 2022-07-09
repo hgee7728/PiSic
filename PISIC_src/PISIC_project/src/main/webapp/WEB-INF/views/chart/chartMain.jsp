@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/resources/assets/css/reset.css">
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
+<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,6 +17,8 @@
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/css/vendor.bundle.base.css">
+<!-- endinject -->
+<!-- Plugin css for this page -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/jvectormap/jquery-jvectormap.css">
 <link rel="stylesheet"
@@ -21,10 +27,16 @@
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.carousel.min.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.theme.default.min.css">
+<!-- End plugin css for this page -->
+<!-- inject:css -->
+<!-- endinject -->
+<!-- Layout styles -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/css/style.css">
+<!-- End layout styles -->
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 .btn_more {
 	width: 70px;
@@ -93,61 +105,8 @@ $(function(){
 	if(msg){
 		alert(msg);
 	}
-	// 더보기 기능
-	var content = $(".intro_box");
-    var content_txt = content.text();
-    var content_html = content.html();
-    var content_txt_short = content_txt.substring(0,100)+"...";
-    
-    if(content_txt.length >= 100){
-        content.html(content_txt_short)
-        
-    }else{
-        $(".btn_more").hide()
-    }
-    
-    $(".btn_more").click(toggle_content);
-    function toggle_content(){
-        if($(this).hasClass('short')){
-            // 접기 상태
-            $(this).html('더보기');
-            content.html(content_txt_short)
-            $(this).removeClass('short');
-        }else{
-            // 더보기 상태
-            $(this).html('접기');
-            content.html(content_html);
-            $(this).addClass('short');
 
-        }
-    }
     
-    // 체크박스 전체선택
-    $("#check_all").click(function(){
-    	if($('#check_all').is(':checked')){
-    		$('input:checkbox').prop('checked',true);
-    	} else {
-    		$('input:checkbox').prop('checked',false);
-    	}
-    })
-    
-    // 선택 재생
-    $("#select_play").click(function(){
-    	// 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
-    	$("input[name=s_no]").each(function(){
-    		if(!(this.checked)){
-    			console.log("히든 지우기");
-    			$(this).parent().next("input[name=a_no]").remove();
-    		} 
-    		console.log(this.checked);
-    	});
-    	// Post 방식으로 새창 열기
-    	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
-    	sound_frm.action="<%=request.getContextPath() %>/sound/play";
-    	sound_frm.target="SoundPlayer";
-    	sound_frm.method="post";
-    	sound_frm.submit();
-    });
     
     /* modal 플레이 리스트 담기 */
 	$("#select_insert").click(function() {
@@ -393,14 +352,7 @@ function selectAlbumDetail(a_no){
 												<table class="table sound_list">
 													<thead>
 														<tr>
-															<td>
-																<div class="form-check form-check-muted m-0">
-																	<label class="form-check-label"> <input
-																		type="checkbox" class="form-check-input"
-																		id="check_all">
-																	</label>
-																</div>
-															</td>
+															
 															<td>No</td>
 															<td></td>
 															<td>노래명</td>
@@ -414,17 +366,7 @@ function selectAlbumDetail(a_no){
 													<tbody>
 														<c:forEach items="${chartTopten}" var="sounds">
 															<tr>
-																<td>
-																	<div class="form-check form-check-muted m-0">
-																		<label class="form-check-label"> <input
-																			type="checkbox"
-																			class="form-check-input sound_checkbox"
-																			value="${sounds.s_no }" name="s_no">
-																		</label> <input type="hidden" value="${sounds.a_no }"
-																			name="a_no"> <input type="hidden"
-																			value="${sounds.a_no }" name="a_no">
-																	</div>
-																</td>
+																
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a
@@ -480,14 +422,7 @@ function selectAlbumDetail(a_no){
 												<table class="table sound_list">
 													<thead>
 														<tr>
-															<td>
-																<div class="form-check form-check-muted m-0">
-																	<label class="form-check-label"> <input
-																		type="checkbox" class="form-check-input"
-																		id="check_all">
-																	</label>
-																</div>
-															</td>
+															
 															<td>No</td>
 															<td></td>
 															<td>노래명</td>
@@ -501,17 +436,7 @@ function selectAlbumDetail(a_no){
 													<tbody>
 														<c:forEach items="${monthlyTopten}" var="sounds">
 															<tr>
-																<td>
-																	<div class="form-check form-check-muted m-0">
-																		<label class="form-check-label"> <input
-																			type="checkbox"
-																			class="form-check-input sound_checkbox"
-																			value="${sounds.s_no }" name="s_no">
-																		</label> <input type="hidden" value="${album.a_no }"
-																			name="a_no"> <input type="hidden"
-																			value="${album.a_no }" name="a_no">
-																	</div>
-																</td>
+																
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a
@@ -569,14 +494,7 @@ function selectAlbumDetail(a_no){
 												<table class="table sound_list">
 													<thead>
 														<tr>
-															<td>
-																<div class="form-check form-check-muted m-0">
-																	<label class="form-check-label"> <input
-																		type="checkbox" class="form-check-input"
-																		id="check_all">
-																	</label>
-																</div>
-															</td>
+															
 															<td>No</td>
 															<td></td>
 															<td>노래명</td>
@@ -590,17 +508,7 @@ function selectAlbumDetail(a_no){
 													<tbody>
 														<c:forEach items="${weeklyTopten}" var="sounds">
 															<tr>
-																<td>
-																	<div class="form-check form-check-muted m-0">
-																		<label class="form-check-label"> <input
-																			type="checkbox"
-																			class="form-check-input sound_checkbox"
-																			value="${sounds.s_no }" name="s_no">
-																		</label> <input type="hidden" value="${album.a_no }"
-																			name="a_no"> <input type="hidden"
-																			value="${album.a_no }" name="a_no">
-																	</div>
-																</td>
+																
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a
@@ -655,14 +563,7 @@ function selectAlbumDetail(a_no){
 												<table class="table sound_list">
 													<thead>
 														<tr>
-															<td>
-																<div class="form-check form-check-muted m-0">
-																	<label class="form-check-label"> <input
-																		type="checkbox" class="form-check-input"
-																		id="check_all">
-																	</label>
-																</div>
-															</td>
+															
 															<td>No</td>
 															<td></td>
 															<td>노래명</td>
@@ -676,17 +577,7 @@ function selectAlbumDetail(a_no){
 													<tbody>
 														<c:forEach items="${dailyTopten}" var="sounds">
 															<tr>
-																<td>
-																	<div class="form-check form-check-muted m-0">
-																		<label class="form-check-label"> <input
-																			type="checkbox"
-																			class="form-check-input sound_checkbox"
-																			value="${sounds.s_no }" name="s_no">
-																		</label> <input type="hidden" value="${album.a_no }"
-																			name="a_no"> <input type="hidden"
-																			value="${album.a_no }" name="a_no">
-																	</div>
-																</td>
+																
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a
@@ -742,14 +633,7 @@ function selectAlbumDetail(a_no){
 												<table class="table sound_list">
 													<thead>
 														<tr>
-															<td>
-																<div class="form-check form-check-muted m-0">
-																	<label class="form-check-label"> <input
-																		type="checkbox" class="form-check-input"
-																		id="check_all">
-																	</label>
-																</div>
-															</td>
+															
 															<td>No</td>
 															<td></td>
 															<td>노래명</td>
@@ -763,17 +647,7 @@ function selectAlbumDetail(a_no){
 													<tbody>
 														<c:forEach items="${likeTopten}" var="sounds">
 															<tr>
-																<td>
-																	<div class="form-check form-check-muted m-0">
-																		<label class="form-check-label"> <input
-																			type="checkbox"
-																			class="form-check-input sound_checkbox"
-																			value="${sounds.s_no }" name="s_no">
-																		</label> <input type="hidden" value="${album.a_no }"
-																			name="a_no"> <input type="hidden"
-																			value="${album.a_no }" name="a_no">
-																	</div>
-																</td>
+																
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a
@@ -831,11 +705,6 @@ function selectAlbumDetail(a_no){
 	</div>
 
 
-	<script>
-		document.querySelector(".btn_reload").onclick = function() {
-			location.reload();
-		}
-	</script>
 
 	<!-- container-scroller -->
 	<!-- plugins:js -->

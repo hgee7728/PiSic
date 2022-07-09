@@ -1,18 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/resources/assets/css/reset.css">
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
+<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>PISIC CHART DETAIL</title>
+<title>pymusic agender</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/css/vendor.bundle.base.css">
+<!-- endinject -->
+<!-- Plugin css for this page -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/jvectormap/jquery-jvectormap.css">
 <link rel="stylesheet"
@@ -21,11 +27,16 @@
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.carousel.min.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.theme.default.min.css">
+<!-- End plugin css for this page -->
+<!-- inject:css -->
+<!-- endinject -->
+<!-- Layout styles -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/css/style.css">
+<!-- End layout styles -->
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
-
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 .content_div1 {
 	display: flex;
@@ -84,34 +95,6 @@ $(function(){
 	if(msg){
 		alert(msg);
 	}
-	// 더보기 기능
-	var content = $(".intro_box");
-    var content_txt = content.text();
-    var content_html = content.html();
-    var content_txt_short = content_txt.substring(0,100)+"...";
-    
-    if(content_txt.length >= 100){
-        content.html(content_txt_short)
-        
-    }else{
-        $(".btn_more").hide()
-    }
-    
-    $(".btn_more").click(toggle_content);
-    function toggle_content(){
-        if($(this).hasClass('short')){
-            // 접기 상태
-            $(this).html('더보기');
-            content.html(content_txt_short)
-            $(this).removeClass('short');
-        }else{
-            // 더보기 상태
-            $(this).html('접기');
-            content.html(content_html);
-            $(this).addClass('short');
-
-        }
-    }
     
     // 체크박스 전체선택
     $("#check_all").click(function(){
@@ -378,18 +361,13 @@ function selectAlbumDetail(a_no){
 					<p>장르별 전체 재생 수 기준 랭킹 조회</p>
 					<div class="content_div3">
 						<div class="select_btns">
-							<button type="button" id="select_play"
-								class="btn btn-info btn-fw">선택재생</button>
-							<button type="button" class="btn btn-info btn-fw">선택담기</button>
+							<button type="button" id="select_play" class="btn btn-info btn-fw">선택재생</button>
+							<button type="button" id="select_insert" class="btn btn-info btn-fw">선택담기</button>
 						</div>
 						<div class="row ">
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-
-										
-										<!-- TODO hg : 차트이름 변경하기  -->
-										
 										
 										<h3 class="card-title">TOP 10</h3>
 										

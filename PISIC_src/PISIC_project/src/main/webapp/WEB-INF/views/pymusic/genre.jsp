@@ -25,7 +25,7 @@
 	href="<%=request.getContextPath()%>/resources/assets/css/style.css">
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 .content_div1 {
 	display: flex;
@@ -378,17 +378,13 @@ function selectAlbumDetail(a_no){
 					<p>장르별 전체 재생 수 기준 랭킹 조회</p>
 					<div class="content_div3">
 						<div class="select_btns">
-							<button type="button" id="select_play"
-								class="btn btn-info btn-fw">선택재생</button>
-							<button type="button" class="btn btn-info btn-fw">선택담기</button>
+							<button type="button" id="select_play" class="btn btn-info btn-fw">선택재생</button>
+							<button type="button" id="select_insert" class="btn btn-info btn-fw">선택담기</button>
 						</div>
 						<div class="row ">
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-
-										
-										<!-- TODO hg : 차트이름 변경하기  -->
 										<c:set var="genre" value="${pyGenre[1].g_name}"></c:set>
 										
 										<h3 class="card-title">${genre } TOP 10</h3>
