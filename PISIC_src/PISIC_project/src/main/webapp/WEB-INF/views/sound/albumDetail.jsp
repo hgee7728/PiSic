@@ -484,22 +484,22 @@ function selectAlbumDetail(a_no){
 															</td>
 															<td>${sounds.s_no }</td>
 															<td><img src="${album.a_cover }" alt="image" /></td>
-															<td><a href="javascript:selectSoundDetail('${sounds.a_no }','${sounds.s_no}')">${sounds.s_name}</a></td>
+															<td><a href="javascript:selectSoundDetail(${sounds.a_no },${sounds.s_no})">${sounds.s_name}</a></td>
 															<td>
 																<c:forEach items="${ sounds.singers}" var="singer">
-																<a href="javascript:selectArtistDetail('${singer.artist_no}')">${singer.artist_name}</a>&nbsp;
+																<a href="javascript:selectArtistDetail(${singer.artist_no})">${singer.artist_name}</a>&nbsp;
 																</c:forEach>
 															</td>
-															<td><a href="javascript:selectAlbumDetail('${sounds.a_no }')">${sounds.a_name }</a></td>
+															<td><a href="javascript:selectAlbumDetail(${sounds.a_no })">${sounds.a_name }</a></td>
 															<td>
-																<a href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i class="mdi mdi-play list_icon"></i></a>
+																<a href="javascript:playOne(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-play list_icon"></i></a>
 															</td>
 															<td>
-																<a href="javascript:soundLike('${sounds.a_no }','${sounds.s_no}')"><i class="mdi mdi-heart list_icon like_after"></i></a>
+																<a href="javascript:soundLike(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-heart list_icon like_after"></i></a>
 																<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
 															</td>
 															<td>
-																<a href="javascript:playlistInsert('${sounds.a_no }','${sounds.s_no}')"><i class="mdi mdi-plus-box list_icon"></i></a>
+																<a href="javascript:playlistInsert(${sounds.a_no },'${sounds.s_no})"><i class="mdi mdi-plus-box list_icon"></i></a>
 																<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
 															</td>
 														</tr>

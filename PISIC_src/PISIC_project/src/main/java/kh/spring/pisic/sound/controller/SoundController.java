@@ -138,7 +138,14 @@ public class SoundController {
 		mv.setViewName("sound/albumDetail");
 		return mv;
 	}
-
+	
+	// 한곡 정보 조회 - ajax 플레이 리스트 만들기(담을 곡으로 옮기기)
+	@PostMapping("/selectSound")
+	@ResponseBody
+	public Sound selectSound(Sound sound) {
+		return service.selectSound(sound);
+	}
+	
 	// 곡 상세조회
 	@GetMapping("/soundDetail")
 	public ModelAndView selectSoundDetail(ModelAndView mv, Sound sound, HttpSession session) {

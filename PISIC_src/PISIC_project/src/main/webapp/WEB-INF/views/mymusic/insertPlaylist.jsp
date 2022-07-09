@@ -36,79 +36,6 @@
 <script
 	src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-	/* 대표사진 사진 변경 */
-	UPLOADCARE_LOCALE = "ko"
-	UPLOADCARE_LOCALE_TRANSLATIONS = {
-		buttons : {
-			choose : {
-				files : {
-					one : '사진 등록'
-				}
-			}
-		}
-	}
-	$(function() {
-		// 사진 등록하면 미리보기 + input-hidden에 값 넣기
-		var singleWidget = uploadcare
-				.SingleWidget('[role=uploadcare-uploader]');
-		singleWidget.onUploadComplete(function(info) {
-			console.log(info.cdnUrl);
-			var fileUrl = info.cdnUrl;
-			$("#main_img").attr("src", fileUrl);
-			$('input[name=l_image]').val(fileUrl);
-
-		});
-		$("#myplaylist_select").change(function() {
-
-		});
-		
-		// 최근 들은 곡 리스트 불러오기
-		$("#recent_sound").click(function(){
-			$.ajax({
-				url: "<%=request.getContextPath() %>/mymusic/selectSoundRecent",
-				type: "post",
-				dataType:"json",
-				success: function(result) {
-					var html = "";
-					for(var i = 0; i < result.length; i++){
-						var resultData = result[i];
-						html += 
-					}
-					$(".preview-list").nextAll().remove();
-					$(".preview-list").append(html);
-				},
-			}); // ajax 끝
-		});
-	});
-	/* <tbody>
-	<c:forEach items="${ album.sounds}" var="sounds">
-		<tr>
-			<td>
-				<div class="form-check form-check-muted m-0">
-					<label class="form-check-label"> 
-						<input type="checkbox" class="form-check-input sound_checkbox" value="${sounds.s_no }" name="s_no">
-					</label>
-					<input type="hidden" value="${album.a_no }" name="a_no">
-				</div>
-			</td>
-			<td>${sounds.s_no }</td>
-			<td><img src="${album.a_cover }" alt="image" /></td>
-			<td><a href="javascript:selectSoundDetail('${sounds.a_no }','${sounds.s_no}')">${sounds.s_name}</a></td>
-			<td>
-				<c:forEach items="${ sounds.singers}" var="singer">
-				<a href="javascript:selectArtistDetail('${singer.artist_no}')">${singer.artist_name}</a>&nbsp;
-				</c:forEach>
-			</td>
-			<td>
-				<a href="javascript:playlistInsert('${sounds.a_no }','${sounds.s_no}')"><i class="mdi mdi-plus-box list_icon"></i></a>
-				<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-			</td>
-		</tr>
-	</c:forEach>
-</tbody> */
-
-</script>
 <style>
 .content_div1 {
 	display: flex;
@@ -128,7 +55,7 @@
 	margin: 0px 10px;
 }
 
-.card {
+.content_info.card {
 	position: relative;
 	top: 50px;
 	height: 200px;
@@ -152,7 +79,150 @@
 .sound_select_btn{
 	margin-top:20px;
 }
+table.left_sound_list a, table.right_sound_list a{
+	color:#6c7293;
+}
+.list_icon{
+	font-size:30px;
+	margin: 0px 5px;
+}
+
+
+table.sound_list  tr > td:nth-child(1),
+table.sound_list  tr > td:nth-child(2),
+table.sound_list  tr > td:nth-child(3),
+table.sound_list  tr > td:nth-child(6){
+	width: 5%;
+}
+table.sound_list  tr > td:nth-child(4){
+	width:60%;
+}
+table.sound_list  tr > td:nth-child(5){
+	width:30%;
+}
+table.sound_list  tr > td:nth-child(2),
+table.sound_list  tr > td:nth-child(6){
+	text-align:center;
+}
+
 </style>
+<script>
+	/* 대표사진 사진 변경 */
+	UPLOADCARE_LOCALE = "ko"
+	UPLOADCARE_LOCALE_TRANSLATIONS = {
+		buttons : {
+			choose : {
+				files : {
+					one : '사진 등록'
+				}
+			}
+		}
+	}
+	$(function() {
+		// 사진 등록하면 미리보기 + input-hidden에 값 넣기
+		var singleWidget = uploadcare.SingleWidget('[role=uploadcare-uploader]');
+		singleWidget.onUploadComplete(function(info) {
+			console.log(info.cdnUrl);
+			var fileUrl = info.cdnUrl;
+			$("#main_img").attr("src", fileUrl);
+			$('input[name=l_image]').val(fileUrl);
+
+		});
+		$("#myplaylist_select").change(function() {
+
+		});
+		
+		// 최근 들은 곡 리스트 불러오기
+		$("#recent_sound").click(function(){
+			$.ajax({
+				url: "<%=request.getContextPath() %>/mymusic/selectSoundRecent",
+				type: "post",
+				dataType:"json",
+				success: function(result) {
+					$(".left_title").text("최근 들은 곡 (최근 7일간 들은 20곡)");
+					console.log(result);
+					var html = "";
+					for(var i = 0; i < result.length; i++){
+						var resultData = result[i];
+						html += '<tr>';
+						html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
+						html += '<input type="checkbox" class="form-check-input sound_checkbox" value="'+resultData.s_no+'" name="s_no">';
+						html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
+						html += '<td>'+(i+1)+'</td>';
+						html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
+						html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
+						html += '<td>';
+							for(var j = 0 ; j < resultData.singers.length ; j ++){
+								var resultData2 = resultData.singers[j]
+								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
+							}
+						html += '</td>';
+						html += '<td><a href="javascript:soundMoveRight('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+						html += '</tr>';
+						
+					
+					}
+					console.log(html);
+					$("table.left_sound_list tbody").children().remove();
+					$("table.left_sound_list tbody").append(html);
+					// 미니 버튼들 a태그 색상 바꾸기
+					$("i.mdi").parent('a').css('color','#8f5fe8');
+				},
+			}); // ajax 끝
+		});
+	});
+	// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
+	function selectSoundDetail(a_no, s_no){
+		location.href = "<%=request.getContextPath() %>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
+	};
+	function selectArtistDetail(artist_no){
+		location.href = "<%=request.getContextPath() %>/sound/artistDetail?artist_no=" + artist_no;
+	};
+	
+	// 담을 곡으로 한곡 옮기기
+	function soundMoveRight(a_no, s_no){
+		$.ajax({
+			url: "<%=request.getContextPath() %>/sound/selectSound",
+			type: "post",
+			data:{
+				a_no:a_no,
+				s_no:s_no
+			},
+			dataType:"json",
+			success: function(resultData) {
+				console.log(resultData);
+				var html = "";
+				html += '<tr>';
+				html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
+				html += '<input type="checkbox" class="form-check-input sound_checkbox" value="'+resultData.s_no+'" name="s_no">';
+				html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
+				html += '<td></td>';
+				html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
+				html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
+				html += '<td>';
+					for(var j = 0 ; j < resultData.singers.length ; j ++){
+						var resultData2 = resultData.singers[j]
+						html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
+					}
+				html += '</td>';
+				html += '<td><a href="javascript:soundMoveRight('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-minus-box list_icon"></i></a></td>';
+				html += '</tr>';
+					
+				console.log(html);
+				$("table.right_sound_list tbody").append(html);
+				
+				// number 부여하기
+				for(var i = 0 ; i < $("table.right_sound_list tbody tr").length ; i ++){
+					$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(2)').text(i+1);
+				}
+				// 미니 버튼들 a태그 색상 바꾸기
+				$("i.mdi").parent('a').css('color','#8f5fe8');
+			},
+		}); // ajax 끝
+	}
+
+</script>
+
 </head>
 <body>
 	<div class="container-scroller">
@@ -249,9 +319,9 @@
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-										<h3 class="card-title left_title"></h3>
+										<h3 class="card-title left_title">리스트를 선택하세요.</h3>
 										<div class="table-responsive">
-											<table class="table left_sound_list">
+											<table class="table left_sound_list sound_list">
 												<thead>
 													<tr>
 														<td>
@@ -262,47 +332,14 @@
 															</div>
 														</td>
 														<td>No</td>
-														<td></td>
+														<td><img 
+										src="<%=request.getContextPath()%>/resources/assets/images/playlist_img.png"></td>
 														<td>노래명</td>
 														<td>가수명</td>
-														<td>앨범명</td>
 														<td>담기</td>
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td></td>												
-														<td></td>
-														<td></td>
-														<td></td>
-														<td></td>
-														<td></td>
-														<td></td>
-													</tr>
-													<c:forEach items="${ album.sounds}" var="sounds">
-														<tr>
-															<td>
-																<div class="form-check form-check-muted m-0">
-																	<label class="form-check-label"> 
-																		<input type="checkbox" class="form-check-input sound_checkbox" value="${sounds.s_no }" name="s_no">
-																	</label>
-																	<input type="hidden" value="${album.a_no }" name="a_no">
-																</div>
-															</td>
-															<td>${sounds.s_no }</td>
-															<td><img src="${album.a_cover }" alt="image" /></td>
-															<td><a href="javascript:selectSoundDetail('${sounds.a_no }','${sounds.s_no}')">${sounds.s_name}</a></td>
-															<td>
-																<c:forEach items="${ sounds.singers}" var="singer">
-																<a href="javascript:selectArtistDetail('${singer.artist_no}')">${singer.artist_name}</a>&nbsp;
-																</c:forEach>
-															</td>
-															<td>
-																<a href="javascript:playlistInsert('${sounds.a_no }','${sounds.s_no}')"><i class="mdi mdi-plus-box list_icon"></i></a>
-																<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-															</td>
-														</tr>
-													</c:forEach>
 												</tbody>
 											</table>
 										</div>
@@ -316,7 +353,7 @@
 									<div class="card-body">
 										<h3 class="card-title right_title">담을 곡</h3>
 										<div class="table-responsive">
-											<table class="table right_sound_list">
+											<table class="table right_sound_list sound_list">
 												<thead>
 													<tr>
 														<td>
@@ -327,47 +364,15 @@
 															</div>
 														</td>
 														<td>No</td>
-														<td></td>
+														<td><img 
+										src="<%=request.getContextPath()%>/resources/assets/images/playlist_img.png"></td>
 														<td>노래명</td>
 														<td>가수명</td>
-														<td>앨범명</td>
 														<td>빼기</td>
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td></td>												
-														<td></td>
-														<td></td>
-														<td></td>
-														<td></td>
-														<td></td>
-														<td></td>
-													</tr>
-													<c:forEach items="${ album.sounds}" var="sounds">
-														<tr>
-															<td>
-																<div class="form-check form-check-muted m-0">
-																	<label class="form-check-label"> 
-																		<input type="checkbox" class="form-check-input sound_checkbox" value="${sounds.s_no }" name="s_no">
-																	</label>
-																	<input type="hidden" value="${album.a_no }" name="a_no">
-																</div>
-															</td>
-															<td>${sounds.s_no }</td>
-															<td><img src="${album.a_cover }" alt="image" /></td>
-															<td><a href="javascript:selectSoundDetail('${sounds.a_no }','${sounds.s_no}')">${sounds.s_name}</a></td>
-															<td>
-																<c:forEach items="${ sounds.singers}" var="singer">
-																<a href="javascript:selectArtistDetail('${singer.artist_no}')">${singer.artist_name}</a>&nbsp;
-																</c:forEach>
-															</td>
-															<td>
-																<a href="javascript:playlistInsert('${sounds.a_no }','${sounds.s_no}')"><i class="mdi mdi-plus-box list_icon"></i></a>
-																<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-															</td>
-														</tr>
-													</c:forEach>
+													
 												</tbody>
 											</table>
 										</div>
