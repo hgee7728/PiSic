@@ -137,20 +137,25 @@ $(function(){
     
     // 선택 재생
     $("#select_play").click(function(){
-    	// 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
-    	$("input[name=s_no]").each(function(){
-    		if(!(this.checked)){
-    			console.log("히든 지우기");
-    			$(this).parent().next("input[name=a_no]").remove();
-    		} 
-    		console.log(this.checked);
-    	});
-    	// Post 방식으로 새창 열기
-    	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
-    	sound_frm.action="<%=request.getContextPath() %>/sound/play";
-    	sound_frm.target="SoundPlayer";
-    	sound_frm.method="post";
-    	sound_frm.submit();
+    	if($('input[name=s_no]:checked').length == '0'){
+			alert("곡을 선택하세요.");
+		} else {
+			// 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
+	    	$("input[name=s_no]").each(function(){
+	    		if(!(this.checked)){
+	    			console.log("히든 지우기");
+	    			$(this).parent().next("input[name=a_no]").remove();
+	    		} 
+	    		console.log(this.checked);
+	    	});
+	    	// Post 방식으로 새창 열기
+	    	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
+	    	sound_frm.action="<%=request.getContextPath() %>/sound/play";
+	    	sound_frm.target="SoundPlayer";
+	    	sound_frm.method="post";
+	    	sound_frm.submit();
+		}
+    	
     });
     
     /* modal 플레이 리스트 담기 */
@@ -360,6 +365,11 @@ function playlistSelectInsertDo(l_no){
 function newPlaylist(){
 	location.href = "<%=request.getContextPath() %>/mymusic/insertPlaylist";
 };
+
+//로그인 페이지로
+function goLogin(){
+	location.href="<%=request.getContextPath() %>/member/login"
+}
 
 // 제목, 아티스트, 앨범 클릭시 상세조회 페이지
 function selectSoundDetail(a_no, s_no){

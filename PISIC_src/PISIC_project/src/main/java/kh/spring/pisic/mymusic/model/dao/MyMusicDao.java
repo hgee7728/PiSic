@@ -30,6 +30,11 @@ public class MyMusicDao {
 		return session.delete("MyMusic.deletePlaylist", mymusicList);
 	}
 	
+	// 플레이 리스트 만들기(담을 곡으로 옮기기) - ajax
+	public List<Sound> selectSoundList(List<Sound> sound){
+		return session.selectList("MyMusic.selectSoundList",sound);
+	}
+	
 	// 최근 들은 곡 조회
 	public List<Sound> selectSoundRecent(String m_id) {
 		return session.selectList("MyMusic.selectSoundRecent",m_id);

@@ -12,4 +12,5 @@ public interface MyMusicService {
 	public int insertSound(List<Sound> soundList);
 	public int deletePlaylist(List<MyMusic> mymusicList);
 	public List<Sound> selectSoundRecent(String m_id);
+	public List<Sound> selectSoundList(List<Sound> sound);
 }

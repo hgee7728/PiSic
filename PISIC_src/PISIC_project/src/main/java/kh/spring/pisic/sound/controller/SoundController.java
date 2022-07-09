@@ -49,9 +49,9 @@ public class SoundController {
 
 	// 음악 재생
 	@PostMapping("/play")
-	public ModelAndView musicPlayer(ModelAndView mv, @RequestParam("a_no") int[] a_noArr,
-			@RequestParam("s_no") int[] s_noArr) {
-
+	public ModelAndView musicPlayer(ModelAndView mv, @RequestParam(name="a_no", required = false) int[] a_noArr,
+			@RequestParam(name="s_no", required = false) int[] s_noArr) {
+		
 		List<Sound> soundList = new ArrayList<Sound>();
 
 		// 들고 온 데이터 domain형태로 list 시키기
@@ -137,13 +137,6 @@ public class SoundController {
 		mv.addObject("album", service.selectAlbum(a_no));
 		mv.setViewName("sound/albumDetail");
 		return mv;
-	}
-	
-	// 한곡 정보 조회 - ajax 플레이 리스트 만들기(담을 곡으로 옮기기)
-	@PostMapping("/selectSound")
-	@ResponseBody
-	public Sound selectSound(Sound sound) {
-		return service.selectSound(sound);
 	}
 	
 	// 곡 상세조회

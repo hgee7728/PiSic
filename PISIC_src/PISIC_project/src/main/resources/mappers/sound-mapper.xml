@@ -160,7 +160,8 @@
 
 <!-- 선택 재생 -->
 <select id="selectSoundList" parameterType="list" resultType="Sound">
-	select s_name, s_path, artist.artist_name, album.a_cover  from sound sound 
+	select s_name, s_path, artist.artist_name, album.a_cover, sound.a_no, sound.s_no
+	from sound sound 
 	join album album on sound.a_no = album.a_no
 	join singer singer on sound.s_no = singer.s_no and sound.a_no = singer.a_no
 	join artist artist on singer.artist_no = artist.artist_no

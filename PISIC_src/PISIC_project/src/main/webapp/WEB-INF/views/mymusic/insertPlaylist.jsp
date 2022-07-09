@@ -139,14 +139,14 @@ table.sound_list  tr > td:nth-child(6){
 				type: "post",
 				dataType:"json",
 				success: function(result) {
-					$(".left_title").text("최근 들은 곡 (최근 7일간 들은 20곡)");
+					$(".left_title").text("최근 들은 곡");
 					console.log(result);
 					var html = "";
 					for(var i = 0; i < result.length; i++){
 						var resultData = result[i];
 						html += '<tr>';
 						html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
-						html += '<input type="checkbox" class="form-check-input sound_checkbox" value="'+resultData.s_no+'" name="s_no">';
+						html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
 						html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
 						html += '<td>'+(i+1)+'</td>';
 						html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
@@ -157,7 +157,7 @@ table.sound_list  tr > td:nth-child(6){
 								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
 							}
 						html += '</td>';
-						html += '<td><a href="javascript:soundMoveRight('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+						html += '<td><a href="javascript:soundPlus('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
 						html += '</tr>';
 						
 					
@@ -170,6 +170,25 @@ table.sound_list  tr > td:nth-child(6){
 				},
 			}); // ajax 끝
 		});
+		
+		// 체크박스 전체선택 - 왼쪽 테이블
+	    $("#check_all1").click(function(){
+	    	if($('#check_all1').is(':checked')){
+	    		$('table.left_sound_list input:checkbox').prop('checked',true);
+	    	} else {
+	    		$('table.left_sound_list input:checkbox').prop('checked',false);
+	    	}
+	    })
+	    // 체크박스 전체선택 - 오른쪽 테이블
+	    $("#check_all2").click(function(){
+	    	if($('#check_all2').is(':checked')){
+	    		$('table.right_sound_list input:checkbox').prop('checked',true);
+	    	} else {
+	    		$('table.right_sound_list input:checkbox').prop('checked',false);
+	    	}
+	    })
+	    
+	    
 	});
 	// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
 	function selectSoundDetail(a_no, s_no){
@@ -179,46 +198,64 @@ table.sound_list  tr > td:nth-child(6){
 		location.href = "<%=request.getContextPath() %>/sound/artistDetail?artist_no=" + artist_no;
 	};
 	
-	// 담을 곡으로 한곡 옮기기
-	function soundMoveRight(a_no, s_no){
+	// 담을 곡으로 한곡,선택 옮기기
+	function soundPlus(a_no, s_no){
 		$.ajax({
-			url: "<%=request.getContextPath() %>/sound/selectSound",
+			url: "<%=request.getContextPath() %>/mymusic/selectSoundList",
 			type: "post",
 			data:{
 				a_no:a_no,
 				s_no:s_no
 			},
 			dataType:"json",
-			success: function(resultData) {
-				console.log(resultData);
+			success: function(result) {
+				console.log(result);
 				var html = "";
-				html += '<tr>';
-				html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
-				html += '<input type="checkbox" class="form-check-input sound_checkbox" value="'+resultData.s_no+'" name="s_no">';
-				html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
-				html += '<td></td>';
-				html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
-				html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
-				html += '<td>';
-					for(var j = 0 ; j < resultData.singers.length ; j ++){
-						var resultData2 = resultData.singers[j]
-						html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
-					}
-				html += '</td>';
-				html += '<td><a href="javascript:soundMoveRight('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-minus-box list_icon"></i></a></td>';
-				html += '</tr>';
+				for(var i = 0; i < result.length; i++){
+					var resultData = result[i];
+					html += '<tr>';
+					html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
+					html += '<input type="checkbox" class="form-check-input sound_checkbox2" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
+					html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
+					html += '<td></td>';
+					html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
+					html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
+					html += '<td>';
+						for(var j = 0 ; j < resultData.singers.length ; j ++){
+							var resultData2 = resultData.singers[j]
+							html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
+						}
+					html += '</td>';
+					html += '<td><a id="sound_minus"><i class="mdi mdi-minus-box list_icon"></i></a></td>';
+					html += '</tr>';
 					
+				
+				}
 				console.log(html);
 				$("table.right_sound_list tbody").append(html);
 				
 				// number 부여하기
 				for(var i = 0 ; i < $("table.right_sound_list tbody tr").length ; i ++){
 					$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(2)').text(i+1);
+					$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus('+(i+1)+')');
+					
 				}
 				// 미니 버튼들 a태그 색상 바꾸기
 				$("i.mdi").parent('a').css('color','#8f5fe8');
 			},
 		}); // ajax 끝
+	}
+	
+	// 한곡 빼기
+	function soundMinus(i){
+		$('table.right_sound_list tbody tr:nth-child('+i+')').remove();
+		
+		// number 부여하기
+		for(var j = 0 ; j < $("table.right_sound_list tbody tr").length ; j ++){
+			$('table.right_sound_list tbody tr:nth-child('+(j+1)+') td:nth-child(2)').text(j+1);
+			$('table.right_sound_list tbody tr:nth-child('+(j+1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus('+(j+1)+')');
+			
+		}
 	}
 
 </script>
@@ -327,7 +364,7 @@ table.sound_list  tr > td:nth-child(6){
 														<td>
 															<div class="form-check form-check-muted m-0">
 																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input" id="check_all">
+																	type="checkbox" class="form-check-input" id="check_all1">
 																</label>
 															</div>
 														</td>
@@ -359,7 +396,7 @@ table.sound_list  tr > td:nth-child(6){
 														<td>
 															<div class="form-check form-check-muted m-0">
 																<label class="form-check-label"> <input
-																	type="checkbox" class="form-check-input" id="check_all">
+																	type="checkbox" class="form-check-input" id="check_all2">
 																</label>
 															</div>
 														</td>

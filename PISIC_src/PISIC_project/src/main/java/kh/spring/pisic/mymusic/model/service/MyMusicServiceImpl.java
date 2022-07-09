@@ -33,7 +33,13 @@ public class MyMusicServiceImpl implements MyMusicService{
 	public int deletePlaylist(List<MyMusic> mymusicList) {
 		return dao.deletePlaylist(mymusicList);
 	}
-
+	
+	// 플레이 리스트 만들기(담을 곡으로 옮기기) - ajax
+	@Override
+	public List<Sound> selectSoundList(List<Sound> sound){
+		return dao.selectSoundList(sound);
+	}
+	
 	// 최근 들은 곡 조회
 	@Override
 	public List<Sound> selectSoundRecent(String m_id) {

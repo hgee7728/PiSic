@@ -139,6 +139,25 @@ public class MyMusicController {
 		mv.setViewName("redirect:/mymusic/selectPlaylist");
 		return mv;
 	}
+	// 플레이 리스트 만들기(담을 곡으로 옮기기) - ajax
+	@PostMapping("/selectSoundList")
+	@ResponseBody
+	public List<Sound> selectSound(@RequestParam(name="a_no", required = false) int[] a_noArr,
+			@RequestParam(name="s_no", required = false) int[] s_noArr) {
+		List<Sound> soundList = new ArrayList<Sound>();
+
+		// 들고 온 데이터 domain형태로 list 시키기
+		for (int i = 0; i < s_noArr.length; i++) {
+			Sound sound = new Sound();
+			System.out.println(a_noArr[i]);
+			System.out.println(s_noArr[i]);
+			sound.setA_no(a_noArr[i]);
+			sound.setS_no(s_noArr[i]);
+			soundList.add(sound);
+		}
+		System.out.println("controller result :" + service.selectSoundList(soundList));
+		return service.selectSoundList(soundList);
+	}
 	
 	// 최근 들은 곡 - ajax
 	@PostMapping("/selectSoundRecent")
