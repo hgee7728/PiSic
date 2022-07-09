@@ -199,21 +199,22 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 	    	if($('table.left_sound_list input[name=s_no]:checked').length == '0'){
 				alert("곡을 선택하세요.");
 			} else {
-				// 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
+				/* // 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
 		    	$("table.left_sound_list input[name=s_no]").each(function(){
 		    		if(!(this.checked)){
 		    			console.log("히든 지우기");
 		    			$(this).parent().next("table.left_sound_list input[name=a_no]").remove();
 		    		} 
-		    	});
+		    	}); */
 		    	var s_noArray = [];
 		    	var a_noArray = [];
 		    	$('table.left_sound_list input[name=s_no]:checked').each(function(){ //체크된 리스트 저장
 		    		s_noArray.push($(this).val());
+		    		a_noArray.push($(this).parent().next("table.left_sound_list input[name=a_no]").val());
 		        });
-		    	$('table.left_sound_list input[name=a_no]').each(function(){
+		    	/* $('table.left_sound_list input[name=a_no]').each(function(){
 		    		a_noArray.push($(this).val());
-		        });
+		        }); */
 		    	console.log("s_noArray: "+s_noArray);
 		    	console.log("a_noArray: "+a_noArray);
 		    	var ajaxData = {
@@ -260,6 +261,12 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 							$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus('+(i+1)+')');
 
 						}
+						/* // 다시 hidden 생성
+				    	$("table.left_sound_list input[name=s_no]").each(function(){
+				    		if(!($(this).parent().next("table.left_sound_list input[name=a_no]").length)){
+				    			$(this).parent().after();
+				    		} 
+				    	}); */
 						// 담으면 전체 선택 해제
 						$('table.left_sound_list input:checkbox').prop('checked',false);
 						// 미니 버튼들 a태그 색상 바꾸기
@@ -271,17 +278,25 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 		
 		// 선택 빼기
 		$("#select_sound_minus").click(function(){
-			console.log("선택 담기 클릭");
+			console.log("선택 빼기 클릭");
 	    	if($('table.right_sound_list input[name=s_no]:checked').length == '0'){
 				alert("곡을 선택하세요.");
 			} else {
-				// 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
-		    	$("table.right_sound_list input[name=s_no]").each(function(){
-		    		if(!(this.checked)){
-		    			console.log("히든 지우기");
-		    			$(this).parent().next("table.right_sound_list input[name=a_no]").remove();
-		    		} 
-		    	});
+				var select_num = $('table.right_sound_list input[name=s_no]:checked').closest("td").next("td").text();
+				var delete_num = [];
+				
+				for(var i = 0 ; i < select_num.length ; i ++){
+					console.log((i+1)+"번째 글짜 : " + select_num.charAt(i));
+					delete_num.push( $('table.right_sound_list tbody tr:nth-child(' + select_num.charAt(i) + ')') );
+				}
+				for(var k = 0 ; k < delete_num.length ; k ++){
+					delete_num[i].remove();
+				}
+				// number 부여하기
+				for (var j = 0; j < $("table.right_sound_list tbody tr").length; j++) {
+					$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(2)').text(j + 1);
+					$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus(' + (j + 1) + ')');
+				}
 			}
 		});
 	    

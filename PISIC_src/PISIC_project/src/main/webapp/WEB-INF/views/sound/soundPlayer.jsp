@@ -77,6 +77,8 @@ $(document).ready(function(){
 	$("#playlist-pause").click(function() {
 		myPlaylist.pause();
 	});
+	
+	opener.location.reload();
 });
 //]]>
 </script>
