@@ -2,16 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Artist">
 
-<select id="selectArtistRandom" resultType="Artist">
-<!-- 아티스트 랜덤 선택 : 메인  -->
-<![CDATA[
-select artist_profile from( 
-    select artist_profile from artist
-    where artist_profile is not null
-    order by DBMS_RANDOM.RANDOM 
-) where rownum <= 5
-]]> 
-</select>
+	<select id="selectArtist" parameterType="string"
+		resultType="Artist">
+		select artist_no, artist_name, artist_nation,
+		artist_company, artist_type,
+		artist_group, artist_member,
+		artist_profile, artist_info1,
+		artist_info2
+		from artist where
+		artist_no=#{artist_no}
+	</select>
+
+	<select id="selectArtistRandom" resultType="Artist">
+		<!-- 아티스트 랜덤 선택 : 메인 -->
+	<![CDATA[
+	select artist_no, artist_profile
+	from (select t1.* from (select artist_no, artist_profile from artist where artist_profile is not null) t1
+	    order by DBMS_RANDOM.RANDOM 
+	) where rownum <= 5
+	]]>
+	</select>
 
 
 </mapper>

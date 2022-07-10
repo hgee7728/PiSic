@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.sound.domain.Album;
+import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
 import kh.spring.pisic.sound.model.dao.SoundDao;
@@ -83,6 +84,10 @@ public class SoundServiceImpl implements SoundService{
 	@Override
 	public int deleteSoundRecomment(Member member, SoundRecomment soundRecomment) {
 		return dao.deleteSoundRecomment(member, soundRecomment);
+	}
+	@Override
+	public Artist selectArtist(String artist_no) {
+		return dao.selectArtist(artist_no);
 	}
 
 }

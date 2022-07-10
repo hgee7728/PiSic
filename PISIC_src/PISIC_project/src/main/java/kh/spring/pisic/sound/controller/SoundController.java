@@ -169,8 +169,7 @@ public class SoundController {
 	@GetMapping("/artistDetail")
 	public ModelAndView selectArtistDetail(ModelAndView mv, @RequestParam(name="artist_no", required = false) String artist_no) {
 		
-		// db 다녀오기 TODO
-		mv.addObject("artist_no",artist_no); // db 다녀오고 지울거야
+		mv.addObject("artist",service.selectArtist(artist_no)); 
 		mv.setViewName("sound/artistDetail");
 		return mv;
 	}

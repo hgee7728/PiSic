@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.sound.domain.Album;
+import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
 
@@ -104,8 +105,13 @@ public class SoundDao {
 		map.put("soundRecomment", soundRecomment);
 		return session.delete("Sound.deleteSoundRecomment", map);
 	}
-
 	
+	// 아티스트 상세조회
+	public Artist selectArtist(String artist_no) {
+		return session.selectOne("Artist.selectArtist", artist_no);
+	}
+
+
 	
 	
 }
