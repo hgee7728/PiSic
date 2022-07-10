@@ -112,8 +112,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 }
 </style>
 <script>
-	/* 대표사진 사진 변경 */
-	UPLOADCARE_LOCALE = "ko"
+UPLOADCARE_LOCALE = "ko"
 	UPLOADCARE_LOCALE_TRANSLATIONS = {
 		buttons : {
 			choose : {
@@ -124,6 +123,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 		}
 	}
 	$(function() {
+		
 		// 사진 등록하면 미리보기 + input-hidden에 값 넣기
 		var singleWidget = uploadcare.SingleWidget('[role=uploadcare-uploader]');
 		singleWidget.onUploadComplete(function(info) {
@@ -133,16 +133,13 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 			$('input[name=l_image]').val(fileUrl);
 
 		});
-		$("#myplaylist_select").change(function() {
-
-		});
 		
 		// 플레이 리스트 선택시 해당 목록 불러오기 - select-option
 		$("#myplaylist_select").change(function(){
 			console.log("변했당");
 			console.log($("#myplaylist_select").val());
 			$.ajax({
-				url: "<%=request.getContextPath()%>/mymusic/selectPlaylistSound",
+				url: "<%=request.getContextPath()%>/mymusic/playlistSound",
 				type: "post",
 				data:{
 					l_no:$("#myplaylist_select").val()
@@ -182,7 +179,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 		// 최근 들은 곡 리스트 불러오기
 		$("#recent_sound").click(function(){
 			$.ajax({
-				url: "<%=request.getContextPath()%>/mymusic/selectSoundRecent",
+				url: "<%=request.getContextPath()%>/mymusic/soundRecent",
 				type: "post",
 				success: function(result) {
 					$(".left_title").text("최근 들은 곡");
@@ -220,7 +217,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 		// 자주 들은 곡 리스트 불러오기
 		$("#often_sound").click(function(){
 			$.ajax({
-				url: "<%=request.getContextPath()%>/mymusic/selectSoundOften",
+				url: "<%=request.getContextPath()%>/mymusic/soundOften",
 				type: "post",
 				success: function(result) {
 					$(".left_title").text("자주 들은 곡");
@@ -258,7 +255,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 		// 좋아요 곡 리스트 불러오기
 		$("#like_sound").click(function(){
 			$.ajax({
-				url: "<%=request.getContextPath()%>/mymusic/selectSoundLike",
+				url: "<%=request.getContextPath()%>/mymusic/soundLike",
 				type: "post",
 				success: function(result) {
 					$(".left_title").text("좋아요 곡");
@@ -341,13 +338,12 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 		    			a_no : a_noArray,
 		    	}
 		    	$.ajax({
-					url: "<%=request.getContextPath()%>/mymusic/selectSoundList",
+					url: "<%=request.getContextPath()%>/mymusic/soundList",
 					type : "post",
 					data : {
 						a_no : a_noArray,
 						s_no : s_noArray
 					},
-					dataType : "json",
 					traditional:true,
 					success : function(result) {
 						console.log("result.length : "+result.length);
@@ -455,7 +451,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 	    				alert("플레이 리스트 만들기에 실패했습니다. 다시 시도해주세요.");
 	    			} else if(result == "1"){
 	    				alert("플레이 리스트를 만들었습니다.");
-	    				location.replace("<%=request.getContextPath() %>/mymusic/selectPlaylist")
+	    				location.replace("<%=request.getContextPath() %>/mymusic/playlist")
 	    			}
 	    		},
 	    		error:function(){
@@ -495,7 +491,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 	// 담을 곡으로 한곡 옮기기
 	function soundPlus(a_no, s_no){
 		$.ajax({
-			url: "<%=request.getContextPath()%>/mymusic/selectSoundList",
+			url: "<%=request.getContextPath()%>/mymusic/soundList",
 					type : "post",
 					data : {
 						a_no : a_no,

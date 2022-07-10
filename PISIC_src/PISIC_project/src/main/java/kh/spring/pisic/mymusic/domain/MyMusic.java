@@ -14,15 +14,16 @@ public class MyMusic {
 	private String l_private_yn;
 	private String l_image;
 	private List<Sound> sounds;
-	private int cnt;
+	private int sound_cnt;
 	private int s_no;
 	private int a_no;
-	
+	private String a_name;
+	private String m_nickname;
 	@Override
 	public String toString() {
 		return "MyMusic [l_no=" + l_no + ", m_id=" + m_id + ", l_name=" + l_name + ", l_private_yn=" + l_private_yn
-				+ ", l_image=" + l_image + ", sounds=" + sounds + ", cnt=" + cnt + ", s_no=" + s_no + ", a_no=" + a_no
-				+ "]";
+				+ ", l_image=" + l_image + ", sounds=" + sounds + ", sound_cnt=" + sound_cnt + ", s_no=" + s_no
+				+ ", a_no=" + a_no + ", a_name=" + a_name + ", m_nickname=" + m_nickname + "]";
 	}
 	public int getL_no() {
 		return l_no;
@@ -60,11 +61,11 @@ public class MyMusic {
 	public void setSounds(List<Sound> sounds) {
 		this.sounds = sounds;
 	}
-	public int getCnt() {
-		return cnt;
+	public int getSound_cnt() {
+		return sound_cnt;
 	}
-	public void setCnt(int cnt) {
-		this.cnt = cnt;
+	public void setSound_cnt(int sound_cnt) {
+		this.sound_cnt = sound_cnt;
 	}
 	public int getS_no() {
 		return s_no;
@@ -78,6 +79,19 @@ public class MyMusic {
 	public void setA_no(int a_no) {
 		this.a_no = a_no;
 	}
+	public String getA_name() {
+		return a_name;
+	}
+	public void setA_name(String a_name) {
+		this.a_name = a_name;
+	}
+	public String getM_nickname() {
+		return m_nickname;
+	}
+	public void setM_nickname(String m_nickname) {
+		this.m_nickname = m_nickname;
+	}
+	
 	
 	
 }

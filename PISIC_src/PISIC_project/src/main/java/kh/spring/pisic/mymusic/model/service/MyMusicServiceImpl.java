@@ -23,6 +23,12 @@ public class MyMusicServiceImpl implements MyMusicService{
 		return dao.selectPlaylist(m_id);
 	}
 	
+	// 플레이 리스트 상세조회
+	@Override
+	public MyMusic selectPlaylistDetail(MyMusic mymusic) {
+		return dao.selectPlaylistDetail(mymusic);
+	}
+	
 	// 플레이 리스트에 노래 담기
 	@Override
 	public int insertSound(List<Sound> soundList) {
@@ -72,6 +78,7 @@ public class MyMusicServiceImpl implements MyMusicService{
 	public List<Sound> selectSoundLike(String m_id) {
 		return dao.selectSoundLike(m_id);
 	}
+
 
 
 }

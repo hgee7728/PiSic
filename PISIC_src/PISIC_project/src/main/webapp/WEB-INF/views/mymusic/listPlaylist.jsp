@@ -91,7 +91,12 @@ $(function(){
 	});
 	
 	
-});
+}); // $(function(){}) 끝
+
+function selectPlaylistDetail(l_no){
+	location.href="<%=request.getContextPath() %>/mymusic/playlistDetail?l_no="+l_no;
+	
+}
 </script>
 </head>
 
@@ -131,7 +136,7 @@ $(function(){
 											<thead>
 												<tr>
 													<th>플레이리스트명 :</th>
-													<th><a href="javascript:selectAlbumDetail('${playlist.l_name }')">${playlist.l_name}</a></th>
+													<th><a href="javascript:selectPlaylistDetail('${playlist.l_no }')">${playlist.l_name}</a></th>
 												</tr>
 											</thead>
 											<tbody>

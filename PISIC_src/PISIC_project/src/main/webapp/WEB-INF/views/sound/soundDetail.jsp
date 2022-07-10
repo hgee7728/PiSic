@@ -713,7 +713,7 @@ function selectAlbumDetail(a_no){
 										</c:choose>
 										<td>${recomment.s_r_writer }</td>
 										<td>${recomment.s_r_content }</td>
-										<td>${recomment.s_r_date }</td>
+										<td><fmt:formatDate value="${recomment.s_r_date }" pattern="yyyy-MM-dd hh:mm"/></td>
 										<c:choose>
 											<c:when test="${loginSsInfo.m_id == recomment.m_id}">
 											<td>

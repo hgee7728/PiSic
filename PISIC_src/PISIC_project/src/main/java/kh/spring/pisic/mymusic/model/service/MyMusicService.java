@@ -17,4 +17,5 @@ public interface MyMusicService {
 	public List<Sound> selectSoundLike(String m_id);
 	public List<Sound> selectSoundList(List<Sound> soundList);
 	public int insertPlaylist(MyMusic mymusic, List<Sound> soundList);
+	public MyMusic selectPlaylistDetail(MyMusic mymusic);
 }

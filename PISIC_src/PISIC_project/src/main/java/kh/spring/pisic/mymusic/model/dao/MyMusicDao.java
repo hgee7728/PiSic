@@ -20,6 +20,11 @@ public class MyMusicDao {
 		return session.selectList("MyMusic.selectPlaylist", m_id);
 	}
 	
+	// 플레이 리스트 상세조회
+	public MyMusic selectPlaylistDetail(MyMusic mymusic) {
+		return session.selectOne("MyMusic.selectPlaylistDetail", mymusic);
+	}
+		
 	// 플레이 리스트에 노래 담기
 	public int insertSound(List<Sound> soundList) {
 		return session.insert("MyMusic.insertSound", soundList);
