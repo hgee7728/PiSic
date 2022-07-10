@@ -94,7 +94,6 @@ $(document).ready(function(){
 </style>
 </head>
 <body>
-${soundList }
 <div id="jp_container_N" class="jp-video jp-video-270p" role="application" aria-label="media player">
 	<div class="jp-type-playlist">
 		<div id="jquery_jplayer_N" class="jp-jplayer"></div>

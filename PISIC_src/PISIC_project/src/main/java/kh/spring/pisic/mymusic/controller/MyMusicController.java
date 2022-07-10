@@ -55,25 +55,20 @@ public class MyMusicController {
 		System.out.println("s_noArr.length: "+s_noArr.length);
 		List<Sound> soundList = new ArrayList<Sound>();
 		Member member = (Member)session.getAttribute("loginSsInfo");
-		// number 파싱 try-catch
-		try {
-			// 들고 온 데이터 domain형태로 list 시키기
-			for (int i = 0; i < s_noArr.length; i++) {
-				Sound sound = new Sound();
-				try {
-					sound.setA_no(Integer.parseInt(a_noArr[i]));
-					sound.setS_no(Integer.parseInt(s_noArr[i]));
-					sound.setL_no(Integer.parseInt(l_no));
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-				}
-				sound.setM_id(member.getM_id());
-				soundList.add(sound);
-			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		}
 		
+		// 들고 온 데이터 domain형태로 list 시키기
+		for (int i = 0; i < s_noArr.length; i++) {
+			Sound sound = new Sound();
+			try { // number 파싱 try-catch
+				sound.setA_no(Integer.parseInt(a_noArr[i]));
+				sound.setS_no(Integer.parseInt(s_noArr[i]));
+				sound.setL_no(Integer.parseInt(l_no));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+			sound.setM_id(member.getM_id());
+			soundList.add(sound);
+		}
 		System.out.println("[[[soundList]]] : " + soundList);
 		int result = service.insertSound(soundList);
 		if(result < 1) {
@@ -98,8 +93,29 @@ public class MyMusicController {
 	@PostMapping("/insertPlaylist")
 	public ModelAndView insertPlaylist(
 			ModelAndView mv
-			, MyMusic mymusic
+			, @RequestParam(name="a_no", required = false) int[] a_noArr
+			, @RequestParam(name="s_no", required = false) int[] s_noArr
+			, HttpSession session
 			) {
+		// TODO 로그인 여부
+		Member member = (Member)session.getAttribute("loginSsInfo");
+		
+		List<Sound> soundList = new ArrayList<Sound>();
+		
+		// 들고 온 데이터 domain형태로 list 시키기
+		for(int i = 0 ; i < s_noArr.length ; i ++) {
+			System.out.println("a_noArr: "+a_noArr[i]);
+			System.out.println("s_noArr: "+s_noArr[i]);
+			Sound sound = new Sound();
+			try {
+				sound.setA_no(a_noArr[i]);
+				sound.setS_no(s_noArr[i]);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+			sound.setM_id(member.getM_id());
+			soundList.add(sound);
+		}
 		
 		mv.setViewName("redirect:/mymusic/selectPlaylist");
 		return mv;

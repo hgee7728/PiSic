@@ -217,6 +217,8 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 		        }); */
 		    	console.log("s_noArray: "+s_noArray);
 		    	console.log("a_noArray: "+a_noArray);
+		    	console.log("s_noArray.length: "+s_noArray.length);
+		    	console.log("a_noArray.length: "+a_noArray.length);
 		    	var ajaxData = {
 		    			s_no : s_noArray,
 		    			a_no : a_noArray,
@@ -231,7 +233,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 					dataType : "json",
 					traditional:true,
 					success : function(result) {
-						console.log(result);
+						console.log("result.length : "+result.length);
 						var html = "";
 						for (var i = 0; i < result.length; i++) {
 							var resultData = result[i];
@@ -282,15 +284,9 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 	    	if($('table.right_sound_list input[name=s_no]:checked').length == '0'){
 				alert("곡을 선택하세요.");
 			} else {
-				var select_num = $('table.right_sound_list input[name=s_no]:checked').closest("td").next("td").text();
-				var delete_num = [];
-				
-				for(var i = 0 ; i < select_num.length ; i ++){
-					console.log((i+1)+"번째 글짜 : " + select_num.charAt(i));
-					delete_num.push( $('table.right_sound_list tbody tr:nth-child(' + select_num.charAt(i) + ')') );
-				}
-				for(var k = 0 ; k < delete_num.length ; k ++){
-					delete_num[i].remove();
+				var select_row = $('table.right_sound_list input[name=s_no]:checked');
+				for(var i = select_row.length-1 ; i > -1 ; i--){
+					select_row.eq(i).closest("tr").remove();
 				}
 				// number 부여하기
 				for (var j = 0; j < $("table.right_sound_list tbody tr").length; j++) {
@@ -300,9 +296,47 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 			}
 		});
 	    
+	    // 플레이 리스트 만들기
+	    $("#submit_btn").click(function(){
+	    	console.log("만들기 버튼 클릭");
+	    	
+	    	var s_noArray = [];
+	    	var a_noArray = [];
+	    	$('table.right_sound_list input[name=s_no]:checked').each(function(){ //체크된 리스트 저장
+	    		s_noArray.push($(this).val());
+	    		a_noArray.push($(this).parent().next("table.right_sound_list input[name=a_no]").val());
+	        });
+	    	/* $('input[name=a_no]').each(function(){
+	    		a_noArray.push($(this).val());
+	        }); */
+	    	console.log("s_noArray: "+s_noArray);
+	    	console.log("a_noArray: "+a_noArray);
+	    	var ajaxData = {
+	    			s_no : s_noArray,
+	    			a_no : a_noArray
+	    	}
+	    	right_sound_list_frm.action="<%=request.getContextPath() %>/mymusic/insertPlaylist";
+	    	right_sound_list_frm.method="post";
+	    	right_sound_list_frm.submit();
+	    	
+	    });
 	    
+	    // 초기화 버튼 클릭
+	    $("#reset_btn").click(function(){
+	    	console.log("초기화 버튼 클릭");
+	    	left_sound_list_frm.reset();
+	    	right_sound_list_frm.reset();
+	    	$("table.right_sound_list tbody").children().remove();
+	    });
+	    
+	    // 취소 버튼 클릭
+	    $("#cancel_btn").click(function(){
+	    	console.log("취소 버튼 클릭");
+	    	history.back();
+	    });
 	    
 	}); // $(founction(){}) 끝
+	
 	// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
 	function selectSoundDetail(a_no, s_no){
 		location.href = "<%=request.getContextPath()%>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
@@ -471,7 +505,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 												<button id="select_sound_plus" type="button" class="btn btn-info btn-fw" style="height: 30px;">선택 담기</button>
 											</div>
 											<div class="table-responsive">
-											<form name="left_sound_list_frm" method="post">
+											<form name="left_sound_list_frm">
 												<table class="table left_sound_list sound_list">
 													<thead>
 														<tr>
@@ -509,7 +543,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 												<button id="select_sound_minus" type="button" class="btn btn-info btn-fw" style="height: 30px;">선택 빼기</button>
 											</div>
 											<div class="table-responsive">
-											<form name="right_sound_list_frm" method="post">
+											<form name="right_sound_list_frm">
 												<table class="table right_sound_list sound_list">
 													<thead>
 														<tr>
@@ -539,6 +573,11 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 								</div>
 								
 							</div>
+						</div>
+						<div class="insert_playlist_btns" style="text-align: center;">
+							<button type="button" id="submit_btn" class="btn btn-info btn-fw">만들기</button>
+							<button type="button" id="reset_btn" class="btn btn-info btn-fw">초기화</button>
+							<button type="button" id="cancel_btn" class="btn btn-info btn-fw">취소</button>
 						</div>
 					
 

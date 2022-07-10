@@ -158,7 +158,7 @@ $(function(){
     	
     });
     
-    /* modal 플레이 리스트 담기 */
+    /* 플레이 리스트 담기 - modal */
 	$("#select_insert").click(function() {
 		console.log($('input[name=s_no]:checked').length);
 		if($('input[name=s_no]:checked').length == '0'){

@@ -119,12 +119,11 @@
 <!-- 최근 들은 곡 --><!-- 날짜 수정해야돼 -->
 <select id="selectSoundRecent" resultMap="soundResultMap">
 	select * from 
-	(select DISTINCT sound.s_no, sound.a_no, sound.s_name, pinfo.p_date, album.a_cover 
+	(select DISTINCT sound.s_no, sound.a_no, sound.s_name, album.a_cover 
 	from sound sound 
 	join playinfo pinfo on sound.s_no = pinfo.s_no and sound.a_no = pinfo.a_no
 	join album album on sound.a_no = album.a_no
-	where pinfo.m_id = #{m_id} and pinfo.p_date BETWEEN sysdate-10 and sysdate
-	order by pinfo.p_date desc)
+	where pinfo.m_id = #{m_id} and pinfo.p_date BETWEEN sysdate-100 and sysdate)
 	<![CDATA[
 	where rownum <=20
 	]]>
