@@ -20,41 +20,56 @@
 
 
 	<select id="selectChartTopTen" parameterType="hashmap"
-		resultMap="soundResultMap" >
-		select t2.*
-		from (
-		select t1.*
-		    ,rank() over (partition by s_path order by cnt desc, s_no, a_no ) chart
+		resultMap="soundResultMap">
+		select rownum chart, t2.*
 		from
-		    (select distinct a_cover, s_no, a_no, s_name, s_path, a_name, count(*) cnt 
-		    from sound
-		    join album using(a_no)
-	<choose>
-		<when test='chartType.equals("like")'>
-			join (select a_no, s_no from sound_like) using (a_no, s_no)
-			group by a_cover, s_no, a_no, s_name, a_name,s_path order by cnt) t1
-		</when>
-		<otherwise>
-			join (select p_no, a_no, s_no, p_date from playinfo) using (a_no, s_no)
-			<choose>
-				<when test='chartType.equals("monthly")'>
-					where p_date &lt;= (select last_day(SYSDATE) from dual) and p_date &gt; (select add_months((select last_day(SYSDATE) from dual),-1) from dual)
-				</when>
-				<when test='chartType.equals("weekly")'>
-					where p_date &gt;= (SELECT trunc(SYSDATE, 'd') FROM dual)
-				</when>
-				<when test='chartType.equals("daily")'>
-					where p_date &lt;= SYSDATE and p_date &gt; (select SYSDATE -1 from dual)
-				</when>
-			</choose>
-		    group by a_cover, s_no, a_no, s_name,a_name,s_path, p_date order by cnt) t1
-		</otherwise>
-	</choose>
+		(select t1.*, s_name, s_path, a_cover,
+		a_name
+		from
+		(select s_no, a_no, count(*) cnt
+		<choose>
+			<when test='chartType.equals("like")'>
+				from
+				(select s_no, a_no
+				from sound_like
+				
+			</when>
+			<otherwise>
+				from
+				(select s_no, a_no, p_date
+				from playinfo
+				<choose>
+					<when test='chartType.equals("monthly")'>
+						where p_date &lt;= (select last_day(SYSDATE) from
+						dual) and p_date &gt;
+						(select add_months((select last_day(SYSDATE)
+						from dual),-1) from
+						dual)
+					</when>
+					<when test='chartType.equals("weekly")'>
+						where p_date &gt;= (SELECT trunc(SYSDATE, 'd') FROM
+						dual)
+					</when>
+					<when test='chartType.equals("daily")'>
+						where p_date &lt;= SYSDATE and p_date &gt; (select
+						SYSDATE -1 from
+						dual)
+					</when>
+				</choose>
+			</otherwise>
+		</choose>
+		)
+		group by s_no, a_no
+		) t1
+		join sound s on t1.s_no=s.s_no and
+		t1.a_no=s.a_no
+		join album a on t1.a_no=a.a_no
+		order by cnt desc
 		) t2
-		where chart &lt;= #{limit}
+		where rownum &lt;= #{limit}
 	</select>
-	
-	
+
+
 
 	<select id="soundSingerList" parameterType="map"
 		resultType="Singer">
