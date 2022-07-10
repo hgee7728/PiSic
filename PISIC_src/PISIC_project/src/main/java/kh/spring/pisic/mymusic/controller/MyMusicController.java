@@ -190,7 +190,20 @@ public class MyMusicController {
 		return service.selectSoundList(soundList);
 	}
 	
-	// 최근 들은 곡 - ajax
+	// 플레이 리스트에 담긴 곡 조회 - ajax
+	@PostMapping("/selectPlaylistSound")
+	@ResponseBody
+	public List<Sound> selectPlaylistSound(HttpSession session
+			, MyMusic mymusic
+			){
+		// TODO 로그인 여부
+		Member member = (Member)session.getAttribute("loginSsInfo");
+		mymusic.setM_id(member.getM_id());
+		
+		return service.selectPlaylistSound(mymusic);
+	}
+	
+	// 최근 들은 곡 조회 - ajax
 	@PostMapping("/selectSoundRecent")
 	@ResponseBody
 	public List<Sound> selectSoundRecent(HttpSession session){
@@ -198,6 +211,26 @@ public class MyMusicController {
 		Member member = (Member)session.getAttribute("loginSsInfo");
 		
 		return service.selectSoundRecent(member.getM_id());
+	}
+	
+	// 자주 들은 곡 조회 - ajax
+	@PostMapping("/selectSoundOften")
+	@ResponseBody
+	public List<Sound> selectSoundOften(HttpSession session){
+		// TODO 로그인 여부
+		Member member = (Member)session.getAttribute("loginSsInfo");
+		
+		return service.selectSoundOften(member.getM_id());
+	}
+	
+	// 좋아요 곡 조회 - ajax
+	@PostMapping("/selectSoundLike")
+	@ResponseBody
+	public List<Sound> selectSoundLike(HttpSession session){
+		// TODO 로그인 여부
+		Member member = (Member)session.getAttribute("loginSsInfo");
+		
+		return service.selectSoundLike(member.getM_id());
 	}
 	
 	

@@ -91,20 +91,20 @@ table.left_sound_list a, table.right_sound_list a {
 	font-size: 30px;
 	margin: 0px 5px;
 }
+div.table-responsive{
+	height:700px;
+	overflow: auto;
+}
 
 table.sound_list  tr>td:nth-child(1), table.sound_list  tr>td:nth-child(2),
 	table.sound_list  tr>td:nth-child(3), table.sound_list  tr>td:nth-child(6)
 	{
-	width: 5%;
+	width: 9%;
+}
+table.sound_list  tr>td:nth-child(4) {
+	width: 45%;
 }
 
-table.sound_list  tr>td:nth-child(4):hover {
-	overflow: visible;
-}
-
-table.sound_list  tr>td:nth-child(5) {
-	width: 30%;
-}
 
 table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 	{
@@ -137,14 +137,131 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 
 		});
 		
+		// 플레이 리스트 선택시 해당 목록 불러오기 - select-option
+		$("#myplaylist_select").change(function(){
+			console.log("변했당");
+			console.log($("#myplaylist_select").val());
+			$.ajax({
+				url: "<%=request.getContextPath()%>/mymusic/selectPlaylistSound",
+				type: "post",
+				data:{
+					l_no:$("#myplaylist_select").val()
+				},
+				success: function(result) {
+					$(".left_title").text($("#myplaylist_select option:selected").text());
+					console.log(result);
+					var html = "";
+					for(var i = 0; i < result.length; i++){
+						var resultData = result[i];
+						html += '<tr>';
+						html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
+						html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
+						html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
+						html += '<td>'+(i+1)+'</td>';
+						html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
+						html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
+						html += '<td>';
+							for(var j = 0 ; j < resultData.singers.length ; j ++){
+								var resultData2 = resultData.singers[j]
+								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
+							}
+						html += '</td>';
+						html += '<td><a href="javascript:soundPlus('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+						html += '</tr>';
+						
+					
+					}
+					console.log(html);
+					$("table.left_sound_list tbody").children().remove();
+					$("table.left_sound_list tbody").append(html);
+					// 미니 버튼들 a태그 색상 바꾸기
+					$("i.mdi").parent('a').css('color','#8f5fe8');
+				},
+			}); // ajax 끝
+		});
 		// 최근 들은 곡 리스트 불러오기
 		$("#recent_sound").click(function(){
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/selectSoundRecent",
 				type: "post",
-				dataType:"json",
 				success: function(result) {
 					$(".left_title").text("최근 들은 곡");
+					console.log(result);
+					var html = "";
+					for(var i = 0; i < result.length; i++){
+						var resultData = result[i];
+						html += '<tr>';
+						html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
+						html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
+						html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
+						html += '<td>'+(i+1)+'</td>';
+						html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
+						html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
+						html += '<td>';
+							for(var j = 0 ; j < resultData.singers.length ; j ++){
+								var resultData2 = resultData.singers[j]
+								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
+							}
+						html += '</td>';
+						html += '<td><a href="javascript:soundPlus('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+						html += '</tr>';
+						
+					
+					}
+					console.log(html);
+					$("table.left_sound_list tbody").children().remove();
+					$("table.left_sound_list tbody").append(html);
+					// 미니 버튼들 a태그 색상 바꾸기
+					$("i.mdi").parent('a').css('color','#8f5fe8');
+				},
+			}); // ajax 끝
+		});
+		
+		// 자주 들은 곡 리스트 불러오기
+		$("#often_sound").click(function(){
+			$.ajax({
+				url: "<%=request.getContextPath()%>/mymusic/selectSoundOften",
+				type: "post",
+				success: function(result) {
+					$(".left_title").text("자주 들은 곡");
+					console.log(result);
+					var html = "";
+					for(var i = 0; i < result.length; i++){
+						var resultData = result[i];
+						html += '<tr>';
+						html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
+						html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
+						html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
+						html += '<td>'+(i+1)+'</td>';
+						html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
+						html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
+						html += '<td>';
+							for(var j = 0 ; j < resultData.singers.length ; j ++){
+								var resultData2 = resultData.singers[j]
+								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
+							}
+						html += '</td>';
+						html += '<td><a href="javascript:soundPlus('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+						html += '</tr>';
+						
+					
+					}
+					console.log(html);
+					$("table.left_sound_list tbody").children().remove();
+					$("table.left_sound_list tbody").append(html);
+					// 미니 버튼들 a태그 색상 바꾸기
+					$("i.mdi").parent('a').css('color','#8f5fe8');
+				},
+			}); // ajax 끝
+		});
+		
+		// 좋아요 곡 리스트 불러오기
+		$("#like_sound").click(function(){
+			$.ajax({
+				url: "<%=request.getContextPath()%>/mymusic/selectSoundLike",
+				type: "post",
+				success: function(result) {
+					$(".left_title").text("좋아요 곡");
 					console.log(result);
 					var html = "";
 					for(var i = 0; i < result.length; i++){
@@ -384,7 +501,6 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 						a_no : a_no,
 						s_no : s_no
 					},
-					dataType : "json",
 					success : function(result) {
 						console.log(result);
 						var html = "";
@@ -513,7 +629,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 									style="width: 500px; color: white;">
 									<option class="select_op">플레이 리스트를 선택하세요.</option>
 									<c:forEach items="${mymusicList }" var="items">
-										<option class="select_op">${items.l_name }</option>
+										<option class="select_op" value="${items.l_no }">${items.l_name }</option>
 									</c:forEach>
 								</select>
 							</div>
@@ -569,7 +685,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 									<div class="card">
 										<div class="card-body">
 											<div style="display: flex; justify-content: space-between;">
-												<h3 class="card-title left_title">플레이리스트에 담을 곡</h3>
+												<h3 class="card-title right_title">플레이리스트에 담을 곡</h3>
 												<button id="select_sound_minus" type="button" class="btn btn-info btn-fw" style="height: 30px;">선택 빼기</button>
 											</div>
 											<div class="table-responsive">
