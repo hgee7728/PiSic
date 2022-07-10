@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Corona Admin</title>
+<title>플레이리스트 목록</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -118,7 +118,7 @@ $(function(){
 							
 						</div>
 						<div class="content_div">
-						<div class="grid-5 col-sm-6 grid-margin stretch-card">
+						<div class="row">
 							<c:forEach items="${listPlaylist }" var="playlist">
 							<div class="playlist_div">
 								<input type="checkbox" name="l_no" value="${playlist.l_no }">

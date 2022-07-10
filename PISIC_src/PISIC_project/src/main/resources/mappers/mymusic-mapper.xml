@@ -105,6 +105,22 @@
 	where playlist_content.m_id=#{m_id} and playlist_content.l_no=#{l_no}
 </select>
 
+<!-- 플레이 리스트 만들기 -->
+<insert id="insertPlaylist" parameterType="hashmap">
+insert all
+    into playlist values 
+	    ( (select nvl(max(l_no),0)+1 from playlist where m_id=#{MyMusic.m_id} )
+	    , #{MyMusic.m_id}, #{MyMusic.l_name}, #{MyMusic.l_private_yn}, #{MyMusic.l_image})
+	    
+	<foreach collection="soundList" item="item">
+	into playlist_content values 
+	( (select nvl(max(l_no),0)+1 from playlist where m_id=#{MyMusic.m_id} )
+	, #{MyMusic.m_id}, #{item.s_no}, #{item.a_no})
+	</foreach>
+    
+    select * from dual
+</insert>
+
 <!-- 플레이 리스트 만들기 - 곡 옮기기 -->
 <select id="selectSoundList" parameterType="list" resultMap="soundResultMap">
 	select sound.s_name, album.a_cover, sound.a_no, sound.s_no
@@ -116,7 +132,8 @@
 		</foreach>
 </select>
 
-<!-- 최근 들은 곡 --><!-- 날짜 수정해야돼 -->
+
+<!-- 최근 들은 곡 --><!-- TODO 날짜 수정해야돼 -->
 <select id="selectSoundRecent" resultMap="soundResultMap">
 	select * from 
 	(select DISTINCT sound.s_no, sound.a_no, sound.s_name, album.a_cover 

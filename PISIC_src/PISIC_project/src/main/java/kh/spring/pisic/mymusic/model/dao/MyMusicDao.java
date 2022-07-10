@@ -31,12 +31,20 @@ public class MyMusicDao {
 	}
 	
 	// 플레이 리스트 만들기(담을 곡으로 옮기기) - ajax
-	public List<Sound> selectSoundList(List<Sound> sound){
-		return session.selectList("MyMusic.selectSoundList",sound);
+	public List<Sound> selectSoundList(List<Sound> soundList){
+		return session.selectList("MyMusic.selectSoundList",soundList);
 	}
 	
 	// 최근 들은 곡 조회
 	public List<Sound> selectSoundRecent(String m_id) {
 		return session.selectList("MyMusic.selectSoundRecent",m_id);
+	}
+	
+	// 플레이 리스트 만들기
+	public int insertPlaylist(MyMusic mymusic, List<Sound> soundList) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("MyMusic", mymusic);
+		map.put("soundList", soundList);
+		return session.insert("MyMusic.insertPlaylist", map);
 	}
 }

@@ -4,6 +4,7 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/css/reset.css">
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -76,9 +77,9 @@ table.intro_table tr > td:nth-child(1){
 	padding:15px 15px;
 	display: flex;
 }
-.grid-5 {
-	flex: 0 0 20%;
-	max-width: 20%;
+.grid-4 {
+	flex: 0 0 25%;
+	max-width: 25%;
 }
 
 
@@ -142,6 +143,10 @@ table.sound_recomment_table  tr > td:nth-child(5){
 	width: 10%;
 	text-align:center;
 }
+table.album_table thead tr th:nth-child(2){
+	width:50%;
+}
+
 </style>
 <script>
 $(function(){
@@ -512,87 +517,102 @@ function selectAlbumDetail(a_no){
 							<h3 class="card-title">관련 아티스트 앨범</h3>
 						</div>
 						<hr color="white">
-						<div class="grid-5 col-sm-6 grid-margin stretch-card">
-						<c:forEach items="${relArtistAlbum }" var="album">
-						<div class="rel_album_div">
-							<div class="main_img_div rel_album">
-								<a href="javascript:selectAlbumDetail('${album.a_no }')"><img id="main_img"
-									src="${album.a_cover }"
-									width="200" height="200"></a>
-							</div>
-							<div class="content_info">
-								<div class="card-body">
-									<table class="table album_table">
-										<thead>
-											<tr>
-												<th>앨범명 :</th>
-												<th><a href="javascript:selectAlbumDetail('${album.a_no }')">${album.a_name}</a></th>
-											</tr>
-										</thead>
-										<tbody>
-											
-											<tr>
-												<td>가수명 :</td>
-												<td><a href="javascript:selectArtistDetail('${album.artist_no}')">${album.artist_name}</a></td>
-											</tr>
-											<tr>
-												<td>발매일 :</td>
-												<td>${album.a_date}</td>
-											</tr>
-										</tbody>
-									</table>
+						<div class="row">
+							<c:forEach items="${relArtistAlbum }" var="album">
+								<div class="rel_album_div">
+									<div class="main_img_div rel_album">
+										<a href="javascript:selectAlbumDetail('${album.a_no }')"><img id="main_img"
+											src="${album.a_cover }"
+											width="200" height="200"></a>
+									</div>
+									<div class="content_info">
+										<div class="card-body">
+											<table class="table album_table">
+												<thead>
+													<tr>
+														<th>앨범명 :</th>
+														<th><a href="javascript:selectAlbumDetail('${album.a_no }')">${album.a_name}</a></th>
+													</tr>
+												</thead>
+												<tbody>
+													
+													<tr>
+														<td>가수명 :</td>
+														<td><a href="javascript:selectArtistDetail('${album.artist_no}')">${album.artist_name}</a></td>
+													</tr>
+													<tr>
+														<td>발매일 :</td>
+														<td>${album.a_date}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
 								</div>
-							</div>
+							</c:forEach>
 						</div>
-						</c:forEach>
-						</div>
+						
 					</div>
 					<div class="content_div0 content_div5">
 						<div>
 							<h3 class="card-title">관련 플레이 리스트</h3>
 						</div>
 						<hr color="white">
-						<c:forEach items="${relPlaylistBoard }" var="board">
-							<div class="row album_div">
-								<div class="main_img_div">
-									<%-- <a href="javascript:여기수정('${board.b_no }')"> --%>
-									<img id="main_img" src="${board.l_image }"
-										width="200" height="200">
-									<!-- </a> -->
-								</div>
-								<div class="content_info">
-									<div class="card-body">
-										<table class="table album_table">
-											<thead>
-												<tr>
-													<th>제목 :</th>
-													<th>
-													<%-- <a href="javascript:여기수정('${board.b_no }')"> --%>
-													${board.b_title}
-													<!-- </a> -->
-													</th>
-												</tr>
-											</thead>
-											<tbody>
-												
-												<tr>
-													<td>닉네임 :</td>
-													<td>
-													<%-- <a href="javascript:여기수정('${board.b_no }')"> --%>
-													${board.b_writer}
-													<!-- </a> -->
-													</td>
-												</tr>
-												<tr>
-													<td>작성일 :</td>
-													<td>${board.b_date}</td>
-												</tr>
-											</tbody>
-										</table>
+						<c:choose>
+							<c:when test="${empty relPlaylistBoard}">
+								<div class="row">
+									<div class="card report_div">
+										<div class="card-body">
+										<h4 class="card-title">관련 플레이 리스트 공유 게시판 글이 없습니다.</h4>
+										</div>
 									</div>
 								</div>
-							</div>
-						</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<c:forEach items="${relPlaylistBoard }" var="board">
+								<div class="row album_div">
+									<div class="main_img_div">
+										<%-- <a href="javascript:여기수정('${board.b_no }')"> --%>
+										<img id="main_img" src="${board.l_image }"
+											width="200" height="200">
+										<!-- </a> -->
+									</div>
+									<div class="content_info">
+										<div class="card-body">
+											<table class="table album_table">
+												<thead>
+													<tr>
+														<th>제목 :</th>
+														<th>
+														<%-- <a href="javascript:여기수정('${board.b_no }')"> --%>
+														${board.b_title}
+														<!-- </a> -->
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													
+													<tr>
+														<td>닉네임 :</td>
+														<td>
+														<%-- <a href="javascript:여기수정('${board.b_no }')"> --%>
+														${board.b_writer}
+														<!-- </a> -->
+														</td>
+													</tr>
+													<tr>
+														<td>작성일 :</td>
+														<td><fmt:formatDate value="${board.b_date}" pattern="yyyy-MM-dd"/></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
+						
 					</div>
 					<div class="content_div0 content_div6 ">
 						<div>

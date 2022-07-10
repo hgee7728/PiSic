@@ -293,16 +293,25 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 					$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(2)').text(j + 1);
 					$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus(' + (j + 1) + ')');
 				}
+				// 담으면 전체 선택 해제
+				$('table.right_sound_list input:checkbox').prop('checked',false);
 			}
 		});
 	    
 	    // 플레이 리스트 만들기
 	    $("#submit_btn").click(function(){
 	    	console.log("만들기 버튼 클릭");
-	    	
+	    	if($("input[name=l_name]").val().trim() == null || $("input[name=l_name]").val().trim() == ""){
+	    		alert("플레이 리스트 명을 입력해주세요.");
+	    		$("input[name=l_name]").focus();
+	    		return;
+	    	} else if($('table.right_sound_list input[name=s_no]').length == 0){
+	    		alert("곡을 담아주세요.");
+	    		return;
+	    	}
 	    	var s_noArray = [];
 	    	var a_noArray = [];
-	    	$('table.right_sound_list input[name=s_no]:checked').each(function(){ //체크된 리스트 저장
+	    	$('table.right_sound_list input[name=s_no]').each(function(){ // 옮겨진 val 저장
 	    		s_noArray.push($(this).val());
 	    		a_noArray.push($(this).parent().next("table.right_sound_list input[name=a_no]").val());
 	        });
@@ -313,11 +322,32 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 	    	console.log("a_noArray: "+a_noArray);
 	    	var ajaxData = {
 	    			s_no : s_noArray,
-	    			a_no : a_noArray
+	    			a_no : a_noArray,
+	    			l_name : $("input[name=l_name]").val(),
+	    			l_private_yn : $("input[name=l_private_yn]:checked").val(),
+	    			l_image : $('input[name=l_image]').val()
 	    	}
-	    	right_sound_list_frm.action="<%=request.getContextPath() %>/mymusic/insertPlaylist";
+	    	$.ajax({
+	    		url: "<%=request.getContextPath() %>/mymusic/insertPlaylist",
+	    		type: "post",
+	    		dataType: "json",
+	    		data: ajaxData,
+	    		traditional:true,
+	    		success: function(result) {
+	    			if(result == "0"){
+	    				alert("플레이 리스트 만들기에 실패했습니다. 다시 시도해주세요.");
+	    			} else if(result == "1"){
+	    				alert("플레이 리스트를 만들었습니다.");
+	    				location.replace("<%=request.getContextPath() %>/mymusic/selectPlaylist")
+	    			}
+	    		},
+	    		error:function(){
+	    			
+	    		}
+	    	});  // ajax 끝
+	    	<%-- right_sound_list_frm.action="<%=request.getContextPath() %>/mymusic/insertPlaylist";
 	    	right_sound_list_frm.method="post";
-	    	right_sound_list_frm.submit();
+	    	right_sound_list_frm.submit(); --%>
 	    	
 	    });
 	    
@@ -444,7 +474,7 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(6)
 										</thead>
 										<tbody>
 											<tr>
-												<td colspan="2"><input type="text" class="form-control"
+												<td colspan="2"><input name="l_name" type="text" class="form-control"
 													placeholder="플레이리스트명" required maxlength="16"></td>
 											</tr>
 											<tr>

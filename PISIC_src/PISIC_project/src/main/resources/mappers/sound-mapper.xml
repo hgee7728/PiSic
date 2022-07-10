@@ -97,11 +97,13 @@
 
 <!-- 곡 상세조회 - 관련 아티스트 앨범 -->
 <select id="selectRelArtistAlbum" parameterType="Sound" resultType="Album">
-	select singer.artist_no, artist.artist_name, album.a_name, album.a_no, album.a_cover, album.a_date from sound sound 
+	select singer.artist_no, artist.artist_name, album.a_name, album.a_no, album.a_cover, album.a_date 
+	from sound sound 
 	join singer singer on sound.s_no = singer.s_no and sound.a_no = singer.a_no
 	join artist artist on singer.artist_no = artist.artist_no
 	join album album on artist.artist_no = album.artist_no
 	where sound.s_no=#{s_no} and sound.a_no=#{a_no}
+	order by album.a_date desc
 </select>
 
 <!-- 곡 상세조회 - 관련 플레이리스트게시판 -->

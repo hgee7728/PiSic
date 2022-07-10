@@ -78,7 +78,7 @@ public class MyMusicController {
 		}
 	}
 	
-	// 새 플레이 리스트 만들기
+	// 새 플레이 리스트 만들기 - page
 	@GetMapping("/insertPlaylist")
 	public ModelAndView pageInsertPlaylist(
 			ModelAndView mv
@@ -90,18 +90,21 @@ public class MyMusicController {
 		mv.setViewName("mymusic/insertPlaylist");
 		return mv;
 	}
+	
+	// 플레이 리스트 만들기
 	@PostMapping("/insertPlaylist")
-	public ModelAndView insertPlaylist(
-			ModelAndView mv
-			, @RequestParam(name="a_no", required = false) int[] a_noArr
+	@ResponseBody
+	public String insertPlaylist(
+			@RequestParam(name="a_no", required = false) int[] a_noArr
 			, @RequestParam(name="s_no", required = false) int[] s_noArr
+			, MyMusic mymusic
 			, HttpSession session
 			) {
 		// TODO 로그인 여부
 		Member member = (Member)session.getAttribute("loginSsInfo");
+		mymusic.setM_id(member.getM_id());
 		
 		List<Sound> soundList = new ArrayList<Sound>();
-		
 		// 들고 온 데이터 domain형태로 list 시키기
 		for(int i = 0 ; i < s_noArr.length ; i ++) {
 			System.out.println("a_noArr: "+a_noArr[i]);
@@ -116,9 +119,13 @@ public class MyMusicController {
 			sound.setM_id(member.getM_id());
 			soundList.add(sound);
 		}
+		// 플레이 리스트 만들기
+		int result = service.insertPlaylist(mymusic, soundList);
+		if(result < 1) { // 실패
+			return "0";
+		}
 		
-		mv.setViewName("redirect:/mymusic/selectPlaylist");
-		return mv;
+		return "1";
 	}
 	
 	// 플레이 리스트 목록 조회

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.mymusic.domain.MyMusic;
@@ -36,14 +37,22 @@ public class MyMusicServiceImpl implements MyMusicService{
 	
 	// 플레이 리스트 만들기(담을 곡으로 옮기기) - ajax
 	@Override
-	public List<Sound> selectSoundList(List<Sound> sound){
-		return dao.selectSoundList(sound);
+	public List<Sound> selectSoundList(List<Sound> soundList){
+		return dao.selectSoundList(soundList);
 	}
 	
 	// 최근 들은 곡 조회
 	@Override
 	public List<Sound> selectSoundRecent(String m_id) {
 		return dao.selectSoundRecent(m_id);
+	}
+
+	// 플레이 리스트 만들기
+	@Override
+	//@Transactional
+	public int insertPlaylist(MyMusic mymusic, List<Sound> soundList) {
+		//dao.insertSound(soundList);
+		return dao.insertPlaylist(mymusic, soundList);
 	}
 
 }
