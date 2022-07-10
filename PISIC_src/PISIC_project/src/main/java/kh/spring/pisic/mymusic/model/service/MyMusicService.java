@@ -4,6 +4,7 @@ import java.util.List;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.mymusic.domain.MyMusic;
+import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Sound;
 
 public interface MyMusicService {
@@ -18,4 +19,6 @@ public interface MyMusicService {
 	public List<Sound> selectSoundList(List<Sound> soundList);
 	public int insertPlaylist(MyMusic mymusic, List<Sound> soundList);
 	public MyMusic selectPlaylistDetail(MyMusic mymusic);
+	public List<Artist> selectArtistLikeList(String m_id);
+	public int deleteArtistLike(Artist artist);
 }

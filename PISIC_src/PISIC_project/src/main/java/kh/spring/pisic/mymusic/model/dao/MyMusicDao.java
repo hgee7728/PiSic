@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kh.spring.pisic.mymusic.domain.MyMusic;
+import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Sound;
 
 @Repository
@@ -67,4 +68,18 @@ public class MyMusicDao {
 	public List<Sound> selectSoundLike(String m_id) {
 		return session.selectList("MyMusic.selectSoundLike", m_id);
 	}
+	
+	// 내가 좋아하는 아티스트 목록
+	public List<Artist> selectArtistLikeList(String m_id) {
+		return session.selectList("MyMusic.selectArtistLikeList", m_id);
+	}
+	
+	// 아티스트 좋아요 취소
+	public int deleteArtistLike(Artist artist) {
+		return session.delete("MyMusic.deleteArtistLike", artist);
+	}
+	
+	
+	
+	
 }

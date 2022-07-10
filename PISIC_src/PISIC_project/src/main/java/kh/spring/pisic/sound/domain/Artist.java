@@ -14,13 +14,16 @@ public class Artist {
 	private String artist_profile;
 	private String artist_info1;
 	private String artist_info2;
+	private String m_id;
+	private int like_cnt;
 	
 	@Override
 	public String toString() {
 		return "Artist [artist_no=" + artist_no + ", artist_name=" + artist_name + ", artist_nation=" + artist_nation
 				+ ", artist_company=" + artist_company + ", artist_type=" + artist_type + ", artist_group="
 				+ artist_group + ", artist_member=" + artist_member + ", artist_profile=" + artist_profile
-				+ ", artist_info1=" + artist_info1 + ", artist_info2=" + artist_info2 + "]";
+				+ ", artist_info1=" + artist_info1 + ", artist_info2=" + artist_info2 + ", m_id=" + m_id + ", like_cnt="
+				+ like_cnt + "]";
 	}
 
 	public int getArtist_no() {
@@ -101,6 +104,22 @@ public class Artist {
 
 	public void setArtist_info2(String artist_info2) {
 		this.artist_info2 = artist_info2;
+	}
+
+	public String getM_id() {
+		return m_id;
+	}
+
+	public void setM_id(String m_id) {
+		this.m_id = m_id;
+	}
+
+	public int getLike_cnt() {
+		return like_cnt;
+	}
+
+	public void setLike_cnt(int like_cnt) {
+		this.like_cnt = like_cnt;
 	}
 	
 }

@@ -190,4 +190,23 @@ insert all
 	join artist artist on singer.artist_no = artist.artist_no 
 	where sound.a_no=#{a_no} and sound.s_no=#{s_no}
 </select>
+
+<!-- 내가 좋아하는 아티스트 목록 -->
+<select id="selectArtistLikeList" resultType="Artist">
+	select t1.like_cnt, art_like.artist_no, art.artist_name, art.artist_profile
+	from artist_like art_like
+	join artist art on art_like.artist_no = art.artist_no
+	join (select count(*) like_cnt, artist_no from artist_like group by artist_no) t1 on art.artist_no = t1.artist_no
+	where m_id = #{m_id}
+</select>
+
+<!-- 아티스트 좋아요 취소 -->
+<delete id="deleteArtistLike" parameterType="Artist">
+	delete from artist_like 
+	where m_id = #{m_id} and artist_no = #{artist_no}
+</delete>
+
+
+
+
 </mapper>

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.mymusic.domain.MyMusic;
 import kh.spring.pisic.mymusic.model.dao.MyMusicDao;
+import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Sound;
 
 @Service
@@ -77,6 +78,18 @@ public class MyMusicServiceImpl implements MyMusicService{
 	@Override
 	public List<Sound> selectSoundLike(String m_id) {
 		return dao.selectSoundLike(m_id);
+	}
+
+	// 내가 좋아하는 아티스트 목록
+	@Override
+	public List<Artist> selectArtistLikeList(String m_id) {
+		return dao.selectArtistLikeList(m_id);
+	}
+
+	// 아티스트 좋아요 취소
+	@Override
+	public int deleteArtistLike(Artist artist) {
+		return dao.deleteArtistLike(artist);
 	}
 
 

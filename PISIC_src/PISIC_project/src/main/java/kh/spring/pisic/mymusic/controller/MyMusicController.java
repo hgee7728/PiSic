@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.mymusic.domain.MyMusic;
 import kh.spring.pisic.mymusic.model.service.MyMusicService;
+import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Sound;
 
 @Controller
@@ -228,6 +229,38 @@ public class MyMusicController {
 		mymusic.setM_id(member.getM_id());
 		mv.addObject("MyMusic", service.selectPlaylistDetail(mymusic));
 		mv.setViewName("mymusic/playlistDetail");
+		return mv;
+	}
+	
+	// 내가 좋아하는 아티스트 목록
+	@GetMapping("/artistLikeList")
+	public ModelAndView pageArtistLikeList(ModelAndView mv, HttpSession session) {
+		// TODO 로그인 여부
+		Member member = (Member) session.getAttribute("loginSsInfo");
+
+		mv.addObject("ArtistList", service.selectArtistLikeList(member.getM_id()));
+		mv.setViewName("mymusic/artistLikeList");
+		return mv;
+	}
+	
+	// 아티스트 좋아요 취소
+	@PostMapping("deleteArtistLike")
+	public ModelAndView deleteArtistLike(
+			ModelAndView mv
+			, HttpSession session
+			, Artist artist
+			, RedirectAttributes rttr
+			) {
+		// TODO 로그인 여부
+		Member member = (Member) session.getAttribute("loginSsInfo");
+		artist.setM_id(member.getM_id());
+		int result = service.deleteArtistLike(artist);
+		if(result < 1) {
+			rttr.addFlashAttribute("msg", "좋아요 취소에 실패했습니다. 다시 시도해 주세요");
+		} else {
+			rttr.addFlashAttribute("msg", "해당 아티스트 좋아요를 취소했습니다.");
+		}
+		mv.setViewName("redirect:/mymusic/artistLikeList");
 		return mv;
 	}
 
