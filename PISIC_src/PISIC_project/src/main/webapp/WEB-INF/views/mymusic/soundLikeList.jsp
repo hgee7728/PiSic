@@ -11,7 +11,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Album Detail</title>
+<title>내가 좋아하는 노래</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -59,18 +59,17 @@ table.intro_table a {
 	vertical-align: middle;
 }
 
-.content_div2 {
-	clear: both;
+.content_div3 {
 	margin: 30px 0px;
 }
 table.sound_list  tr > td:nth-child(1),
 table.sound_list  tr > td:nth-child(2),
 table.sound_list  tr > td:nth-child(3),
 table.sound_list  tr > td:nth-child(7),
-table.sound_list  tr > td:nth-child(8),
-table.sound_list  tr > td:nth-child(9){
+table.sound_list  tr > td:nth-child(8){
 	width: 5%;
 }
+
 table.sound_list  tr > td:nth-child(2),
 table.sound_list  tr > td:nth-child(7),
 table.sound_list  tr > td:nth-child(8),
@@ -88,15 +87,24 @@ table.sound_list  tr > td:nth-child(9){
 table.sound_list a {
 	color:#6c7293;
 }
-
+div.table-responsive{
+	width:100%;
+	height:670px;
+	overflow: auto;
+}
 
 </style>
 <script>
+
 $(function(){
 	var msg = '${msg}';
 	if(msg){
 		alert(msg);
 	}
+
+	// 미니 버튼들 a태그 색상 바꾸기
+	$("i.mdi").parent('a').css('color','#8f5fe8');
+	
 	// 더보기 기능
 	var content = $(".intro_box");
     var content_txt = content.text();
@@ -155,58 +163,22 @@ $(function(){
 	    	sound_frm.method="post";
 	    	sound_frm.submit();
 		}
+    	
+    });
+
+    $("#delete_playlist").click(function(){
+    	var confm = confirm("선택된 플레이리스트를 삭제 하시겠습니까?");
+    	if (confm == false) {
+    		preventClick(e);
+    		alert("취소하셨습니다.")
+    	} else {
+    		playlist_frm.submit();
+    	}
     });
     
-    /* 플레이 리스트 담기 - modal */
-	$("#select_insert").click(function() {
-		console.log($('input[name=s_no]:checked').length);
-		if($('input[name=s_no]:checked').length == '0'){
-			alert("곡을 선택하세요.");
-		} else {
-			$("#playlist_insert_modal").show();
-			$.ajax({
-				url: "<%=request.getContextPath() %>/mymusic/playlist.ax",
-				type: "post",
-				success: function(result) {
-					var html = "";
-					for(var i = 0; i < result.length; i++){
-						var vo = result[i];
-						html += '<div class="preview-item border-bottom">';
-						html += '<div class="preview-thumbnail">';
-						html += '<img src='+vo.l_image+' class="modal_content">';
-						html += '</div>';
-						html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
-						html += '<div class="flex-grow">';
-						html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistSelectInsertDo('+vo.l_no+')">'+vo.l_name+'</a></p></div>';
-						if(vo.l_private_yn == 'Y'){
-							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
-						} else {
-							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
-						}
-					}
-					$(".playlist_insert_modal_content").nextAll().remove();
-					$(".preview-list").append(html);
-				},
-			}); // ajax 끝
-		}
-	});
-    
 	
-    // 모달창 끄기 2가지
-	$(".playlist_insert_modal_close").click(function() {
-		$("#playlist_insert_modal").hide();
-	});
-	
-	playlist_insert_modal.addEventListener("click", e => {
-		const evTarget = e.target
-		if (evTarget.classList.contains("playlist_insert_modal_overlay")) {
-			$("#playlist_insert_modal").hide();
-		}
-	});
-	
-	// 미니 버튼들 a태그 색상 바꾸기
-	$("i.mdi").parent('a').css('color','#8f5fe8');
-});
+}); // $(function(){}) 끝
+
 
 //한곡 재생 - post방식으로 a태그 이용해서 이동
 function playOne(a_no,s_no){
@@ -265,106 +237,6 @@ function soundLike(a_no,s_no){
 	}); //ajax 끝
 };
 
-// 플레이리스트 한곡 담기 모달창
-function playlistInsert(a_no, s_no){
-	$("#playlist_insert_modal").show();
-	$.ajax({
-		url: "<%=request.getContextPath() %>/mymusic/playlist.ax",
-		type: "post",
-		success: function(result) {
-			var html = "";
-			for(var i = 0; i < result.length; i++){
-				var resultData = result[i];
-				html += '<div class="preview-item border-bottom">';
-				html += '<div class="preview-thumbnail">';
-				html += '<img src='+resultData.l_image+' class="modal_content">';
-				html += '</div>';
-				html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
-				html += '<div class="flex-grow">';
-				html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistInsertDo('+a_no +','+ s_no +','+ resultData.l_no +')">'+resultData.l_name+'</a></p></div>';
-				if(resultData.l_private_yn == 'Y'){
-					html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
-				} else {
-					html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
-				}
-			}
-			$(".playlist_insert_modal_content").nextAll().remove();
-			$(".preview-list").append(html);
-		},
-	}); // ajax 끝
-}
-
-// 한곡 담기
-function playlistInsertDo(a_no, s_no, l_no){
-	$.ajax({
-		url: "<%=request.getContextPath() %>/mymusic/insertSound",
-		type: "post",
-		data:{
-			a_no:a_no,
-			s_no:s_no,
-			l_no:l_no
-		},
-		success: function(result) {
-			if(result == "0"){
-				alert("곡 담기에 실패 했습니다. 다시 시도해주세요.");
-			} else if(result == "1"){
-				alert("해당 곡을 담았습니다.");
-			}
-		},
-		error:function(){
-			
-		}
-	}); // ajax 끝
-}
-// 선택 담기
-function playlistSelectInsertDo(l_no){
-	/* $("input[name=s_no]").each(function(){
-		if(!(this.checked)){
-			console.log("히든 지우기");
-			$(this).parent().next("input[name=a_no]").remove();
-		} 
-		console.log(this.checked);
-	}); */
-	var s_noArray = [];
-	var a_noArray = [];
-	$('input[name=s_no]:checked').each(function(){ //체크된 리스트 저장
-		s_noArray.push($(this).val());
-		a_noArray.push($(this).parent().next("input[name=a_no]").val());
-    });
-	/* $('input[name=a_no]').each(function(){
-		a_noArray.push($(this).val());
-    }); */
-	console.log("s_noArray: "+s_noArray);
-	console.log("a_noArray: "+a_noArray);
-	var ajaxData = {
-			s_no : s_noArray,
-			a_no : a_noArray,
-			l_no : l_no
-	}
-	
-	$.ajax({
-		url: "<%=request.getContextPath() %>/mymusic/insertSound",
-		type: "post",
-		dataType: "json",
-		data: ajaxData,
-		traditional:true,
-		success: function(result) {
-			if(result == "0"){
-				alert("곡 담기에 실패 했습니다. 다시 시도해주세요.");
-			} else if(result == "1"){
-				alert("해당 곡을 담았습니다.");
-			}
-		},
-		error:function(){
-			
-		}
-	});  // ajax 끝
-}
-
-// 새 플레이 리스트 만들기
-function newPlaylist(){
-	location.href = "<%=request.getContextPath() %>/mymusic/insertPlaylist";
-};
 
 //로그인 페이지로
 function goLogin(){
@@ -383,7 +255,6 @@ function selectAlbumDetail(a_no){
 </script>
 </head>
 <body>
-	<jsp:include page="../commonSoundList.jsp" />
 	<div class="container-scroller">
 		<!-- partial:partials/_sidebar.html -->
 		<jsp:include page="../_sidebar.jsp" />
@@ -395,69 +266,55 @@ function selectAlbumDetail(a_no){
 			<div class="main-panel">
 				<div class="content-wrapper">
 					<div class="title_div">
-						<h2 class="card-title">앨범정보</h2>
+						<h2 class="card-title">내가 좋아하는 노래</h2>
+						<p class="text-muted mb-0">*내가 좋아요를 누른 노래입니다.</p>
 					</div>
 					<div class="content_div1">
 						<div class="main_img_div">
-							<img id="main_img"
-								src="${album.a_cover }"
-								width="300" height="300">
-						</div>
+							<img id="main_img" src="${loginSsInfo.m_profile }" width="300" height="300">
 						<div class="content_info  card">
 							<div class="card-body">
 								<table class="table intro_table">
 									<thead>
 										<tr>
-											<th colspan="2"><a href="javascript:selectAlbumDetail('${album.a_no }')">${album.a_name}</a></th>
+											<th>아이디 :</th>
+											<th>${loginSsInfo.m_id}</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-											<td>가수명 :</td>
-											<td><a href="javascript:selectArtistDetail('${album.artist_no }')">${album.artist_name}</a></td>
+											<td>닉네임 :</td>
+											<td><a href="javascript:selectMemberDetail('${loginSsInfo.m_id }')">${loginSsInfo.m_nickname}</a></td>
 										</tr>
 										<tr>
-											<td>발매일 :</td>
-											<td>${album.a_date}</td>
+											<td>성별 :</td>
+											<c:choose>
+												<c:when test="${loginSsInfo.m_gender == 'M'}">
+													<td>남성</td>
+												</c:when>
+												<c:when test="${loginSsInfo.m_gender == 'F'}">
+													<td>여성</td>
+												</c:when>
+											</c:choose>
 										</tr>
 										<tr>
-											<td>발매사 :</td>
-											<td>${album.a_publishing}</td>
-										</tr>
-										<tr>
-											<td>기획사 :</td>
-											<td>${album.a_agency}</td>
+											<td>수록곡 :</td>
+											<td>${selectSoundLikeTotalCnt} 곡</td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
 						</div>
 					</div>
-					<div class="content_div2">
-						<div>
-							<h3 class="card-title">앨범 소개</h3>
-
-						</div>
-						<hr color="white">
-						<blockquote class="blockquote">
-						<div class="intro_box">
-						${album.a_introduce1}${album.a_introduce2}
-						</div>
-						</blockquote>
-						<div style="text-align:center">
-							<button type="button" class="btn btn-outline-light btn-fw btn_more">더보기</button>
-						</div>
-					</div>
-					<div class="content_div3">
-						<div class="select_btns">
-							<button type="button" id="select_play" class="btn btn-info btn-fw">선택재생</button>
-							<button type="button" id="select_insert" class="btn btn-info btn-fw">선택담기</button>
-						</div>
+					<div class="soundList_div">
 						<div class="row ">
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-										<h3 class="card-title">수록곡</h3>
+										<div style="display: flex; justify-content: space-between;">
+											<h3 class="card-title left_title">수록곡</h3>
+											<button type="button" id="select_play" class="btn btn-info btn-fw" style="height: 30px;">선택재생</button>
+										</div>
 										<div class="table-responsive">
 										<form name="sound_frm">
 											<table class="table sound_list">
@@ -477,42 +334,47 @@ function selectAlbumDetail(a_no){
 														<td>앨범명</td>
 														<td>듣기</td>
 														<td>좋아요</td>
-														<td>담기</td>
 													</tr>
 												</thead>
 												<tbody>
-													<c:forEach items="${ album.sounds}" var="sounds">
+													<c:choose>
+														<c:when test="${empty SoundList}">
 														<tr>
-															<td>
-																<div class="form-check form-check-muted m-0">
-																	<label class="form-check-label"> 
-																		<input type="checkbox" class="form-check-input sound_checkbox" value="${sounds.s_no }" name="s_no">
-																	</label>
-																	<input type="hidden" value="${album.a_no }" name="a_no">
-																</div>
-															</td>
-															<td>${sounds.s_no }</td>
-															<td><img src="${album.a_cover }" alt="image" /></td>
-															<td><a href="javascript:selectSoundDetail(${sounds.a_no },${sounds.s_no})">${sounds.s_name}</a></td>
-															<td>
-																<c:forEach items="${ sounds.singers}" var="singer">
-																<a href="javascript:selectArtistDetail(${singer.artist_no})">${singer.artist_name}</a>&nbsp;
-																</c:forEach>
-															</td>
-															<td><a href="javascript:selectAlbumDetail(${sounds.a_no })">${sounds.a_name }</a></td>
-															<td>
-																<a href="javascript:playOne(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-play list_icon"></i></a>
-															</td>
-															<td>
-																<a href="javascript:soundLike(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-heart list_icon like_after"></i></a>
-																<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
-															</td>
-															<td>
-																<a href="javascript:playlistInsert(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-plus-box list_icon"></i></a>
-																<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-															</td>
+															<td colspan="8" style="text-align: center"><h4 class="card-title">좋아요 한 곡이 없어요</h4></td>
 														</tr>
-													</c:forEach>
+														</c:when>
+														<c:otherwise>
+															<c:forEach items="${ SoundList}" var="SoundList" varStatus="status">
+															<tr>
+																<td>
+																	<div class="form-check form-check-muted m-0">
+																		<label class="form-check-label"> 
+																			<input type="checkbox" class="form-check-input sound_checkbox" value="${SoundList.s_no }" name="s_no">
+																		</label>
+																		<input type="hidden" value="${SoundList.a_no }" name="a_no">
+																		<input type="hidden" value="${SoundList.s_path }" name="s_path">
+																	</div>
+																</td>
+																<td>${status.index+1 }</td>
+																<td><img src="${SoundList.a_cover }" alt="image" /></td>
+																<td><a href="javascript:selectSoundDetail(${SoundList.a_no },${SoundList.s_no})">${SoundList.s_name}</a></td>
+																<td>
+																	<c:forEach items="${ SoundList.singers}" var="singer">
+																	<a href="javascript:selectArtistDetail(${singer.artist_no})">${singer.artist_name}</a>&nbsp;
+																	</c:forEach>
+																</td>
+																<td><a href="javascript:selectAlbumDetail(${SoundList.a_no })">${SoundList.a_name }</a></td>
+																<td>
+																	<a href="javascript:playOne(${SoundList.a_no },${SoundList.s_no})"><i class="mdi mdi-play list_icon"></i></a>
+																</td>
+																<td>
+																	<a href="javascript:soundLike(${SoundList.a_no },${SoundList.s_no})"><i class="mdi mdi-heart list_icon like_after"></i></a>
+																	<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+																</td>
+															</tr>
+															</c:forEach>
+														</c:otherwise>
+													</c:choose>
 												</tbody>
 											</table>
 											</form>
@@ -522,10 +384,8 @@ function selectAlbumDetail(a_no){
 							</div>
 						</div>
 					</div>
-					<div class="content_div4">
 					
 					</div>
-
 				</div>
 				<!-- content-wrapper ends -->
 				<!-- partial:partials/_footer.html -->

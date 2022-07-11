@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>플레이 리스트 만들기</title>
+<title>Update Playlist</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -464,7 +464,7 @@ UPLOADCARE_LOCALE = "ko"
 	    	
 	    });
 	    
-	 // 초기화 버튼 클릭
+	    // 초기화 버튼 클릭
 	    $("#reset_btn").click(function(){
 	    	var confm = confirm("초기화 버튼을 누르시면 담으셨던 곳이 모두 초기화 됩니다. 초기화를 하시겠습니까?");
 			if (confm == false) {

@@ -91,12 +91,49 @@ $(function(){
 	});
 	
 	
+	// 플레이리스트 변경 버튼
+	<%-- $("#update_playlist").click(){
+		var frm = document.createElement('form');
+	    var input_l_no = document.createElement('input');
+	    input_l_no.setAttribute('type', 'hidden');
+	    input_l_no.setAttribute('name', 's_no');
+	    input_l_no.setAttribute('value', s_no);
+		
+	    
+	    frm.appendChild(input_s_no);
+	    frm.appendChild(input_a_no);
+	    frm.setAttribute('method', 'post');
+	    frm.setAttribute('action', '<%=request.getContextPath() %>/sound/play');
+	    document.body.appendChild(frm);
+		window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
+		frm.target="SoundPlayer";
+	    frm.submit();
+	} --%>
+	
 }); // $(function(){}) 끝
 
+// 플레이 리스트 상세조회
 function selectPlaylistDetail(l_no){
 	location.href="<%=request.getContextPath() %>/mymusic/playlistDetail?l_no="+l_no;
 	
 }
+
+function updatePlaylist(l_no){
+	console.log("플리번호는? :" + l_no);
+	var frm = document.createElement('form');
+    var input_l_no = document.createElement('input');
+    input_l_no.setAttribute('type', 'hidden');
+    input_l_no.setAttribute('name', 'l_no');
+    input_l_no.setAttribute('value', l_no);
+	
+    
+    frm.appendChild(input_l_no);
+    frm.setAttribute('method', 'post');
+    frm.setAttribute('action', '<%=request.getContextPath() %>/mymusic/updatePlaylist');
+    document.body.appendChild(frm);
+    frm.submit();
+}
+
 </script>
 </head>
 
@@ -150,6 +187,11 @@ function selectPlaylistDetail(l_no){
 														<td>비공개</td>
 														</c:when>
 													</c:choose>
+												</tr>
+												<tr>
+													<td colspan="2" style="text-align: center;">
+														<button id="update_playlist" type="button" class="btn" onclick="updatePlaylist(${playlist.l_no })">변경</button>
+													</td>
 												</tr>
 											</tbody>
 										</table>

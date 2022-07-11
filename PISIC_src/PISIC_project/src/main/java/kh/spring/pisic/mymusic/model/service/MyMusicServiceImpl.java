@@ -92,6 +92,24 @@ public class MyMusicServiceImpl implements MyMusicService{
 		return dao.deleteArtistLike(artist);
 	}
 
+	// 좋아하는 노래 목록
+	@Override
+	public List<Sound> selectSoundLikeList(String m_id) {
+		return dao.selectSoundLikeList(m_id);
+	}
+	
+	// 좋아하는 노래 총 갯수
+	@Override
+	public int selectSoundLikeTotalCnt(String m_id) {
+		return dao.selectSoundLikeTotalCnt(m_id);
+	}
+
+	// 최근에 들은 노래 총 갯수
+	@Override
+	public int selectSoundRecentTotalCnt(String m_id) {
+		return dao.selectSoundRecentTotalCnt(m_id);
+	}
+
 
 
 }

@@ -79,7 +79,20 @@ public class MyMusicDao {
 		return session.delete("MyMusic.deleteArtistLike", artist);
 	}
 	
+	// 좋아하는 노래 목록
+	public List<Sound> selectSoundLikeList(String m_id) {
+		return session.selectList("MyMusic.selectSoundLikeList", m_id);
+	}
 	
+	// 좋아하는 노래 총 갯수
+	public int selectSoundLikeTotalCnt(String m_id) {
+		return session.selectOne("MyMusic.selectSoundLikeTotalCnt", m_id);
+	}
+	
+	// 최근에 들은 노래 총 갯수
+	public int selectSoundRecentTotalCnt(String m_id) {
+		return session.selectOne("MyMusic.selectSoundRecentTotalCnt", m_id);
+	}
 	
 	
 }

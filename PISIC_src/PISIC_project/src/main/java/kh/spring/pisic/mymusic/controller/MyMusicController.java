@@ -263,5 +263,60 @@ public class MyMusicController {
 		mv.setViewName("redirect:/mymusic/artistLikeList");
 		return mv;
 	}
+	
+	// 좋아하는 노래 목록
+	@GetMapping("/soundLikeList")
+	public ModelAndView pageSoundLikeList(ModelAndView mv, HttpSession session) {
+		// TODO 로그인 여부
+		Member member = (Member) session.getAttribute("loginSsInfo");
+		
+		mv.addObject("selectSoundLikeTotalCnt", service.selectSoundLikeTotalCnt(member.getM_id()));
+		mv.addObject("SoundList", service.selectSoundLikeList(member.getM_id()));
+		mv.setViewName("mymusic/soundLikeList");
+		return mv;
+	}
+	
+	// 최근 들은 노래 목록
+	@GetMapping("/soundRecentList")
+	public ModelAndView pageSoundRecentList(ModelAndView mv, HttpSession session) {
+		// TODO 로그인 여부
+		Member member = (Member) session.getAttribute("loginSsInfo");
+		
+		mv.addObject("selectSoundRecentTotalCnt", service.selectSoundRecentTotalCnt(member.getM_id()));
+		mv.addObject("SoundList",service.selectSoundRecent(member.getM_id())); 
+		mv.setViewName("mymusic/soundRecentList");
+		return mv;
+	}
+	
+	// 많이 들은 노래 목록
+	@GetMapping("/soundOftenList")
+	public ModelAndView pageSoundOftenList(ModelAndView mv, HttpSession session) {
+		// TODO 로그인 여부
+		Member member = (Member) session.getAttribute("loginSsInfo");
+		
+		mv.addObject("SoundList",service.selectSoundOften(member.getM_id())); 
+		mv.setViewName("mymusic/soundOftenList");
+		return mv;
+	}
+	
+	// 플레이 리스트 변경
+	@PostMapping("/updatePlaylist")
+	public ModelAndView pageUpdatePlaylist(
+			ModelAndView mv
+			, MyMusic mymusic
+			, HttpSession session
+			) {
+		// TODO 로그인 여부
+		Member member = (Member) session.getAttribute("loginSsInfo");
+		mymusic.setM_id(member.getM_id());
+		
+		mv.addObject("Playlist", service.selectPlaylistDetail(mymusic));
+		mv.setViewName("mymusic/updatePlaylist");
+		return mv;
+	}
+	
+	
+	
+	
 
 }

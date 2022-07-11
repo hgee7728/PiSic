@@ -108,7 +108,7 @@
 
 <!-- 곡 상세조회 - 관련 플레이리스트게시판 -->
 <select id="selectRelPlaylistBoard" parameterType="Sound" resultType="PjBoard">
-	select board.b_no, board.b_title, board.b_writer
+	select DISTINCT board.b_no, board.b_title, board.b_writer
 	, 
 	board.b_date
 	<!-- trunc(board.b_date,'DD') b_date -->

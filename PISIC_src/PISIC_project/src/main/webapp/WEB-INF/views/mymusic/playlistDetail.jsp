@@ -359,6 +359,7 @@ function selectAlbumDetail(a_no){
 																			<input type="checkbox" class="form-check-input sound_checkbox" value="${sounds.s_no }" name="s_no">
 																		</label>
 																		<input type="hidden" value="${sounds.a_no }" name="a_no">
+																		<input type="hidden" value="${sounds.s_path }" name="s_path">
 																	</div>
 																</td>
 																<td>${status.index+1 }</td>

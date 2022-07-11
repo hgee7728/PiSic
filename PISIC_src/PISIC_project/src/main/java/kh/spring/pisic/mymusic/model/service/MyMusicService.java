@@ -21,4 +21,7 @@ public interface MyMusicService {
 	public MyMusic selectPlaylistDetail(MyMusic mymusic);
 	public List<Artist> selectArtistLikeList(String m_id);
 	public int deleteArtistLike(Artist artist);
+	public List<Sound> selectSoundLikeList(String m_id);
+	public int selectSoundLikeTotalCnt(String m_id);
+	public int selectSoundRecentTotalCnt(String m_id);
 }

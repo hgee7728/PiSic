@@ -15,7 +15,7 @@
 	<!-- DB -->
 	 <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
 	 	<property name="driverClassName" value="${db.driverClassName}"/>
- 		<property name="url" value="${db.url}"/>
+ 		<property name="url" value="${db.urlpclass}"/>
  		<!-- 
  		<property name="url" value="${db.db.urlpclass"/> 
  		-->
