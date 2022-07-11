@@ -497,7 +497,7 @@
     		})
     		
     		// 프로필 사진
-    		$("#BtnProfile").on("input", function(){
+    		$("#BtnProfile").on("click", function(){
 	    		$(".uploadcare--widget__button.uploadcare--widget__button_type_open").trigger("click");    			
     		})
 			
@@ -518,26 +518,14 @@
 	    	singleWidget.onUploadComplete(function(info){
 		    	console.log(info.cdnUrl);
 		    	var fileUrl = info.cdnUrl;
-			    	$.ajax({
-				    	url: "<%=request.getContextPath()%>/member/profileUpdate.ax",
-				    	data: {
-				    		fileUrl: fileUrl
-				    	},
-				    	type: "post",
-				    	success: function(result){
-				    		console.log(result);
-				    		$("#ImgProfilePre").attr("src", fileUrl);
-				    		$("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-check"></i></span>');
-				    		$("#SpanProfile").css("color", "green");
-				    		$("#InputProfile").attr("value", fileUrl);
-				    	},
-				    	error: function(error){
-				    		$("#ImgProfilePre").attr("src", fileUrl);
-				    		$("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-close"></i> 다시 시도해 주세요.</span>');
-				    		$("#SpanProfile").css("color", "red");
-				    		$("#InputProfile").attr("value", fileUrl);
-			    		}
-	    		})
+				    $("#ImgProfilePre").attr("src", fileUrl);
+				    $("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-check"></i></span>');
+				    $("#SpanProfile").css("color", "green");
+				    $("#InputProfile").attr("value", fileUrl);
+				/* 	$("#ImgProfilePre").attr("src", fileUrl);
+				    $("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-close"></i> 다시 시도해 주세요.</span>');
+				    $("#SpanProfile").css("color", "red");
+				    $("#InputProfile").attr("value", fileUrl); */
     		});
 	    	
 	    	// Flag 확인

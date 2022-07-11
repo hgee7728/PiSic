@@ -9,7 +9,7 @@
 		#{m_birth}, #{m_gender}, #{m_profile}, default, #{m_email}, 
 		default, default)
 	</insert>
-	<select id="selectLogin" parameterType="Member" resultType="Member">
+	<select id="loginCheck" parameterType="Member" resultType="Member">
 		SELECT *
 		FROM member
 		WHERE m_id = #{m_id} AND m_password = #{m_password}
@@ -43,6 +43,16 @@
 		SELECT *
 		FROM member
 		WHERE m_id = #{m_id} AND m_birth = #{m_birth} AND m_email = #{m_email} AND m_phone = #{m_phone}
+	</select>
+	<select id="listMember" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE m_grade = 1
+	</select>
+	<select id="listAdmin" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE m_grade = 0
 	</select>
 	<update id="findPwA" parameterType="Member">
 		UPDATE member

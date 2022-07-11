@@ -1,5 +1,7 @@
 package kh.spring.pisic.member.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,8 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Member selectLogin(Member member) {
-		return dao.selectLogin(member);
+	public Member loginCheck(Member member) {
+		return dao.loginCheck(member);
 	}
 
 	@Override
@@ -55,6 +57,16 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int findPwA(Member member) {
 		return dao.findPwA(member);
+	}
+
+	@Override
+	public List<Member> listMember() {
+		return dao.listMember();
+	}
+
+	@Override
+	public List<Member> listAdmin() {
+		return dao.listAdmin();
 	}
 
 }

@@ -33,4 +33,16 @@
 		<beans:property name="maxUploadSize" value="10485760"/>
 	</beans:bean>
 	
+	<!-- AuthLoginInterceptor -->
+	<beans:bean id="authLoginInterceptor" class="kh.spring.pisic.springsecurity.AuthLoginInterceptor">
+	</beans:bean>
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/>
+			<!-- 비로그인시 접근 가능 경로 -->
+			<exclude-mapping path="/**"/>
+			<beans:ref bean="authLoginInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 </beans:beans>

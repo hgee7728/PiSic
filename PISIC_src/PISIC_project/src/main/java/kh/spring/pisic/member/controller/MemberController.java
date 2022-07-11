@@ -43,6 +43,14 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
+	@GetMapping("/list")
+	public String pageListMember(
+			HttpSession session) {
+		session.setAttribute("memberList", service.listMember());
+		session.setAttribute("adminList", service.listAdmin());
+		return "member/list";
+	}
+	
 	@GetMapping("/join")
 	public String pageInsertMember() {
 		return "member/join";
@@ -68,12 +76,18 @@ public class MemberController {
 	}
 	
 	@GetMapping("/login")
-	public String pageLogin() {
+	public String pageLogin(
+			HttpSession session
+			, HttpServletRequest request) {
+		String returnUrl = request.getHeader("Referer");
+		if (returnUrl != null && !returnUrl.contains("/login")) {
+			session.setAttribute("prevPage", returnUrl);
+		}
 		return "member/login";
 	}
 	
 	@PostMapping("/login")
-	public ModelAndView selectLogin(
+	public ModelAndView loginCheck(
 			ModelAndView mv
 			, Member member
 			, RedirectAttributes rttr
@@ -81,18 +95,32 @@ public class MemberController {
 //?		if (pwEncoding.matches(null, null))
 		
 //암호화	member.setPasswd(pwEncoding.encode(member.getPasswd()));
-		Member result = service.selectLogin(member);
-		if (result == null) {
-			rttr.addFlashAttribute("msg", "로그인에 실패했습니다. 아이디와 패스워드를 다시 확인하고 로그인 시도해 주세요.");
-			mv.setViewName("redirect:/member/login");
-			System.out.println("로그인 실패");
-			return mv;
+		
+		// login 세선이 존재하면 제거
+		if (session.getAttribute("loginSsInfo") != null) {
+			session.removeAttribute("loginSsInfo");
 		}
-		session.setAttribute("loginSsInfo", result);
-		rttr.addFlashAttribute("msg", result.getM_name() + "님 로그인 되었습니다.");
-		System.out.println("로그인 성공");
-		mv.setViewName("redirect:/");
+		
+		Member result = service.loginCheck(member);
+		
+		if (result != null) {
+			session.setAttribute("loginSsInfo", result);
+			System.out.println("로그인 성공");
+			mv.setViewName("redirect:/");
+		} else {
+			System.out.println("로그인 실패");
+			mv.setViewName("redirect:/member/login");
+		}
 		return mv;
+	}
+	
+	@GetMapping("/logout")
+	public String pageLogout(
+			HttpSession session) {
+		// 세션 초기화
+		session.invalidate();
+//		session.removeAttribute("loginSsInfo");
+		return "redirect:/";
 	}
 	
 	@RequestMapping("/login/getKakaoAuthUrl")
@@ -229,12 +257,6 @@ public class MemberController {
         return userInfo;
     }
 	
-	@GetMapping("/logout")
-	public String pageLogout(
-			HttpSession session) {
-		session.removeAttribute("loginSsInfo");
-		return "redirect:/";
-	}
 	
 	@PostMapping("/profileUpdate.ax")
 	public String profile(

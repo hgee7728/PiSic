@@ -231,14 +231,14 @@
     		var InputAddressDetail = null;
     		var InputProfile = null;
 
-    		var InfoPw = ${loginSsInfo.m_password};
-    		var InfoName = ${loginSsInfo.m_name};
-    		var InfoNickname = ${loginSsInfo.m_nickname};
-    		var InfoEmail = ${loginSsInfo.m_email};
-    		var Infophone = ${loginSsInfo.m_phone};
-    		var InfoGender = ${loginSsInfo.m_gender};
-    		var InfoAddress = ${loginSsInfo.m_address};
-    		var InfoAddressDetail = ${loginSsInfo.m_address_detail};
+    		var InfoPw = '${loginSsInfo.m_password}';
+    		var InfoName = '${loginSsInfo.m_name}';
+    		var InfoNickname = '${loginSsInfo.m_nickname}';
+    		var InfoEmail = '${loginSsInfo.m_email}';
+    		var InfoPhone = '${loginSsInfo.m_phone}';
+    		var InfoGender = '${loginSsInfo.m_gender}';
+    		var InfoAddress = '${loginSsInfo.m_address}';
+    		var InfoAddressDetail = '${loginSsInfo.m_address_detail}';
     		
     		var FlagId = false;
     		var FlagPw1 = false;
@@ -323,6 +323,10 @@
     				}
     				FlagNickname = false;
     				$("#SpanNickName").css("color", "red");
+    			} else if (InputNickname == InfoNickname){
+    				$("#LabelNickname").html('닉네임 <span id="SpanNickName"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanNickName").css("color", "green");
+    				FlagNickname = true;
     			} else {
     				$.ajax({
     					url: "<%=request.getContextPath()%>/member/nicknameCheck.ax",
@@ -363,6 +367,10 @@
     				}
     				FlagEmail = false;
     				$("#SpanEmail").css("color", "red");
+    			} else if (InputEmail == InfoEmail){
+    				$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanEmail").css("color", "green");
+    				FlagEmail = true;
     			} else {
     				$.ajax({
     					url: "<%=request.getContextPath()%>/member/emailCheck.ax",
@@ -379,7 +387,6 @@
     			    			$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-check"></i></span>');
     		    				$("#SpanEmail").css("color", "green");
     		    				FlagEmail = true;
-    			        		
     			    		}
     					},
     					error: function(error){
@@ -392,7 +399,7 @@
     		
     		// 휴대전화
     		$("#InputPhone").on("input", function FxPhone(){
-    			var regexPhone = /^01([0|1|6|7|8|9])+[0-9]{7,8}$/;
+    			var regexPhone = /^[0][1]([0|1|6|7|8|9])+[0-9]{7,8}$/;
     			InputPhone = $("#InputPhone").val();
     			
     			if (!regexPhone.test(InputPhone)) {
@@ -403,6 +410,10 @@
     				}
     				FlagPhone = false;
     				$("#SpanPhone").css("color", "red");
+    			} else if (InputPhone == InfoPhone){
+    				$("#LabelPhone").html('휴대전화 <span id="SpanPhone"><i class="mdi mdi-check"></i></span>');
+    				$("#SpanPhone").css("color", "green");
+    				FlagPhone = true;
     			} else {
     				$.ajax({
     					url: "<%=request.getContextPath()%>/member/phoneCheck.ax",
@@ -477,7 +488,7 @@
     		})
     		
     		// 프로필 사진
-    		$("#BtnProfile").on("input", function(){
+    		$("#BtnProfile").on("click", function(){
 	    		$(".uploadcare--widget__button.uploadcare--widget__button_type_open").trigger("click");    			
     		})
 			
@@ -498,26 +509,14 @@
 	    	singleWidget.onUploadComplete(function(info){
 		    	console.log(info.cdnUrl);
 		    	var fileUrl = info.cdnUrl;
-			    	$.ajax({
-				    	url: "<%=request.getContextPath()%>/member/profileUpdate.ax",
-				    	data: {
-				    		fileUrl: fileUrl
-				    	},
-				    	type: "post",
-				    	success: function(result){
-				    		console.log(result);
-				    		$("#ImgProfilePre").attr("src", fileUrl);
-				    		$("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-check"></i></span>');
-				    		$("#SpanProfile").css("color", "green");
-				    		$("#InputProfile").attr("value", fileUrl);
-				    	},
-				    	error: function(error){
-				    		$("#ImgProfilePre").attr("src", fileUrl);
-				    		$("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-close"></i> 다시 시도해 주세요.</span>');
-				    		$("#SpanProfile").css("color", "red");
-				    		$("#InputProfile").attr("value", fileUrl);
-			    		}
-	    		})
+				    $("#ImgProfilePre").attr("src", fileUrl);
+				    $("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-check"></i></span>');
+				    $("#SpanProfile").css("color", "green");
+				    $("#InputProfile").attr("value", fileUrl);
+				 /* $("#ImgProfilePre").attr("src", fileUrl);
+				    $("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-close"></i> 다시 시도해 주세요.</span>');
+				    $("#SpanProfile").css("color", "red");
+				    $("#InputProfile").attr("value", fileUrl); */
     		});
 	    	
 	    	// Flag 확인
