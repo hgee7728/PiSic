@@ -85,9 +85,20 @@ public class SoundServiceImpl implements SoundService{
 	public int deleteSoundRecomment(Member member, SoundRecomment soundRecomment) {
 		return dao.deleteSoundRecomment(member, soundRecomment);
 	}
+	// 아티스트 상세조회
 	@Override
 	public Artist selectArtist(String artist_no) {
 		return dao.selectArtist(artist_no);
+	}
+	// 아티스트 참여앨범
+	@Override
+	public List<Album> selectArtistJoinAlbum(String artist_no) {
+		return dao.selectArtistJoinAlbum(artist_no);
+	}
+	// 아티스트 참여곡
+	@Override
+	public List<Sound> selectArtistJoinSound(String artist_no) {
+		return dao.selectArtistJoinSound(artist_no);
 	}
 
 }

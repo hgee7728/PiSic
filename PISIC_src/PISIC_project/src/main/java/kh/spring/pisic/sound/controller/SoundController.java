@@ -170,9 +170,17 @@ public class SoundController {
 	public ModelAndView selectArtistDetail(ModelAndView mv, @RequestParam(name="artist_no", required = false) String artist_no) {
 		
 		mv.addObject("artist",service.selectArtist(artist_no)); 
+		mv.addObject("artistJoinAlbum", service.selectArtistJoinAlbum(artist_no));
+		mv.addObject("artistJoinSound", service.selectArtistJoinSound(artist_no));
+		
 		mv.setViewName("sound/artistDetail");
 		return mv;
+	
+	
 	}
+	
+	
+	
 	
 	// 노래 좋아요 - ajax
 	@PostMapping(value = "/like", produces = "text/plain;charset=UTF-8")

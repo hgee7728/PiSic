@@ -64,6 +64,7 @@ public class PymusicController {
 		String formattedDate = dateFormat.format(date);
 		
 		mv.addObject("pyAgender", service.selectPyAgender(agender));
+		mv.addObject("agender", agender);
 		mv.setViewName("pymusic/agender");
 		model.addAttribute("serverTime", formattedDate);
 

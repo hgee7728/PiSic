@@ -8,6 +8,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>PISIC CHART DETAIL</title>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -33,38 +34,24 @@
 }
 
 .main_img_div {
+	text-align: center;
 	margin-right: 20px;
+}
+.main_img_div.rel_album{
+	margin:0px auto;
 }
 
 table.intro_table tr > td:nth-child(1){
 	width:50px;
 } 
-table.intro_table a {
-	color:#6c7293;
-}
 .content_info {
 	vertical-align: middle;
 }
 
-.content_div2 {
+.content_div0 {
 	clear: both;
 	margin: 30px 0px;
 }
-table.sound_list  tr > td:nth-child(1),
-table.sound_list  tr > td:nth-child(2),
-table.sound_list  tr > td:nth-child(3),
-table.sound_list  tr > td:nth-child(7),
-table.sound_list  tr > td:nth-child(8),
-table.sound_list  tr > td:nth-child(9){
-	width: 5%;
-}
-table.sound_list  tr > td:nth-child(2),
-table.sound_list  tr > td:nth-child(7),
-table.sound_list  tr > td:nth-child(8),
-table.sound_list  tr > td:nth-child(9){
-	text-align:center;
-}
-
 .intro_box {
 	font-size:14px;
 }
@@ -72,10 +59,82 @@ table.sound_list  tr > td:nth-child(9){
 	font-size:30px;
 	margin: 0px 5px;
 }
-table.sound_list a {
-	color:#6c7293;
+.album_div{
+	padding:15px 15px;
+}
+.artist_div{
+	padding:15px 15px;
+	display: flex;
+}
+.grid-4 {
+	flex: 0 0 25%;
+	max-width: 25%;
 }
 
+
+.div_like {
+	display: flex;
+	justify-content: space-between;
+	
+}
+.div_like p{
+	line-height: 30px;
+	margin:0;
+} 
+.content-wrapper a {
+	color:#6c7293;
+}
+.playlist_insert_modal_new{
+	text-align: center;
+}
+.rel_album_div{
+	padding: 15px 0px;
+}
+.report_div{
+	margin: 0px 15px;
+	text-align: center;
+}
+
+.recomment_div {
+	margin: 0px 15px;
+}
+.recomment_div textarea{
+	width : 100%;
+}
+.recomment_div textarea, .recomment_div button{
+	vertical-align: middle;
+}
+.recomment_content_div {
+	padding: 15px 15px;
+}
+.sound_recomment_table img{
+	width: 30px;
+    height: 30px;
+    border-radius: 100%;
+}
+table.sound_recomment_table td{
+	white-space: normal !important;
+}
+table.sound_recomment_table  tr:nth-child(1){
+	text-align:center;
+}
+table.sound_recomment_table  tr > td:nth-child(1){
+	width: 5%;
+}
+table.sound_recomment_table  tr > td:nth-child(2){
+	width: 15%;
+}
+table.sound_recomment_table  tr > td:nth-child(3){
+	width: 50%;
+}
+table.sound_recomment_table  tr > td:nth-child(4),
+table.sound_recomment_table  tr > td:nth-child(5){
+	width: 10%;
+	text-align:center;
+}
+table.album_table thead tr th:nth-child(2){
+	width:50%;
+}
 
 </style>
 <script>
@@ -359,6 +418,7 @@ function selectAlbumDetail(a_no){
 </script>
 </head>
 <body>
+	<jsp:include page="../commonSoundList.jsp" />
 	<div class="container-scroller">
 		<!-- partial:partials/_sidebar.html -->
 		<jsp:include page="../_sidebar.jsp" />

@@ -111,7 +111,15 @@ public class SoundDao {
 		return session.selectOne("Artist.selectArtist", artist_no);
 	}
 
-
+	// 아티스트 참여앨범
+	public List<Album> selectArtistJoinAlbum(String artist_no) {
+		return session.selectList("Artist.selectArtistJoinAlbum", artist_no);
+	}
+	
+	// 아티스트 참여곡
+	public List<Sound> selectArtistJoinSound(String artist_no) {
+		return session.selectList("Artist.selectArtistJoinSound", artist_no);
+	}
 	
 	
 }

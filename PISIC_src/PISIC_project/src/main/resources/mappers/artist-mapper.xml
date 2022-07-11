@@ -2,6 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Artist">
 
+	<resultMap type="Sound" id="soundResultMap">
+		<result column="s_no" property="s_no" />
+		<result column="a_no" property="a_no" />
+		<result column="s_name" property="s_name" />
+		<result column="s_age_yn" property="s_age_yn" />
+		<result column="s_path" property="s_path" />
+		<result column="g_no" property="g_no" />
+		<result column="cnt_like" property="cnt_like" />
+		<result column="a_cover" property="a_cover" />
+		<result column="a_name" property="a_name" />
+		<result column="g_name" property="g_name" />
+		<result column="chart" property="chart" />
+		<collection column="{a_no=a_no, s_no=s_no}"
+			property="singers" select="soundSingerList"></collection>
+	</resultMap>
+
+	<!-- 아티스트 랜덤 선택 : 메인 -->
+	<select id="selectArtistRandom" resultType="Artist">
+	<![CDATA[
+	select artist_no, artist_profile
+	from (select t1.* from (select artist_no, artist_profile from artist where artist_profile is not null) t1
+	    order by DBMS_RANDOM.RANDOM 
+	) where rownum <= 5
+	]]>
+	</select>
+
+	<!-- 아티스트 상세 조회 -->
 	<select id="selectArtist" parameterType="string"
 		resultType="Artist">
 		select artist_no, artist_name, artist_nation,
@@ -12,16 +39,51 @@
 		from artist where
 		artist_no=#{artist_no}
 	</select>
-
-	<select id="selectArtistRandom" resultType="Artist">
-		<!-- 아티스트 랜덤 선택 : 메인 -->
-	<![CDATA[
-	select artist_no, artist_profile
-	from (select t1.* from (select artist_no, artist_profile from artist where artist_profile is not null) t1
-	    order by DBMS_RANDOM.RANDOM 
-	) where rownum <= 5
-	]]>
+	
+	<!-- 아티스트 참여 앨범 -->
+	<select id="selectArtistJoinAlbum" parameterType="string" resultType="Album">
+		select distinct album.a_no, a_name, a_cover, artist_name, a_date, album.artist_no
+		from
+		(select artist_no, s_no, a_no from artist join singer using(artist_no)
+		UNION 
+		select artist_no, s_no, a_no from artist join sound_writer using(artist_no)
+		UNION 
+		select artist_no, s_no, a_no from artist join sound_composer using(artist_no) 
+		) t1
+		join album on t1.a_no=album.a_no
+		join artist on album.artist_no=ARTIST.ARTIST_NO
+		where t1.artist_no = #{artist_no}
 	</select>
-
-
+	
+	
+	<!-- 아티스트 참여 곡 -->
+	<select id="selectArtistJoinSound" parameterType="string" resultMap="soundResultMap">
+		select t1.s_no, t1.a_no, s_name, s_path, a_cover, a_name
+		from
+		(select artist_no, s_no, a_no from artist join singer using(artist_no)
+		UNION 
+		select artist_no, s_no, a_no from artist join sound_writer using(artist_no)
+		UNION 
+		select artist_no, s_no, a_no from artist join sound_composer using(artist_no) 
+		) t1
+		join (select s_no, a_no, s_name, s_path, a_name, a_cover
+		        from sound 
+		        join album using(a_no)
+		) t2
+		on t1.s_no=t2.s_no and t1.a_no=t2.a_no
+		where artist_no = #{artist_no}
+		order by a_no, s_no
+	</select>
+	
+	
+	<select id="soundSingerList" parameterType="map"
+		resultType="Singer">
+		select artist.artist_name, artist.artist_no
+		from sound sound
+		join singer singer on sound.s_no=singer.s_no and
+		sound.a_no=singer.a_no
+		join artist artist on singer.artist_no =
+		artist.artist_no
+		where sound.a_no=#{a_no} and sound.s_no=#{s_no}
+	</select>
 </mapper>

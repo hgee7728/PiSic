@@ -44,7 +44,7 @@ public class ChartController {
 		String formattedDate = dateFormat.format(date);
 		
 		mv.addObject("chartDetail", service.selectChartTopTen(chartType, 10));
-		
+		mv.addObject("chartType" ,chartType);
 
 		model.addAttribute("serverTime", formattedDate);
 		mv.setViewName("chart/chartDetail");

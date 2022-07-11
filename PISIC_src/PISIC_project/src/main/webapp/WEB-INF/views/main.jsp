@@ -209,16 +209,13 @@ table.intro_table a {
 }
 table.sound_list  tr > td:nth-child(1),
 table.sound_list  tr > td:nth-child(2),
-table.sound_list  tr > td:nth-child(3),
-table.sound_list  tr > td:nth-child(7),
-table.sound_list  tr > td:nth-child(8),
-table.sound_list  tr > td:nth-child(9){
+table.sound_list  tr > td:nth-child(6),
+table.sound_list  tr > td:nth-child(7){
 	width: 5%;
 }
-table.sound_list  tr > td:nth-child(2),
-table.sound_list  tr > td:nth-child(7),
-table.sound_list  tr > td:nth-child(8),
-table.sound_list  tr > td:nth-child(9){
+table.sound_list  tr > td:nth-child(1),
+table.sound_list  tr > td:nth-child(6),
+table.sound_list  tr > td:nth-child(7){
 	text-align:center;
 }
 

@@ -43,10 +43,11 @@
 		select distinct t1.*, (select g_name from genre where g_no=t1.g_no) g_name
 		    ,rank() over (partition by g_no order by cnt desc, s_no, a_no ) chart
 		from
-		    (select  a_cover, s_no, a_no, g_no,s_name,s_path, count(*) cnt from (select s_no, a_no, g_no, s_name,s_path from sound where g_no=#{g_no}) 
+		    (select  a_cover, a_name, s_no, a_no, g_no,s_name,s_path, count(*) cnt 
+		    from (select s_no, a_no, g_no, s_name, s_path from sound where g_no=#{g_no}) 
 		    join album using(a_no)
 		    join (select p_no, a_no, s_no from playinfo) using (a_no, s_no)
-		    group by a_cover, s_no, a_no, g_no, s_name,s_path order by cnt) t1	
+		    group by a_cover, a_name, s_no, a_no, g_no, s_name,s_path order by cnt) t1	
 		) t2
 		where chart &lt;= 10		
 	</select>
