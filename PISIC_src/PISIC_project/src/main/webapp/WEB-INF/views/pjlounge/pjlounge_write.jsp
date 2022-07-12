@@ -3,18 +3,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<title>PJ LOUNGE</title>
+<title>1:1 문의 글쓰기 페이지</title>
 
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
 <link rel="stylesheet"
@@ -29,7 +26,6 @@
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.carousel.min.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/owl-carousel-2/owl.theme.default.min.css">
-
 <!-- End plugin css for this page -->
 <!-- inject:css -->
 <!-- endinject -->
@@ -40,12 +36,44 @@
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 <style>
-.search-window {
-	float: right;
+
+/*내용*/
+.contents {
+	text-align: left;
+	display: none;
 }
 
-.content-wrapper {
-	padding: 0;
+.ctsBold {
+	font-weight: bold;
+}
+
+.contents div {
+	background-color: #fffff;
+	padding: 100px;
+}
+
+.table th, td {
+	text-align: left;
+}
+
+/*버튼*/
+.board-list btn btn-info btn-fw {
+	margin-left: 500px;
+	margin-top: 50px;
+}
+
+.btn_faq {
+	float: right;
+	margin-left: 300px;
+	margin-bottom: 50px;
+}
+
+.ctsSbj a {
+	color: #8f5fe8;
+}
+
+.content-wrapper h2, h3 {
+	font-weight: bold;
 }
 </style>
 </head>
@@ -57,106 +85,52 @@
 		<div class="container-fluid page-body-wrapper">
 			<!-- partial:partials/_navbar.html -->
 			<jsp:include page="../_navbar.jsp" />
-			<!-- partial -->
 			<div class="main-panel">
 				<div class="content-wrapper">
-
-					<div class="container">
-						<div class="main-panel">
-							<div class="content-wrapper">
-								<h2 class=" card-title">PJ LOUNGE</h2>
-								<br>
-								<h3 class=" card-title">나의 플레이리스트를 공유해보세요</h3>
-							<div class="row">	
-								<!-- board seach area -->
-								<div id="board-search">
-									<div class="container">
-										<div class="search-window">
-												<div class="search-wrap">
-													<label for="search" class="blind">PJ 검색하기</label> 
-													<input
-														id="search" type="search" name=""
-														placeholder="플레이리스트를 입력해주세요." value="">
-													<button type="submit" class="btn btn-info btn-fw">검색</button>
-												</div>
-											
-										</div>
-									</div>
-								</div>
-							</div>
-								<div class="row">
-									<div class="col-xl-3 col-sm-6 grid-margin stretch-card"">
-										<div class="card">
-											<div class="card-body">
-												<img src="" alt="">
-											</div>
-											<div class="card-body">
-												<span>f</span>
-												<h4>sksksk</h4>
+					<h2 class=" card-title">PJ LOUNGE</h2>
+					<br>
+					<h3 class=" card-title">나만의 플레이리스트 만들기</h3>
+					<div class=" content_div1" style="display: flex;">
+						<div class="col-lg-12 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">문의글 등록하기</h4>
+									<form id="writeform"
+										action="<%=request.getContextPath()%>/pjlounge/pjlounge_write" method="post">
+										<div  class="form-group">
+											  <label  for="exampleFormControlInput1">제목</label>          
+											  <input  type="text"  class="form-control"  id="exampleFormControlInput1"    name="title" placeholder="제목을 작성해주세요.">   
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox" name="secret" id="secret"> <label class="form-check-label">비밀글 설정</label>
 											</div>
 										</div>
-									</div>
-								<div class="col-xl-3 col-sm-6 grid-margin stretch-card"">
-									<div class="card">
-										<div class="card-body">
-											<img src=""
-												alt="">
+										<div  class="form-group">
+											  <label  for="exampleFormControlTextarea1">내용</label>            
+											<textarea  class="form-control" id="exampleFormControlTextarea1" name="contents"  rows="10"></textarea>
 										</div>
-										<div class="card-body">
-											<span>f</span>
-											<h4>sksksk</h4>
-										</div>
-									</div>
-								</div>
-								<div class="col-xl-3 col-sm-6 grid-margin stretch-card"">
-									<div class="card">
-										<div class="card-body">
-											<img src=""
-												alt="">
-										</div>
-										<div class="card-body">
-											<span>f</span>
-											<h4>sksksk</h4>
-										</div>
-									</div>
-								</div>
-								<div class="col-xl-3 col-sm-6 grid-margin stretch-card"">
-									<div class="card">
-										<div class="card-body">
-											<img src=""
-												alt="">
-										</div>
-										<div class="card-body">
-											<span>f</span>
-											<h4>sksksk</h4>
-										</div>
-									</div>
-								</div>
-								</div>
-								</div>
-							</div>
-						<!-- 페이징 -->
-						<div class="qnalist_page">
-							<div class="pagination__links">
-								<button type="button" class="btn btn-outline-secondary">1</button>
-								<button type="button" class="btn btn-outline-secondary">2</button>
-								<button type="button" class="btn btn-outline-secondary">3</button>
-								<button type="button" class="btn btn-outline-secondary">4</button>
-							</div>
-						</div>
-						</div>
 
+										<div class="btn_qna">
+											<button  type="submit"  class="btn btn-info btn-fw">등록하기</button>
+											<button  type="button"  class="btn btn-info btn-fw">목록으로</button>
+										</div>
+
+									</form>
+								</div>
+							</div>
+						</div>
 					</div>
-
 				</div>
-
 			</div>
-
-
-
-			<!-- main-panel ends -->
 		</div>
-		<!-- page-body-wrapper ends -->
+		<!-- content-wrapper ends -->
+	</div>
+	<!-- partial:partials/_footer.html -->
+	<jsp:include page="../_footer.jsp" />
+	<!-- partial -->
+	</div>
+	<!-- main-panel ends -->
+	</div>
+	<!-- page-body-wrapper ends -->
 	</div>
 	<!-- container-scroller -->
 	<!-- plugins:js -->

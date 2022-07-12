@@ -40,6 +40,12 @@
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 <style>
+.qnalist_page{
+position:absoulte;
+top:30%;
+left:50%;
+transform: translate(-50%, -50%);
+}
 
 </style>
 </head>
@@ -60,26 +66,29 @@
 					<br>
 					<h3 class=" card-title">나의 플레이리스트를 공유해보세요</h3>
 
-					<!-- board seach area -->
-					<div class="board-search">
-						<div class="container">
-							<div class="search-window">
-								<div class="search-wrap">
-									<label for="search" class="blind">PJ 검색하기</label> <input
-										id="search" type="search" name=""
-										placeholder="플레이리스트를 입력해주세요." value="">
-									<button type="submit" class="btn btn-info btn-fw">검색</button>
-								</div>
+					<div class="container">
+						<div class="search-window">
+							<div class="search-wrap">
+								<label for="search" class="blind">PJ 검색하기</label> <input
+									id="search" type="search" name="" placeholder="플레이리스트를 입력해주세요."
+									value="">
+								<button type="submit" class="btn btn-info btn-fw">검색</button>
 							</div>
 						</div>
+
 					</div>
 					<div class="row">
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<img src="/images/" alt="">
+									<span class="album_cover"></span>
 								</div>
 								<div class="card-body">
+									<div class="info">
+										<input type="hidden" value="${board.b_no }" name="a_no">
+									</div>
+									<div class="meta"></div>
+
 									<span>f</span>
 									<h4>sksksk</h4>
 								</div>
@@ -161,31 +170,33 @@
 									<h4>sksksk</h4>
 								</div>
 							</div>
+						</div>
+						<div class="select_btns">
+							<button type="submit" class="btn btn-info btn-fw" 	action="<%=request.getContextPath()%>/pjlounge/pjlounge_write">
+								플레이리스트<br>만들기
+							</button>
 						</div>
 					</div>
-								<!-- 페이징 -->
-			<div class="qnalist_page">
-				<div class="pagination__links">
-					<button type="button" class="btn btn-outline-secondary">1</button>
-					<button type="button" class="btn btn-outline-secondary">2</button>
-					<button type="button" class="btn btn-outline-secondary">3</button>
-					<button type="button" class="btn btn-outline-secondary">4</button>
-				</div>
-			</div>
+					<!-- 페이징 -->
+					<div class="qnalist_page">
+						<div class="pagination__links">
+							<button type="button" class="btn btn-outline-secondary">1</button>
+							<button type="button" class="btn btn-outline-secondary">2</button>
+							<button type="button" class="btn btn-outline-secondary">3</button>
+							<button type="button" class="btn btn-outline-secondary">4</button>
+						</div>
+					</div>
 				</div>
 
 			</div>
-
 
 		</div>
 
-	</div>
 
 	</div>
 
-	</div>
 
-	</div>
+
 
 
 

@@ -115,6 +115,7 @@
 																<td>${faqBoard.faq_cnt }</td>
 															</tr>
 															<tr class="contents">
+															<td><td>
 																<td colspan="4">
 																${faqBoard.faq_content }
 																</td>

@@ -51,85 +51,43 @@
 								<div class="card">
 									<div class="card-body">
 										<h4 class="card-title">글 등록하기</h4>
-							<div><button type="button" onclick="location.href='<%=request.getContextPath() %>/'">홈</button></div>
+										<div>
+											<button type="button"
+												onclick="location.href='<%=request.getContextPath()%>/qna/qnaList'">뒤로가기</button>
+										</div>
+										<table>
+											<tr>
+											
+												<td colspan="5" class="left">${qnaBoard.qna_title }</td>
+											</tr>
+											<tr>
+												<th>작성자</th>
+												<td>${qnaBoard.m_id }</td>
+												<th class="w-px120">작성일자</th>
+												<td class="w-px120">${qnaBoard.qna_date }</td>
+												<th class="w-px80">조회수</th>
+												<td class="w-px80">${qnaBoard.qna_cnt }</td>
+											</tr>
+											<tr>
+												<th>내용</th>
+												<td colspan="5" class="left"></td>
+											</tr>
 
-<c:choose>
+										</table>
 
-	<div>
-<c:if test="${member.m_id eq loginSsInfo.id }">
-	<form id="frmNum">
-		<input type="hidden" name="qna_no" value="${qna.qna_no }">
-		<button type="button" class="btn update">수정</button>
-		<button type="button" class="btn delete">삭제</button>
-	</form>
-	<script>
-		$(".btn.update").click(function(){
-			if($(this).hasClass("update")){
-				frmNum.action="<%=request.getContextPath()%>/qna/update";
-			}else {
-				frmNum.action="<%=request.getContextPath()%>/qna/delete";
-			}
-			frmNum.method="post";
-			frmNum.submit();
-		});
-		
-		$(".btn.delete").click(function(){
-			$.ajax({
-				url:"<%=request.getContextPath()%>/qna/delete",
-				type:"post",
-				data: {qna_no:"${qna.qna_no }"},
-				success:function(result){
-					console.log(result);
-					if(result){
-						alert(result);
-					}
-					location.href="<%=request.getContextPath() %>/qna/qnaList";
-				},
-				error:function(error){
-					
-				}
-			});
-		});
-	</script>
-</c:if>
-		<table class="table qna_list">
-													<thead>
-														<tr>
-															<div class="btn_qna">
-																<button type="submit" class="btn btn-info btn-fw"><a href="<%=request.getContextPath()%>/qna/qnaWrite?refnum=${qnaBoard.qna_no }">1:1문의하기</a></button>
-															</div>
-															<th>NO.</th>
-															<th>제목</th>
-															<th>작성자</th>
-															<th>등록날짜</th>
-														</tr>
-
-													</thead>
-													<tbody>
-														<c:forEach items="${qnalist }" var="qnaBoard">
-															<tr class="ctsSbj">
-																<th>${qnaBoard.qna_no }</th>
-																<c:forEach begin="1" end="${qnaBoard.gr_layer }"> 
-																</c:forEach>
-																<td>${qnaBoard.qna_title }</td>
-																<td>${qnaBoard.m_id }</td>
-																<td>${qnaBoard.qna_date }</td>
-															</tr>
-															<tr class="contents">
-																<td colspan="4">${qnaBoard.qna_content }</td>
-															</tr>
-														</c:forEach>
-													</tbody>
-												</table>
-		<div>
-			내용:${qnaBoard.qna_content }
-		</div>
-
-	</div>
-	<hr>
-
-
-</c:choose>
+										<div class="btnSet">
+											<a class="btn-fill" href="list.qna">목록으로</a>
+											<!-- 관리자인 경우 수정 삭제 가능 -->
+											<core:if test="${login_info.admin eq 'Y' }">
+												<a class="btn-fill" href="modify.qna?id=${qnaBoard.m_id }">수정</a>
+												<a class="btn-fill"
+													onclick="if(confirm('정말 삭제하시겠습니까?')) { href='delete.qna?id=${qnaBoard.m_id }' }">삭제</a>
+											</core:if>
+											<!-- 로그인이 된 경우 답글 쓰기 가능 -->
+											<core:if test="${!empty login_info }">
+												<a class="btn-fill" href="reply.qna?id=${qnaBoard.m_id }">답글 쓰기</a>
+											</core:if>
+										</div>
 
 									</div>
 								</div>

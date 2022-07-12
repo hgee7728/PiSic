@@ -56,16 +56,7 @@
 }
 
 /*버튼*/
-.board-list btn btn-info btn-fw {
-	margin-left: 500px;
-	margin-top: 50px;
-}
 
-.btn_faq {
-	float: right;
-	margin-left: 300px;
-	margin-bottom: 50px;
-}
 
 .ctsSbj a {
 	color: #8f5fe8;
@@ -73,6 +64,13 @@
 
 .content-wrapper h2, h3 {
 	font-weight: bold;
+}
+.form-control{
+	
+}
+.stretch-card > .card {
+    width: 100%;
+    min-width: 100%;
 }
 </style>
 </head>
@@ -93,21 +91,19 @@
 						<div class="col-lg-12 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
+								<form id="writeform" action="<%=request.getContextPath() %>/member/insert" method="post">
 									<h4 class="card-title">문의글 등록하기</h4>
-									<form id="writeform" action="<%=request.getContextPath() %>/member/insert" method="post">
+									
 									<div  class="form-group">
 										  <label  for="exampleFormControlInput1">제목</label>          
-										  <input  type="text"  class="form-control"
-											 id="exampleFormControlInput1"  
-									  name="title"
-											placeholder="제목을 작성해주세요.">   
+										  <input  type="text"  class="form-control" id="exampleFormControlInput1"   name="title" placeholder="제목을 작성해주세요.">   
 										<div class="form-check">
-											<input class="form-check-input" type="checkbox" name="secret"
-												id="secret"> <label class="form-check-label">비밀글 설정</label>
+											<input class="form-check-input" type="checkbox" name="secret" id="secret">
+											<label class="form-check-label">비밀글 설정</label>
 										</div>
 									</div>
 									<div  class="form-group">
-										  <label  for="exampleFormControlTextarea1">내용</label>            
+										 <label  for="exampleFormControlTextarea1">내용</label>            
 										<textarea  class="form-control" id="exampleFormControlTextarea1" name="contents"  rows="10"></textarea>
 									</div>
 

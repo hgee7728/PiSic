@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kh.spring.pisic.faq.domain.FaqBoard;
 import kh.spring.pisic.qna.domain.QnaBoard;
+import kh.spring.pisic.qna.model.service.*;
 import kh.spring.pisic.qna.model.service.QnaServiceImpl;
 
 @Controller
