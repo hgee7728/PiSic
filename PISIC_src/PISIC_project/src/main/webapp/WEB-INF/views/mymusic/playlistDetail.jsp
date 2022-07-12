@@ -37,8 +37,6 @@
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script
-		src="<%=request.getContextPath()%>/resources/assets/js/_soundList.js"></script>
 <style>
 .content_div1 {
 	display: flex;
@@ -92,10 +90,12 @@ div.table-responsive{
 	height:700px;
 	overflow: auto;
 }
-
+btn#delete_playlist, btn#update_playlist{
+	width:50px;
+}
 </style>
 <script>
-
+const root_path = '<%=request.getContextPath() %>';
 $(function(){
 	var msg = '${msg}';
 	if(msg){
@@ -133,8 +133,7 @@ $(function(){
 
         }
     }
-    
-    // 체크박스 전체선택
+ // 체크박스 전체선택
     $("#check_all").click(function(){
     	if($('#check_all').is(':checked')){
     		$('input:checkbox').prop('checked',true);
@@ -158,12 +157,11 @@ $(function(){
 	    	}); */
 	    	// Post 방식으로 새창 열기
 	    	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
-	    	sound_frm.action="<%=request.getContextPath() %>/sound/play";
+	    	sound_frm.action= root_path + "/sound/play";
 	    	sound_frm.target="SoundPlayer";
 	    	sound_frm.method="post";
 	    	sound_frm.submit();
 		}
-    	
     });
 
     $("#delete_playlist").click(function(){
@@ -172,13 +170,26 @@ $(function(){
     		preventClick(e);
     		alert("취소하셨습니다.")
     	} else {
-    		playlist_frm.submit();
+    		playlist_delete_frm.submit();
     	}
     });
     
 	
 }); // $(function(){}) 끝
-
+//로그인 페이지로
+function goLogin(){
+	location.href= root_path + "/member/login"
+};
+// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
+function selectSoundDetail(a_no, s_no){
+	location.href = root_path + "/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
+};
+function selectArtistDetail(artist_no){
+	location.href = root_path + "/sound/artistDetail?artist_no=" + artist_no;
+};
+function selectAlbumDetail(a_no){
+	location.href = root_path + "/sound/albumDetail?a_no=" + a_no;
+};
 
 //한곡 재생 - post방식으로 a태그 이용해서 이동
 function playOne(a_no,s_no){
@@ -197,7 +208,7 @@ function playOne(a_no,s_no){
     frm.appendChild(input_s_no);
     frm.appendChild(input_a_no);
     frm.setAttribute('method', 'post');
-    frm.setAttribute('action', '<%=request.getContextPath() %>/sound/play');
+    frm.setAttribute('action', root_path + '/sound/play');
     document.body.appendChild(frm);
 	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
 	frm.target="SoundPlayer";
@@ -208,7 +219,7 @@ function playOne(a_no,s_no){
 function soundLike(a_no,s_no){
 	console.log("좋아요");
 	$.ajax({
-		url:"<%=request.getContextPath() %>/sound/like",
+		url:root_path + "/sound/like",
 		type:"post",
 		data:{
 			a_no:a_no,
@@ -217,7 +228,7 @@ function soundLike(a_no,s_no){
 		success: function(result){
 			if(result == "-2"){
 				alert("로그인 후 이용해주세요");
-				location.replace("<%=request.getContextPath() %>/member/login");
+				location.replace(root_path + "/member/login");
 			} else if(result == "-1"){
 				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 			} else if(result == "0"){
@@ -235,22 +246,6 @@ function soundLike(a_no,s_no){
 			
 		}
 	}); //ajax 끝
-};
-
-
-//로그인 페이지로
-function goLogin(){
-	location.href="<%=request.getContextPath() %>/member/login"
-};
-// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
-function selectSoundDetail(a_no, s_no){
-	location.href = "<%=request.getContextPath() %>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
-};
-function selectArtistDetail(artist_no){
-	location.href = "<%=request.getContextPath() %>/sound/artistDetail?artist_no=" + artist_no;
-};
-function selectAlbumDetail(a_no){
-	location.href = "<%=request.getContextPath() %>/sound/albumDetail?a_no=" + a_no;
 };
 </script>
 </head>
@@ -301,11 +296,17 @@ function selectAlbumDetail(a_no){
 											
 										</tr>
 										<tr>
-											<td colspan="2">
-											<form name="playlist_frm" action="<%=request.getContextPath() %>/mymusic/deletePlaylist" method="post">
-												<input type="hidden" name="l_no" value="${MyMusic.l_no }">
-												<button type="button" id="delete_playlist" class="btn btn-info btn-fw">삭제</button>
-											</form>
+											<td>
+												<form name="playlist_update_frm" action="<%=request.getContextPath() %>/mymusic/updatePlaylist" method="post">
+													<input type="hidden" name="l_no" value="${MyMusic.l_no }">
+													<button type="submit" id="update_playlist" class="btn">변경</button>
+												</form>
+											</td>
+											<td>
+												<form name="playlist_delete_frm" action="<%=request.getContextPath() %>/mymusic/deletePlaylist" method="post">
+													<input type="hidden" name="l_no" value="${MyMusic.l_no }">
+													<button type="button" id="delete_playlist" class="btn">삭제</button>
+												</form>
 											</td>
 										</tr>
 									</tbody>

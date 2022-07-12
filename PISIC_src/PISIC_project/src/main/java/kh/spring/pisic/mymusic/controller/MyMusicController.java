@@ -323,7 +323,7 @@ public class MyMusicController {
 		// TODO 로그인 여부
 		Member member = (Member) session.getAttribute("loginSsInfo");
 		mymusic.setM_id(member.getM_id());
-
+		
 		List<Sound> soundList = new ArrayList<Sound>();
 		// 들고 온 데이터 domain형태로 list 시키기
 		for (int i = 0; i < s_noArr.length; i++) {
@@ -333,6 +333,7 @@ public class MyMusicController {
 			try {
 				sound.setA_no(a_noArr[i]);
 				sound.setS_no(s_noArr[i]);
+				sound.setL_no(mymusic.getL_no());
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}

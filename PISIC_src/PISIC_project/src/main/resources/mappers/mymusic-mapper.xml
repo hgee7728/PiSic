@@ -46,7 +46,7 @@
 </select>
 
 <!-- 플레이 리스트에 노래 담기 -->
-<insert id="insertSound" parameterType="map">
+<insert id="insertSound" parameterType="list">
 	insert all
 	<foreach collection="list" item="item">
 		into playlist_content values (#{item.l_no}, #{item.m_id}, #{item.s_no},

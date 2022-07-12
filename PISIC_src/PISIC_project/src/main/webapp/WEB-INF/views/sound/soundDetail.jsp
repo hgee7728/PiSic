@@ -149,6 +149,7 @@ table.album_table thead tr th:nth-child(2){
 
 </style>
 <script>
+const root_path = '<%=request.getContextPath() %>';
 $(function(){
 	var msg = '${msg}';
 	if(msg){
@@ -193,7 +194,7 @@ $(function(){
     	sound_frm.submit();
     });
     
- // 플레이리스트 한곡 담기 모달창
+ 	// 플레이리스트 한곡 담기 모달창
 	$("#insert_playlist").click(function() {
 		$("#playlist_insert_modal").show();
 		var a_no = $('input[name=a_no]').val();
@@ -218,7 +219,7 @@ $(function(){
 						html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
 					}
 				}
-				$(".playlist_insert_modal_content").children().remove();
+				$(".playlist_insert_modal_content").eq(0).nextAll().remove();
 				$(".preview-list").append(html);
 			},
 		}); // ajax 끝

@@ -95,7 +95,7 @@ div.table-responsive{
 
 </style>
 <script>
-
+const root_path = '<%=request.getContextPath() %>';
 $(function(){
 	var msg = '${msg}';
 	if(msg){

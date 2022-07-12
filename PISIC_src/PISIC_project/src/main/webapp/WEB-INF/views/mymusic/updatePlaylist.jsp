@@ -438,7 +438,8 @@ UPLOADCARE_LOCALE = "ko"
 	    			a_no : a_noArray,
 	    			l_name : $("input[name=l_name]").val(),
 	    			l_private_yn : $("input[name=l_private_yn]:checked").val(),
-	    			l_image : $('input[name=l_image]').val()
+	    			l_image : $('input[name=l_image]').val(),
+	    			l_no : $('input[name=l_no]').val()
 	    	}
 	    	$.ajax({
 	    		url: "<%=request.getContextPath() %>/mymusic/updatePlaylist.do",
@@ -565,6 +566,7 @@ UPLOADCARE_LOCALE = "ko"
 				<div class="content-wrapper">
 					<div class="title_div">
 						<h2 class="card-title">내 플레이 리스트 만들기</h2>
+						<input type="hidden" name="l_no" value="${MyMusic.l_no }">
 					</div>
 					
 						<div class="content_div1">
@@ -731,7 +733,7 @@ UPLOADCARE_LOCALE = "ko"
 														</tr>
 													</thead>
 													<tbody>
-														<c:forEach items="${ MyMusic.sounds}" var="sounds">
+														<c:forEach items="${ MyMusic.sounds}" var="sounds" varStatus="status">
 															<tr>
 																<td>
 																	<div class="form-check form-check-muted m-0">
@@ -741,7 +743,7 @@ UPLOADCARE_LOCALE = "ko"
 																		<input type="hidden" value="${sounds.a_no }" name="a_no">
 																	</div>
 																</td>
-																<td>${sounds.s_no }</td>
+																<td>${status.index+1 }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a href="javascript:selectSoundDetail(${sounds.a_no },${sounds.s_no})">${sounds.s_name}</a></td>
 																<td>
