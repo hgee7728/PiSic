@@ -94,5 +94,15 @@ public class MyMusicDao {
 		return session.selectOne("MyMusic.selectSoundRecentTotalCnt", m_id);
 	}
 	
+	// 플레이 리스트 수록곡 삭제하기
+	public int deletePlaylistSound(MyMusic mymusic) {
+		return session.delete("MyMusic.deletePlaylistSound", mymusic);
+	}
+	
+	// 플레이 리스트 정보 변경하기
+	public int updatePlaylist(MyMusic mymusic) {
+		return session.update("MyMusic.updatePlaylist", mymusic);
+	}
+	
 	
 }

@@ -233,6 +233,15 @@
 	where m_id=#{m_id} and p_date BETWEEN sysdate-100 and sysdate)
 </select>
 	
+<!-- 플레이리스트 수록곡 삭제하기 -->
+<delete id="deletePlaylistSound" parameterType="MyMusic">
+	delete from playlist_content where m_id=#{m_id} and l_no=#{l_no}
+</delete>
 	
-	
+<!-- 플레이리스트 정보 변경하기 -->
+<update id="updatePlaylist" parameterType="MyMusic">
+ update playlist set 
+ l_name=#{l_name}, l_private_yn=#{l_private_yn}, l_image=#{l_image}
+ where l_no=#{l_no} and m_id=#{m_id} 
+</update>
 </mapper>

@@ -50,9 +50,7 @@ public class MyMusicServiceImpl implements MyMusicService{
 
 	// 플레이 리스트 만들기 - ajax
 	@Override
-	//@Transactional
 	public int insertPlaylist(MyMusic mymusic, List<Sound> soundList) {
-		//dao.insertSound(soundList);
 		return dao.insertPlaylist(mymusic, soundList);
 	}
 	
@@ -108,6 +106,15 @@ public class MyMusicServiceImpl implements MyMusicService{
 	@Override
 	public int selectSoundRecentTotalCnt(String m_id) {
 		return dao.selectSoundRecentTotalCnt(m_id);
+	}
+
+	// 플레이 리스트 정보 변경하기
+	@Override
+	@Transactional
+	public int updatePlaylist(MyMusic mymusic, List<Sound> soundList) {
+		dao.deletePlaylistSound(mymusic);
+		dao.insertSound(soundList);
+		return dao.updatePlaylist(mymusic);
 	}
 
 

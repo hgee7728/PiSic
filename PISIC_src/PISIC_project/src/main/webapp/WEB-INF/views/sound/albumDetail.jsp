@@ -184,7 +184,6 @@ $(function(){
 							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
 						}
 					}
-					$(".playlist_insert_modal_content").nextAll().remove();
 					$(".preview-list").append(html);
 				},
 			}); // ajax 끝

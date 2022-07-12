@@ -310,9 +310,42 @@ public class MyMusicController {
 		Member member = (Member) session.getAttribute("loginSsInfo");
 		mymusic.setM_id(member.getM_id());
 		
-		mv.addObject("Playlist", service.selectPlaylistDetail(mymusic));
+		mv.addObject("MyMusic", service.selectPlaylistDetail(mymusic));
 		mv.setViewName("mymusic/updatePlaylist");
 		return mv;
+	}
+	
+	// 플레이 리스트 수정하기
+	@PostMapping("/updatePlaylist.do")
+	@ResponseBody
+	public String updatePlaylist(@RequestParam(name = "a_no", required = false) int[] a_noArr,
+			@RequestParam(name = "s_no", required = false) int[] s_noArr, MyMusic mymusic, HttpSession session) {
+		// TODO 로그인 여부
+		Member member = (Member) session.getAttribute("loginSsInfo");
+		mymusic.setM_id(member.getM_id());
+
+		List<Sound> soundList = new ArrayList<Sound>();
+		// 들고 온 데이터 domain형태로 list 시키기
+		for (int i = 0; i < s_noArr.length; i++) {
+			System.out.println("a_noArr: " + a_noArr[i]);
+			System.out.println("s_noArr: " + s_noArr[i]);
+			Sound sound = new Sound();
+			try {
+				sound.setA_no(a_noArr[i]);
+				sound.setS_no(s_noArr[i]);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+			sound.setM_id(member.getM_id());
+			soundList.add(sound);
+		}
+		// 플레이 리스트 update
+		int result = service.updatePlaylist(mymusic, soundList);
+		if (result < 1) { // 실패
+			return "0";
+		}
+
+		return "1";
 	}
 	
 	

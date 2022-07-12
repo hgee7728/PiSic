@@ -105,6 +105,7 @@ function artistLike(artist_no){
 				<div class="content-wrapper">
 						<div class="title_div">
 							<h2 class="card-title">좋아하는 아티스트</h2>
+							<p class="text-muted mb-0">*내가 좋아요를 누른 아티스트입니다.</p>
 						</div>
 						<div class="content_div">
 						<div class="row">

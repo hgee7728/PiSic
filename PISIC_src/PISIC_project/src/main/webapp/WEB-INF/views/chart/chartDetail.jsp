@@ -105,6 +105,7 @@ $(function(){
 				url: "<%=request.getContextPath()%>/mymusic/playlist.ax",
 				type: "post",
 				success: function(result) {
+					$(".preview-item border-bottom").remove();
 					var html = "";
 					for(var i = 0; i < result.length; i++){
 						var vo = result[i];
@@ -121,7 +122,6 @@ $(function(){
 							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
 						}
 					}
-					$(".preview-list").nextAll().remove();
 					$(".preview-list").append(html);
 				},
 			}); // ajax 끝
@@ -207,6 +207,7 @@ function playlistInsert(a_no, s_no){
 		url: "<%=request.getContextPath()%>/mymusic/playlist.ax",
 		type: "post",
 		success: function(result) {
+			$(".preview-item border-bottom").remove();
 			var html = "";
 			for(var i = 0; i < result.length; i++){
 				var resultData = result[i];
@@ -223,7 +224,6 @@ function playlistInsert(a_no, s_no){
 					html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
 				}
 			}
-			$(".preview-list").nextAll().remove();
 			$(".preview-list").append(html);
 		},
 	}); // ajax 끝
@@ -313,7 +313,38 @@ function selectAlbumDetail(a_no){
 </script>
 </head>
 <body>
-	<jsp:include page="../commonSoundList.jsp" />
+	<div id="playlist_insert_modal" class="playlist_insert_modal_overlay">
+	<div
+		class="col-md-8 grid-margin stretch-card playlist_insert_modal_window">
+		<div class="card playlist_insert_modal">
+			<div class="card-body">
+				<div class="d-flex flex-row justify-content-between">
+					<h3 class="card-title mb-1">내 플레이 리스트에 담기</h3>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="preview-list">
+							<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">
+								<div class="flex-grow playlist_insert_modal_new">
+									<h5 class="preview-subject">
+										<c:choose>
+											<c:when test="${empty loginSsInfo}">
+												<a href="javascript:goLogin()">로그인 후 이용해주세요.</a>
+											</c:when>
+											<c:when test="${not empty loginSsInfo}">
+												<a href="javascript:newPlaylist()"> + 새 플레이 리스트 만들기</a>
+											</c:when>
+										</c:choose>
+									</h5>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 	<div class="container-scroller">
 		<!-- partial:partials/_sidebar.html -->
 		<jsp:include page="../_sidebar.jsp" />

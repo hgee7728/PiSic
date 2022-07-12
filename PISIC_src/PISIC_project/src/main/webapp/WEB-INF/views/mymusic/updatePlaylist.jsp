@@ -117,7 +117,7 @@ UPLOADCARE_LOCALE = "ko"
 		buttons : {
 			choose : {
 				files : {
-					one : '사진 등록'
+					one : '사진 변경'
 				}
 			}
 		}
@@ -411,9 +411,9 @@ UPLOADCARE_LOCALE = "ko"
 			}
 		});
 	    
-	    // 플레이 리스트 만들기
-	    $("#submit_btn").click(function(){
-	    	console.log("만들기 버튼 클릭");
+	    // 플레이 리스트 수정하기
+	    $("#update_btn").click(function(){
+	    	console.log("수정하기 버튼 클릭");
 	    	if($("input[name=l_name]").val().trim() == null || $("input[name=l_name]").val().trim() == ""){
 	    		alert("플레이 리스트 명을 입력해주세요.");
 	    		$("input[name=l_name]").focus();
@@ -441,17 +441,17 @@ UPLOADCARE_LOCALE = "ko"
 	    			l_image : $('input[name=l_image]').val()
 	    	}
 	    	$.ajax({
-	    		url: "<%=request.getContextPath() %>/mymusic/insertPlaylist",
+	    		url: "<%=request.getContextPath() %>/mymusic/updatePlaylist.do",
 	    		type: "post",
 	    		dataType: "json",
 	    		data: ajaxData,
 	    		traditional:true,
 	    		success: function(result) {
 	    			if(result == "0"){
-	    				alert("플레이 리스트 만들기에 실패했습니다. 다시 시도해주세요.");
+	    				alert("플레이 리스트 수정에 실패했습니다. 다시 시도해주세요.");
 	    			} else if(result == "1"){
-	    				alert("플레이 리스트를 만들었습니다.");
-	    				location.replace("<%=request.getContextPath() %>/mymusic/playlist")
+	    				alert("플레이 리스트를 수정했습니다.");
+	    				location.replace("<%=request.getContextPath() %>/mymusic/playlist");
 	    			}
 	    		},
 	    		error:function(){
@@ -571,7 +571,7 @@ UPLOADCARE_LOCALE = "ko"
 							<div class="main_img_div">
 								<div>
 									<img id="main_img"
-										src="<%=request.getContextPath()%>/resources/assets/images/playlist_img.png"
+										src="${MyMusic.l_image }"
 										width="300" height="300">
 								</div>
 								<div class="img_btn">
@@ -579,7 +579,7 @@ UPLOADCARE_LOCALE = "ko"
 										data-public-key="43cc829c5d2fae8676a5"
 										data-tabs="file gdrive gphotos" /> <input type="hidden"
 										name="l_image"
-										value="https://ucarecdn.com/2b64b0bc-55d9-4e3f-89c4-4b20ad5308e2/">
+										value="${MyMusic.l_image }">
 								</div>
 							</div>
 							<div class="content_info  card">
@@ -592,26 +592,47 @@ UPLOADCARE_LOCALE = "ko"
 										<tbody>
 											<tr>
 												<td colspan="2"><input name="l_name" type="text" class="form-control"
-													placeholder="플레이리스트명" required maxlength="16"></td>
+													placeholder="플레이리스트명" required maxlength="16" value="${MyMusic.l_name }"></td>
 											</tr>
 											<tr>
 												<td>공개 여부 :</td>
 												<td>
 													<div class="row">
-														<div class="form-check radio_div">
-															<label class="form-check-label"> <input
-																type="radio" class="form-check-input"
-																name="l_private_yn" id="optionsRadios1" value="Y"
-																checked> 공개
-															</label>
-														</div>
-														<div class="form-check radio_div">
-															<label class="form-check-label"> <input
-																type="radio" class="form-check-input"
-																name="l_private_yn" id="optionsRadios2" value="N">
-																비공개
-															</label>
-														</div>
+													<c:choose>
+														<c:when test="${MyMusic.l_private_yn == 'Y' }">
+															<div class="form-check radio_div">
+																<label class="form-check-label"> <input
+																	type="radio" class="form-check-input"
+																	name="l_private_yn" id="optionsRadios1" value="Y"
+																	checked> 공개
+																</label>
+															</div>
+															<div class="form-check radio_div">
+																<label class="form-check-label"> <input
+																	type="radio" class="form-check-input"
+																	name="l_private_yn" id="optionsRadios2" value="N">
+																	비공개
+																</label>
+															</div>
+														</c:when>
+														<c:when test="${MyMusic.l_private_yn == 'N' }">
+															<div class="form-check radio_div">
+																<label class="form-check-label"> <input
+																	type="radio" class="form-check-input"
+																	name="l_private_yn" id="optionsRadios1" value="Y"> 공개
+																</label>
+															</div>
+															<div class="form-check radio_div">
+																<label class="form-check-label"> <input
+																	type="radio" class="form-check-input"
+																	name="l_private_yn" id="optionsRadios2" value="N" 
+																	checked>
+																	비공개
+																</label>
+															</div>
+														</c:when>
+													</c:choose>
+														
 													</div>
 												</td>
 											</tr>
@@ -710,7 +731,38 @@ UPLOADCARE_LOCALE = "ko"
 														</tr>
 													</thead>
 													<tbody>
-
+														<c:forEach items="${ MyMusic.sounds}" var="sounds">
+															<tr>
+																<td>
+																	<div class="form-check form-check-muted m-0">
+																		<label class="form-check-label"> 
+																			<input type="checkbox" class="form-check-input sound_checkbox" value="${sounds.s_no }" name="s_no">
+																		</label>
+																		<input type="hidden" value="${sounds.a_no }" name="a_no">
+																	</div>
+																</td>
+																<td>${sounds.s_no }</td>
+																<td><img src="${sounds.a_cover }" alt="image" /></td>
+																<td><a href="javascript:selectSoundDetail(${sounds.a_no },${sounds.s_no})">${sounds.s_name}</a></td>
+																<td>
+																	<c:forEach items="${ sounds.singers}" var="singer">
+																	<a href="javascript:selectArtistDetail(${singer.artist_no})">${singer.artist_name}</a>&nbsp;
+																	</c:forEach>
+																</td>
+																<td><a href="javascript:selectAlbumDetail(${sounds.a_no })">${sounds.a_name }</a></td>
+																<td>
+																	<a href="javascript:playOne(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-play list_icon"></i></a>
+																</td>
+																<td>
+																	<a href="javascript:soundLike(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-heart list_icon like_after"></i></a>
+																	<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+																</td>
+																<td>
+																	<a href="javascript:playlistInsert(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-plus-box list_icon"></i></a>
+																	<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
+																</td>
+															</tr>
+														</c:forEach>
 													</tbody>
 												</table>
 												</form>
@@ -722,7 +774,7 @@ UPLOADCARE_LOCALE = "ko"
 							</div>
 						</div>
 						<div class="insert_playlist_btns" style="text-align: center;">
-							<button type="button" id="submit_btn" class="btn btn-info btn-fw">만들기</button>
+							<button type="button" id="update_btn" class="btn btn-info btn-fw">수정하기</button>
 							<button type="button" id="reset_btn" class="btn btn-info btn-fw">초기화</button>
 							<button type="button" id="cancel_btn" class="btn btn-info btn-fw">취소</button>
 						</div>

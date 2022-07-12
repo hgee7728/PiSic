@@ -12,6 +12,7 @@ public interface MyMusicService {
 	public List<MyMusic> selectPlaylist(String m_id);
 	public int insertSound(List<Sound> soundList);
 	public int deletePlaylist(List<MyMusic> mymusicList);
+	public int updatePlaylist(MyMusic mymusic, List<Sound> soundList);
 	public List<Sound> selectPlaylistSound(MyMusic mymusic);
 	public List<Sound> selectSoundRecent(String m_id);
 	public List<Sound> selectSoundOften(String m_id);
@@ -24,4 +25,5 @@ public interface MyMusicService {
 	public List<Sound> selectSoundLikeList(String m_id);
 	public int selectSoundLikeTotalCnt(String m_id);
 	public int selectSoundRecentTotalCnt(String m_id);
+	
 }
