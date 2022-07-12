@@ -28,162 +28,16 @@
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-.content_div1 {
-	display: flex;
-	margin: 30px 0px 30px 0px;
-}
-
-.main_img_div {
-	text-align: center;
-	margin-right: 20px;
-}
-
-.main_img_div.rel_album {
-	margin: 0px auto;
-}
-
-table.intro_table tr>td:nth-child(1) {
-	width: 50px;
-}
-
-.content_info {
-	vertical-align: middle;
-}
-
-.content_div0 {
-	clear: both;
-	margin: 30px 0px;
-}
-
-.intro_box {
-	font-size: 14px;
-}
-
 .list_icon {
 	font-size: 30px;
 	margin: 0px 5px;
 }
 
-.album_div {
-	padding: 15px 15px;
-}
-
-.artist_div {
-	padding: 15px 15px;
-	display: flex;
-}
-
-.grid-4 {
-	flex: 0 0 25%;
-	max-width: 25%;
-}
-
-.div_like {
-	display: flex;
-	justify-content: space-between;
-}
-
-.div_like p {
-	line-height: 30px;
-	margin: 0;
-}
-
 .content-wrapper a {
 	color: #6c7293;
 }
-
-.playlist_insert_modal_new {
-	text-align: center;
-}
-
-.rel_album_div {
-	padding: 15px 0px;
-}
-
-.report_div {
-	margin: 0px 15px;
-	text-align: center;
-}
-
-.recomment_div {
-	margin: 0px 15px;
-}
-
-.recomment_div textarea {
-	width: 100%;
-}
-
-.recomment_div textarea, .recomment_div button {
-	vertical-align: middle;
-}
-
-.recomment_content_div {
-	padding: 15px 15px;
-}
-
-.sound_recomment_table img {
-	width: 30px;
-	height: 30px;
-	border-radius: 100%;
-}
-
-table.sound_recomment_table td {
-	white-space: normal !important;
-}
-
-table.sound_recomment_table  tr:nth-child(1) {
-	text-align: center;
-}
-
-table.sound_recomment_table  tr>td:nth-child(1) {
-	width: 5%;
-}
-
-table.sound_recomment_table  tr>td:nth-child(2) {
-	width: 15%;
-}
-
-table.sound_recomment_table  tr>td:nth-child(3) {
-	width: 50%;
-}
-
-table.sound_recomment_table  tr>td:nth-child(4), table.sound_recomment_table  tr>td:nth-child(5)
-	{
-	width: 10%;
-	text-align: center;
-}
-
-table.album_table thead tr th:nth-child(2) {
-	width: 50%;
-}
 </style>
 <style>
-.content_div1 {
-	display: flex;
-	margin: 30px 0px 30px 0px;
-}
-
-.main_img_div {
-	margin-right: 20px;
-}
-
-table.intro_table tr>td:nth-child(1) {
-	width: 50px;
-}
-
-table.intro_table a {
-	color: #6c7293;
-}
-
-.content_info {
-	vertical-align: middle;
-}
-
-.content_div2 {
-	clear: both;
-	margin: 30px 0px;
-}
-
 table.sound_list  tr>td:nth-child(1), table.sound_list  tr>td:nth-child(2),
 	table.sound_list  tr>td:nth-child(3), table.sound_list  tr>td:nth-child(7),
 	table.sound_list  tr>td:nth-child(8), table.sound_list  tr>td:nth-child(9)
@@ -195,10 +49,6 @@ table.sound_list  tr>td:nth-child(2), table.sound_list  tr>td:nth-child(7),
 	table.sound_list  tr>td:nth-child(8), table.sound_list  tr>td:nth-child(9)
 	{
 	text-align: center;
-}
-
-.intro_box {
-	font-size: 14px;
 }
 
 .list_icon {
@@ -216,34 +66,6 @@ $(function(){
 	if(msg){
 		alert(msg);
 	}
-	// 더보기 기능
-	var content = $(".intro_box");
-    var content_txt = content.text();
-    var content_html = content.html();
-    var content_txt_short = content_txt.substring(0,100)+"...";
-    
-    if(content_txt.length >= 100){
-        content.html(content_txt_short)
-        
-    }else{
-        $(".btn_more").hide()
-    }
-    
-    $(".btn_more").click(toggle_content);
-    function toggle_content(){
-        if($(this).hasClass('short')){
-            // 접기 상태
-            $(this).html('더보기');
-            content.html(content_txt_short)
-            $(this).removeClass('short');
-        }else{
-            // 더보기 상태
-            $(this).html('접기');
-            content.html(content_html);
-            $(this).addClass('short');
-
-        }
-    }
     
     // 체크박스 전체선택
     $("#check_all").click(function(){
@@ -503,7 +325,7 @@ function selectAlbumDetail(a_no){
 			<div class="main-panel">
 				<div class="content-wrapper">
 
-					<h2 class=" card-title">PISIC CHART &nbsp&nbsp${serverTime}</h2>
+					<h2 class=" card-title">PISIC CHART &nbsp;&nbsp;${serverTime}</h2>
 					<br>
 					<p>PISIC USER 들의 전체 재생 수 기준 랭킹 조회</p>
 					<div class="content_div3">
@@ -552,7 +374,7 @@ function selectAlbumDetail(a_no){
 																	</label>
 																</div>
 															</td>
-															<td>No</td>
+															<td>순위</td>
 															<td></td>
 															<td>노래명</td>
 															<td>가수명</td>

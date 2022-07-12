@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/resources/assets/css/reset.css">
-	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -12,6 +9,10 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>PISIC CHART</title>
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/resources/assets/css/reset.css">
 <!-- plugins:css -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -36,7 +37,7 @@
 <!-- End layout styles -->
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 .btn_more {
 	width: 70px;
@@ -48,164 +49,32 @@
 }
 </style>
 <style>
-.content_div1 {
-	display: flex;
-	margin: 30px 0px 30px 0px;
-}
-
-.main_img_div {
-	text-align: center;
-	margin-right: 20px;
-}
-.main_img_div.rel_album{
-	margin:0px auto;
-}
-
-table.intro_table tr > td:nth-child(1){
-	width:50px;
-} 
-.content_info {
-	vertical-align: middle;
-}
-
-.content_div0 {
-	clear: both;
-	margin: 30px 0px;
-}
-.intro_box {
-	font-size:14px;
-}
-.list_icon{
-	font-size:30px;
+.list_icon {
+	font-size: 30px;
 	margin: 0px 5px;
 }
-.album_div{
-	padding:15px 15px;
-}
-.artist_div{
-	padding:15px 15px;
-	display: flex;
-}
-.grid-4 {
-	flex: 0 0 25%;
-	max-width: 25%;
-}
-
-
-.div_like {
-	display: flex;
-	justify-content: space-between;
-	
-}
-.div_like p{
-	line-height: 30px;
-	margin:0;
-} 
-.content-wrapper a {
-	color:#6c7293;
-}
-.playlist_insert_modal_new{
-	text-align: center;
-}
-.rel_album_div{
-	padding: 15px 0px;
-}
-.report_div{
-	margin: 0px 15px;
-	text-align: center;
-}
-
-.recomment_div {
-	margin: 0px 15px;
-}
-.recomment_div textarea{
-	width : 100%;
-}
-.recomment_div textarea, .recomment_div button{
-	vertical-align: middle;
-}
-.recomment_content_div {
-	padding: 15px 15px;
-}
-.sound_recomment_table img{
-	width: 30px;
-    height: 30px;
-    border-radius: 100%;
-}
-table.sound_recomment_table td{
-	white-space: normal !important;
-}
-table.sound_recomment_table  tr:nth-child(1){
-	text-align:center;
-}
-table.sound_recomment_table  tr > td:nth-child(1){
-	width: 5%;
-}
-table.sound_recomment_table  tr > td:nth-child(2){
-	width: 15%;
-}
-table.sound_recomment_table  tr > td:nth-child(3){
-	width: 50%;
-}
-table.sound_recomment_table  tr > td:nth-child(4),
-table.sound_recomment_table  tr > td:nth-child(5){
-	width: 10%;
-	text-align:center;
-}
-table.album_table thead tr th:nth-child(2){
-	width:50%;
-}
-
 </style>
 <style>
-.content_div1 {
-	display: flex;
-	margin: 30px 0px 30px 0px;
-}
-
-.main_img_div {
-	margin-right: 20px;
-}
-
-table.intro_table tr > td:nth-child(1){
-	width:50px;
-} 
-table.intro_table a {
-	color:#6c7293;
-}
-.content_info {
-	vertical-align: middle;
-}
-
-.content_div2 {
-	clear: both;
-	margin: 30px 0px;
-}
-table.sound_list  tr > td:nth-child(1),
-table.sound_list  tr > td:nth-child(2),
-table.sound_list  tr > td:nth-child(6),
-table.sound_list  tr > td:nth-child(7),
-table.sound_list  tr > td:nth-child(8){
+table.sound_list  tr>td:nth-child(1), table.sound_list  tr>td:nth-child(2),
+	table.sound_list  tr>td:nth-child(6), table.sound_list  tr>td:nth-child(7),
+	table.sound_list  tr>td:nth-child(8) {
 	width: 5%;
 }
-table.sound_list  tr > td:nth-child(1),
-table.sound_list  tr > td:nth-child(6),
-table.sound_list  tr > td:nth-child(7),
-table.sound_list  tr > td:nth-child(8){
-	text-align:center;
+
+table.sound_list  tr>td:nth-child(1), table.sound_list  tr>td:nth-child(6),
+	table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8)
+	{
+	text-align: center;
 }
 
-.intro_box {
-	font-size:14px;
-}
-.list_icon{
-	font-size:30px;
+.list_icon {
+	font-size: 30px;
 	margin: 0px 5px;
 }
-table.sound_list a {
-	color:#6c7293;
-}
 
+table.sound_list a {
+	color: #6c7293;
+}
 </style>
 <script>
 $(function(){
@@ -224,7 +93,7 @@ $(function(){
 		} else {
 			$("#playlist_insert_modal").show();
 			$.ajax({
-				url: "<%=request.getContextPath() %>/mymusic/playlist.ax",
+				url: "<%=request.getContextPath()%>/mymusic/playlist.ax",
 				type: "post",
 				success: function(result) {
 					var html = "";
@@ -284,7 +153,7 @@ function playOne(a_no,s_no){
     frm.appendChild(input_s_no);
     frm.appendChild(input_a_no);
     frm.setAttribute('method', 'post');
-    frm.setAttribute('action', '<%=request.getContextPath() %>/sound/play');
+    frm.setAttribute('action', '<%=request.getContextPath()%>/sound/play');
     document.body.appendChild(frm);
 	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
 	frm.target="SoundPlayer";
@@ -295,7 +164,7 @@ function playOne(a_no,s_no){
 function soundLike(a_no,s_no){
 	console.log("좋아요");
 	$.ajax({
-		url:"<%=request.getContextPath() %>/sound/like",
+		url:"<%=request.getContextPath()%>/sound/like",
 		type:"post",
 		data:{
 			a_no:a_no,
@@ -304,7 +173,7 @@ function soundLike(a_no,s_no){
 		success: function(result){
 			if(result == "-2"){
 				alert("로그인 후 이용해주세요");
-				location.replace("<%=request.getContextPath() %>/member/login");
+				location.replace("<%=request.getContextPath()%>/member/login");
 			} else if(result == "-1"){
 				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 			} else if(result == "0"){
@@ -326,7 +195,7 @@ function soundLike(a_no,s_no){
 function playlistInsert(a_no, s_no){
 	$("#playlist_insert_modal").show();
 	$.ajax({
-		url: "<%=request.getContextPath() %>/mymusic/playlist.ax",
+		url: "<%=request.getContextPath()%>/mymusic/playlist.ax",
 		type: "post",
 		success: function(result) {
 			var html = "";
@@ -354,7 +223,7 @@ function playlistInsert(a_no, s_no){
 // 한곡 담기
 function playlistInsertDo(a_no, s_no, l_no){
 	$.ajax({
-		url: "<%=request.getContextPath() %>/mymusic/insertSound",
+		url: "<%=request.getContextPath()%>/mymusic/insertSound",
 		type: "post",
 		data:{
 			a_no:a_no,
@@ -399,7 +268,7 @@ function playlistSelectInsertDo(l_no){
 	}
 	
 	$.ajax({
-		url: "<%=request.getContextPath() %>/mymusic/insertSound",
+		url: "<%=request.getContextPath()%>/mymusic/insertSound",
 		type: "post",
 		dataType: "json",
 		data: ajaxData,
@@ -419,22 +288,23 @@ function playlistSelectInsertDo(l_no){
 
 // 새 플레이 리스트 만들기
 function newPlaylist(){
-	location.href = "<%=request.getContextPath() %>/mymusic/insertPlaylist";
+	location.href = "<%=request.getContextPath()%>/mymusic/insertPlaylist";
 };
 
 // 제목, 아티스트, 앨범 클릭시 상세조회 페이지
 function selectSoundDetail(a_no, s_no){
-	location.href = "<%=request.getContextPath() %>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
+	location.href = "<%=request.getContextPath()%>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
 };
 function selectArtistDetail(artist_no){
-	location.href = "<%=request.getContextPath() %>/sound/artistDetail?artist_no=" + artist_no;
+	location.href = "<%=request.getContextPath()%>/sound/artistDetail?artist_no=" + artist_no;
 };
 function selectAlbumDetail(a_no){
-	location.href = "<%=request.getContextPath() %>/sound/albumDetail?a_no=" + a_no;
+	location.href = "<%=request.getContextPath()%>/sound/albumDetail?a_no=" + a_no;
 };
 </script>
 </head>
 <body>
+	<jsp:include page="../commonSoundList.jsp" />
 	<div class="container-scroller">
 		<!-- partial:partials/_sidebar.html -->
 		<jsp:include page="../_sidebar.jsp" />
@@ -460,8 +330,8 @@ function selectAlbumDetail(a_no){
 												<table class="table sound_list">
 													<thead>
 														<tr>
-															
-															<td>No</td>
+
+															<td>순위</td>
 															<td></td>
 															<td>노래명</td>
 															<td>가수명</td>
@@ -474,7 +344,7 @@ function selectAlbumDetail(a_no){
 													<tbody>
 														<c:forEach items="${chartTopten}" var="sounds">
 															<tr>
-																
+
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a
@@ -530,8 +400,8 @@ function selectAlbumDetail(a_no){
 												<table class="table sound_list">
 													<thead>
 														<tr>
-															
-															<td>No</td>
+
+															<td>순위</td>
 															<td></td>
 															<td>노래명</td>
 															<td>가수명</td>
@@ -544,7 +414,7 @@ function selectAlbumDetail(a_no){
 													<tbody>
 														<c:forEach items="${monthlyTopten}" var="sounds">
 															<tr>
-																
+
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a
@@ -602,8 +472,8 @@ function selectAlbumDetail(a_no){
 												<table class="table sound_list">
 													<thead>
 														<tr>
-															
-															<td>No</td>
+
+															<td>순위</td>
 															<td></td>
 															<td>노래명</td>
 															<td>가수명</td>
@@ -616,7 +486,7 @@ function selectAlbumDetail(a_no){
 													<tbody>
 														<c:forEach items="${weeklyTopten}" var="sounds">
 															<tr>
-																
+
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a
@@ -671,8 +541,8 @@ function selectAlbumDetail(a_no){
 												<table class="table sound_list">
 													<thead>
 														<tr>
-															
-															<td>No</td>
+
+															<td>순위</td>
 															<td></td>
 															<td>노래명</td>
 															<td>가수명</td>
@@ -685,7 +555,7 @@ function selectAlbumDetail(a_no){
 													<tbody>
 														<c:forEach items="${dailyTopten}" var="sounds">
 															<tr>
-																
+
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a
@@ -741,8 +611,8 @@ function selectAlbumDetail(a_no){
 												<table class="table sound_list">
 													<thead>
 														<tr>
-															
-															<td>No</td>
+
+															<td>순위</td>
 															<td></td>
 															<td>노래명</td>
 															<td>가수명</td>
@@ -755,7 +625,7 @@ function selectAlbumDetail(a_no){
 													<tbody>
 														<c:forEach items="${likeTopten}" var="sounds">
 															<tr>
-																
+
 																<td>${sounds.chart }</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a

@@ -8,6 +8,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>PISIC</title>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <link
 	href="<%=request.getContextPath()%>/resources/assets/css/reset.css"
 	rel="stylesheet" type="text/css">
@@ -32,8 +33,6 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-
-
 <style>
 .map {
 	display: block;
@@ -181,32 +180,12 @@ img:nth-child(6) {
 	cursor: pointer;
 	color: #ffffff;
 }
-
+.btn_reload{
+	color: #ffffff;
+	background-color: black;
+}
 </style>
 <style>
-.content_div1 {
-	display: flex;
-	margin: 30px 0px 30px 0px;
-}
-
-.main_img_div {
-	margin-right: 20px;
-}
-
-table.intro_table tr > td:nth-child(1){
-	width:50px;
-} 
-table.intro_table a {
-	color:#6c7293;
-}
-.content_info {
-	vertical-align: middle;
-}
-
-.content_div2 {
-	clear: both;
-	margin: 30px 0px;
-}
 table.sound_list  tr > td:nth-child(1),
 table.sound_list  tr > td:nth-child(2),
 table.sound_list  tr > td:nth-child(6),
@@ -229,11 +208,8 @@ table.sound_list  tr > td:nth-child(7){
 table.sound_list a {
 	color:#6c7293;
 }
-
-
 </style>
 <script>
-
 //한곡 재생 - post방식으로 a태그 이용해서 이동
 function playOne(a_no,s_no){
 	console.log("한곡재생");
@@ -289,8 +265,6 @@ function soundLike(a_no,s_no){
 	}); //ajax 끝
 };
 
-
-
 // 제목, 아티스트, 앨범 클릭시 상세조회 페이지
 function selectSoundDetail(a_no, s_no){
 	location.href = "<%=request.getContextPath() %>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
@@ -324,9 +298,9 @@ function selectAlbumDetail(a_no){
 											<h4 class="mb-1 mb-sm-0">Explore Top Music Powered by
 												your PISIC</h4>
 											<p class="mb-0 font-weight-normal d-none d-sm-block">We
-												bring together your favourite music services and join up
+												bring together your favorite music services and join up
 												listening, watching and sharing to connect your musical
-												world. Below you can visualise, in real-time, the listening
+												world. Below you can visualize, in real-time, the listening
 												habits & trends of PISIC's global community. Go Explore.</p>
 										</div>
 									</div>
@@ -349,13 +323,13 @@ function selectAlbumDetail(a_no){
 
 					<br>
 
-					<h4 class=" card-title">
-						실시간 TOP 10
-						<p>
-							<i type="button" class="mdi mdi-reload btn_reload"></i>
+					<div class=" card-title">
+						<h4>실시간 TOP 10</h4>
+						<div>
+							<button type="button" class="mdi mdi-reload btn_reload"></button>
 							<code>${serverTime}</code>
-						</p>
-					</h4>
+						</div>
+					</div>
 
 					<div class="col-lg-12 grid-margin stretch-card">
 						<div class="card-body">
@@ -375,8 +349,6 @@ function selectAlbumDetail(a_no){
 										</tr>
 									</thead>
 									<tbody>
-
-
 										<c:forEach items="${chartDetail}" var="sounds">
 											<tr>
 												<td>${sounds.chart }</td>
@@ -397,7 +369,6 @@ function selectAlbumDetail(a_no){
 													href="javascript:soundLike('${sounds.a_no }','${sounds.s_no}')"><i
 														class="mdi mdi-heart list_icon like_after"></i></a> <!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
 												</td>
-												
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -406,20 +377,19 @@ function selectAlbumDetail(a_no){
 						</div>
 					</div>
 					<br>
-
 					<div class="row">
 						<div class="col-md-6 corona-gradient-card">
 							<h4 class="card-title">ALL TIME SCOROBBLES</h4>
 							<!-- TODO mg : total count 등록하기 -->
 
 
-						</div>
 
+
+						</div>
 						<div class="col-lg-6 corona-gradient-card">
 							<h4 class="card-title">지역별 플레이리스트 보기</h4>
 							<div class="card">
 								<div class="card-body">
-
 									<img
 										src="<%=request.getContextPath()%>/resources/assets/images/main/mapamp.gif"
 										alt="" class="img-fluid map" usemap="#map">
@@ -487,7 +457,6 @@ function selectAlbumDetail(a_no){
 			</div>
 		</div>
 	</div>
-
 	<div class="container">
 		<div class="popup-wrap" id="modal">
 			<div class="popup">
@@ -515,7 +484,7 @@ function selectAlbumDetail(a_no){
 				</div>
 				<div class="popup-footer">
 					<span class="pop-btn close-cookie" id="close-cookie"><i
-						class="mdi mdi-close"></i>&nbsp오늘 하루 보지 않기 &nbsp</span>
+						class="mdi mdi-close"></i>&nbsp;오늘 하루 보지 않기&nbsp;</span>
 				</div>
 			</div>
 		</div>
