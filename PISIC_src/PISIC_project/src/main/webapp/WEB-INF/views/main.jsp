@@ -301,7 +301,7 @@ function selectAlbumDetail(a_no){
 												bring together your favorite music services and join up
 												listening, watching and sharing to connect your musical
 												world. Below you can visualize, in real-time, the listening
-												habits & trends of PISIC's global community. Go Explore.</p>
+												habits &amp; trends of PISIC's global community. Go Explore.</p>
 										</div>
 									</div>
 								</div>

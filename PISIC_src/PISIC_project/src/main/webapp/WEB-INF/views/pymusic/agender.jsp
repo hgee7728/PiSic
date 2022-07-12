@@ -334,7 +334,7 @@ function selectAlbumDetail(a_no){
 				<div class="content-wrapper">
 
 					<h2 class=" card-title">
-						Pick Your Age&Gender &nbsp;&nbsp;${serverTime}
+						Pick Your Age &amp; Gender &nbsp;&nbsp;${serverTime}
 					</h2>
 					<br>
 					<p>성별 + 연령대별 전체 재생 수 기준 랭킹 조회</p>

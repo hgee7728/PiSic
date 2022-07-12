@@ -94,7 +94,7 @@
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=6'">R&B/소울</button>
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=6'">R&amp;B/소울</button>
 								</div>
 							</div>
 						</div>
