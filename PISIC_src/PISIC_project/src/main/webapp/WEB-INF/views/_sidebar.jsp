@@ -156,13 +156,22 @@
         <i class="menu-arrow"></i>
       </a>
       <div class="collapse" id="ui-basic">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/playlist">내 플레이 리스트</a></li>
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/artistLikeList">좋아하는 아티스트</a></li>
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundLikeList">좋아하는 노래</a></li>
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundRecentList">최근 들은 노래</a></li>
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundOftenList">많이 들은 노래</a></li>
-        </ul>
+      	<c:choose>
+      		<c:when test="${empty loginSsInfo }">
+      			<ul class="nav flex-column sub-menu">
+      				<li class="nav-item"><p class="text-muted mb-0">로그인 후 이용해주세요.</p></li>
+      			</ul>
+      		</c:when>
+      		<c:otherwise>
+      			<ul class="nav flex-column sub-menu">
+		          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/playlist">내 플레이 리스트</a></li>
+		          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/artistLikeList">좋아하는 아티스트</a></li>
+		          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundLikeList">좋아하는 노래</a></li>
+		          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundRecentList">최근 들은 노래</a></li>
+		          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundOftenList">많이 들은 노래</a></li>
+		        </ul>
+      		</c:otherwise>
+      	</c:choose>
       </div>
     </li>
     <li class="nav-item nav-category">

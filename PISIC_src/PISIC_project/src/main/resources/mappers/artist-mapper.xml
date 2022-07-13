@@ -35,7 +35,8 @@
 		artist_company, artist_type,
 		artist_group, artist_member,
 		artist_profile, artist_info1,
-		artist_info2
+		artist_info2,
+        (select count(*) like_cnt from artist_like where artist_no= #{artist_no}) like_cnt
 		from artist where
 		artist_no=#{artist_no}
 	</select>

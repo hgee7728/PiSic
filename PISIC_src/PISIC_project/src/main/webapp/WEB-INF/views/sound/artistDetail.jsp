@@ -502,6 +502,36 @@ function selectArtistDetail(artist_no){
 function selectAlbumDetail(a_no){
 	location.href = "<%=request.getContextPath()%>/sound/albumDetail?a_no=" + a_no;
 };
+
+function artistLike(artist_no){
+	$.ajax({
+		url:"<%=request.getContextPath() %>/mymusic/artistLike",
+		type:"post",
+		data:{
+			artist_no:artist_no
+			},
+		success: function(result){
+			if(result == "-2"){
+				alert("로그인 후 이용해주세요");
+				location.replace("<%=request.getContextPath() %>/member/login");
+			} else if(result == "-1"){
+				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
+			} else if(result == "0"){
+				alert("해당 아티스트를 좋아요를 취소했습니다.");
+				location.reload();
+			} else if(result == "1"){
+				alert("해당 아티스트 좋아요를 실패 했습니다. 다시 시도해주세요.");
+			} else if(result == "2"){
+				alert("해당 아티스트를 좋아요 했습니다.");
+				location.reload();
+			}
+			
+		},
+		error:function(){
+			
+		}
+	}); //ajax 끝
+};
 </script>
 </head>
 <body>
@@ -563,8 +593,8 @@ function selectAlbumDetail(a_no){
 											<td>좋아요 :</td>
 											<td>
 												<div class="div_like">
-													<p>${sound.cnt_like }</p>
-													<a href="javascript:soundLike('${artist.artist_name }')"><i
+													<p>${artist.like_cnt }</p>
+													<a href="javascript:artistLike('${artist.artist_no }')"><i
 														class="mdi mdi-heart list_icon like_after"></i></a>
 												</div>
 											</td>

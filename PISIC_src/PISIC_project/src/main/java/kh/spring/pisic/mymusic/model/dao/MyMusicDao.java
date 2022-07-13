@@ -104,5 +104,14 @@ public class MyMusicDao {
 		return session.update("MyMusic.updatePlaylist", mymusic);
 	}
 	
+	// 아티스트 좋아요 확인
+	public int checkArtistLike(Artist artist) {
+		return session.selectOne("MyMusic.checkArtistLike",artist);
+	}
+	
+	// 아티스트 좋아요
+	public int insertArtistLike(Artist artist) {
+		return session.insert("MyMusic.insertArtistLike", artist);
+	}
 	
 }

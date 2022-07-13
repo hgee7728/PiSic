@@ -117,6 +117,18 @@ public class MyMusicServiceImpl implements MyMusicService{
 		return dao.updatePlaylist(mymusic);
 	}
 
+	// 아티스트 좋아요 확인
+	@Override
+	public int checkArtistLike(Artist artist) {
+		return dao.checkArtistLike(artist);
+	}
+
+	// 아티스트 좋아요
+	@Override
+	public int insertArtistLike(Artist artist) {
+		return dao.insertArtistLike(artist);
+	}
+
 
 
 }

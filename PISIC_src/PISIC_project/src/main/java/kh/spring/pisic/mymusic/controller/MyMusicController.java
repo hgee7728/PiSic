@@ -243,8 +243,40 @@ public class MyMusicController {
 		return mv;
 	}
 	
+	// 아티스트 좋아요
+	@PostMapping("/artistLike")
+	@ResponseBody
+	public String artistLike(Artist artist, HttpSession session) {
+
+		// 로그인 여부 확인
+		String resultAjax = "";
+		if (session.getAttribute("loginSsInfo") == null) {
+			resultAjax = "-2"; 
+		} else {
+			// 좋아요 여부 확인
+			Member member = (Member)session.getAttribute("loginSsInfo");
+			artist.setM_id(member.getM_id());
+			if(service.checkArtistLike(artist) > 0) { // 좋아요가 되어있는 경우
+				int result = service.deleteArtistLike(artist);
+				if(result < 1) { // 좋아요 취소 실패
+					resultAjax = "-1";
+				} else { // 좋아요 취소 성공
+					resultAjax = "0";
+				}
+			} else { // 좋아요가 안되어있는 경우
+				int result = service.insertArtistLike(artist);
+				if(result < 1) { // 좋아요 실패
+					resultAjax = "1";
+				} else { // 좋아요 성공
+					resultAjax = "2";
+				}
+			}
+		}
+		return resultAjax;
+	}
+	
 	// 아티스트 좋아요 취소
-	@PostMapping("deleteArtistLike")
+	@PostMapping("/deleteArtistLike")
 	public ModelAndView deleteArtistLike(
 			ModelAndView mv
 			, HttpSession session

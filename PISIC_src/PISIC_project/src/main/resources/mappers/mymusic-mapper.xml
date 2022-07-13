@@ -152,11 +152,12 @@
 <!-- 최근 들은 곡 --><!-- TODO 날짜 수정해야돼, -->
 <select id="selectSoundRecent" resultMap="soundResultMap">
 	select DISTINCT sound.s_no, sound.a_no, sound.s_name, sound.s_path
-	, album.a_cover, album.a_name
+	, album.a_cover, album.a_name, pinfo.p_date
 	from sound sound
 	join playinfo pinfo on sound.s_no = pinfo.s_no and sound.a_no = pinfo.a_no
 	join album album on sound.a_no = album.a_no
 	where pinfo.m_id = #{m_id} and pinfo.p_date BETWEEN sysdate-100 and sysdate
+	order by pinfo.p_date desc
 </select>
 
 <!-- 자주 들은 곡 -->
@@ -198,7 +199,23 @@
 	join (select count(*) like_cnt, artist_no from artist_like group by
 	artist_no) t1 on art.artist_no = t1.artist_no
 	where m_id = #{m_id}
+	order by like_date desc
 </select>
+
+<!-- 아티스트 좋아요 확인 -->
+<select id="checkArtistLike" parameterType="Artist" resultType="int">
+	select count(*) from artist_like 
+	where m_id = #{m_id}
+	and artist_no = #{artist_no} 
+</select>
+
+<!-- 아티스트 좋아요 -->
+<insert id="insertArtistLike">
+	insert into artist_like
+	(artist_no, m_id, like_date)
+	values
+	(#{artist_no}, #{m_id}, default)
+</insert>
 
 <!-- 아티스트 좋아요 취소 -->
 <delete id="deleteArtistLike" parameterType="Artist">
@@ -217,7 +234,8 @@
 	join (select count(*) cnt_like ,s_no,a_no from sound_like group by
 	s_no,a_no) like_cnt
 	on like_cnt.a_no = sound.a_no and like_cnt.s_no = sound.s_no
-	where m_id = #{m_id} order by like_date desc
+	where m_id = #{m_id} 
+	order by like_date desc
 </select>
 
 <!-- 좋아하는 노래 목록 총 갯수 -->
