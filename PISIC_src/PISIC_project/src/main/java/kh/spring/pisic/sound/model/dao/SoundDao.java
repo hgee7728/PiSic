@@ -121,5 +121,16 @@ public class SoundDao {
 		return session.selectList("Artist.selectArtistJoinSound", artist_no);
 	}
 	
+	// 데일리 감상자수 
+	public String selectDailyListen(Sound sound) {
+		return session.selectOne("Sound.selectDailyListen", sound);
+	}
+	
+	// 어제의 차트 순위
+	public String selectYesterChart(Sound sound) {
+		return session.selectOne("Sound.selectYesterChart", sound);
+	}
+
+	
 	
 }

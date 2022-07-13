@@ -72,6 +72,7 @@ public class SoundController {
 		return mv;
 
 	}
+	
 
 	// properties 파일 내 설정된 변수 불러오기
 	@Value("${cloud_name}")
@@ -114,6 +115,7 @@ public class SoundController {
 
 		// 저장된 파일 가지고 cloudinary에 저장
 		File newFile = new File(uploadPath + "/" + orgFileName);
+		@SuppressWarnings("rawtypes")
 		Map uploadResult = null;
 		try {
 			uploadResult = cloudinary.uploader().upload(newFile, ObjectUtils.asMap("public_id",
@@ -151,6 +153,20 @@ public class SoundController {
 		mv.addObject("relArtistAlbum",service.selectRelArtistAlbum(sound));
 		// 관련 플레이리스트 공유 게시판
 		mv.addObject("relPlaylistBoard",service.selectRelPlaylistBoard(sound));
+		
+		// 이곡의 기록
+		// 데일리 감상자수
+		if(service.selectDailyListen(sound) == null) {
+			mv.addObject("dailyListen", "N");
+		} else {
+			mv.addObject("dailyListen", service.selectDailyListen(sound));
+		}
+		// 어제의 차트 순위
+		if(service.selectYesterChart(sound) == null) {
+			mv.addObject("yesterChart", "N");
+		} else {
+			mv.addObject("yesterChart", service.selectYesterChart(sound));
+		}
 		
 		
 		// 스트리밍 리포트

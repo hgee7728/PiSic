@@ -39,13 +39,23 @@ $(document).ready(function(){
 	var sound_data = '${soundList}';
 	var obj = JSON.parse(sound_data);
 	var sound_obj = JSON.parse(sound_data);
-	
+	console.log("sound_data : " + sound_data);
+	console.log("sound_obj0: "+sound_obj[0]);
+	console.log("sound_obj0.singers: "+sound_obj[0].singers[0].artist_name);
+	console.log("singer length :" + sound_obj[0].singers.length);
+	var singer_list = [];
+	for (var i = 0 ; i < sound_obj.length ; i ++){
+		for(var k = 0 ; k < sound_obj[i].singers.length ; k++){
+			singer_list[k] = sound_obj[i].singers[k].artist_name;
+		}
+	}
+	console.log("singser_list: "+singer_list);
 	// 받은 노래 데이터로 플레이 리스트 만들기
 	for(var i = 0 ; i < sound_obj.length ; i++){
 		// jPlayer
 		myPlaylist.add({
 			title: sound_obj[i].s_name,
-			artist: sound_obj[i].artist_name,
+			artist: singer_list[i],
 			mp3: sound_obj[i].s_path,
 			poster: sound_obj[i].a_cover
 		});

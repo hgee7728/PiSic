@@ -66,9 +66,6 @@ table.intro_table a {
 .intro_box {
 	font-size:14px;
 }
-
-
-
 </style>
 <script>
 const root_path = '<%=request.getContextPath() %>';
@@ -106,11 +103,6 @@ $(function(){
         }
     }
 });
-
-
-
-
-
 </script>
 </head>
 <body>

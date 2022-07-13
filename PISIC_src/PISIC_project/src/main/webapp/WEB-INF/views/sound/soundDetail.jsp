@@ -624,13 +624,27 @@ function selectAlbumDetail(a_no){
 								<div class="card report_div">
 									<div class="card-body">
 									<h4 class="card-title">데일리 감상자수(실시간)</h4>
-									<p class="text-muted mb-0">${sound.s_name} 위</p>
+									<c:choose>
+										<c:when test="${dailyListen =='N' }">
+											<p class="text-muted mb-0">0 회</p>
+										</c:when>
+										<c:otherwise>
+											<p class="text-muted mb-0">${dailyListen } 회</p>
+										</c:otherwise>
+									</c:choose>
 									</div>
 								</div>
 								<div class="card report_div">
 									<div class="card-body">
 									<h4 class="card-title">어제의 차트 순위</h4>
-									<p class="text-muted mb-0">${sound.s_name} 위</p>
+									<c:choose>
+										<c:when test="${yesterChart =='N' }">
+											<p class="text-muted mb-0">순위권 밖</p>
+										</c:when>
+										<c:otherwise>
+											<p class="text-muted mb-0">${yesterChart } 위</p>
+										</c:otherwise>
+									</c:choose>
 									</div>
 								</div>
 								<div class="card report_div">

@@ -27,5 +27,6 @@ public interface SoundService {
 	public int selectTotalListen(Member member, Sound sound);
 	public int insertSoundRecomment(Member member, SoundRecomment soundRecomment);
 	public int deleteSoundRecomment(Member member, SoundRecomment soundRecomment);
-	
+	public String selectDailyListen(Sound sound);
+	public String selectYesterChart(Sound sound);
 }

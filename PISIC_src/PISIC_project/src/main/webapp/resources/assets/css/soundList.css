@@ -16,7 +16,6 @@
 	z-index: 1000;
 	
 }
-
 #playlist_insert_modal .playlist_insert_modal_window {
 	border-radius: 10px;
 	width: 600px;
@@ -36,7 +35,6 @@
 .playlist_insert_modal{
 	overflow: auto !important;
 }
-
 .list_icon{
 	font-size:30px;
 	margin: 0px 5px;

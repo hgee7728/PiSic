@@ -100,5 +100,17 @@ public class SoundServiceImpl implements SoundService{
 	public List<Sound> selectArtistJoinSound(String artist_no) {
 		return dao.selectArtistJoinSound(artist_no);
 	}
+	
+	// 데일리 감상자수 
+	@Override
+	public String selectDailyListen(Sound sound) {
+		return dao.selectDailyListen(sound);
+	}
+	
+	// 어제의 차트 순위
+	@Override
+	public String selectYesterChart(Sound sound) {
+		return dao.selectYesterChart(sound);
+	}
 
 }

@@ -161,12 +161,10 @@
 </delete>
 
 <!-- 선택 재생 -->
-<select id="selectSoundList" parameterType="list" resultType="Sound">
-	select s_name, s_path, artist.artist_name, album.a_cover, sound.a_no, sound.s_no
+<select id="selectSoundList" parameterType="list" resultMap="soundResultMap">
+	select s_name, s_path,  album.a_cover, sound.a_no, sound.s_no
 	from sound sound 
 	join album album on sound.a_no = album.a_no
-	join singer singer on sound.s_no = singer.s_no and sound.a_no = singer.a_no
-	join artist artist on singer.artist_no = artist.artist_no
 	where (sound.a_no, sound.s_no) in
 		<foreach collection="list" item="item" open="(" separator="," close=")">
 			(#{item.a_no},#{item.s_no})
@@ -177,9 +175,9 @@
 <!-- 노래 좋아요 -->
 <insert id="insertLike" parameterType="hashmap">
 	insert into sound_like
-	(m_id, s_no, a_no)
+	(m_id, s_no, a_no, like_date)
 	values
-	(#{member.m_id}, #{sound.s_no}, #{sound.a_no})
+	(#{member.m_id}, #{sound.s_no}, #{sound.a_no}, default)
 </insert>
 
 <!-- 노래 좋아요 여부 확인 -->
@@ -198,9 +196,27 @@
 	and s_no = #{sound.s_no}
 </delete>
 
+<!-- 데일리 감상자 수 -->
+<select id="selectDailyListen" parameterType="Sound" resultType="string">
+	select t2.daily_cnt from 
+	(select rownum rnum, t1.cnt daily_cnt, t1.s_no s_no, t1.a_no a_no from  
+		(select count(*) cnt ,s_no,a_no 
+		from playinfo where p_date &lt;= SYSDATE and p_date &gt; (select SYSDATE -1 from dual) 
+		group by s_no, a_no order by cnt desc)t1 
+    )t2 
+    where t2.a_no=#{a_no} and t2.s_no=#{s_no}
+</select>
 
-
-
+<!-- 어제의 차트 순위 -->
+<select id="selectYesterChart" parameterType="Sound" resultType="string">
+	select t2.rnum from 
+	(select rownum rnum, t1.cnt daily_cnt, t1.s_no s_no, t1.a_no a_no from  
+		(select count(*) cnt ,s_no,a_no 
+		from playinfo where p_date &lt;= SYSDATE-1 and p_date &gt; (select SYSDATE -2 from dual) 
+		group by s_no, a_no order by cnt desc)t1 
+    )t2 
+    where t2.a_no=#{a_no} and t2.s_no=#{s_no}
+</select>
 
 
 

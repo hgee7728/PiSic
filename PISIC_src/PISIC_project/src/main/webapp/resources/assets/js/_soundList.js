@@ -7,7 +7,7 @@ $(function(){
     		$('input:checkbox').prop('checked',false);
     	}
     })
-    
+
     // 선택 재생
     $("#select_play").click(function(){
     	if($('input[name=s_no]:checked').length == '0'){
@@ -172,7 +172,6 @@ $(function(){
 	//한곡 재생 - post방식으로 a태그 이용해서 이동
 	function playOne(a_no,s_no){
 		console.log("한곡재생");
-	
 		var frm = document.createElement('form');
 	    var input_s_no = document.createElement('input');
 	    input_s_no.setAttribute('type', 'hidden');
@@ -188,10 +187,27 @@ $(function(){
 	    frm.setAttribute('method', 'post');
 	    frm.setAttribute('action', root_path + '/sound/play');
 	    document.body.appendChild(frm);
-		window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
+		windowObj = window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
 		frm.target="SoundPlayer";
 	    frm.submit();
 	};
+	/* function playOne(s_path){
+		console.log("한곡재생");
+		var frm = document.createElement('form');
+	    var input_s_path = document.createElement('input');
+	    input_s_path.setAttribute('type', 'hidden');
+	    input_s_path.setAttribute('name', 's_path');
+	    input_s_path.setAttribute('value', s_path);
+	    
+	    frm.appendChild(input_s_path);
+	    frm.appendChild(input_a_no);
+	    frm.setAttribute('method', 'post');
+	    frm.setAttribute('action', root_path + '/sound/play');
+	    document.body.appendChild(frm);
+		windowObj = window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
+		frm.target="SoundPlayer";
+	    frm.submit();
+	}; */
 
 	//노래 좋아요 - ajax
 	function soundLike(a_no,s_no){
