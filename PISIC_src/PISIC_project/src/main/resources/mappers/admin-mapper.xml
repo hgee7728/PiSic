@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Admin">
+
+	<!-- 아티스트 리스트 조회 -->
+	<select id="selectArtistList" parameterType="string"
+	resultType="Artist">
+		select artist_no, artist_name, artist_nation,
+		artist_company, artist_type,
+		artist_group, artist_member,
+		artist_profile, artist_info1,
+		artist_info2
+		from artist
+	</select>
+
+</mapper>
