@@ -40,26 +40,40 @@ $(document).ready(function(){
 	var obj = JSON.parse(sound_data);
 	var sound_obj = JSON.parse(sound_data);
 	console.log("sound_data : " + sound_data);
-	console.log("sound_obj0: "+sound_obj[0]);
-	console.log("sound_obj0.singers: "+sound_obj[0].singers[0].artist_name);
-	console.log("singer length :" + sound_obj[0].singers.length);
-	var singer_list = [];
+	console.log("sound_obj[1].singers.length : " + sound_obj[1].singers.length);
+	console.log("sound_obj[2].singers.length : " + sound_obj[2].singers.length);
+	console.log("sound_obj[1].singers : " + sound_obj[1].singers[0].artist_name);
+	console.log("sound_obj[2].singers : " + sound_obj[2].singers[0].artist_name);
+	var singerArray = [];
 	for (var i = 0 ; i < sound_obj.length ; i ++){
 		for(var k = 0 ; k < sound_obj[i].singers.length ; k++){
-			singer_list[k] = sound_obj[i].singers[k].artist_name;
+			console.log("sound_obj[i].singers[k].artist_name :" + sound_obj[i].singers[k].artist_name);
+			singerArray.push(sound_obj[i].singers[k].artist_name);
 		}
 	}
-	console.log("singser_list: "+singer_list);
+	console.log("singerArray: "+singerArray);
+	var a_noArray = [];
+	var s_noArray = [];
 	// 받은 노래 데이터로 플레이 리스트 만들기
 	for(var i = 0 ; i < sound_obj.length ; i++){
 		// jPlayer
 		myPlaylist.add({
 			title: sound_obj[i].s_name,
-			artist: singer_list[i],
+			artist: singerArray[i],
 			mp3: sound_obj[i].s_path,
 			poster: sound_obj[i].a_cover
 		});
+		//$(".jp-type-playlist").attr('id','ididid');
+		$("div.jp-playlist ul li:nth-child(2)").attr('id',"ididid");
+		a_noArray.push('<div><input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'"></div>');
+		s_noArray.push('<div><input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'"></div>');
+		$("div.jp-playlist ul li:nth-child("+(i+1)+")").append('<input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'">');
+		$("div.jp-playlist ul li:nth-child("+(i+1)+")").append('<input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'">');
+		$("body").append(a_noArray[i]);
+		$("body").append(s_noArray[i]);
 	};
+	console.log("a_noArray : " + a_noArray);
+	console.log("s_noArray : " + s_noArray);
 	// 자동재생 on
 	//myPlaylist.option("autoPlay", true);
 	
@@ -89,6 +103,16 @@ $(document).ready(function(){
 	});
 	
 	opener.location.reload();
+	
+	// x 버튼에 기능 추가 - 현재 플레이 리스트에서 삭제
+	$(document).on("click", ".jp-playlist-item-remove", function() {
+	    alert("현재 플레이 리스트에서 삭제 했습니다.");
+	});
+	$(document).find("div.jp-playlist ul li").each(function(){
+		console.log("몇개나 찾았니");
+		$(this).append("sss");
+	
+	});
 });
 //]]>
 </script>

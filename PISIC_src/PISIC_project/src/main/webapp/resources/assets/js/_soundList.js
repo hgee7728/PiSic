@@ -13,14 +13,7 @@ $(function(){
     	if($('input[name=s_no]:checked').length == '0'){
 			alert("곡을 선택하세요.");
 		} else {
-			/* // 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
-	    	$("input[name=s_no]").each(function(){
-	    		if(!(this.checked)){
-	    			console.log("히든 지우기");
-	    			$(this).parent().next("input[name=a_no]").remove();
-	    		} 
-	    		console.log(this.checked);
-	    	}); */
+			
 	    	// Post 방식으로 새창 열기
 	    	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
 	    	sound_frm.action= root_path + "/sound/play";
@@ -119,6 +112,7 @@ $(function(){
 					alert("곡 담기에 실패 했습니다. 다시 시도해주세요.");
 				} else if(result == "1"){
 					alert("해당 곡을 담았습니다.");
+					$("#playlist_insert_modal").hide();
 				}
 			},
 			error:function(){
@@ -141,6 +135,7 @@ $(function(){
 					alert("곡 담기에 실패 했습니다. 다시 시도해주세요.");
 				} else if(result == "1"){
 					alert("해당 곡을 담았습니다.");
+					$("#playlist_insert_modal").hide();
 				}
 			},
 			error:function(){
@@ -191,23 +186,6 @@ $(function(){
 		frm.target="SoundPlayer";
 	    frm.submit();
 	};
-	/* function playOne(s_path){
-		console.log("한곡재생");
-		var frm = document.createElement('form');
-	    var input_s_path = document.createElement('input');
-	    input_s_path.setAttribute('type', 'hidden');
-	    input_s_path.setAttribute('name', 's_path');
-	    input_s_path.setAttribute('value', s_path);
-	    
-	    frm.appendChild(input_s_path);
-	    frm.appendChild(input_a_no);
-	    frm.setAttribute('method', 'post');
-	    frm.setAttribute('action', root_path + '/sound/play');
-	    document.body.appendChild(frm);
-		windowObj = window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
-		frm.target="SoundPlayer";
-	    frm.submit();
-	}; */
 
 	//노래 좋아요 - ajax
 	function soundLike(a_no,s_no){

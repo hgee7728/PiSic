@@ -81,10 +81,13 @@
 
 <!-- 곡 상세조회 - 곡정보 -->
 <select id="selectSound" parameterType="Sound" resultMap="soundResultMap">
-	select (select count(*) from sound_like where a_no=#{a_no} and s_no=#{s_no}) cnt_like, sound.*, album.a_cover
+	select (select count(*) from sound_like where a_no=#{a_no} and s_no=#{s_no}) cnt_like
+    , sound.s_no, sound.a_no, sound.s_name, sound.s_lyrics1, sound.s_lyrics2
+    , sound.s_path, g.g_name, album.a_cover
 	from sound sound 
 	join album album on sound.a_no = album.a_no
-	where sound.a_no=#{a_no} and sound.s_no=#{s_no} 
+    join genre g using(g_no)
+	where sound.a_no=#{a_no} and sound.s_no=#{s_no}
 </select>
 
 <!-- 곡 상세조회 - 수록 앨범 -->

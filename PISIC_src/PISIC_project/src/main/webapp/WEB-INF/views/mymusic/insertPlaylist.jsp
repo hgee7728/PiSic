@@ -160,10 +160,11 @@ UPLOADCARE_LOCALE = "ko"
 						html += '<td>';
 							for(var j = 0 ; j < resultData.singers.length ; j ++){
 								var resultData2 = resultData.singers[j]
+								html += '<input type="hidden" name="artist_no" value="'+resultData2.artist_no+'">';
 								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
 							}
 						html += '</td>';
-						html += '<td><a href="javascript:soundPlus('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+						html += '<td><a href="javascript:soundPlus('+(i+1)+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
 						html += '</tr>';
 						
 					
@@ -197,10 +198,11 @@ UPLOADCARE_LOCALE = "ko"
 						html += '<td>';
 							for(var j = 0 ; j < resultData.singers.length ; j ++){
 								var resultData2 = resultData.singers[j]
+								html += '<input type="hidden" name="artist_no" value="'+resultData2.artist_no+'">';
 								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
 							}
 						html += '</td>';
-						html += '<td><a href="javascript:soundPlus('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+						html += '<td><a href="javascript:soundPlus('+(i+1)+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
 						html += '</tr>';
 						
 					
@@ -235,10 +237,11 @@ UPLOADCARE_LOCALE = "ko"
 						html += '<td>';
 							for(var j = 0 ; j < resultData.singers.length ; j ++){
 								var resultData2 = resultData.singers[j]
+								html += '<input type="hidden" name="artist_no" value="'+resultData2.artist_no+'">';
 								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
 							}
 						html += '</td>';
-						html += '<td><a href="javascript:soundPlus('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+						html += '<td><a href="javascript:soundPlus('+(i+1)+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
 						html += '</tr>';
 						
 					
@@ -273,10 +276,11 @@ UPLOADCARE_LOCALE = "ko"
 						html += '<td>';
 							for(var j = 0 ; j < resultData.singers.length ; j ++){
 								var resultData2 = resultData.singers[j]
+								html += '<input type="hidden" name="artist_no" value="'+resultData2.artist_no+'">';
 								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
 							}
 						html += '</td>';
-						html += '<td><a href="javascript:soundPlus('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+						html += '<td><a href="javascript:soundPlus('+(i+1)+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
 						html += '</tr>';
 						
 					
@@ -313,81 +317,43 @@ UPLOADCARE_LOCALE = "ko"
 	    	if($('table.left_sound_list input[name=s_no]:checked').length == '0'){
 				alert("곡을 선택하세요.");
 			} else {
-				/* // 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
-		    	$("table.left_sound_list input[name=s_no]").each(function(){
-		    		if(!(this.checked)){
-		    			console.log("히든 지우기");
-		    			$(this).parent().next("table.left_sound_list input[name=a_no]").remove();
-		    		} 
-		    	}); */
+		    	var tableArray = [];
 		    	var s_noArray = [];
 		    	var a_noArray = [];
 		    	$('table.left_sound_list input[name=s_no]:checked').each(function(){ //체크된 리스트 저장
 		    		s_noArray.push($(this).val());
-		    		a_noArray.push($(this).parent().next("table.left_sound_list input[name=a_no]").val());
+					a_noArray.push($(this).parent().next("input[name=a_no]").val());
+		    		tableArray.push($(this).closest('tr').html());
 		        });
-		    	/* $('table.left_sound_list input[name=a_no]').each(function(){
-		    		a_noArray.push($(this).val());
-		        }); */
-		    	console.log("s_noArray: "+s_noArray);
-		    	console.log("a_noArray: "+a_noArray);
-		    	console.log("s_noArray.length: "+s_noArray.length);
-		    	console.log("a_noArray.length: "+a_noArray.length);
-		    	var ajaxData = {
-		    			s_no : s_noArray,
-		    			a_no : a_noArray,
-		    	}
-		    	$.ajax({
-					url: "<%=request.getContextPath()%>/mymusic/soundList",
-					type : "post",
-					data : {
-						a_no : a_noArray,
-						s_no : s_noArray
-					},
-					traditional:true,
-					success : function(result) {
-						console.log("result.length : "+result.length);
-						var html = "";
-						for (var i = 0; i < result.length; i++) {
-							var resultData = result[i];
-							html += '<tr>';
-							html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
-							html += '<input type="checkbox" class="form-check-input sound_checkbox2" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
-							html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
-							html += '<td></td>';
-							html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
-							html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+ ','+ resultData.s_no+ ')">' + resultData.s_name + '</a></td>'
-							html += '<td>';
-							for (var j = 0; j < resultData.singers.length; j++) {
-								var resultData2 = resultData.singers[j]
-								html += '<a href="javascript:selectArtistDetail('+ resultData2.artist_no+ ')">'+ resultData2.artist_name+ '</a>&nbsp;';
-							}
-							html += '</td>';
-							html += '<td><a id="sound_minus"><i class="mdi mdi-minus-box list_icon"></i></a></td>';
-							html += '</tr>';
+		    	
+				var html = "";
+				for (var i = 0; i < tableArray.length; i++) {
+					html += '<tr>';
+					html += tableArray[i];
+					html += '</tr>';
+				}
+				console.log(html);
+				$("table.right_sound_list tbody").append(html);
 
-						}
-						console.log(html);
-						$("table.right_sound_list tbody").append(html);
+				// number 부여하기, 빼기 버튼 함수 바꾸기
+				for (var i = 0; i < $("table.right_sound_list tbody tr").length; i++) {
+					$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(2)').text(i + 1);
+					$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(6) a').attr('href','javascript:soundMinus('+(i+1)+')');
+					$("table.right_sound_list tr:nth-child("+(i+1)+") td:nth-child(6) a").attr('href','javascript:soundMinus('+(i+1)+')');
+		    		$("table.right_sound_list tr:nth-child("+(i+1)+") td:nth-child(6) a").children("i").attr('class','mdi mdi-minus-box list_icon');
 
-						// number 부여하기
-						for (var i = 0; i < $("table.right_sound_list tbody tr").length; i++) {
-							$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(2)').text(i + 1);
-							$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus('+(i+1)+')');
-
-						}
-						/* // 다시 hidden 생성
-				    	$("table.left_sound_list input[name=s_no]").each(function(){
-				    		if(!($(this).parent().next("table.left_sound_list input[name=a_no]").length)){
-				    			$(this).parent().after();
-				    		} 
-				    	}); */
-						// 담으면 전체 선택 해제
-						$('table.left_sound_list input:checkbox').prop('checked',false);
-						// 미니 버튼들 a태그 색상 바꾸기
-						$("i.mdi").parent('a').css('color', '#8f5fe8');
-					},
-				}); // ajax 끝
+				}
+				/* // 다시 hidden 생성
+		    	$("table.left_sound_list input[name=s_no]").each(function(){
+		    		if(!($(this).parent().next("table.left_sound_list input[name=a_no]").length)){
+		    			$(this).parent().after();
+		    		} 
+		    	}); */
+		    	
+				// 담으면 전체 선택 해제
+				$('table.left_sound_list input:checkbox').prop('checked',false);
+				// 미니 버튼들 a태그 색상 바꾸기
+				$("i.mdi").parent('a').css('color', '#8f5fe8');
 			}
 	    });
 		
@@ -404,7 +370,7 @@ UPLOADCARE_LOCALE = "ko"
 				// number 부여하기
 				for (var j = 0; j < $("table.right_sound_list tbody tr").length; j++) {
 					$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(2)').text(j + 1);
-					$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus(' + (j + 1) + ')');
+					$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(6) a').attr('href','javascript:soundMinus(' + (j + 1) + ')');
 				}
 				// 담으면 전체 선택 해제
 				$('table.right_sound_list input:checkbox').prop('checked',false);
@@ -494,49 +460,26 @@ UPLOADCARE_LOCALE = "ko"
 	};
 	
 	// 담을 곡으로 한곡 옮기기
-	function soundPlus(a_no, s_no){
-		$.ajax({
-			url: "<%=request.getContextPath()%>/mymusic/soundList",
-					type : "post",
-					data : {
-						a_no : a_no,
-						s_no : s_no
-					},
-					success : function(result) {
-						console.log(result);
-						var html = "";
-						for (var i = 0; i < result.length; i++) {
-							var resultData = result[i];
-							html += '<tr>';
-							html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
-							html += '<input type="checkbox" class="form-check-input sound_checkbox2" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
-							html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
-							html += '<td></td>';
-							html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
-							html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+ ','+ resultData.s_no+ ')">' + resultData.s_name + '</a></td>'
-							html += '<td>';
-							for (var j = 0; j < resultData.singers.length; j++) {
-								var resultData2 = resultData.singers[j]
-								html += '<a href="javascript:selectArtistDetail('+ resultData2.artist_no+ ')">'+ resultData2.artist_name+ '</a>&nbsp;';
-							}
-							html += '</td>';
-							html += '<td><a id="sound_minus"><i class="mdi mdi-minus-box list_icon"></i></a></td>';
-							html += '</tr>';
+	function soundPlus(i){
+		console.log("i : "+i);
+		console.log("테이블 : " + $('table.left_sound_list tbody tr:nth-child('+ i +')').html());
+		var html = "";
+		html += '<tr>';
+		html += $('table.left_sound_list tbody tr:nth-child('+i+')').html();
+		html += '</tr>';
+		console.log(html);
+		$("table.right_sound_list tbody").append(html);
 
-						}
-						console.log(html);
-						$("table.right_sound_list tbody").append(html);
+		// number 부여하기
+		for (var i = 0; i < $("table.right_sound_list tbody tr").length; i++) {
+			$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(2)').text(i + 1);
+			$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(6) a').attr('href','javascript:soundMinus('+(i+1)+')');
+			$("table.right_sound_list tr:nth-child("+(i+1)+") td:nth-child(6) a").children("i").attr('class','mdi mdi-minus-box list_icon');
 
-						// number 부여하기
-						for (var i = 0; i < $("table.right_sound_list tbody tr").length; i++) {
-							$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(2)').text(i + 1);
-							$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus('+(i+1)+')');
-
-						}
-						// 미니 버튼들 a태그 색상 바꾸기
-						$("i.mdi").parent('a').css('color', '#8f5fe8');
-					},
-				}); // ajax 끝
+		}
+		// 미니 버튼들 a태그 색상 바꾸기
+		$("i.mdi").parent('a').css('color', '#8f5fe8');
+				
 	}
 
 	// 한곡 빼기
@@ -546,7 +489,7 @@ UPLOADCARE_LOCALE = "ko"
 		// number 부여하기
 		for (var j = 0; j < $("table.right_sound_list tbody tr").length; j++) {
 			$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(2)').text(j + 1);
-			$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus(' + (j + 1) + ')');
+			$('table.right_sound_list tbody tr:nth-child('+(j + 1)+') td:nth-child(6) a').attr('href','javascript:soundMinus(' + (j + 1) + ')');
 		}
 	}
 </script>

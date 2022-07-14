@@ -412,12 +412,13 @@ function selectAlbumDetail(a_no){
 									<thead>
 										<tr>
 											<th colspan="2">${sound.s_name}</th>
+											<th>${sound.g_name}</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
 											<td>가수명 :</td>
-											<td>
+											<td colspan="2">
 												<c:forEach items="${sound.singers }" var="singer">
 												<a href="javascript:selectArtistDetail('${singer.artist_no}')">${singer.artist_name}</a>&nbsp;
 												</c:forEach>
@@ -425,7 +426,7 @@ function selectAlbumDetail(a_no){
 										</tr>
 										<tr>
 											<td>작사 :</td>
-											<td>
+											<td colspan="2">
 												<c:forEach items="${sound.sound_writers }" var="writer">
 												<a href="javascript:selectArtistDetail('${writer.artist_no}')">${writer.artist_name}</a>&nbsp;
 												</c:forEach>
@@ -433,7 +434,7 @@ function selectAlbumDetail(a_no){
 										</tr>
 										<tr>
 											<td>작곡 :</td>
-											<td>
+											<td colspan="2">
 												<c:forEach items="${sound.sound_composers }" var="composer">
 												<a href="javascript:selectArtistDetail('${composer.artist_no}')">${composer.artist_name}</a>&nbsp;
 												</c:forEach>
@@ -441,7 +442,7 @@ function selectAlbumDetail(a_no){
 										</tr>
 										<tr>
 											<td>좋아요 :</td>
-											<td>
+											<td colspan="2">
 												<div class="div_like">
 												<p>${sound.cnt_like }</p>
 												<a href="javascript:soundLike('${sound.a_no }','${sound.s_no}')"><i class="mdi mdi-heart list_icon like_after"></i></a>
@@ -449,7 +450,7 @@ function selectAlbumDetail(a_no){
 											</td>
 										</tr>
 										<tr>
-											<td colspan="2">
+											<td colspan="3">
 												<form name ="sound_frm">
 													<input type="hidden" name="a_no" value="${sound.a_no }">
 													<input type="hidden" name="s_no" value="${sound.s_no }">

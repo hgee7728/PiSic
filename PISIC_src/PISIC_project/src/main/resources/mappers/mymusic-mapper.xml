@@ -42,15 +42,20 @@
 
 <!-- 내 플레이 리스트 목록 -->
 <select id="selectPlaylist" resultType="MyMusic">
-	select * from playlist where m_id = #{m_id}
+	<![CDATA[
+	select * from playlist where m_id = #{m_id} and l_no > 0
+	]]>
 </select>
 
 <!-- 플레이 리스트에 노래 담기 -->
 <insert id="insertSound" parameterType="list">
 	insert all
-	<foreach collection="list" item="item">
-		into playlist_content values (#{item.l_no}, #{item.m_id}, #{item.s_no},
-		#{item.a_no})
+	<foreach collection="list" item="item" index="index">
+		into playlist_content 
+			values (#{item.l_no}, #{item.m_id}, #{item.s_no},
+			#{item.a_no}
+			, (select nvl(max(s_order),0)+#{index}+1 from playlist_content 
+				where m_id=#{item.m_id} and l_no=#{item.l_no}))
 	</foreach>
 	select * from dual
 </insert>
@@ -83,6 +88,7 @@
 	playlist_content.a_no = sound.a_no
 	join album album on sound.a_no = album.a_no
 	where playlist_content.m_id = #{m_id} and playlist_content.l_no = #{l_no}
+	order by s_order
 </select>
 
 <!-- 플리 곡 - 가수 -->
@@ -117,11 +123,14 @@
 	, #{MyMusic.m_id}, #{MyMusic.l_name}, #{MyMusic.l_private_yn},
 	#{MyMusic.l_image})
 
-	<foreach collection="soundList" item="item">
+	<foreach collection="soundList" item="item" index="index">
 		into playlist_content values
 		( (select nvl(max(l_no),0)+1 from playlist where m_id=#{MyMusic.m_id}
 		)
-		, #{MyMusic.m_id}, #{item.s_no}, #{item.a_no})
+		, #{MyMusic.m_id}, #{item.s_no}, #{item.a_no}
+		, (select nvl(max(s_order),0)+#{index}+1 from playlist_content 
+				where m_id=#{MyMusic.m_id} and l_no=(select nvl(max(l_no),0)+1 from playlist where m_id=#{MyMusic.m_id}))
+		)
 	</foreach>
 
 	select * from dual
@@ -147,6 +156,7 @@
 	playlist_content.a_no = sound.a_no
 	join album album on sound.a_no = album.a_no
 	where playlist_content.m_id = #{m_id} and playlist_content.l_no = #{l_no}
+	order by s_order
 </select>
 
 <!-- 최근 들은 곡 --><!-- TODO 날짜 수정해야돼, -->
@@ -180,6 +190,7 @@
 	join sound_like sound_like on sound.s_no = sound_like.s_no and sound.a_no
 	= sound_like.a_no
 	where sound_like.m_id = #{m_id}
+	order by like_date desc
 </select>
 
 <!-- 최근 들은 곡, 자주 들은 곡, 좋아요 곡 - 가수 -->
