@@ -315,7 +315,7 @@ function selectAlbumDetail(a_no){
 						<c:forEach items="${artistRandom }" var="artist">
 							<img alt="" src="${artist.artist_profile }"
 								class="gradient-corona-img card-body artistRan"
-								onclick=location.href="<%=request.getContextPath() %>/sound/artistDetail?artist_no=${artist.artist_no }">
+								onclick="location.href='<%=request.getContextPath() %>/sound/artistDetail?artist_no=${artist.artist_no }'">
 								
 						</c:forEach>
 
@@ -496,6 +496,7 @@ function selectAlbumDetail(a_no){
 		var $layerPopup = document.querySelector('.popup-wrap');
 		var $btnLayerPopupClose = document.querySelector('.close');
 		var $btnLayerPopupTodayHide = document.querySelector('.close-cookie');
+		var $btnReload = document.querySelector('.btn_reload');
 
 		//최초 레이어팝업 노출 (todayCookie라는 이름의 쿠키가 존재하지 않으면 레이어 노출)
 		if (!$.cookie('todayCookie')) {
@@ -535,9 +536,9 @@ function selectAlbumDetail(a_no){
 		}
 
 		/* 실시간 차트 reload */
-		document.querySelector(".btn_reload").onclick = function() {
+		$btnReload.addEventListener('click', function() {
 			location.reload();
-		}
+		});
 	</script>
 
 	<script

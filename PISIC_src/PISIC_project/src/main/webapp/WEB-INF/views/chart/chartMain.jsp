@@ -61,6 +61,11 @@ table.sound_list  tr>td:nth-child(1), table.sound_list  tr>td:nth-child(2),
 	width: 5%;
 }
 
+table.sound_list  tr>td:nth-child(3), table.sound_list  tr>td:nth-child(4),
+	table.sound_list  tr>td:nth-child(5) {
+	width: 20%;
+}
+
 table.sound_list  tr>td:nth-child(1), table.sound_list  tr>td:nth-child(6),
 	table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8)
 	{

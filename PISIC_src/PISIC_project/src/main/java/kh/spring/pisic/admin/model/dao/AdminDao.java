@@ -16,4 +16,9 @@ public class AdminDao {
 	public List<Artist> selectArtistList() {
 		return session.selectList("Admin.selectArtistList");
 	}
+	
+	public Artist selectArtist(String artist_no) {
+		return session.selectOne("Admin.selectArtist", artist_no);
+	}
+	
 }

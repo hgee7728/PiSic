@@ -3,14 +3,26 @@
 <mapper namespace="Admin">
 
 	<!-- 아티스트 리스트 조회 -->
-	<select id="selectArtistList" parameterType="string"
-	resultType="Artist">
+	<select id="selectArtistList"
+		resultType="Artist">
 		select artist_no, artist_name, artist_nation,
 		artist_company, artist_type,
 		artist_group, artist_member,
 		artist_profile, artist_info1,
 		artist_info2
 		from artist
+	</select>
+
+	<!-- 아티스트 조회 -->
+	<select id="selectArtist" parameterType="string"
+		resultType="Artist">
+		select artist_no, artist_name, artist_nation,
+		artist_company, artist_type,
+		artist_group, artist_member,
+		artist_profile, artist_info1,
+		artist_info2
+		from artist
+		where artist_no=#{artist_no}
 	</select>
 
 </mapper>
