@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@  taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@  taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +30,12 @@
 	href="<%=request.getContextPath()%>/resources/assets/css/style.css">
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
+<style>
+	@media  {
+	.col-md-6 {
+	max-width: 100%;
+	}
+</style>
 </head>
 <body>
 	<div class="container-scroller">
@@ -41,63 +48,113 @@
 			<!-- partial -->
 			<div class="main-panel">
 				<div class="content-wrapper">
+				
 					<h2 class=" card-title">고객센터</h2>
 					<br>
 					<h3 class=" card-title">1:1 문의 게시판</h3>
-
-					<div class=" content_div1" style="display: flex;">
-						<div class="row" style="width: 100%">
-							<div class="col-lg-12 grid-margin stretch-card">
-								<div class="card">
-									<div class="card-body">
-										<h4 class="card-title">글 등록하기</h4>
-										<div>
-											<button type="button"
-												onclick="location.href='<%=request.getContextPath()%>/qna/qnaList'">뒤로가기</button>
-										</div>
-										<table>
-											<tr>
+						
+				 <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">		
+			<!-- 			<c:choose>
+						<c:when test="${empty qnaBoard}">
+							<script>
+								alert("해당 글이 없습니다. 글목록으로 이동합니다.");
+								location.href = "<%=request.getContextPath()%>/qna/qnaList";
+							</script>
+						</c:when>
+						<c:otherwise>
+							<div>
+									<c:if test="${qnaBoard.m_id eq loginSsInfo.m_id }">
+										<form id="frmNum">
+											<input type="hidden" name="qna_no" value="${qnaBoard.qna_no }">
+											<button type="button" class="btn update">수정</button>
+											<button type="button" class="btn delete">삭제</button>
+										</form>
+										<script>
+											$(".btn.update").click(function(){
+												if($(this).hasClass("update")){
+													frmNum.action="<%=request.getContextPath()%>/qna/update";
+												}else {
+													frmNum.action="<%=request.getContextPath()%>/qna/delete";
+												}
+												frmNum.method="post";
+												frmNum.submit();
+											});
 											
-												<td colspan="5" class="left">${qnaBoard.qna_title }</td>
+											$(".btn.delete").click(function(){
+												$.ajax({
+													url:"<%=request.getContextPath()%>/qna/delete",
+													type:"post",
+													data: {qna_no:"${qnaBoard.qna_no }"},
+													success:function(result){
+														console.log(result);
+														if(result){
+															alert(result);
+														}
+														location.href="<%=request.getContextPath() %>/qna/qnaList";
+													},
+													error:function(error){
+														
+													}
+												});
+											});
+										</script>
+											</c:if>
+										<table border="1">
+											<tr>
+												<td>답글쓰기</td>
+												<td>level</td>	
+												<td>ref</td>	
+												<td>seq</td>			
+												<td>번호</td>
+												<td>제목</td>
+												<td>작성일</td>
+												<td>작성자</td>
+												<td>비밀글</td>				
 											</tr>
 											<tr>
-												<th>작성자</th>
+												<td><a href="<%=request.getContextPath()%>/qna/qnaWrite?refnum=${qnaBoard.qna_no }">답글쓰기</a></td>
+												<td>${qnaBoard.gr_layer }</td>	
+												<td>${qnaBoard.gr_ord }</td>	
+												<td>${qnaBoard.orgin_no }</td>			
+												<td><a href="<%=request.getContextPath()%>/qna/qnaRead?refnum=${qnaBoard.qna_no }">${qnaBoard.qna_no }</a></td>
+												<td>
+								<c:forEach begin="1" end="${qnaBoard.qna_no }"> 
+												&#8618;
+								</c:forEach>
+												${qnaBoard.qna_title }
+												</td>
+												<td>${qnaBoard.qna_date }</td>
 												<td>${qnaBoard.m_id }</td>
-												<th class="w-px120">작성일자</th>
-												<td class="w-px120">${qnaBoard.qna_date }</td>
-												<th class="w-px80">조회수</th>
-												<td class="w-px80">${qnaBoard.qna_cnt }</td>
+												<td>${qnaBoard.qna_secret }</td>	
 											</tr>
-											<tr>
-												<th>내용</th>
-												<td colspan="5" class="left"></td>
-											</tr>
-
 										</table>
-
-										<div class="btnSet">
-											<a class="btn-fill" href="list.qna">목록으로</a>
-											<!-- 관리자인 경우 수정 삭제 가능 -->
-											<core:if test="${login_info.admin eq 'Y' }">
-												<a class="btn-fill" href="modify.qna?id=${qnaBoard.m_id }">수정</a>
-												<a class="btn-fill"
-													onclick="if(confirm('정말 삭제하시겠습니까?')) { href='delete.qna?id=${qnaBoard.m_id }' }">삭제</a>
-											</core:if>
-											<!-- 로그인이 된 경우 답글 쓰기 가능 -->
-											<core:if test="${!empty login_info }">
-												<a class="btn-fill" href="reply.qna?id=${qnaBoard.m_id }">답글 쓰기</a>
-											</core:if>
+										<div>
+											<% pageContext.setAttribute("newLineChar", "\n"); %>
+											내용:${fn:replace(qnaBoard.qna_content, newLineChar, "<br/>")}
 										</div>
-
+								
+								
 									</div>
-								</div>
-							</div>
-
+									<hr>
+								<!--  	<div>답글작성</div>
+									<form action="<%=request.getContextPath() %>/qna/qnaWrite" method="post" enctype="multipart/form-data">
+									 	<input type="text" name="refnum" value="${qnaBoard.qna_no }" readonly>
+										<div>제목:<input type="text" name="qna_title" required></div>
+										<div>내용:<input type="text" name="qna_content" required></div>
+										<div><button type="submit">답글등록</button></div>
+									</form>-->
+					<!--  			</c:otherwise>
+							</c:choose>
+								
+								<div>
+						<button type="button" class="btn btn-info btn-fw" onclick="location.href='<%=request.getContextPath() %>/'">메인으로 돌아가기</button>
 						</div>
-
 					</div>
-
-
+				</div>
+			</div>
+		</div> -->
 
 					<!-- content-wrapper ends -->
 					<!-- partial:partials/_footer.html -->

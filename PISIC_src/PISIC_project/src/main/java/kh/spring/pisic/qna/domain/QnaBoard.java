@@ -17,16 +17,17 @@ public class QnaBoard {
 	private int qna_no;
 	private String qna_title;
 	private String qna_content;
-	private String qna_secreat;
+	private String qna_secret;
 	private String m_id;
 	private Date qna_date;
 	private int orgin_no;
 	private int gr_ord;
 	private int gr_layer;
+	
 	@Override
 	public String toString() {
 		return "QnaBoard [qna_no=" + qna_no + ", qna_title=" + qna_title + ", qna_content=" + qna_content
-				+ ", qna_secreat=" + qna_secreat + ", m_id=" + m_id + ", qna_date=" + qna_date + ", orgin_no="
+				+ ", qna_secret=" + qna_secret + ", m_id=" + m_id + ", qna_date=" + qna_date + ", orgin_no="
 				+ orgin_no + ", gr_ord=" + gr_ord + ", gr_layer=" + gr_layer + "]";
 	}
 	public int getQna_no() {
@@ -47,11 +48,11 @@ public class QnaBoard {
 	public void setQna_content(String qna_content) {
 		this.qna_content = qna_content;
 	}
-	public String getQna_secreat() {
-		return qna_secreat;
+	public String getqna_secret() {
+		return qna_secret;
 	}
-	public void setQna_secreat(String qna_secreat) {
-		this.qna_secreat = qna_secreat;
+	public void setqna_secret(String qna_secret) {
+		this.qna_secret = qna_secret;
 	}
 	public String getM_id() {
 		return m_id;

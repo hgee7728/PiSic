@@ -6,7 +6,8 @@
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <title>1:1 문의 글쓰기 페이지</title>
 
 <meta name="viewport"
@@ -56,8 +57,6 @@
 }
 
 /*버튼*/
-
-
 .ctsSbj a {
 	color: #8f5fe8;
 }
@@ -65,12 +64,14 @@
 .content-wrapper h2, h3 {
 	font-weight: bold;
 }
-.form-control{
+
+.form-control {
 	
 }
-.stretch-card > .card {
-    width: 100%;
-    min-width: 100%;
+
+.stretch-card>.card {
+	width: 100%;
+	min-width: 100%;
 }
 </style>
 </head>
@@ -84,51 +85,56 @@
 			<jsp:include page="../_navbar.jsp" />
 			<div class="main-panel">
 				<div class="content-wrapper">
+
 					<h2 class=" card-title">고객센터</h2>
 					<br>
 					<h3 class=" card-title">1:1 문의하기</h3>
+
 					<div class=" content_div1" style="display: flex;">
-						<div class="col-lg-12 grid-margin stretch-card">
-							<div class="card">
-								<div class="card-body">
-								<form id="writeform" action="<%=request.getContextPath() %>/member/insert" method="post">
-									<h4 class="card-title">문의글 등록하기</h4>
-									
-									<div  class="form-group">
-										  <label  for="exampleFormControlInput1">제목</label>          
-										  <input  type="text"  class="form-control" id="exampleFormControlInput1"   name="title" placeholder="제목을 작성해주세요.">   
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" name="secret" id="secret">
-											<label class="form-check-label">비밀글 설정</label>
+						<div class="row" style="width: 100%">
+							<div class="col-lg-12 grid-margin stretch-card">
+								<div class="card">
+									<div class="card-body">
+
+										<form id="writeform" action="<%=request.getContextPath()%>/qna/qnaWrite" method="post">
+											<h4 class="card-title">문의글 등록하기</h4>
+
+											<div  class="form-group">
+												<label  for="qna_title">제목</label>             
+												<input  type="text"  class="form-control"  id="qna_title" name="qna_title" placeholder="제목을 작성해주세요." style="width: 1000px;"> 
+												</div>
+												<div class="form-check form-check-inline mt-3">
+												    <input class="form-check-input" type="checkbox" name="qna_secret" id="qna_secret">
+												    <label class="form-check-label">비밀글 설정</label>
+												</div>
+											<div  class="form-group">	
+												<label  for="qna_content">내용</label>            
+												<textarea  class="form-control" id="qna_content" name="qna_content" placeholder="1:1문의할 내용을 입력해주세요."  maxlength="2048" style="height: 400px; width: 1000px;"></textarea>
+											</div>
+											<div class="btn_qna">
+											<button  type="submit"  class="btn btn-info btn-fw">등록하기</button>
+											<button  type="button"  class="btn btn-info btn-fw"
+												onclick="location.href='<%=request.getContextPath()%>/qna/qnaList'">
+												목록으로</a>
+											</button>
 										</div>
+										</form>
+										
+										
 									</div>
-									<div  class="form-group">
-										 <label  for="exampleFormControlTextarea1">내용</label>            
-										<textarea  class="form-control" id="exampleFormControlTextarea1" name="contents"  rows="10"></textarea>
-									</div>
-
-									<div class="btn_qna">
-										<button  type="submit"  class="btn btn-info btn-fw">등록하기</button>
-										<button  type="button"  class="btn btn-info btn-fw">목록으로</button>
-									</div>
-
-									</form>
 								</div>
 							</div>
 						</div>
 					</div>
+					<!-- content-wrapper ends -->
 				</div>
+				<!-- partial:partials/_footer.html -->
+				<jsp:include page="../_footer.jsp" />
+				<!-- partial -->
 			</div>
+			<!-- main-panel ends -->
 		</div>
-		<!-- content-wrapper ends -->
-	</div>
-	<!-- partial:partials/_footer.html -->
-	<jsp:include page="../_footer.jsp" />
-	<!-- partial -->
-	</div>
-	<!-- main-panel ends -->
-	</div>
-	<!-- page-body-wrapper ends -->
+		<!-- page-body-wrapper ends -->
 	</div>
 	<!-- container-scroller -->
 	<!-- plugins:js -->

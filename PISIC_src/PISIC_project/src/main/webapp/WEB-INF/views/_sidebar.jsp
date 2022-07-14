@@ -218,7 +218,7 @@
       <div class="collapse" id="auth">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/faq/faqList">자주묻는 질문</a></li>
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/qna/list">1:1 문의</a></li>
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/qna/qnaList">1:1 문의</a></li>
         </ul>
       </div>
     </li>

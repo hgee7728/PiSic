@@ -22,5 +22,19 @@ public class QnaDao {
 		return sqlsession.selectOne("QnaBoard.selectQnaBoard",qna_no);
 	}
 	
+	public int insertQna(QnaBoard qnaBoard) {
+		return sqlsession.insert("QnaBoard.insertQna",qnaBoard);
+	}
+	public int updateQna(QnaBoard qnaBoard) {
+		return sqlsession.update("QnaBoard.selectQnaBoard",qnaBoard);
+	}
+	public int deleteQna(String qna_no) {
+		return sqlsession.delete("QnaBoard.deleteQna", qna_no);
+	}
+	public int updateQnaReplySeq(QnaBoard qnaBoard) {
+		return sqlsession.update("qnaBoard.updateQnaReplySeq", qnaBoard);
+		
+	}
+
 
 }

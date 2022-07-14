@@ -4,39 +4,59 @@
   
   
 <select id="pageSelectQna" resultType="QnaBoard">
-select * from qna order by origin_no desc, gr_ord asc
+
+select * from qna 
+order by origin_no desc, 
+gr_ord asc
 </select>
 
-<insert id="insertQnaBoard" parameterType="QnaBoard">
+<insert id="insertQna" parameterType="QnaBoard">
 	insert into qna (qna_no
 			,qna_title, m_id, qna_content
-			,qna_secret
-			,qna_date
-			,orgin_no
+			,qna_secret	,qna_date
+			,origin_no
 			,gr_ord
 			,gr_layer
 		) values ( (select nvl(max(qna_no),0)+1 from qna)
-			, #{qna_title}, #{qna_writer}, #{qna_content}
-			, default
+			, #{qna_title}, #{ m_id}, #{qna_content}
+			, default ,default
 <choose>
-<when test="orgin_no > 0">
-			, (select gr_layer+1 from qna where qna_no=#{orgin_no})
-			, (select orgin_no from qna where qna_no=#{orgin_no})
-			, #{refnum}
-			, (select gr_ord+1 from qna where qna_no=#{orgin_no})
+<when test="gr_ord > 0">
+			, (select origin_no from qna where qna_no=#{gr_ord })
+			, (select gr_ord+1 from qna where qna_no=#{gr_ord })
+			, (select gr_layer+1 from qna where qna_no=#{gr_ord })
+
 </when>
 <otherwise>
-			, default
-			, (select nvl(max(qna_no),0)+1 from qna)
-			, (select nvl(max(qna_no),0)+1 from qna)
-			, default
+			,(select nvl(max(qna_no),0)+1 from qna)
+			,default
+			,default
 </otherwise>
 </choose>
-			, default
-	)
+)
 </insert> 
  <select id="selectQnaBoard" resultType="QnaBoard" parameterType="string">
 	select * from qna
 	where qna_no=#{qna_no}
 </select>
+
+<update id="updateQnaReplySeq" parameterType="QnaBoard">
+<![CDATA[
+	update qna set board_reply_seq = gr_layer+1
+	where gr_ord = (select gr_ord from qna where qna_no=#{refnum})
+	and gr_layer > (select gr_layer from qna where qna_no=#{refnum})
+]]>
+</update>
+
+
+<update id="updateQna" parameterType="QnaBoard">
+	update qna set qna_content = #{qna_content} , qna_title = #{qna_title}
+	where qna_no=#{qna_no}
+</update>
+
+<delete id="deleteQna" parameterType="string">
+	delete from qna where qna_no=#{qna_no}
+</delete>
+
+
 </mapper>

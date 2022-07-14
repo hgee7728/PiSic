@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@  taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!-- jstl 포맷라이브러리 추가 -->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@  taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,14 +34,11 @@
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 <style>
 
-
-
 /*내용*/
 .contents {
 	text-align: left;
 	display: none;
 }
-
 
 .contents div {
 	background-color: #fffff;
@@ -57,12 +57,8 @@
 
 .btn_faq {
 	float: right;
-	margin-left: 300px;
-	margin-bottom: 50px;
-}
-
-.ctsSbj a {
-	color: #8f5fe8;
+	margin: 100px 0 50px 300px;
+	text-decoration: none;
 }
 
 .content-wrapper h2, h3 {
@@ -96,9 +92,7 @@
 												<table class="table faq_list">
 													<thead>
 														<tr>
-															<div class="btn_faq">
-																<button type="submit" class="btn btn-info btn-fw">1:1문의하기</button>
-															</div>
+
 															<td>No.</td>
 															<td>제목</td>
 															<td>수정일</td>
@@ -108,22 +102,35 @@
 													</thead>
 													<tbody>
 														<c:forEach items="${faqlist }" var="faqBoard">
-															<tr class="ctsSbj">
+															<tr class="ctsSbj" style="cursor: pointer;">
 																<th>${faqBoard.faq_no }</th>
 																<td>${faqBoard.faq_title }</td>
-																<td>${faqBoard.faq_date }</td>
+																<td><fmt:formatDate pattern="yyyy-MM-dd"
+																		value="${faqBoard.faq_date }" /></td>
 																<td>${faqBoard.faq_cnt }</td>
 															</tr>
 															<tr class="contents">
-															<td><td>
-																<td colspan="4">
-																${faqBoard.faq_content }
+																<td></td>
+																<td style="height: 300px;">
+																<div>
+											<% pageContext.setAttribute("newLineChar", "\n"); %>
+											내용:${fn:replace(faqBoard.faq_content, newLineChar, "<br/>")}
+										</div>
 																</td>
+																<td></td>
+																<td></td>
 															</tr>
 														</c:forEach>
 													</tbody>
 												</table>
 											</form>
+											<div class="btn_faq">
+												<h5>찾으시는 내용이 없으신가요?</h5>
+												<button type="button" class="btn btn-info btn-fw"
+													onclick="location.href='<%=request.getContextPath()%>/qna/qnaList'">
+													1:1 문의로<br>이동하기</a>
+												</button>
+											</div>
 										</div>
 									</div>
 								</div>

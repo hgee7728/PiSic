@@ -60,11 +60,14 @@
 	margin-left: 300px;
 	margin-bottom: 50px;
 }
+
 .btn_qna a {
-	text-decoration:none;
+	text-decoration: none;
 }
+
 .ctsSbj a {
-	color: #8f5fe8;
+text-decoration: none;
+	color: #6C7293;
 }
 
 .content-wrapper h2, h3 {
@@ -74,10 +77,13 @@
 .element.style {
 	margin-left: 450px;
 }
+
 .qnalist_page {
-	margin: 0 550px 100px;
-	
+	margin: 200px 500px 100px;
 }
+th:nth-of-type(1) { 
+display: none;
+ }  
 </style>
 </head>
 <body>
@@ -100,52 +106,93 @@
 							<div class="col-lg-12 grid-margin stretch-card">
 								<div class="card">
 									<div class="card-body">
-										<h4 class="card-title">글 등록하기</h4>
+										<h4 class="card-title">문의글 등록하기</h4>
 										<div class="table-responsive">
-											<form name="qna_frm">
+											
 												<table class="table qna_list">
 													<thead>
 														<tr>
 															<div class="btn_qna">
-																<button type="submit" class="btn btn-info btn-fw"><a href="<%=request.getContextPath()%>/qna/qnaWrite?refnum=${qnaBoard.qna_no }">1:1문의하기</a></button>
+																<button type="button" class="btn btn-info btn-fw" onclick="location.href='<%=request.getContextPath()%>/qna/qnaWrite'">1:1문의하기</button>
 															</div>
 															<th>NO.</th>
 															<th>제목</th>
 															<th>작성자</th>
 															<th>등록날짜</th>
 														</tr>
-
 													</thead>
+													
 													<tbody>
-														<c:forEach items="${qnalist }" var="qnaBoard">
-															<tr class="ctsSbj">
-																<th>${qnaBoard.qna_no }</th>
-																<c:forEach begin="1" end="${qnaBoard.gr_layer }"> 
-																</c:forEach>
-																<td>${qnaBoard.qna_title }</td>
+													
+													<c:forEach items="${qnalist }" var="qnaBoard">
+													
+								<!-- 		 <c:if test="${qnaBoard.qna_secret == Y}">
+										    <c:choose>
+										        <c:when test="${qnaBoard.qna_writer eq member.m_id || member.authorities eq '[, ]'}"> <!-- 작성자이거나 관리자일 때 -->
+										     <!--        <td><a href="get${pageMaker.cri.listLink}&q_no=${qnaBoard.q_no}" class="text-secondary text-center"><i class="icofont-lock"></i><c:out value="${qnaBoard.qna_title}"/></a></td>
+										        </c:when>
+										        <c:otherwise>
+										            <td class="text-secondary"><i class="icofont-lock"></i><c:out value="${qnaBoard.qna_title}"/></td>
+										        </c:otherwise>
+										    </c:choose>                                            
+										</c:if>  -->
+										
+									
+									<c:if test="${qnaBoard.gr_layer == 0} ">
+										<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nbsp;</span>
+									</c:if>
+									<c:if test="${qnaBoard.gr_layer == 0} ">
+									</c:if>
+										<tr class="ctsSbj">
+												<th type="hidden">${qnaBoard.qna_no }</th>
+									<c:forEach begin="1" end="${qnaBoard.gr_layer }">
+										&nbsp;&nbsp;
+									</c:forEach>
+
+																<td>
+																	<form id="frm${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">									
+																	    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
+																	    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
+																	</form>
+																</td>
 																<td>${qnaBoard.m_id }</td>
 																<td>${qnaBoard.qna_date }</td>
 															</tr>
-															<tr class="contents">
-																<td colspan="4">
-																<a href="<%=request.getContextPath()%>/qna/qnaRead?refnum=${qnaBoard.qna_no }">${qnaBoard.qna_title }&nbps;</a>
-																</td>
-															</tr>
-														</c:forEach>
+															
+															</c:forEach>
+															
+															
+														<!-- 답변글 아닌 원글 -->
+
+														<!-- 			<c:if test="${qnaBoard.gr_layer == 0 }">
+																<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nabs;
+																<span style="vertical-align: super;">[<span style="color: purple; font-size:9pt; font-style:inalic; font-weight:bold;" ></span>]</span>
+																</span>
+													</c:if> -->
+														<!-- 답변글인 경우 -->
+														<!-- 		<c:if test="${qnaBoard.gr_layer > 0 }">
+																<span class="subject" onclick="goView('${qnaBoard.qna_no}');">
+																<span style="vertical-align: super;">[<span style="color: purple;  font-style:inalic;" > Re&nbsp;&nbsp;</span>${qnaBoard.title }&nbsp;
+																<span style="vertical-align: super;">[<span style="color: purple; font-size:9pt; font-style:inalic; font-weight:bold;" ></span>]</span>
+																</span>
+																</span> </c:if>  -->
+
+														
+															
 													</tbody>
 												</table>
-											</form>
+											
 										</div>
 
 									</div>
-																			<div class="qnalist_page">
-											<div class="pagination__links">
-												<button type="button" class="btn btn-outline-secondary">1</button>
-												<button type="button" class="btn btn-outline-secondary">2</button>
-												<button type="button" class="btn btn-outline-secondary">3</button>
-												<button type="button" class="btn btn-outline-secondary">4</button>
-											</div>
+									<div class="qnalist_page">
+										<div class="pagination__links">
+											<button type="button" class="btn btn-outline-secondary">1</button>
+											<button type="button" class="btn btn-outline-secondary">2</button>
+											<button type="button" class="btn btn-outline-secondary">3</button>
+											<button type="button" class="btn btn-outline-secondary">4</button>
 										</div>
+									</div>
 								</div>
 							</div>
 
