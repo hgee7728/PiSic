@@ -51,17 +51,16 @@
 }
 </style>
 <style>
-  	#ImgProfilePre {
+#ImgProfilePre {
   		margin-right: 10px;
   		width: calc(50% - 160px);
   		border-radius: 2px;
   	}
-  	@media (max-width: 321px) {
+@media (max-width: 321px) {
   		#ImgProfilePre {
 			max-width: 172px;
 		}
   	}
-  	
 .uploadcare--widget__button, .uploadcare--widget__file-name,
 	.uploadcare--widget__file-size, .uploadcare--widget__text {
 	display: none;
@@ -76,7 +75,7 @@
 			<div class="main-panel">
 				<div class="content-wrapper">
 					<div class="title_div">
-						<h2 class="card-title">Artist Edit Page</h2>
+						<h2 class="card-title">Artist Add Page</h2>
 					</div>
 					<br>
 					<div class="col-12 grid-margin stretch-card">
@@ -86,27 +85,24 @@
 								<br>
 								<form class="forms-sample">
 									<div class="form-group">
-										<label for="exampleInputName1">아티스트 코드 :
-											${artistInfo.artist_no }</label> <input type="hidden"
-											class="form-control" id="exampleInputNo1"
-											value="${artistInfo.artist_no }">
+										<label for="exampleInputName1">아티스트 코드 : </label> <input
+											type="hidden" class="form-control" id="exampleInputNo1">
 
 									</div>
 									<div class="form-group">
 										<label for="exampleInputName1">아티스트 이름</label> <input
 											type="text" class="form-control" id="inputName"
-											placeholder="Name" value="${artistInfo.artist_name }"
-											required>
+											placeholder="Name" required>
 									</div>
 									<div class="form-group">
 										<label for="exampleInputEmail3">국적</label> <input type="text"
 											class="form-control" id="exampleInputEmail3"
-											placeholder="Nation" value="${artistInfo.artist_nation }">
+											placeholder="Nation">
 									</div>
 									<div class="form-group">
 										<label for="exampleInputPassword4">소속사</label> <input
 											type="text" class="form-control" id="exampleInputPassword4"
-											placeholder="Company" value="${artistInfo.artist_company }">
+											placeholder="Company">
 									</div>
 									<div class="form-group">
 										<label for="exampleSelectGender">왈동 유형</label> <select
@@ -118,28 +114,29 @@
 									<div class="form-group">
 										<label for="exampleInputCity1">그룹명</label> <input type="text"
 											class="form-control" id="exampleInputCity1"
-											placeholder="Group" value="${artistInfo.artist_group }">
+											placeholder="Group">
 									</div>
 									<div class="form-group">
 										<label for="exampleInputCity1">그룹 멤버</label> <input
 											type="text" class="form-control" id="exampleInputCity1"
-											placeholder="Member" value="${artistInfo.artist_member }">
+											placeholder="Member">
 									</div>
 									<div class="form-group">
 										<label for="exampleTextarea1">아티스트 소개 1</label>
 										<textarea class="form-control" id="exampleTextarea1" rows="4"
-											placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)">${artistInfo.artist_info1 }</textarea>
+											placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)"></textarea>
 									</div>
 									<div class="form-group">
 										<label for="exampleTextarea1">아티스트 소개 2</label>
 										<textarea class="form-control" id="exampleTextarea2" rows="4"
-											placeholder="(최대 4000byte 입력)">${artistInfo.artist_info2 }</textarea>
+											placeholder="(최대 4000byte 입력)"></textarea>
 									</div>
 
 									<div class="form-group">
 										<label id="LabelProfile">프로필사진</label>
 										<div class="input-group">
-											<img id="ImgProfilePre" src="${artistInfo.artist_profile }">
+											<img id="ImgProfilePre"
+												src="<%=request.getContextPath()%>/resources/assets/images/favicon.png">
 											<span class="input-group-append">
 												<button id="BtnProfile"
 													class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
@@ -171,38 +168,42 @@
 
 
 	<script>
-	// 프로필 사진
-	$("#BtnProfile").on("click", function(){
-		$(".uploadcare--widget__button.uploadcare--widget__button_type_open").trigger("click");    			
-	})
-	
-	/* uploadcare */
-    UPLOADCARE_LOCALE = "ko"
-    UPLOADCARE_LOCALE_TRANSLATIONS = {
-        buttons: {
-            choose: {
-                files: {
-                    one: '사진첨부'
-                }
-            }
-        }
-    }
-	
-	/* uploadcare */
-	var singleWidget = uploadcare.SingleWidget('[role=uploadcare-uploader]');
-	singleWidget.onUploadComplete(function(info){
-    	console.log(info.cdnUrl);
-    	var fileUrl = info.cdnUrl;
-		    $("#ImgProfilePre").attr("src", fileUrl);
-		    $("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-check"></i></span>');
-		    $("#SpanProfile").css("color", "green");
-		    $("#InputProfile").attr("value", fileUrl);
-		 /* $("#ImgProfilePre").attr("src", fileUrl);
-		    $("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-close"></i> 다시 시도해 주세요.</span>');
-		    $("#SpanProfile").css("color", "red");
-		    $("#InputProfile").attr("value", fileUrl); */
-	});
-	
+		// 프로필 사진
+		$("#BtnProfile")
+				.on(
+						"click",
+						function() {
+							$(
+									".uploadcare--widget__button.uploadcare--widget__button_type_open")
+									.trigger("click");
+						})
+
+		/* uploadcare */
+		UPLOADCARE_LOCALE = "ko"
+		UPLOADCARE_LOCALE_TRANSLATIONS = {
+			buttons : {
+				choose : {
+					files : {
+						one : '사진첨부'
+					}
+				}
+			}
+		}
+
+		/* uploadcare */
+		var singleWidget = uploadcare
+				.SingleWidget('[role=uploadcare-uploader]');
+		singleWidget
+				.onUploadComplete(function(info) {
+					console.log(info.cdnUrl);
+					var fileUrl = info.cdnUrl;
+					$("#ImgProfilePre").attr("src", fileUrl);
+					$("#LabelProfile")
+							.html(
+									'프로필사진 <span id="SpanProfile"><i class="mdi mdi-check"></i></span>');
+					$("#SpanProfile").css("color", "green");
+					$("#InputProfile").attr("value", fileUrl);
+				});
 	</script>
 
 

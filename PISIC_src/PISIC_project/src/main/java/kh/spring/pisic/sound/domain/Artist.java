@@ -17,13 +17,17 @@ public class Artist {
 	private String m_id;
 	private int like_cnt;
 	
+	
+	//검색 필터
+	private String keyword;
+	
 	@Override
 	public String toString() {
 		return "Artist [artist_no=" + artist_no + ", artist_name=" + artist_name + ", artist_nation=" + artist_nation
 				+ ", artist_company=" + artist_company + ", artist_type=" + artist_type + ", artist_group="
 				+ artist_group + ", artist_member=" + artist_member + ", artist_profile=" + artist_profile
 				+ ", artist_info1=" + artist_info1 + ", artist_info2=" + artist_info2 + ", m_id=" + m_id + ", like_cnt="
-				+ like_cnt + "]";
+				+ like_cnt + ", keyword=" + keyword + "]";
 	}
 
 	public int getArtist_no() {
@@ -121,5 +125,14 @@ public class Artist {
 	public void setLike_cnt(int like_cnt) {
 		this.like_cnt = like_cnt;
 	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+	
 	
 }

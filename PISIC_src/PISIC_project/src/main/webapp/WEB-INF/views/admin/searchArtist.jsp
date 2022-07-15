@@ -37,14 +37,17 @@
 	height: 680px;
 	overflow: auto;
 }
+
 .search-artist {
 	width: 600px;
 }
+
 .btn-search {
 	background-color: #8f5fe8;
 	border-color: #8f5fe8;
 	width: 100px;
 }
+
 table.artist_list  tr>td:nth-child(5), table.artist_list  tr>td:nth-child(6),
 	table.artist_list  tr>td:nth-child(7), table.artist_list  tr>td:nth-child(8),
 	table.artist_list  tr>td:nth-child(9) {
@@ -53,6 +56,75 @@ table.artist_list  tr>td:nth-child(5), table.artist_list  tr>td:nth-child(6),
 </style>
 <script>
 
+$(function(){
+	$("#search-artist").click(function(){
+		$.ajax({
+			type: 'GET',
+			url : "<%=request.getContextPath()%>/admin/artist.do",
+			data : {
+				keyword: $("input[name=keyword]").val()
+			},
+			success : function(result){
+				//테이블 초기화
+				$('#artist_list > tbody').empty();
+				if(result.length>=1){
+					
+					var html = "";
+					for(var i = 0; i < result.length; i++){
+						var resultData = result[i];
+							
+						html += '	<tr>   																				';
+						html += '		<td>																			';
+						html += '			<div class="form-check form-check-muted m-0">								';
+						html += '			<label class="form-check-label"> <input										';
+						html += '							type="checkbox" class="form-check-input sound_checkbox"		';
+						html += '							name="artist_no">			';
+						html += '			<i class="input-helper"></i>  			';
+						html += '			</label>								';
+						html += '			</div>									';
+						html += '		</td>										';
+						html += '		<td> ' + resultData.artist_no + ' </td>				';
+						html += '		<td>										';
+
+						if(resultData.artist_profile!=null){
+						
+						html += '					<img src=" ' + resultData.artist_profile +' " alt="image" />		';
+						
+						}
+						if(resultData.artist_profile==null){
+						
+						html += '					<img src=" ' + "<%=request.getContextPath()%>/resources/assets/images/favicon.png" +' " alt="image" />			';
+						
+						}
+						
+						html += '		</td>										';
+						html += '		<td> '+ resultData.artist_name + ' </td>				';
+						html += '		<td> '+ resultData.artist_nation + ' </td>			';
+						html += '		<td> '+ resultData.artist_company + ' </td>			';
+						html += '		<td> '+ resultData.artist_type + ' </td>				';				
+						html += '		<td>										';
+						html += '		<div class="select_btns">					';
+						html += '			<button type="button" id="select_artist"									';
+						html += '			class="btn btn-info btn-fw">				';
+						html += '			변경</button>								';
+						html += '		</div>										';
+						html += '		</td>										';
+						html += '		<td>										';
+						html += '			<div class="select_btns">				';
+						html += '			<button type="button" id="select_artist"									';
+						html += '			class="btn btn-info btn-fw">삭제</button>										';
+						html += '			</div>									';
+						html += '		</td>										';
+						html += '	</tr>											';
+							
+					}
+					console.log(html);
+					$("table.artist_list tbody").append(html);				 
+				}
+			}
+		})
+	});
+})
 </script>
 </head>
 <body>
@@ -68,18 +140,23 @@ table.artist_list  tr>td:nth-child(5), table.artist_list  tr>td:nth-child(6),
 					<br>
 					<div class="content_div0 content_div4">
 						<div class="form-group search-artist">
-							<div class="input-group">
-								<input type="text" class="form-control"
-									placeholder="아티스트명으로 조회하기" aria-label="Recipient's username"
-									aria-describedby="basic-addon2">
-								<div class="input-group-append">
-									<button class="btn btn-sm btn-search" type="button">조회하기</button>
+							<form name="search-form" autocomplete="off">
+								<div class="input-group">
+									<input type="text" class="form-control"
+										placeholder="아티스트명으로 조회하기" aria-label="Recipient's username"
+										aria-describedby="basic-addon2" name="keyword">
+									<div class="input-group-append">
+										<button class="btn btn-sm btn-search" type="button"
+											id="search-artist">조회하기</button>
+									</div>
 								</div>
-							</div>
+							</form>
 						</div>
 						<div class="select_btns">
 							<button type="button" id="select_play"
-								class="btn btn-info btn-fw">아티스트 추가</button>
+								class="btn btn-info btn-fw"
+								onclick="location.href='<%=request.getContextPath()%>/admin/artistAdd'">아티스트
+								추가</button>
 							<button type="button" id="select_insert"
 								class="btn btn-info btn-fw">선택 삭제</button>
 						</div>
@@ -87,7 +164,7 @@ table.artist_list  tr>td:nth-child(5), table.artist_list  tr>td:nth-child(6),
 						<form name="sound_frm">
 							<div class="table-responsive">
 
-								<table class="table artist_list">
+								<table class="table artist_list" id="artist_list">
 									<thead>
 										<tr>
 											<td><div class="form-check form-check-muted m-0">
@@ -136,7 +213,8 @@ table.artist_list  tr>td:nth-child(5), table.artist_list  tr>td:nth-child(6),
 
 													<div class="select_btns">
 														<button type="button" id="select_artist"
-															class="btn btn-info btn-fw" onclick="location.href='<%=request.getContextPath() %>/admin/artistEdit?artist_no=${artist.artist_no }'">
+															class="btn btn-info btn-fw"
+															onclick="location.href='<%=request.getContextPath() %>/admin/artistEdit?artist_no=${artist.artist_no }'">
 															변경</button>
 													</div>
 												</td>

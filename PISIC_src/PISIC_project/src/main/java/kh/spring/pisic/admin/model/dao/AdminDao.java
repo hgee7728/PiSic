@@ -21,4 +21,8 @@ public class AdminDao {
 		return session.selectOne("Admin.selectArtist", artist_no);
 	}
 	
+	public List<Artist> selectArtistAjax(String keyword) {
+		return session.selectList("Admin.selectSearchArtist", keyword);
+	}
+	
 }

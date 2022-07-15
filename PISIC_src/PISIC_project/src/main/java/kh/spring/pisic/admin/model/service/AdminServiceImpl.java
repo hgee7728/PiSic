@@ -23,4 +23,9 @@ public class AdminServiceImpl implements AdminService{
 		return dao.selectArtist(artist_no);
 	}
 
+	@Override
+	public List<Artist> selectArtistAjax(String keyword) {
+		return dao.selectArtistAjax(keyword);
+	}
+
 }
