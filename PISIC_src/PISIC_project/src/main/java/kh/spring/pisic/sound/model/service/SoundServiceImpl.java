@@ -1,12 +1,14 @@
 package kh.spring.pisic.sound.model.service;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.mymusic.model.dao.MyMusicDao;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
@@ -20,6 +22,9 @@ public class SoundServiceImpl implements SoundService{
 	@Autowired
 	private SoundDao dao;
 	
+	@Autowired
+	private MyMusicDao daoMyMusic;
+	
 	// 앨범 상세조회
 	@Override
 	public Album selectAlbum(String a_no) {
@@ -32,8 +37,15 @@ public class SoundServiceImpl implements SoundService{
 	}
 	// 선택 재생
 	@Override
-	public List<Sound> selectSoundList(List<Sound> soundList) {
-		return dao.selectSoundList(soundList);
+	@Transactional
+	public List<Sound> selectSoundList(List<Sound> soundList, Member member) {
+		// 0번 플레이 리스트가 있는지 확인
+		if(daoMyMusic.checkPlaylist0(member.getM_id()) == 0) { // 없다면
+			daoMyMusic.insertPlaylist0(member.getM_id());
+		} 
+		
+		daoMyMusic.insertSoundPlaylist0(soundList);
+		return dao.selectSoundList(member);
 	}
 	// 노래 좋아요 - ajax
 	@Override
@@ -112,5 +124,6 @@ public class SoundServiceImpl implements SoundService{
 	public String selectYesterChart(Sound sound) {
 		return dao.selectYesterChart(sound);
 	}
+
 
 }

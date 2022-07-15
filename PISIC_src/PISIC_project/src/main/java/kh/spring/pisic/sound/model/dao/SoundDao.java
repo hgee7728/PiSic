@@ -31,8 +31,8 @@ public class SoundDao {
 	}
 	
 	// 선택 재생
-	public List<Sound> selectSoundList(List<Sound> soundList) {
-		return session.selectList("Sound.selectSoundList", soundList);
+	public List<Sound> selectSoundList(Member member) {
+		return session.selectList("Sound.selectSoundList", member);
 	}
 	
 	// 노래 좋아요 - ajax
@@ -131,6 +131,5 @@ public class SoundDao {
 		return session.selectOne("Sound.selectYesterChart", sound);
 	}
 
-	
 	
 }

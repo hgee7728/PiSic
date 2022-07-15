@@ -16,7 +16,7 @@ public interface SoundService {
 	public Artist selectArtist(String artist_no);
 	public List<Album> selectArtistJoinAlbum(String artist_no);
 	public List<Sound> selectArtistJoinSound(String artist_no);
-	public List<Sound> selectSoundList(List<Sound> soundList);
+	public List<Sound> selectSoundList(List<Sound> soundList, Member member);
 	public int insertLike(Member member, Sound sound);
 	public Album selectSoundAlbum(Sound sound);
 	public int checkLike(Member member, Sound sound);

@@ -484,6 +484,8 @@ UPLOADCARE_LOCALE = "ko"
 	    	history.back();
 	    });
 	    
+		 // 미니 버튼들 a태그 색상 바꾸기
+		$("i.mdi").parent('a').css('color', '#8f5fe8');
 	}); // $(founction(){}) 끝
 	
 	// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
@@ -523,7 +525,6 @@ UPLOADCARE_LOCALE = "ko"
 							html += '</td>';
 							html += '<td><a id="sound_minus"><i class="mdi mdi-minus-box list_icon"></i></a></td>';
 							html += '</tr>';
-
 						}
 						console.log(html);
 						$("table.right_sound_list tbody").append(html);
@@ -532,7 +533,6 @@ UPLOADCARE_LOCALE = "ko"
 						for (var i = 0; i < $("table.right_sound_list tbody tr").length; i++) {
 							$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(2)').text(i + 1);
 							$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(6) a#sound_minus').attr('href','javascript:soundMinus('+(i+1)+')');
-
 						}
 						// 미니 버튼들 a태그 색상 바꾸기
 						$("i.mdi").parent('a').css('color', '#8f5fe8');
@@ -751,17 +751,9 @@ UPLOADCARE_LOCALE = "ko"
 																	<a href="javascript:selectArtistDetail(${singer.artist_no})">${singer.artist_name}</a>&nbsp;
 																	</c:forEach>
 																</td>
-																<td><a href="javascript:selectAlbumDetail(${sounds.a_no })">${sounds.a_name }</a></td>
 																<td>
-																	<a href="javascript:playOne(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-play list_icon"></i></a>
-																</td>
-																<td>
-																	<a href="javascript:soundLike(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-heart list_icon like_after"></i></a>
-																	<!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
-																</td>
-																<td>
-																	<a href="javascript:playlistInsert(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-plus-box list_icon"></i></a>
-																	<!-- <i class="mdi mdi-minus-box list_icon"></i> -->
+																	<a href="javascript:soundMinus(${status.index+1 })"><i class="mdi mdi-minus-box list_icon"></i></a>
+																	<!-- <i class="mdi mdi-plus-box list_icon"></i> -->
 																</td>
 															</tr>
 														</c:forEach>

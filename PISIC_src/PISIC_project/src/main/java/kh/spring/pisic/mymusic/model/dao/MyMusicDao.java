@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.mymusic.domain.MyMusic;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Sound;
@@ -114,4 +115,23 @@ public class MyMusicDao {
 		return session.insert("MyMusic.insertArtistLike", artist);
 	}
 	
+	// 현재 플레이 리스트 확인
+	public int checkPlaylist0(String m_id) {
+		return session.selectOne("MyMusic.checkPlaylist0", m_id);
+	}
+	
+	// 현재 플레이 리스트 만들기
+	public int insertPlaylist0(String m_id) {
+		return session.insert("MyMusic.insertPlaylist0", m_id);
+	}
+	
+	// 현재 플레이 리스트에 노래 넣기
+	public int insertSoundPlaylist0(List<Sound> soundList) {
+		return session.insert("MyMusic.insertSoundPlaylist0", soundList);
+	}
+	
+	// 현제 플레이 리스트에서 삭제
+	public int deleteSoundPlaylist0(Sound sound) {
+		return session.delete("MyMusic.deleteSoundPlaylist0", sound);
+	}
 }

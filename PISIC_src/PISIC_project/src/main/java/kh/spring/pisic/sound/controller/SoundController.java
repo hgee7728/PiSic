@@ -29,6 +29,8 @@ import com.cloudinary.utils.ObjectUtils;
 import com.google.gson.Gson;
 
 import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.mymusic.model.service.MyMusicService;
+import kh.spring.pisic.mymusic.model.service.MyMusicServiceImpl;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
 import kh.spring.pisic.sound.model.service.SoundService;
@@ -41,6 +43,7 @@ public class SoundController {
 	@Autowired
 	private SoundService service;
 
+
 //	@Autowired
 //	private List<Sound> soundList;
 //	
@@ -49,8 +52,14 @@ public class SoundController {
 
 	// 음악 재생
 	@PostMapping("/play")
-	public ModelAndView musicPlayer(ModelAndView mv, @RequestParam(name="a_no", required = false) int[] a_noArr,
-			@RequestParam(name="s_no", required = false) int[] s_noArr) {
+	public ModelAndView musicPlayer(ModelAndView mv
+			, @RequestParam(name="a_no", required = false) int[] a_noArr
+			, @RequestParam(name="s_no", required = false) int[] s_noArr
+			, HttpSession session
+			) {
+		//TODO 로그인 여부 확인
+		Member member = (Member)session.getAttribute("loginSsInfo");
+		
 		
 		List<Sound> soundList = new ArrayList<Sound>();
 
@@ -61,13 +70,15 @@ public class SoundController {
 			System.out.println(s_noArr[i]);
 			sound.setA_no(a_noArr[i]);
 			sound.setS_no(s_noArr[i]);
+			sound.setM_id(member.getM_id());
 			soundList.add(sound);
 		}
 		System.out.println("[[[soundList]]] : " + soundList);
-		System.out.println("Gson : " + new Gson().toJson(service.selectSoundList(soundList)));
+		
+		//System.out.println("Gson : " + new Gson().toJson(service.selectSoundList(soundList, member)));
 
 		// list<domain> 형태 JSON형태로 바꿔 보내기
-		mv.addObject("soundList", new Gson().toJson(service.selectSoundList(soundList)));
+		mv.addObject("soundList", new Gson().toJson(service.selectSoundList(soundList, member)));
 		mv.setViewName("sound/soundPlayer");
 		return mv;
 

@@ -269,8 +269,43 @@
 	
 <!-- 플레이리스트 정보 변경하기 -->
 <update id="updatePlaylist" parameterType="MyMusic">
- update playlist set 
- l_name=#{l_name}, l_private_yn=#{l_private_yn}, l_image=#{l_image}
- where l_no=#{l_no} and m_id=#{m_id} 
+	update playlist set 
+	l_name=#{l_name}, l_private_yn=#{l_private_yn}, l_image=#{l_image}
+	where l_no=#{l_no} and m_id=#{m_id} 
 </update>
+
+<!-- 현재 플레이 리스트 확인 -->
+<select id="checkPlaylist0" resultType="int">
+	select count(*) from playlist
+	where m_id=#{m_id} and l_no=0
+</select>
+
+<!-- 현재 플레이 리스트 만들기 -->
+<insert id="insertPlaylist0">
+	insert into playlist 
+	(l_no, m_id, l_name)
+	values(0, #{m_id}, '현재 플레이리스트')
+</insert>
+
+<!-- 현재 플레이 리스트에 노래 담기 -->
+<insert id="insertSoundPlaylist0" parameterType="list">
+	insert all
+	<foreach collection="list" item="item" index="index">
+		into playlist_content 
+			values (0, #{item.m_id}, #{item.s_no},
+			#{item.a_no}
+			, (select nvl(max(s_order),0)+#{index}+1 from playlist_content 
+				where m_id=#{item.m_id} and l_no=0))
+	</foreach>
+	select * from dual
+</insert>
+
+<!-- 현제 플레이 리스트에서 삭제 -->
+<delete id="deleteSoundPlaylist0" parameterType="Sound">
+	delete from playlist_content
+	where m_id=#{m_id} and l_no = 0 and s_no=#{s_no} and a_no=#{a_no}
+</delete>
+
+
+
 </mapper>
