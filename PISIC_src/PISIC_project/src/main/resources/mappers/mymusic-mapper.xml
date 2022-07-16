@@ -288,14 +288,14 @@
 </insert>
 
 <!-- 현재 플레이 리스트에 노래 담기 -->
-<insert id="insertSoundPlaylist0" parameterType="list">
+<insert id="insertSoundPlaylist0" parameterType="hashmap">
 	insert all
-	<foreach collection="list" item="item" index="index">
+	<foreach collection="soundList" item="item" index="index">
 		into playlist_content 
-			values (0, #{item.m_id}, #{item.s_no},
+			values (0, #{member.m_id}, #{item.s_no},
 			#{item.a_no}
 			, (select nvl(max(s_order),0)+#{index}+1 from playlist_content 
-				where m_id=#{item.m_id} and l_no=0))
+				where m_id=#{member.m_id} and l_no=0))
 	</foreach>
 	select * from dual
 </insert>
@@ -313,6 +313,12 @@
 	where s_order BETWEEN #{s_order} and (select max(s_order) from playlist_content where m_id=#{m_id} and l_no=0)
     and m_id=#{m_id} and l_no=0
 </update>
+
+<!-- 현재 플레이 리스트 전부 삭제 -->
+<delete id="deleteAllPlaylist0" >
+	delete from playlist_content
+	where m_id=#{m_id} and l_no = 0
+</delete>
 
 
 </mapper>

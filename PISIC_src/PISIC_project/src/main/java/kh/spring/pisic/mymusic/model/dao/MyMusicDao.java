@@ -126,8 +126,11 @@ public class MyMusicDao {
 	}
 	
 	// 현재 플레이 리스트에 노래 넣기
-	public int insertSoundPlaylist0(List<Sound> soundList) {
-		return session.insert("MyMusic.insertSoundPlaylist0", soundList);
+	public int insertSoundPlaylist0(List<Sound> soundList, Member member) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("soundList", soundList);
+		map.put("member", member);
+		return session.insert("MyMusic.insertSoundPlaylist0", map);
 	}
 	
 	// 현제 플레이 리스트에서 노래 삭제
@@ -139,4 +142,12 @@ public class MyMusicDao {
 	public int updateSoundOrder(Sound sound) {
 		return session.update("MyMusic.updateSoundOrder", sound);
 	}
+	
+	// 현재 플레이 리스트 전부 삭제
+	public int deleteAllPlaylist0(String m_id) {
+		return session.delete("MyMusic.deleteAllPlaylist0", m_id);
+	}
+	
+	
+	
 }

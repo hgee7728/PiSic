@@ -29,8 +29,6 @@ import com.cloudinary.utils.ObjectUtils;
 import com.google.gson.Gson;
 
 import kh.spring.pisic.member.domain.Member;
-import kh.spring.pisic.mymusic.model.service.MyMusicService;
-import kh.spring.pisic.mymusic.model.service.MyMusicServiceImpl;
 import kh.spring.pisic.sound.domain.PlayInfo;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
@@ -77,6 +75,9 @@ public class SoundController {
 		return mv;
 
 	}
+	
+	// 음원 플레이어 - 셔플 - ajax
+	
 	
 
 	// properties 파일 내 설정된 변수 불러오기

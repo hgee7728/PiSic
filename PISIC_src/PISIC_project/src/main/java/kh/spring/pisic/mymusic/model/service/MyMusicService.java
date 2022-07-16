@@ -30,5 +30,6 @@ public interface MyMusicService {
 	public int checkPlaylist0(String m_id);
 	public int insertPlaylist0(String m_id);
 	public int deleteSoundPlaylist0(Sound sound);
+	public List<Sound> insertPlaylist0Order(List<Sound> soundList, Member member);
 	
 }

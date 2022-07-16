@@ -20,6 +20,7 @@ import kh.spring.pisic.mymusic.domain.MyMusic;
 import kh.spring.pisic.mymusic.model.service.MyMusicService;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Sound;
+import kh.spring.pisic.sound.model.service.SoundService;
 
 @Controller
 @RequestMapping("/mymusic")
@@ -27,10 +28,12 @@ public class MyMusicController {
 
 	@Autowired
 	private MyMusicService service;
+	@Autowired
+	private SoundService soundService;
 
 	// 플레이 리스트 이름 조회(모달창) - ajax
 	@ResponseBody
-	@PostMapping("/playlist.ax")
+	@PostMapping(value = "/playlist.ax", produces = "text/plain;charset=UTF-8")
 	public List<MyMusic> selectPlaylistName(HttpSession session) {
 		System.out.println("플레이 리스트 목록 ajax 들어옴");
 
@@ -42,7 +45,7 @@ public class MyMusicController {
 
 	// 플레이 리스트에 노래 담기
 	@ResponseBody
-	@PostMapping("/insertSound")
+	@PostMapping(value = "/insertSound", produces = "text/plain;charset=UTF-8")
 	public String insertSound(ModelAndView mv, @RequestParam(name = "a_no", required = false) String[] a_noArr,
 			@RequestParam(name = "s_no", required = false) String[] s_noArr,
 			@RequestParam(name = "l_no", required = false) String l_no, HttpSession session) {
@@ -83,7 +86,7 @@ public class MyMusicController {
 	}
 
 	// 플레이 리스트 만들기
-	@PostMapping("/insertPlaylist")
+	@PostMapping(value = "/insertPlaylist", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String insertPlaylist(@RequestParam(name = "a_no", required = false) int[] a_noArr,
 			@RequestParam(name = "s_no", required = false) int[] s_noArr, MyMusic mymusic, HttpSession session) {
@@ -156,7 +159,7 @@ public class MyMusicController {
 	}
 
 	// 플레이 리스트 만들기(담을 곡으로 옮기기) - ajax
-	@PostMapping("/soundList")
+	@PostMapping(value = "/soundList", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public List<Sound> selectSoundList(@RequestParam(name = "a_no", required = false) String[] a_noArr,
 			@RequestParam(name = "s_no", required = false) String[] s_noArr) {
@@ -180,7 +183,7 @@ public class MyMusicController {
 	}
 
 	// 플레이 리스트에 담긴 곡 조회 - ajax
-	@PostMapping("/playlistSound")
+	@PostMapping(value = "/playlistSound", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public List<Sound> selectPlaylistSound(HttpSession session, MyMusic mymusic) {
 		// TODO 로그인 여부
@@ -191,7 +194,7 @@ public class MyMusicController {
 	}
 
 	// 최근 들은 곡 조회 - ajax
-	@PostMapping("/soundRecent")
+	@PostMapping(value = "/soundRecent", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public List<Sound> selectSoundRecent(HttpSession session) {
 		// TODO 로그인 여부
@@ -211,7 +214,7 @@ public class MyMusicController {
 	}
 
 	// 좋아요 곡 조회 - ajax
-	@PostMapping("/soundLike")
+	@PostMapping(value = "/soundLike", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public List<Sound> selectSoundLike(HttpSession session) {
 		// TODO 로그인 여부
@@ -244,7 +247,7 @@ public class MyMusicController {
 	}
 	
 	// 아티스트 좋아요
-	@PostMapping("/artistLike")
+	@PostMapping(value = "/artistLike", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String artistLike(Artist artist, HttpSession session) {
 
@@ -347,8 +350,8 @@ public class MyMusicController {
 		return mv;
 	}
 	
-	// 플레이 리스트 수정하기
-	@PostMapping("/updatePlaylist.do")
+	// 플레이 리스트 수정하기 - ajax
+	@PostMapping(value = "/updatePlaylist.do", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String updatePlaylist(@RequestParam(name = "a_no", required = false) int[] a_noArr,
 			@RequestParam(name = "s_no", required = false) int[] s_noArr, MyMusic mymusic, HttpSession session) {
@@ -381,8 +384,8 @@ public class MyMusicController {
 		return "1";
 	}
 	
-	// 현재 플레이 리스트에서 곡 삭제
-	@PostMapping("/deleteSoundPlaylist0")
+	// 현재 플레이 리스트에서 곡 삭제 - ajax
+	@PostMapping(value = "/deleteSoundPlaylist0", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public Sound deleteSoundPlaylist0(
 			//@RequestParam(name = "a_no", required = false) int a_no
@@ -406,6 +409,35 @@ public class MyMusicController {
 		}
 	}
 	
+	// 셔플 기능 작동하면 현재 플레이 리스트 순서 맞추기
+	@PostMapping(value = "/insertPlaylist0Order", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public List<Sound> insertPlaylist0Order(
+			 @RequestParam(name="s_name", required = false) String[] s_nameArray
+			, @RequestParam(name="artist_name", required = false) String[] artist_nameArray
+			, HttpSession session
+			){
+		
+		//TODO 로그인 여부 확인
+		Member member = (Member)session.getAttribute("loginSsInfo");
+		
+		// 들고 온 데이터 domain형태로 list 시키기
+		List<Sound> soundList = new ArrayList<Sound>();
+		
+		for (int i = 0; i < s_nameArray.length; i++) {
+			Sound sound = new Sound();
+			sound.setS_name(s_nameArray[i]);
+			sound.setM_id(member.getM_id());
+			sound.setArtist_name(artist_nameArray[i]);
+			soundList.add(sound);
+		}
+		
+		// 가수명과 제목으로 s_no , a_no 가져오기
+		List<Sound> resultSoundList = soundService.checkAnoSno(soundList);
+		
+		
+		return service.insertPlaylist0Order(resultSoundList, member);
+	}
 	
 
 }

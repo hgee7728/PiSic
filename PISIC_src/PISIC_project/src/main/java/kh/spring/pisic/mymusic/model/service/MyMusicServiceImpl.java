@@ -11,12 +11,15 @@ import kh.spring.pisic.mymusic.domain.MyMusic;
 import kh.spring.pisic.mymusic.model.dao.MyMusicDao;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Sound;
+import kh.spring.pisic.sound.model.dao.SoundDao;
 
 @Service
 public class MyMusicServiceImpl implements MyMusicService{
 
 	@Autowired
 	private MyMusicDao dao;
+	@Autowired
+	private SoundDao soundDao;
 	
 	// 플레이 리스트 목록 조회
 	@Override
@@ -147,6 +150,15 @@ public class MyMusicServiceImpl implements MyMusicService{
 	public int deleteSoundPlaylist0(Sound sound) {
 		dao.deleteSoundPlaylist0(sound);
 		return dao.updateSoundOrder(sound);
+	}
+
+	// 셔플 기능 작동하면 현재 플레이 리스트 순서 맞추기
+	@Override
+	@Transactional
+	public List<Sound> insertPlaylist0Order(List<Sound> soundList, Member member) {
+		dao.deleteAllPlaylist0(member.getM_id());
+		dao.insertSoundPlaylist0(soundList, member);
+		return soundDao.selectSoundList(member);
 	}
 
 

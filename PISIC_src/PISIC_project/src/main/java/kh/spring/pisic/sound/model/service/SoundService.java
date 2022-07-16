@@ -31,4 +31,5 @@ public interface SoundService {
 	public String selectDailyListen(Sound sound);
 	public String selectYesterChart(Sound sound);
 	public int insertPalyInfo(PlayInfo playInfo);
+	public List<Sound> checkAnoSno(List<Sound> soundList);
 }

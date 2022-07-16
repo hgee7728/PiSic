@@ -45,7 +45,7 @@ public class SoundServiceImpl implements SoundService{
 			daoMyMusic.insertPlaylist0(member.getM_id());
 		} 
 		
-		daoMyMusic.insertSoundPlaylist0(soundList);
+		daoMyMusic.insertSoundPlaylist0(soundList, member);
 		return dao.selectSoundList(member);
 	}
 	// 노래 좋아요 - ajax
@@ -130,6 +130,12 @@ public class SoundServiceImpl implements SoundService{
 	@Override
 	public int insertPalyInfo(PlayInfo playInfo) {
 		return dao.insertPalyInfo(playInfo);
+	}
+	
+	// 가수명과 제목으로 s_no , a_no 가져오기
+	@Override
+	public List<Sound> checkAnoSno(List<Sound> soundList) {
+		return dao.checkAnoSno(soundList);
 	}
 
 

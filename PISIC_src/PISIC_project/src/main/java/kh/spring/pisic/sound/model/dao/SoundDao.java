@@ -136,4 +136,9 @@ public class SoundDao {
 	public int insertPalyInfo(PlayInfo playInfo) {
 		return session.insert("Sound.insertPalyInfo", playInfo);
 	}
+	
+	// 가수명과 제목으로 s_no , a_no 가져오기
+	public List<Sound> checkAnoSno(List<Sound> soundList) {
+		return session.selectList("Sound.checkAnoSno", soundList);
+	}
 }

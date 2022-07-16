@@ -42,21 +42,30 @@ $(document).ready(function(){
 	});
 	// JSON 형태로 넘겨 받은 데이터 OBJECT 형태로 변환 
 	var sound_data = '${soundList}';
-	var obj = JSON.parse(sound_data);
+	//var obj = JSON.parse(sound_data);
 	var sound_obj = JSON.parse(sound_data);
 	console.log("sound_data : " + sound_data);
-	console.log("sound_obj[1].singers.length : " + sound_obj[1].singers.length);
-	console.log("sound_obj[2].singers.length : " + sound_obj[2].singers.length);
-	console.log("sound_obj[1].singers : " + sound_obj[1].singers[0].artist_name);
-	console.log("sound_obj[2].singers : " + sound_obj[2].singers[0].artist_name);
-	var singerArray = [];
+	console.log("sound_obj : " + sound_obj);
+	
+	//console.log("sound_obj[1].singers.length : " + sound_obj[1].singers.length);
+	//console.log("sound_obj[2].singers.length : " + sound_obj[2].singers.length);
+	//console.log("sound_obj[1].singers : " + sound_obj[1].singers[0].artist_name);
+	//console.log("sound_obj[2].singers : " + sound_obj[2].singers[0].artist_name);
+	console.log("sound_obj.length : " + sound_obj.length);
+	var singerObj = {};
 	for (var i = 0 ; i < sound_obj.length ; i ++){
 		for(var k = 0 ; k < sound_obj[i].singers.length ; k++){
-			console.log("sound_obj[i].singers[k].artist_name :" + sound_obj[i].singers[k].artist_name);
-			singerArray.push(sound_obj[i].singers[k].artist_name);
+			//console.log("sound_obj[i].singers[k].artist_name :" + sound_obj[i].singers[k].artist_name);
+			//singerArray.push(sound_obj[i].singers[k].artist_name);
+			singerObj[i] = sound_obj[i].singers[k].artist_name;
 		}
+	
 	}
-	console.log("singerArray: "+singerArray);
+	const json = JSON.stringify(singerObj);
+	console.log("json : " + json);
+	console.log("singerObj.singers0 : " + singerObj.singers0);
+	//console.log("singerObj[1].index : " + singerObj[1].index);
+	//console.log("singerObj[1].singers : " + singerObj[1].singers);
 	var a_noArray = [];
 	var s_noArray = [];
 	// 받은 노래 데이터로 플레이 리스트 만들기
@@ -65,7 +74,7 @@ $(document).ready(function(){
 		// jPlayer
 		myPlaylist.add({
 			title: sound_obj[i].s_name,
-			artist: singerArray[i],
+			artist: singerObj[i],
 			mp3: sound_obj[i].s_path,
 			poster: sound_obj[i].a_cover,
 			s_no : sound_obj[i].s_no
@@ -245,8 +254,70 @@ $(document).ready(function(){
 			}
 		}); // ajax 끝
 	});
+	
+	// 셔플 기능 작동하면 현재 플레이 리스트 순서 맞추기
 	$(".jp-shuffle").click(function(){
 		console.log("셔플??");
+		var s_nameArray = [];
+		var artist_nameArray = [];
+		$('div.jp-playlist ul li div a.jp-playlist-item').each(function(){
+			// API form에 맞춰서 원하는 데이터 가공
+			var totalStr = $(this).text().split('by');
+			for(var i in totalStr){
+				//console.log("자른거 두개 : "+ totalStr[i]);
+				if(i % 2 == 0){
+					s_nameArray.push(totalStr[i].trim());
+				} else {
+					artist_nameArray.push(totalStr[i].trim());
+				}
+			}
+			//s_nameArray.push($(this).text().trim());
+			//artist_nameArray.push($(this).children('span').text().substr(3,$(this).children('span').text().length))
+		});
+		console.log("s_nameArray : " + s_nameArray);
+		console.log("artist_nameArray : " + artist_nameArray);
+		// 가공된 데이터 가지고 db 변경
+		$.ajax({
+			url: "<%=request.getContextPath() %>/mymusic/insertPlaylist0Order",
+			type: "post",
+			traditional:true,
+			data:{
+				s_name: s_nameArray,
+				artist_name: artist_nameArray
+			},
+			success: function(sound_data) {
+				var sound_data = '${soundList}';
+				var sound_obj = JSON.parse(sound_data);
+				var singerObj = {};
+				for (var i = 0 ; i < sound_obj.length ; i ++){
+					for(var k = 0 ; k < sound_obj[i].singers.length ; k++){
+						singerObj[i] = sound_obj[i].singers[k].artist_name;
+					}
+				
+				}
+				var a_noArray = [];
+				var s_noArray = [];
+				// 받은 노래 데이터 순서 다시 맞추기
+				var html = "";
+				for(var i = 0 ; i < sound_obj.length ; i++){
+					
+					console.log("플레이 리스트 세팅");
+					html += '<div id="soundData'+i+'" class="soundDataDiv">';
+					html += '<input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'">';
+					html += '<input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'">';
+					html += '<input type="hidden" name="s_order" value="'+sound_obj[i].s_order+'">';
+					html += '</div>';
+				};
+				$("body").append(html);
+					
+				
+				
+			},
+			error:function(){
+				
+			}
+		}); // ajax 끝
+		
 	});
 		    
 });

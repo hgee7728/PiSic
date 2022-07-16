@@ -236,5 +236,16 @@
 	)
 </insert>
 
+<!-- 가수명과 제목으로 s_no , a_no 가져오기 -->
+<select id="checkAnoSno" parameterType="hashmap" resultType="Sound">
+	select sound.s_no, sound.a_no
+    from sound sound
+    join singer singer on singer.s_no = sound.s_no and singer.a_no = sound.a_no
+    join artist artist on singer.artist_no = artist.artist_no
+    where (artist.artist_name, sound.s_name) in
+	<foreach collection="list" item="item" open="(" separator="," close=")">
+		(#{item.artist_name}, #{item.s_name})
+	</foreach>
+</select>
 
 </mapper>
