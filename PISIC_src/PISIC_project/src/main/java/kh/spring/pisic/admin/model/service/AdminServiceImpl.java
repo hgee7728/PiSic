@@ -28,4 +28,14 @@ public class AdminServiceImpl implements AdminService{
 		return dao.selectArtistAjax(keyword);
 	}
 
+	@Override
+	public int insertArtist(Artist artist) {
+		return dao.insertArtist(artist);
+	}
+
+	@Override
+	public int deleteArtist(String artist_no) {
+		return dao.deleteArtist(artist_no);
+	}
+
 }

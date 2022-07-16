@@ -83,10 +83,11 @@
 							<div class="card-body">
 								<h4 class="card-title">아티스트 정보 입력</h4>
 								<br>
-								<form class="forms-sample">
+								<form class="forms-sample" action="<%=request.getContextPath() %>/admin/addArtist" 
+									method="post" enctype="multipart/form-data">
 									<div class="form-group">
 										<label for="exampleInputName1">아티스트 코드 : </label> <input
-											type="hidden" class="form-control" id="exampleInputNo1">
+											type="text" value="${artist_no }" class="form-control" id="exampleInputNo1" readonly>
 
 									</div>
 									<div class="form-group">
@@ -150,7 +151,7 @@
 									</div>
 
 
-									<input type="submit" class="btn btn-primary mr-2" value="수정하기">
+									<button type="submit" class="btn btn-primary mr-2">추가하기</button>
 									<input type="button" class="btn btn-dark" id="btn_cancle"
 										onclick="history.back(-1);" value="취소">
 								</form>
@@ -165,18 +166,18 @@
 			</div>
 		</div>
 	</div>
-
-
+	<script>
+	var msg = "${msg}";
+	if(msg){
+		alret(msg);
+	}
+	</script>
 	<script>
 		// 프로필 사진
-		$("#BtnProfile")
-				.on(
-						"click",
-						function() {
-							$(
-									".uploadcare--widget__button.uploadcare--widget__button_type_open")
-									.trigger("click");
-						})
+		$("#BtnProfile").on("click",
+			function() {
+				$(".uploadcare--widget__button.uploadcare--widget__button_type_open").trigger("click");
+		})
 
 		/* uploadcare */
 		UPLOADCARE_LOCALE = "ko"

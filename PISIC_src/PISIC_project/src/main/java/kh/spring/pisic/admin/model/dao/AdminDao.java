@@ -25,4 +25,11 @@ public class AdminDao {
 		return session.selectList("Admin.selectSearchArtist", keyword);
 	}
 	
+	public int insertArtist(Artist artist) {
+		return session.insert("Admin.insertArtist", artist);
+	}
+
+	public int deleteArtist(String artist_no) {
+		return session.delete("Admin.deleteArtist", artist_no);
+	}
 }

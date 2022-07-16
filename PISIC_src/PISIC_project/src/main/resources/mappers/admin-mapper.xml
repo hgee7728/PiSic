@@ -27,6 +27,7 @@
 		artist_no=#{artist_no}
 	</select>
 
+	<!-- 아티스트 검색 -->
 	<select id="selectSearchArtist" parameterType="string"
 		resultType="Artist">
 		select artist_no, artist_name, artist_nation,
@@ -35,7 +36,22 @@
 		artist_profile, artist_info1,
 		artist_info2
 		from artist
-		where artist_name like '%'||#{keyword}||'%' 
+		where artist_name
+		like '%'||#{keyword}||'%'
 	</select>
+
+	<!-- 아티스트 추가 -->
+	<insert id="insertArtist" parameterType="Artist">
+		insert into artist
+		(artist_no, artist_name, artist_nation, artist_company, artist_type,
+		artist_group, artist_member, artist_profile, artist_info1,
+		artist_info2
+		) values (
+		(select nvl(max(artist_no),0)+1 from artist),
+		#{artist_name }, #{artist_nation }, #{artist_company }, #{artist_type}
+		, #{artist_group }, #{artist_member }, #{artist_profile },
+		#{artist_info1 }, #{artist_info2 })
+	</insert>
+
 
 </mapper>

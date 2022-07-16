@@ -55,7 +55,6 @@ table.artist_list  tr>td:nth-child(5), table.artist_list  tr>td:nth-child(6),
 }
 </style>
 <script>
-
 $(function(){
 	$("#search-artist").click(function(){
 		$.ajax({
@@ -161,7 +160,7 @@ $(function(){
 								class="btn btn-info btn-fw">선택 삭제</button>
 						</div>
 						<br>
-						<form name="sound_frm">
+						<form name="sound_frm" id="frmArtist">
 							<div class="table-responsive">
 
 								<table class="table artist_list" id="artist_list">
@@ -213,7 +212,7 @@ $(function(){
 
 													<div class="select_btns">
 														<button type="button" id="select_artist"
-															class="btn btn-info btn-fw"
+															class="btn btn-info btn-fw update"
 															onclick="location.href='<%=request.getContextPath() %>/admin/artistEdit?artist_no=${artist.artist_no }'">
 															변경</button>
 													</div>
@@ -221,7 +220,7 @@ $(function(){
 												<td>
 													<div class="select_btns">
 														<button type="button" id="select_artist"
-															class="btn btn-info btn-fw">삭제</button>
+															class="btn btn-info btn-fw delete">삭제</button>
 													</div>
 												</td>
 											</tr>
@@ -236,7 +235,35 @@ $(function(){
 			</div>
 		</div>
 	</div>
-
+	<script>
+		$(".btn.update").click(function(){
+			if($(this).hasClass("update")){
+				frmArtist.action="<%=request.getContextPath()%>/admin/update";
+			}else {
+				frmArtist.action="<%=request.getContextPath()%>/admin/delete";
+			}
+			frmArtist.method="post";
+			frmArtist.submit();
+		});
+		
+		$(".btn.delete").click(function(){
+			$.ajax({
+				url:"<%=request.getContextPath()%>/admin/delete",
+				type:"post",
+				data:{artist_no:"${artist.artist_no }"},
+				success:function(result){
+					console.log(result);
+					if(result){
+						alert(result);
+					}
+					location.href="<%=request.getContextPath() %>/admin/artist";
+				},
+				error:function(error){
+					
+				}
+			});
+		});
+	</script>
 
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/vendors/js/vendor.bundle.base.js"></script>
