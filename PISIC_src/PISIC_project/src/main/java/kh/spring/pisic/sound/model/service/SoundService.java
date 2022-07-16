@@ -6,6 +6,7 @@ import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
+import kh.spring.pisic.sound.domain.PlayInfo;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
 
@@ -29,4 +30,5 @@ public interface SoundService {
 	public int deleteSoundRecomment(Member member, SoundRecomment soundRecomment);
 	public String selectDailyListen(Sound sound);
 	public String selectYesterChart(Sound sound);
+	public int insertPalyInfo(PlayInfo playInfo);
 }

@@ -11,6 +11,7 @@ import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
+import kh.spring.pisic.sound.domain.PlayInfo;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
 
@@ -131,5 +132,8 @@ public class SoundDao {
 		return session.selectOne("Sound.selectYesterChart", sound);
 	}
 
-	
+	// playInfo 테이블에 데이터 삽입 - ajax
+	public int insertPalyInfo(PlayInfo playInfo) {
+		return session.insert("Sound.insertPalyInfo", playInfo);
+	}
 }

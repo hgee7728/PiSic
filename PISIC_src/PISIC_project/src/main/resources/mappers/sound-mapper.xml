@@ -219,6 +219,22 @@
     where t2.a_no=#{a_no} and t2.s_no=#{s_no}
 </select>
 
+<!-- playInfo 테이블에 데이터 삽입 -->
+<insert id="insertPalyInfo" parameterType="PlayInfo">
+	insert into playinfo
+	values
+	(
+		(select nvl(max(p_no),0)+1 from playinfo)
+		, #{s_no}
+		, #{a_no}
+		, #{m_id}
+		, #{area_code}
+		, default
+		, #{sky}
+		, #{pty}
+		, #{tmp}
+	)
+</insert>
 
 
 </mapper>

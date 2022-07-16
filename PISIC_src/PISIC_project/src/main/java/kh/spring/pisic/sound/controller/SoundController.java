@@ -31,6 +31,7 @@ import com.google.gson.Gson;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.mymusic.model.service.MyMusicService;
 import kh.spring.pisic.mymusic.model.service.MyMusicServiceImpl;
+import kh.spring.pisic.sound.domain.PlayInfo;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
 import kh.spring.pisic.sound.model.service.SoundService;
@@ -42,13 +43,6 @@ public class SoundController {
 	private static final Logger logger = LoggerFactory.getLogger(SoundController.class);
 	@Autowired
 	private SoundService service;
-
-
-//	@Autowired
-//	private List<Sound> soundList;
-//	
-//	@Autowired
-//	private Sound sound;
 
 	// 음악 재생
 	@PostMapping("/play")
@@ -282,7 +276,31 @@ public class SoundController {
 		return resultAjax;
 	}
 	
-	
+	// playInfo 테이블에 데이터 삽입 - ajax
+	@PostMapping(value = "/insertPalyInfo", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String insertPalyInfo(
+			PlayInfo playInfo
+			, HttpSession session
+			) {
+		//TODO 로그인 여부
+		Member member = (Member)session.getAttribute("loginSsInfo");
+		playInfo.setM_id(member.getM_id());
+		
+		// TODO 위치 정보 담기
+//		playInfo.setArea_code(0);
+		
+		
+		// TODO 날씨 정보 담기
+//		playInfo.setSky(api_key);
+//		playInfo.setPty(api_key);
+//		playInfo.setTmp(0);
+		
+		if(service.insertPalyInfo(playInfo) < 1) {
+			return "0";
+		}
+		return "1";
+	}
 	
 	
 	

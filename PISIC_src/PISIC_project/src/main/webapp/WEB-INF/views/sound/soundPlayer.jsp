@@ -26,6 +26,10 @@ $(document).ready(function(){
 	], {
 		playlistOptions: {
 			enableRemoveControls: true
+			, displayTime: 0
+			, addTime: 0
+			, removeTime: 0
+			, shuffleTime: 0
 		},
 		swfPath: "../../dist/jplayer",
 		supplied: "webmv, ogv, m4v, oga, mp3",
@@ -63,7 +67,8 @@ $(document).ready(function(){
 			title: sound_obj[i].s_name,
 			artist: singerArray[i],
 			mp3: sound_obj[i].s_path,
-			poster: sound_obj[i].a_cover
+			poster: sound_obj[i].a_cover,
+			s_no : sound_obj[i].s_no
 		});
 		console.log("플레이 리스트 세팅");
 		html += '<div id="soundData'+i+'" class="soundDataDiv">';
@@ -72,47 +77,143 @@ $(document).ready(function(){
 		html += '<input type="hidden" name="s_order" value="'+sound_obj[i].s_order+'">';
 		html += '</div>';
 		//$(".jp-type-playlist").attr('id','ididid');
-		/* $("div.jp-playlist ul li:nth-child("+(i+1)+")").attr('id',(i+1))
-		a_noArray.push('<div><input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'"></div>');
-		s_noArray.push('<div><input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'"></div>');
-		$("div.jp-playlist ul li:nth-child("+(i+1)+")").append('<input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'">');
-		$("div.jp-playlist ul li:nth-child("+(i+1)+")").append('<input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'">'); */
+		$("div.jp-playlist ul li:nth-child("+(i+1)+")").attr('id',(i+1))
+		//a_noArray.push('<div><input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'"></div>');
+		//s_noArray.push('<div><input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'"></div>');
+		//$("div.jp-playlist ul li:nth-child("+(i+1)+")").append('<input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'">');
+		//$("div.jp-playlist ul li:nth-child("+(i+1)+")").append('<input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'">');
 	};
 	$("body").append(html);
 	
-	// 재생 버튼
-	$("#playlist-play").click(function() {
-		myPlaylist.play();
+	// stop watch 방식
+	let timerId;
+	let time = 0;
+	let timeLimit = 5;
+	let timer;
+	let initTime = '00:00';
+
+	//시계 시작
+	function startClock() {
+		 timer = setInterval(function(){
+		        	time++;
+		      	}, 1000);
+	}
+	
+	//시계 중지
+	function stopClock() {
+		clearInterval(timer);
+	}
+	
+	// 시계 초기화
+	function resetClock() {
+	    stopClock()
+	    time = 0;
+	}
+
+		console.log("intervalFunction() 실행");
+		var interval;
+
+	// 재생, 일시정지 버튼
+	$(".jp-play").click(function() {
+		if($("div").hasClass("jp-state-playing") === true) {
+			// class가 존재함.
+			console.log("일시정지");
+			stopClock();
+			clearInterval(interval);
+		} else {
+			// class가 존재하지 않음	
+			console.log("재생");
+			startClock();
+			interval = setInterval(function () {
+				console.log("db다녀오기 대기 시작");
+				if(time == timeLimit){
+					clearInterval(interval);
+					console.log("db 다녀왕~");
+					goInsertPlayinfo();
+				}
+			}, 1000)
+		}
 	});
-	// 일시 정지
-	$("#playlist-pause").click(function() {
-		myPlaylist.pause();
-	});
-	// 셔플하고 재생
-	$("#playlist-shuffle").click(function() {
-		myPlaylist.shuffle(true,true);
-	});
+
 	// 다음곡 재생
-	$("#playlist-next").click(function() {
-		myPlaylist.next();
+	$(".jp-next").click(function() {
+		if($('li.jp-playlist-current').index() == $('ul li:nth-last-child(1)').index()){
+			console.log("다음 곡 없어");
+			return;
+		}
+		clearInterval(interval);
+		resetClock();
+		startClock();
+		interval = setInterval(function () {
+			console.log("db다녀오기 대기 시작");
+			if(time == timeLimit){
+				clearInterval(interval);
+				console.log("db 다녀왕~");
+				goInsertPlayinfo();
+			}
+		}, 1000)
 	});
 	// 이전 곡 재생
-	$("#playlist-previous").click(function() {
-		myPlaylist.previous();
+	$(".jp-previous").click(function() {
+		if($('li.jp-playlist-current').index() == 0){
+			console.log("이전 곡 없어");
+			return;
+		}
+		clearInterval(interval);
+		resetClock();
+		startClock();
+		interval = setInterval(function () {
+			console.log("db다녀오기 대기 시작");
+			if(time == timeLimit){
+				clearInterval(interval);
+				console.log("db 다녀왕~");
+				goInsertPlayinfo();
+			}
+		}, 1000)
 	});
-	// 일시 정지
-	$("#playlist-pause").click(function() {
-		myPlaylist.pause();
+	
+	// 정지 버튼
+	$(".jp-stop").click(function() {
+		clearInterval(interval);
+		resetClock();
 	});
+	
+	// 플레이 리스트에 곡을 클릭했을 경우
+	$(document).on("click", ".jp-playlist-item", function() {
+		clearInterval(interval);
+		console.log("노래클릭");
+		resetClock()
+		startClock();
+		interval = setInterval(function () {
+			console.log("db다녀오기 대기 시작");
+			if(time == timeLimit){
+				clearInterval(interval);
+				console.log("db 다녀왕~");
+				goInsertPlayinfo();
+			}
+		}, 1000)
+	});
+	
+	// 흐른 시간 보기, 00:00초 되면 타이머 리셋
+	setInterval(function () {
+		console.log("시간 : " + time);
+		
+	}, 1000)
 	
 	opener.location.reload();
 	
 	// 동적으로 생성된 x 버튼에 기능 추가 - 현재 플레이 리스트에서 삭제
 	$(document).on("click", ".jp-playlist-item-remove", function() {
+		if($(this).closest('li').hasClass("jp-playlist-current") == true){
+			console.log("현재 곡 지웠어");
+			clearInterval(timer)
+			clearInterval(interval);
+			time = 0;
+		}
 	    //alert("현재 플레이 리스트에서 삭제 했습니다.");
 	   // alert("x 누른 곡 인덱스 : "+$(this).closest('li').index());
 	    //alert("현재곡 인덱스 : " + $(".jp-playlist-current").closest('li').index());
-	    alert("누른곡의 div : " + $('div#soundData'+$(this).closest('li').index()+''));
+	   // alert("누른곡의 div : " + $('div#soundData'+$(this).closest('li').index()+''));
 	    $.ajax({
 			url: "<%=request.getContextPath() %>/mymusic/deleteSoundPlaylist0",
 			type: "post",
@@ -125,11 +226,11 @@ $(document).ready(function(){
 				if(result == null){
 					alert("로그인 후 이용해 주세요.");
 				} else if(result.s_no == "0" && result.a_no == "0"){
-					alert("실패하였습니다. 다시 시도해주세요.");
+					alert("리스트에서 삭제에 실패하였습니다. 다시 시도해주세요.");
 				} else {
-					alert("해당 곡을 플레이 리스트에서 삭제했습니다.");
-					// 해당 곡 리스트에서 삭제 후 다시 순서 부여
+					//alert("해당 곡을 플레이 리스트에서 삭제했습니다.");
 					
+					// 해당 곡 리스트에서 삭제 후 다시 순서 부여
 					$('div#soundData'+(result.s_order-1)+'').remove();
 					$('div.soundDataDiv').each(function(index){
 						$(this).attr('id', 'soundData'+index);
@@ -144,23 +245,32 @@ $(document).ready(function(){
 			}
 		}); // ajax 끝
 	});
-	
-	
-	/* $(document).find("div.jp-playlist ul li").each(function(){
-		console.log("id값 : "+$(this).closest('li').attr('id'));
-		$(this).children().children('a.jp-playlist-item-remove').attr('href','javascript:delete0('+$(this).closest('li').attr('id')+')');
-	}); */
-	
-	/* $("#jquery_jplayer_N").on($.jPlayer.event.ready, function(event) { 
-        console.log("[[[[[[[[[준비완료]]]]]]]]]");
-	}); */
-	/* $("#jquery_jplayer_N").jPlayer({
-	    ready: function () {
-	    			console.log("[[[[[[[[[준비완료]]]]]]]]]");
-	        	}
-		}); */
+	$(".jp-shuffle").click(function(){
+		console.log("셔플??");
+	});
 		    
 });
+
+function goInsertPlayinfo(){
+	console.log($("li.jp-playlist-current").index());
+	$.ajax({
+		url: "<%=request.getContextPath() %>/sound/insertPalyInfo",
+		type: "post",
+		data:{
+			a_no: $('div#soundData'+$("li.jp-playlist-current").index()+'').children("input[name=a_no]").val(),
+			s_no: $('div#soundData'+$("li.jp-playlist-current").index()+'').children("input[name=s_no]").val(),
+		},
+		success: function(result) {
+			
+				
+			
+		
+		},
+		error:function(){
+			
+		}
+	}); // ajax 끝
+};
 //]]>
 </script>
 <script>
@@ -223,7 +333,6 @@ $(document).ready(function(){
 					<div class="jp-toggles">
 						<button class="jp-repeat" role="button" tabindex="0">repeat</button>
 						<button class="jp-shuffle" role="button" tabindex="0">shuffle</button>
-						<button class="jp-full-screen" role="button" tabindex="0">full screen</button>
 					</div>
 				</div>
 				<div class="jp-details">
@@ -252,108 +361,9 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 $(function(){
-	// stop watch 방식
-	let timerId;
-	let time = 0;
-	let timeLimit = 5;
-	let initTime = '00:00';
-
-	//시계 시작
-	function startClock() {
-		 timer = setInterval(function(){
-		        	time++;
-		      	}, 1000);
-	}
 	
-	//시계 중지
-	function stopClock() {
-		clearInterval(timer);
-	}
-	
-	// 시계 초기화
-	function resetClock() {
-	    stopClock()
-	    time = 0;
-	}
-
-		console.log("intervalFunction() 실행");
-		var interval = setInterval(function () {
-			console.log("db다녀오기 대기 시작");
-			if(time == timeLimit){
-				clearInterval(interval);
-				console.log("db 다녀왕~");
-			}
-		}, 1000)
-
-	// 재생, 일시정지 버튼
-	$(".jp-play").click(function() {
-		if($("div").hasClass("jp-state-playing") === true) {
-			// class가 존재함.
-			console.log("일시정지");
-			stopClock();
-		} else {
-			// class가 존재하지 않음	
-			console.log("재생");
-			startClock();
-		}
-	});
-
-	// 다음곡 재생
-	$(".jp-next").click(function() {
-		clearInterval(interval);
-		resetClock()
-		startClock();
-		interval = setInterval(function () {
-			console.log("db다녀오기 대기 시작");
-			if(time == timeLimit){
-				clearInterval(interval);
-				console.log("db 다녀왕~");
-			}
-		}, 1000)
-	});
-	// 이전 곡 재생
-	$(".jp-previous").click(function() {
-		clearInterval(interval);
-		resetClock()
-		startClock();
-		interval = setInterval(function () {
-			console.log("db다녀오기 대기 시작");
-			if(time == timeLimit){
-				clearInterval(interval);
-				console.log("db 다녀왕~");
-			}
-		}, 1000)
-	});
-	
-	// 정지 버튼
-	$(".jp-stop").click(function() {
-		stopClock();
-		time = 0 ;
-	});
-	
-	// 플레이 리스트에 곡을 클릭했을 경우
-	$(document).on("click", ".jp-playlist-item", function() {
-		clearInterval(interval);
-		console.log("노래클릭");
-		resetClock()
-		startClock();
-		interval = setInterval(function () {
-			console.log("db다녀오기 대기 시작");
-			if(time == timeLimit){
-				clearInterval(interval);
-				console.log("db 다녀왕~");
-			}
-		}, 1000)
-	});
-	
-	// 흐른 시간 보기
-	setInterval(function () {
-		console.log("시간 : " + time);
-	}, 1000)
 });
 
-function goInsertPlayinfo(){
-	
-};
+
 </script>
 </html>

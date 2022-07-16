@@ -12,6 +12,7 @@ import kh.spring.pisic.mymusic.model.dao.MyMusicDao;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
+import kh.spring.pisic.sound.domain.PlayInfo;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
 import kh.spring.pisic.sound.model.dao.SoundDao;
@@ -123,6 +124,12 @@ public class SoundServiceImpl implements SoundService{
 	@Override
 	public String selectYesterChart(Sound sound) {
 		return dao.selectYesterChart(sound);
+	}
+	
+	// playInfo 테이블에 데이터 삽입 - ajax
+	@Override
+	public int insertPalyInfo(PlayInfo playInfo) {
+		return dao.insertPalyInfo(playInfo);
 	}
 
 
