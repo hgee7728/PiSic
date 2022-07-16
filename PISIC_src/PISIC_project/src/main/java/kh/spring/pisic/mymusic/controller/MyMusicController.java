@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
+
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.mymusic.domain.MyMusic;
 import kh.spring.pisic.mymusic.model.service.MyMusicService;
@@ -412,7 +414,7 @@ public class MyMusicController {
 	// 셔플 기능 작동하면 현재 플레이 리스트 순서 맞추기
 	@PostMapping(value = "/insertPlaylist0Order", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public List<Sound> insertPlaylist0Order(
+	public String insertPlaylist0Order(
 			 @RequestParam(name="s_name", required = false) String[] s_nameArray
 			, @RequestParam(name="artist_name", required = false) String[] artist_nameArray
 			, HttpSession session
@@ -435,8 +437,8 @@ public class MyMusicController {
 		// 가수명과 제목으로 s_no , a_no 가져오기
 		List<Sound> resultSoundList = soundService.checkAnoSno(soundList);
 		
-		
-		return service.insertPlaylist0Order(resultSoundList, member);
+		 
+		return new Gson().toJson(service.insertPlaylist0Order(resultSoundList, member));
 	}
 	
 

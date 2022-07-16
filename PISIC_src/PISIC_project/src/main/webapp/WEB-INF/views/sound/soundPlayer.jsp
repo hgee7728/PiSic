@@ -285,29 +285,33 @@ $(document).ready(function(){
 				s_name: s_nameArray,
 				artist_name: artist_nameArray
 			},
-			success: function(sound_data) {
-				var sound_data = '${soundList}';
-				var sound_obj = JSON.parse(sound_data);
-				var singerObj = {};
-				for (var i = 0 ; i < sound_obj.length ; i ++){
-					for(var k = 0 ; k < sound_obj[i].singers.length ; k++){
-						singerObj[i] = sound_obj[i].singers[k].artist_name;
+			dataType: "json",
+			success: function(result) {
+				var re_sound_obj = result;
+				for(var i = 0 ; i < re_sound_obj.length ; i++){
+					console.log("sound_obj["+i+"].a_no : "+re_sound_obj[i].a_no);
+					console.log("sound_obj["+i+"].s_no : "+re_sound_obj[i].s_no);
+				};
+				
+				var re_singerObj = {};
+				for (var i = 0 ; i < re_sound_obj.length ; i ++){
+					for(var k = 0 ; k < re_sound_obj[i].singers.length ; k++){
+						re_singerObj[i] = re_sound_obj[i].singers[k].artist_name;
 					}
 				
 				}
-				var a_noArray = [];
-				var s_noArray = [];
 				// 받은 노래 데이터 순서 다시 맞추기
 				var html = "";
-				for(var i = 0 ; i < sound_obj.length ; i++){
+				for(var i = 0 ; i < re_sound_obj.length ; i++){
 					
 					console.log("플레이 리스트 세팅");
 					html += '<div id="soundData'+i+'" class="soundDataDiv">';
-					html += '<input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'">';
-					html += '<input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'">';
-					html += '<input type="hidden" name="s_order" value="'+sound_obj[i].s_order+'">';
+					html += '<input type="hidden" name="a_no" value="'+re_sound_obj[i].a_no+'">';
+					html += '<input type="hidden" name="s_no" value="'+re_sound_obj[i].s_no+'">';
+					html += '<input type="hidden" name="s_order" value="'+re_sound_obj[i].s_order+'">';
 					html += '</div>';
 				};
+				$("body div.soundDataDiv").remove();
 				$("body").append(html);
 					
 				

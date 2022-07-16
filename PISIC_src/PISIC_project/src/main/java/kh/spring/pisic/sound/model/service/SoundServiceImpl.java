@@ -1,5 +1,6 @@
 package kh.spring.pisic.sound.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,7 +136,12 @@ public class SoundServiceImpl implements SoundService{
 	// 가수명과 제목으로 s_no , a_no 가져오기
 	@Override
 	public List<Sound> checkAnoSno(List<Sound> soundList) {
-		return dao.checkAnoSno(soundList);
+		// select 결과 순서 맞추기 위해 하나씩
+		List<Sound> resultSoundList = new ArrayList<Sound>();
+		for(int i = 0 ; i < soundList.size() ; i ++) {
+			resultSoundList.add(dao.checkAnoSno(soundList.get(i)));
+		}
+		return resultSoundList;
 	}
 
 
