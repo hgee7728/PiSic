@@ -130,8 +130,13 @@ public class MyMusicDao {
 		return session.insert("MyMusic.insertSoundPlaylist0", soundList);
 	}
 	
-	// 현제 플레이 리스트에서 삭제
+	// 현제 플레이 리스트에서 노래 삭제
 	public int deleteSoundPlaylist0(Sound sound) {
 		return session.delete("MyMusic.deleteSoundPlaylist0", sound);
+	}
+	
+	// 현재 플레이 리스트에서 노래 삭제 후 s_order 재 설정
+	public int updateSoundOrder(Sound sound) {
+		return session.update("MyMusic.updateSoundOrder", sound);
 	}
 }

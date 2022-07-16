@@ -65,9 +65,11 @@ $(document).ready(function(){
 			mp3: sound_obj[i].s_path,
 			poster: sound_obj[i].a_cover
 		});
+		console.log("플레이 리스트 세팅");
 		html += '<div id="soundData'+i+'" class="soundDataDiv">';
 		html += '<input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'">';
 		html += '<input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'">';
+		html += '<input type="hidden" name="s_order" value="'+sound_obj[i].s_order+'">';
 		html += '</div>';
 		//$(".jp-type-playlist").attr('id','ididid');
 		/* $("div.jp-playlist ul li:nth-child("+(i+1)+")").attr('id',(i+1))
@@ -116,21 +118,25 @@ $(document).ready(function(){
 			type: "post",
 			data:{
 				a_no: $('div#soundData'+$(this).closest('li').index()+'').children("input[name=a_no]").val(),
-				s_no: $('div#soundData'+$(this).closest('li').index()+'').children("input[name=s_no]").val()
+				s_no: $('div#soundData'+$(this).closest('li').index()+'').children("input[name=s_no]").val(),
+				s_order: $('div#soundData'+$(this).closest('li').index()+'').children("input[name=s_order]").val()
 			},
 			success: function(result) {
-				if(result == "-1"){
+				if(result == null){
 					alert("로그인 후 이용해 주세요.");
-				} else if(result == "0"){
+				} else if(result.s_no == "0" && result.a_no == "0"){
 					alert("실패하였습니다. 다시 시도해주세요.");
-				} else if(result == "1"){
+				} else {
 					alert("해당 곡을 플레이 리스트에서 삭제했습니다.");
 					// 해당 곡 리스트에서 삭제 후 다시 순서 부여
-					$('div.soundData'+$(this).closest('li').index()+'').remove();
+					
+					$('div#soundData'+(result.s_order-1)+'').remove();
 					$('div.soundDataDiv').each(function(index){
-						$(this).attr('id', index);
+						$(this).attr('id', 'soundData'+index);
+						$(this).children('input[name=s_order]').val(index+1);
 					});
 					
+				
 				}
 			},
 			error:function(){

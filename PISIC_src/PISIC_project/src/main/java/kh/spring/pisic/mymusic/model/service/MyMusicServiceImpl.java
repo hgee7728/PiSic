@@ -141,10 +141,12 @@ public class MyMusicServiceImpl implements MyMusicService{
 		return dao.insertPlaylist0(m_id);
 	}
 
-	// 현제 플레이 리스트에서 삭제
+	// 현재 플레이 리스트에서 노래 삭제
 	@Override
+	@Transactional
 	public int deleteSoundPlaylist0(Sound sound) {
-		return dao.deleteSoundPlaylist0(sound);
+		dao.deleteSoundPlaylist0(sound);
+		return dao.updateSoundOrder(sound);
 	}
 
 

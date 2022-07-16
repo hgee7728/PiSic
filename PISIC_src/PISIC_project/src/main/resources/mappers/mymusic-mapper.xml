@@ -300,12 +300,19 @@
 	select * from dual
 </insert>
 
-<!-- 현제 플레이 리스트에서 삭제 -->
+<!-- 현재 플레이 리스트에서 노래 삭제 -->
 <delete id="deleteSoundPlaylist0" parameterType="Sound">
 	delete from playlist_content
-	where m_id=#{m_id} and l_no = 0 and s_no=#{s_no} and a_no=#{a_no}
+	where m_id=#{m_id} and l_no = 0 and s_no=#{s_no} and a_no=#{a_no} and s_order=#{s_order}
 </delete>
 
+<!-- 현재 플레이 리스트에서 노래 삭제 후 s_order 재 설정 -->
+<update id="updateSoundOrder" parameterType="Sound">
+	update playlist_content set  
+	s_order = (s_order-1) 
+	where s_order BETWEEN #{s_order} and (select max(s_order) from playlist_content where m_id=#{m_id} and l_no=0)
+    and m_id=#{m_id} and l_no=0
+</update>
 
 
 </mapper>

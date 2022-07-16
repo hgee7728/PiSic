@@ -384,7 +384,7 @@ public class MyMusicController {
 	// 현재 플레이 리스트에서 곡 삭제
 	@PostMapping("/deleteSoundPlaylist0")
 	@ResponseBody
-	public String deleteSoundPlaylist0(
+	public Sound deleteSoundPlaylist0(
 			//@RequestParam(name = "a_no", required = false) int a_no
 			//, @RequestParam(name = "s_no", required = false) int s_no
 			Sound sound
@@ -393,14 +393,16 @@ public class MyMusicController {
 		// TODO 로그인 여부
 		
 		if(session.getAttribute("loginSsInfo") == null) {
-			return "-1";
+			return null;
 		} 
 		Member member = (Member) session.getAttribute("loginSsInfo");
 		sound.setM_id(member.getM_id());
 		if(service.deleteSoundPlaylist0(sound) < 1) {
-			return "0";
+			sound.setA_no(0);
+			sound.setS_no(0);
+			return sound;
 		} else {
-			return "1";
+			return sound;
 		}
 	}
 	

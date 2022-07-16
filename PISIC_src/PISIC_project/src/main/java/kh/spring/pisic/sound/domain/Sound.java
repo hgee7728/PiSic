@@ -20,6 +20,7 @@ public class Sound {
 	private int cnt_like;
 	private int l_no;
 	private String m_id;
+	private int s_order;
 	private String a_cover;
 	private List<SoundRecomment> soundRecomment;
 	
@@ -30,18 +31,15 @@ public class Sound {
 	private String a_name;
 	private String g_name;
 	
-	
 	@Override
 	public String toString() {
 		return "Sound [s_no=" + s_no + ", a_no=" + a_no + ", s_name=" + s_name + ", s_lyrics1=" + s_lyrics1
 				+ ", s_lyrics2=" + s_lyrics2 + ", s_age_yn=" + s_age_yn + ", s_path=" + s_path + ", g_no=" + g_no
 				+ ", singers=" + singers + ", sound_writers=" + sound_writers + ", sound_composers=" + sound_composers
-				+ ", cnt_like=" + cnt_like + ", l_no=" + l_no + ", m_id=" + m_id + ", a_cover=" + a_cover
-				+ ", soundRecomment=" + soundRecomment + ", chart=" + chart + ", playInfo=" + playInfo + ", a_name="
-				+ a_name + ", g_name=" + g_name + "]";
+				+ ", cnt_like=" + cnt_like + ", l_no=" + l_no + ", m_id=" + m_id + ", s_order=" + s_order + ", a_cover="
+				+ a_cover + ", soundRecomment=" + soundRecomment + ", chart=" + chart + ", playInfo=" + playInfo
+				+ ", a_name=" + a_name + ", g_name=" + g_name + "]";
 	}
-	
-	
 	public int getS_no() {
 		return s_no;
 	}
@@ -126,17 +124,35 @@ public class Sound {
 	public void setM_id(String m_id) {
 		this.m_id = m_id;
 	}
+	public int getS_order() {
+		return s_order;
+	}
+	public void setS_order(int s_order) {
+		this.s_order = s_order;
+	}
 	public String getA_cover() {
 		return a_cover;
 	}
 	public void setA_cover(String a_cover) {
 		this.a_cover = a_cover;
 	}
+	public List<SoundRecomment> getSoundRecomment() {
+		return soundRecomment;
+	}
+	public void setSoundRecomment(List<SoundRecomment> soundRecomment) {
+		this.soundRecomment = soundRecomment;
+	}
 	public int getChart() {
 		return chart;
 	}
 	public void setChart(int chart) {
 		this.chart = chart;
+	}
+	public List<PlayInfo> getPlayInfo() {
+		return playInfo;
+	}
+	public void setPlayInfo(List<PlayInfo> playInfo) {
+		this.playInfo = playInfo;
 	}
 	public String getA_name() {
 		return a_name;
@@ -149,22 +165,6 @@ public class Sound {
 	}
 	public void setG_name(String g_name) {
 		this.g_name = g_name;
-	}
-	public List<PlayInfo> getPlayInfo() {
-		return playInfo;
-	}
-	public void setPlayInfo(List<PlayInfo> playInfo) {
-		this.playInfo = playInfo;
-	}
-
-
-	public List<SoundRecomment> getSoundRecomment() {
-		return soundRecomment;
-	}
-
-
-	public void setSoundRecomment(List<SoundRecomment> soundRecomment) {
-		this.soundRecomment = soundRecomment;
 	}
 	
 	

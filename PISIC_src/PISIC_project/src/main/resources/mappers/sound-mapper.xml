@@ -165,7 +165,7 @@
 
 <!-- 선택 재생 -->
 <select id="selectSoundList" parameterType="Member" resultMap="soundResultMap">
-	select sound.s_name, sound.s_path,  album.a_cover, sound.a_no, sound.s_no
+	select sound.s_name, sound.s_path,  album.a_cover, sound.a_no, sound.s_no, pc.s_order
 	from sound sound 
 	join album album on sound.a_no = album.a_no
 	join playlist_content pc on sound.s_no = pc.s_no and sound.a_no = pc.a_no
