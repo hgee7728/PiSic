@@ -297,9 +297,10 @@ public class SoundController {
 //		playInfo.setPty(api_key);
 //		playInfo.setTmp(0);
 		
-		if(service.insertPalyInfo(playInfo) < 1) {
-			return "0";
-		}
+		// TODO
+//		if(service.insertPalyInfo(playInfo) < 1) {
+//			return "0";
+//		}
 		return "1";
 	}
 	

@@ -211,19 +211,25 @@ $(document).ready(function(){
 	
 	opener.location.reload();
 	
-	// 동적으로 생성된 x 버튼에 기능 추가 - 현재 플레이 리스트에서 삭제
+	// 동적으로 생성된 x 버튼에 기능 추가 - 현재 플레이 리스트 table에서 삭제
 	$(document).on("click", ".jp-playlist-item-remove", function() {
+		console.log("누른곳 인덱스 1: " + $(this).closest('li').index());
 		if($(this).closest('li').hasClass("jp-playlist-current") == true){
 			console.log("현재 곡 지웠어");
 			clearInterval(timer)
 			clearInterval(interval);
 			time = 0;
-		}
-	    //alert("현재 플레이 리스트에서 삭제 했습니다.");
-	   // alert("x 누른 곡 인덱스 : "+$(this).closest('li').index());
-	    //alert("현재곡 인덱스 : " + $(".jp-playlist-current").closest('li').index());
-	   // alert("누른곡의 div : " + $('div#soundData'+$(this).closest('li').index()+''));
-	    $.ajax({
+		} 
+		//alert("현재 플레이 리스트에서 삭제 했습니다.");
+		console.log("누른곳 인덱스 2: " + $(this).closest('li').index());
+		//alert("어디 눌렀니 : "+JSON.stringify($(this)));
+		//alert("x 누른 곡 인덱스 : "+$(this).closest('li').index());
+		//alert("현재곡 인덱스 : " + $(".jp-playlist-current").closest('li').index());
+		//alert("누른곡의 div : " + JSON.stringify($('div#soundData'+$(this).closest('li').index()+'')));
+		console.log("누른곡 앨범 번호: " + $('div#soundData'+$(this).closest('li').index()+'').children("input[name=a_no]").val());
+		console.log("누른곡 노래 번호: " + $('div#soundData'+$(this).closest('li').index()+'').children("input[name=s_no]").val());
+		  
+		$.ajax({
 			url: "<%=request.getContextPath() %>/mymusic/deleteSoundPlaylist0",
 			type: "post",
 			data:{
@@ -253,6 +259,8 @@ $(document).ready(function(){
 				
 			}
 		}); // ajax 끝
+		
+	   
 	});
 	
 	// 셔플 기능 작동하면 현재 플레이 리스트 순서 맞추기
@@ -434,11 +442,5 @@ function goInsertPlayinfo(){
 			
 </body>
 
-<script type="text/javascript">
-$(function(){
-	
-});
 
-
-</script>
 </html>

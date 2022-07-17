@@ -150,7 +150,7 @@
 
 <!-- 플레이 리스트에 담긴 곡 목록 -ajax -->
 <select id="selectPlaylistSound" parameterType="MyMusic" resultMap="soundResultMap">
-	select sound.s_no, sound.a_no, sound.s_name, sound.s_path album.a_cover
+	select sound.s_no, sound.a_no, sound.s_name, sound.s_path, album.a_cover
 	from playlist_content playlist_content
 	join sound sound on playlist_content.s_no = sound.s_no and
 	playlist_content.a_no = sound.a_no

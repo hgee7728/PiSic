@@ -144,6 +144,7 @@ UPLOADCARE_LOCALE = "ko"
 				data:{
 					l_no:$("#myplaylist_select").val()
 				},
+				dataType: 'json',
 				success: function(result) {
 					$(".left_title").text($("#myplaylist_select option:selected").text());
 					console.log(result);
@@ -182,6 +183,7 @@ UPLOADCARE_LOCALE = "ko"
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/soundRecent",
 				type: "post",
+				dataType: 'json',
 				success: function(result) {
 					$(".left_title").text("최근 들은 곡");
 					console.log(result);
@@ -221,6 +223,7 @@ UPLOADCARE_LOCALE = "ko"
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/soundOften",
 				type: "post",
+				dataType: 'json',
 				success: function(result) {
 					$(".left_title").text("자주 들은 곡");
 					console.log(result);
@@ -260,6 +263,7 @@ UPLOADCARE_LOCALE = "ko"
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/soundLike",
 				type: "post",
+				dataType: 'json',
 				success: function(result) {
 					$(".left_title").text("좋아요 곡");
 					console.log(result);
