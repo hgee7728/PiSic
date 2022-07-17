@@ -202,6 +202,7 @@ $(function(){
 		$.ajax({
 			url: "<%=request.getContextPath() %>/mymusic/playlist.ax",
 			type: "post",
+			dataType: 'json',
 			success: function(result) {
 				var html = "";
 				for(var i = 0; i < result.length; i++){

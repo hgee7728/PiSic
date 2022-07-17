@@ -36,13 +36,12 @@ public class MyMusicController {
 	// 플레이 리스트 이름 조회(모달창) - ajax
 	@ResponseBody
 	@PostMapping(value = "/playlist.ax", produces = "text/plain;charset=UTF-8")
-	public List<MyMusic> selectPlaylistName(HttpSession session) {
+	public String selectPlaylistName(HttpSession session) {
 		System.out.println("플레이 리스트 목록 ajax 들어옴");
 
 		Member member = (Member) session.getAttribute("loginSsInfo");
 		System.out.println(member.getM_id());
-		List<MyMusic> result = service.selectPlaylist(member.getM_id());
-		return result;
+		return new Gson().toJson(service.selectPlaylist(member.getM_id()));
 	}
 
 	// 플레이 리스트에 노래 담기
