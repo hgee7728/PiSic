@@ -29,7 +29,15 @@ public class AdminDao {
 		return session.insert("Admin.insertArtist", artist);
 	}
 
+	public int updateArtist(Artist artist) {
+		return session.update("Admin.updateArtist", artist);
+	}
+	
 	public int deleteArtist(String artist_no) {
 		return session.delete("Admin.deleteArtist", artist_no);
 	}
+	
+
+	
+	
 }

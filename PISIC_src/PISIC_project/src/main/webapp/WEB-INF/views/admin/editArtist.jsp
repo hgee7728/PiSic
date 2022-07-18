@@ -67,6 +67,15 @@
 	display: none;
 }
 </style>
+<script>
+$(function(){
+	var msg = '${msg}';
+	if(msg){
+		alert(msg);
+	}
+
+});
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -82,70 +91,68 @@
 					<div class="col-12 grid-margin stretch-card">
 						<div class="card">
 							<div class="card-body">
+							
+								<form id="editArtistForm" class="editArtistForm" action="<%=request.getContextPath() %>/admin/editArtist" 
+									method="post">
 								<h4 class="card-title">아티스트 정보 입력</h4>
 								<br>
-								<form class="forms-sample">
-									<div class="form-group">
-										<label for="exampleInputName1">아티스트 코드 :
-											${artistInfo.artist_no }</label> <input type="hidden"
-											class="form-control" id="exampleInputNo1"
-											value="${artistInfo.artist_no }">
+									
+									
+									
+								<div class="form-group">
+										<label for="artistNo">아티스트 코드 : (자동 부여)</label> 
+										<input type="hidden" value="${artist_no }" class="form-control" id="artistNo" name="artist_no" readonly>
 
 									</div>
 									<div class="form-group">
-										<label for="exampleInputName1">아티스트 이름</label> <input
-											type="text" class="form-control" id="inputName"
-											placeholder="Name" value="${artistInfo.artist_name }"
-											required>
+										<label for="artistName">아티스트 이름</label> 
+										<input type="text" class="form-control" value="${artistInfo.artist_name }" placeholder="Name" name="artist_name" required>
 									</div>
 									<div class="form-group">
-										<label for="exampleInputEmail3">국적</label> <input type="text"
-											class="form-control" id="exampleInputEmail3"
-											placeholder="Nation" value="${artistInfo.artist_nation }">
+										<label for="artistNation">국적</label> 
+										<input type="text" class="form-control" value="${artistInfo.artist_nation }" placeholder="Nation" name="artist_nation">
 									</div>
 									<div class="form-group">
-										<label for="exampleInputPassword4">소속사</label> <input
-											type="text" class="form-control" id="exampleInputPassword4"
-											placeholder="Company" value="${artistInfo.artist_company }">
+										<label for="artistCompany">소속사</label> 
+										<input type="text" class="form-control" value="${artistInfo.artist_company }" placeholder="Company" name="artist_company">
 									</div>
 									<div class="form-group">
-										<label for="exampleSelectGender">왈동 유형</label> <select
-											class="form-control" id="exampleSelectGender">
-											<option>그룹</option>
-											<option>솔로</option>
+										<label for="artistTypeSelect">왈동 유형</label> 
+										<select class="form-control" id="artistTypeSelect" name="artist_type">
+											<option value="그룹">그룹</option>
+											<option value="솔로">솔로</option>
 										</select>
 									</div>
 									<div class="form-group">
-										<label for="exampleInputCity1">그룹명</label> <input type="text"
-											class="form-control" id="exampleInputCity1"
-											placeholder="Group" value="${artistInfo.artist_group }">
+										<label for="artistGroup">그룹명</label> 
+										<input type="text" class="form-control" value="${artistInfo.artist_group }" placeholder="Group" name="artist_group"> 
 									</div>
 									<div class="form-group">
-										<label for="exampleInputCity1">그룹 멤버</label> <input
-											type="text" class="form-control" id="exampleInputCity1"
-											placeholder="Member" value="${artistInfo.artist_member }">
+										<label for="artistMember">그룹 멤버</label> 
+										<input type="text" class="form-control" value="${artistInfo.artist_member }" placeholder="Member" name="artist_member">
 									</div>
 									<div class="form-group">
-										<label for="exampleTextarea1">아티스트 소개 1</label>
-										<textarea class="form-control" id="exampleTextarea1" rows="4"
-											placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)">${artistInfo.artist_info1 }</textarea>
+										<label for="artistInfo1">아티스트 소개 1</label>
+										<textarea class="form-control" id="artistInfo1" rows="10" 
+											placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" name="artist_info1">${artistInfo.artist_info1 }</textarea>
 									</div>
 									<div class="form-group">
-										<label for="exampleTextarea1">아티스트 소개 2</label>
-										<textarea class="form-control" id="exampleTextarea2" rows="4"
-											placeholder="(최대 4000byte 입력)">${artistInfo.artist_info2 }</textarea>
+										<label for="artistInfo2">아티스트 소개 2</label>
+										<textarea class="form-control" id="artistInfo2" rows="10" 
+											placeholder="(최대 4000byte 입력)" name="artist_info2">${artistInfo.artist_info2 }</textarea>
 									</div>
 
 									<div class="form-group">
 										<label id="LabelProfile">프로필사진</label>
 										<div class="input-group">
-											<img id="ImgProfilePre" src="${artistInfo.artist_profile }">
+											<img id="ImgProfilePre"
+												src="${artistInfo.artist_profile }">
 											<span class="input-group-append">
 												<button id="BtnProfile"
 													class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
 											</span>
 										</div>
-										<input type="hidden" id="InputProfile" name="artist_profile">
+										<input type="hidden" id="InputProfile" name="artist_profile" value="">
 										<input type="hidden" id="InputProfileUC"
 											role="uploadcare-uploader"
 											data-public-key="183400fad159d76bdf53"
@@ -153,9 +160,8 @@
 									</div>
 
 
-									<input type="submit" class="btn btn-primary mr-2" value="수정하기">
-									<input type="button" class="btn btn-dark" id="btn_cancle"
-										onclick="history.back(-1);" value="취소">
+									<button type="submit" class="btn btn-primary mr-2">수정하기</button>
+									<button type="button" class="btn btn-dark" id="btn_cancle" onclick="history.back(-1);">취소</button>
 								</form>
 							</div>
 						</div>

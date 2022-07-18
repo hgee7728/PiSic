@@ -315,7 +315,7 @@ function selectAlbumDetail(a_no){
 						<c:forEach items="${artistRandom }" var="artist">
 							<img alt="" src="${artist.artist_profile }"
 								class="gradient-corona-img card-body artistRan"
-								onclick="location.href='<%=request.getContextPath() %>/sound/artistDetail?artist_no=${artist.artist_no }'">
+								onclick="location.href='<%=request.getContextPath() %>/sound/artistDetail?artist_no=${artist.artist_no }'" style="cursor:pointer">
 								
 						</c:forEach>
 

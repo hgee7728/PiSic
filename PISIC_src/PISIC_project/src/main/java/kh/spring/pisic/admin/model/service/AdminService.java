@@ -9,5 +9,6 @@ public interface AdminService {
 	public Artist selectArtist(String artist_no);
 	public List<Artist> selectArtistAjax(String keyword);
 	public int insertArtist(Artist artist);
+	public int updateArtist(Artist artist);
 	public int deleteArtist(String artist_no);
 }

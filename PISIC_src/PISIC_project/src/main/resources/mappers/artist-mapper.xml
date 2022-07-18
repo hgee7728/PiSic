@@ -54,6 +54,7 @@
 		join album on t1.a_no=album.a_no
 		join artist on album.artist_no=ARTIST.ARTIST_NO
 		where t1.artist_no = #{artist_no}
+		order by a_date desc
 	</select>
 	
 	

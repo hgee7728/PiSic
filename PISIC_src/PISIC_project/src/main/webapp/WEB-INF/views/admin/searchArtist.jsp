@@ -105,7 +105,7 @@ $(function(){
 						html += '		<div class="select_btns">					';
 						html += '			<button type="button" id="select_artist"									';
 						html += '			class="btn btn-info btn-fw">				';
-						html += '			변경</button>								';
+						html += '			수정</button>								';
 						html += '		</div>										';
 						html += '		</td>										';
 						html += '		<td>										';
@@ -125,6 +125,35 @@ $(function(){
 	});
 })
 </script>
+<script>
+	$(".btn.update").click(function(){
+		if($(this).hasClass("update")){
+			frmArtist.action="<%=request.getContextPath()%>/admin/update";
+		}else {
+			frmArtist.action="<%=request.getContextPath()%>/admin/delete";
+		}
+		frmArtist.method="post";
+		frmArtist.submit();
+	});
+	
+	$(".btn.delete").click(function(){
+		$.ajax({
+			url:"<%=request.getContextPath()%>/admin/delete",
+			type:"post",
+			data:{artist_no:"${artist.artist_no }"},
+			success:function(result){
+				console.log(result);
+				if(result){
+					alert(result);
+				}
+				location.href="<%=request.getContextPath() %>/admin/artist";
+			},
+			error:function(error){
+				
+			}
+		});
+	});
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -134,7 +163,7 @@ $(function(){
 			<div class="main-panel">
 				<div class="content-wrapper">
 					<div class="title_div">
-						<h2 class="card-title">Artist Edit Page</h2>
+						<h2 class="card-title">Artist Admin Page</h2>
 					</div>
 					<br>
 					<div class="content_div0 content_div4">
@@ -151,6 +180,8 @@ $(function(){
 								</div>
 							</form>
 						</div>
+						
+					<form name="frmArtist" id="frmArtist">
 						<div class="select_btns">
 							<button type="button" id="select_play"
 								class="btn btn-info btn-fw"
@@ -160,7 +191,7 @@ $(function(){
 								class="btn btn-info btn-fw">선택 삭제</button>
 						</div>
 						<br>
-						<form name="sound_frm" id="frmArtist">
+						
 							<div class="table-responsive">
 
 								<table class="table artist_list" id="artist_list">
@@ -177,7 +208,7 @@ $(function(){
 											<td>국적</td>
 											<td>소속사</td>
 											<td>활동유형</td>
-											<td>변경</td>
+											<td>수정</td>
 											<td>삭제</td>
 										</tr>
 									</thead>
@@ -200,7 +231,7 @@ $(function(){
 														</c:when>
 														<c:when test="${artist.artist_profile eq null}">
 															<img
-																src="<%=request.getContextPath()%>/resources/assets/images/favicon.png"
+																src="<%=request.getContextPath()%>/resources/assets/images/artist (1).png"
 																alt="image" />
 														</c:when>
 													</c:choose></td>
@@ -213,8 +244,8 @@ $(function(){
 													<div class="select_btns">
 														<button type="button" id="select_artist"
 															class="btn btn-info btn-fw update"
-															onclick="location.href='<%=request.getContextPath() %>/admin/artistEdit?artist_no=${artist.artist_no }'">
-															변경</button>
+															onclick="location.href='<%=request.getContextPath() %>/admin/editArtist?artist_no=${artist.artist_no }'">
+															수정</button>
 													</div>
 												</td>
 												<td>
@@ -235,35 +266,7 @@ $(function(){
 			</div>
 		</div>
 	</div>
-	<script>
-		$(".btn.update").click(function(){
-			if($(this).hasClass("update")){
-				frmArtist.action="<%=request.getContextPath()%>/admin/update";
-			}else {
-				frmArtist.action="<%=request.getContextPath()%>/admin/delete";
-			}
-			frmArtist.method="post";
-			frmArtist.submit();
-		});
-		
-		$(".btn.delete").click(function(){
-			$.ajax({
-				url:"<%=request.getContextPath()%>/admin/delete",
-				type:"post",
-				data:{artist_no:"${artist.artist_no }"},
-				success:function(result){
-					console.log(result);
-					if(result){
-						alert(result);
-					}
-					location.href="<%=request.getContextPath() %>/admin/artist";
-				},
-				error:function(error){
-					
-				}
-			});
-		});
-	</script>
+
 
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/vendors/js/vendor.bundle.base.js"></script>

@@ -53,5 +53,24 @@
 		#{artist_info1 }, #{artist_info2 })
 	</insert>
 
+	<!-- 아티스트 수정 -->
+	<update id="updateArtist" parameterType="Artist">
+		update artist set
+		artist_name=#{artist_name }, artist_nation=#{artist_nation },
+		artist_company=#{artist_company },
+		artist_type=#{artist_type},
+		artist_group=#{artist_group }, artist_member=#{artist_member },
+		artist_profile=#{artist_profile }, artist_info1=#{artist_info1 },
+		artist_info2=#{artist_info2 }
+		where artist_no=#{artist_no}
+	</update>
+
+
+	<!-- 아티스트 삭제 -->
+	<delete id="deleteArtist" parameterType="string">
+		delete from artist 
+		where artist_no=#{artist_no}
+	</delete>
+
 
 </mapper>

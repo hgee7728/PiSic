@@ -32,6 +32,11 @@ public class AdminServiceImpl implements AdminService{
 	public int insertArtist(Artist artist) {
 		return dao.insertArtist(artist);
 	}
+	
+	@Override
+	public int updateArtist(Artist artist) {
+		return dao.updateArtist(artist);
+	}
 
 	@Override
 	public int deleteArtist(String artist_no) {
