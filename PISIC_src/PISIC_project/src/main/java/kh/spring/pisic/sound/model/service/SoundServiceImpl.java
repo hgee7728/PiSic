@@ -127,6 +127,12 @@ public class SoundServiceImpl implements SoundService{
 		return dao.selectYesterChart(sound);
 	}
 	
+	// 최고 순위 (일간)
+	@Override
+	public PlayInfo selectBestChart(Sound sound) {
+		return dao.selectBestChart(sound);
+	}
+	
 	// playInfo 테이블에 데이터 삽입 - ajax
 	@Override
 	public int insertPalyInfo(PlayInfo playInfo) {
@@ -143,6 +149,7 @@ public class SoundServiceImpl implements SoundService{
 		}
 		return resultSoundList;
 	}
+	
 
 
 }

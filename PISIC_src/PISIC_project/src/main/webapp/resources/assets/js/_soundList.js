@@ -123,6 +123,7 @@ $(function(){
 	}
 	// 한곡 담기
 	function playlistInsertDo(a_no, s_no, l_no){
+		console.log("한곡담기");
 		$.ajax({
 			url: root_path + "/mymusic/insertSound",
 			type: "post",
@@ -145,9 +146,32 @@ $(function(){
 		}); // ajax 끝
 	}
 
-	// 새 플레이 리스트 만들기
+	// 새 플레이 리스트 만들기 - 선택 담기
 	function newPlaylist(){
-		location.href = root_path + "/mymusic/insertPlaylist";
+		console.log("모달 새 플리 만들기");
+    	sound_frm.action= root_path + "/mymusic/insertPlaylist";
+    	sound_frm.method="post";
+    	sound_frm.submit();
+	};
+	// 새 플레이 리스트 만들기 - 한곡 담기
+	function newPlaylistOne(a_no, s_no){
+		console.log("모달 새 플리 만들기");
+    	var frm = document.createElement('form');
+	    var input_s_no = document.createElement('input');
+	    input_s_no.setAttribute('type', 'hidden');
+	    input_s_no.setAttribute('name', 's_no');
+	    input_s_no.setAttribute('value', s_no);
+		var input_a_no = document.createElement('input');
+	    input_a_no.setAttribute('type', 'hidden');
+	    input_a_no.setAttribute('name', 'a_no');
+	    input_a_no.setAttribute('value', a_no);
+	    
+	    frm.appendChild(input_s_no);
+	    frm.appendChild(input_a_no);
+	    frm.setAttribute('method', 'post');
+	    frm.setAttribute('action', root_path + "/mymusic/insertPlaylist");
+	    document.body.appendChild(frm);
+	    frm.submit();
 	};
 	
 	//로그인 페이지로
@@ -227,6 +251,7 @@ $(function(){
 		$.ajax({
 			url: root_path + "/mymusic/playlist.ax",
 			type: "post",
+			dataType: "json",
 			success: function(result) {
 				var html = "";
 				for(var i = 0; i < result.length; i++){
@@ -244,6 +269,7 @@ $(function(){
 						html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
 					}
 				}
+				$(".playlist_insert_modal_new h5").children("a#newPlaylist").attr('href','javascript:newPlaylistOne('+a_no +','+ s_no +')');
 				$(".playlist_insert_modal_content").eq(0).nextAll().remove();
 				$(".preview-list").append(html);
 			},

@@ -411,7 +411,7 @@ UPLOADCARE_LOCALE = "ko"
 	    			l_image : $('input[name=l_image]').val()
 	    	}
 	    	$.ajax({
-	    		url: "<%=request.getContextPath() %>/mymusic/insertPlaylist",
+	    		url: "<%=request.getContextPath() %>/mymusic/insertPlaylist.do",
 	    		type: "post",
 	    		dataType: "json",
 	    		data: ajaxData,
@@ -453,6 +453,8 @@ UPLOADCARE_LOCALE = "ko"
 	    	history.back();
 	    });
 	    
+		 // 미니 버튼들 a태그 색상 바꾸기
+		$("i.mdi").parent('a').css('color', '#8f5fe8');
 	}); // $(founction(){}) 끝
 	
 	// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
@@ -619,7 +621,7 @@ UPLOADCARE_LOCALE = "ko"
 														</tr>
 													</thead>
 													<tbody>
-													
+														
 													</tbody>
 												</table>
 												</form>
@@ -657,7 +659,32 @@ UPLOADCARE_LOCALE = "ko"
 														</tr>
 													</thead>
 													<tbody>
-
+														<c:if test="${not empty soundList }">
+															<c:forEach items="${ soundList}" var="sounds" varStatus="status">
+															<tr>
+																<td>
+																	<div class="form-check form-check-muted m-0">
+																		<label class="form-check-label"> 
+																			<input type="checkbox" class="form-check-input sound_checkbox" value="${sounds.s_no }" name="s_no">
+																		</label>
+																		<input type="hidden" value="${sounds.a_no }" name="a_no">
+																	</div>
+																</td>
+																<td>${status.index+1 }</td>
+																<td><img src="${sounds.a_cover }" alt="image" /></td>
+																<td><a href="javascript:selectSoundDetail(${sounds.a_no },${sounds.s_no})">${sounds.s_name}</a></td>
+																<td>
+																	<c:forEach items="${ sounds.singers}" var="singer">
+																	<a href="javascript:selectArtistDetail(${singer.artist_no})">${singer.artist_name}</a>&nbsp;
+																	</c:forEach>
+																</td>
+																<td>
+																	<a href="javascript:soundMinus(${status.index+1 })"><i class="mdi mdi-minus-box list_icon"></i></a>
+																	<!-- <i class="mdi mdi-plus-box list_icon"></i> -->
+																</td>
+															</tr>
+															</c:forEach>
+														</c:if>
 													</tbody>
 												</table>
 												</form>

@@ -21,7 +21,7 @@
 												<a href="javascript:goLogin()">로그인 후 이용해주세요.</a>
 											</c:when>
 											<c:when test="${not empty loginSsInfo}">
-												<a href="javascript:newPlaylist()"> + 새 플레이 리스트 만들기</a>
+												<a href="javascript:newPlaylist()" id="newPlaylist"> + 새 플레이 리스트 만들기</a>
 											</c:when>
 										</c:choose>
 									</h5>

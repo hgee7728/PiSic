@@ -215,7 +215,7 @@ $(function(){
 																</div>
 															</td>
 															<td>${sounds.s_no }</td>
-															<td><img src="${album.a_cover }" alt="image" /></td>
+															<td><img src="${sounds.a_cover }" alt="image" /></td>
 															<td><a href="javascript:selectSoundDetail(${sounds.a_no },${sounds.s_no})">${sounds.s_name}</a></td>
 															<td>
 																<c:forEach items="${ sounds.singers}" var="singer">

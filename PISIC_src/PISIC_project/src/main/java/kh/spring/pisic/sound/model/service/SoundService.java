@@ -30,6 +30,8 @@ public interface SoundService {
 	public int deleteSoundRecomment(Member member, SoundRecomment soundRecomment);
 	public String selectDailyListen(Sound sound);
 	public String selectYesterChart(Sound sound);
+	public PlayInfo selectBestChart(Sound sound);
 	public int insertPalyInfo(PlayInfo playInfo);
 	public List<Sound> checkAnoSno(List<Sound> soundList);
+	
 }

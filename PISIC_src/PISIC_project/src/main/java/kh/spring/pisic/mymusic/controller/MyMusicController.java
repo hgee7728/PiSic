@@ -85,9 +85,38 @@ public class MyMusicController {
 		mv.setViewName("mymusic/insertPlaylist");
 		return mv;
 	}
+	// 새 플레이 리스트 만들기(담을 곡 가져가기) - page
+	@PostMapping("/insertPlaylist")
+	public ModelAndView pageInsertPlaylist(ModelAndView mv
+			, HttpSession session
+			, @RequestParam(name = "a_no", required = false) String[] a_noArr
+			, @RequestParam(name = "s_no", required = false) String[] s_noArr) {
+		// TODO 로그인 여부
+		Member member = (Member) session.getAttribute("loginSsInfo");
+		
+		// 들고 온 데이터 domain형태로 list 시키기
+		if(a_noArr != null && s_noArr != null) {
+			List<Sound> soundList = new ArrayList<Sound>();
+			for (int i = 0; i < s_noArr.length; i++) {
+				Sound sound = new Sound();
+				try { // number 파싱 try-catch
+					sound.setA_no(Integer.parseInt(a_noArr[i]));
+					sound.setS_no(Integer.parseInt(s_noArr[i]));
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+				sound.setM_id(member.getM_id());
+				soundList.add(sound);
+			}
+			mv.addObject("soundList", service.selectSoundList(soundList));
+		} 
+		mv.addObject("mymusicList", service.selectPlaylist(member.getM_id()));
+		mv.setViewName("mymusic/insertPlaylist");
+		return mv;
+	}
 
 	// 플레이 리스트 만들기
-	@PostMapping(value = "/insertPlaylist", produces = "text/plain;charset=UTF-8")
+	@PostMapping(value = "/insertPlaylist.do", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String insertPlaylist(@RequestParam(name = "a_no", required = false) int[] a_noArr,
 			@RequestParam(name = "s_no", required = false) int[] s_noArr, MyMusic mymusic, HttpSession session) {
@@ -157,30 +186,6 @@ public class MyMusicController {
 		}
 		mv.setViewName("redirect:/mymusic/playlist");
 		return mv;
-	}
-
-	// 플레이 리스트 만들기(담을 곡으로 옮기기) - ajax
-	@PostMapping(value = "/soundList", produces = "text/plain;charset=UTF-8")
-	@ResponseBody
-	public List<Sound> selectSoundList(@RequestParam(name = "a_no", required = false) String[] a_noArr,
-			@RequestParam(name = "s_no", required = false) String[] s_noArr) {
-		List<Sound> soundList = new ArrayList<Sound>();
-
-		// number 파싱 try-catch
-		try {
-			// 들고 온 데이터 domain형태로 list 시키기
-			for (int i = 0; i < s_noArr.length; i++) {
-				Sound sound = new Sound();
-				sound.setA_no(Integer.parseInt(a_noArr[i]));
-				sound.setS_no(Integer.parseInt(s_noArr[i]));
-				soundList.add(sound);
-			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		}
-
-		System.out.println("controller result :" + service.selectSoundList(soundList));
-		return service.selectSoundList(soundList);
 	}
 
 	// 플레이 리스트에 담긴 곡 조회 - ajax
@@ -348,6 +353,7 @@ public class MyMusicController {
 		Member member = (Member) session.getAttribute("loginSsInfo");
 		mymusic.setM_id(member.getM_id());
 		
+		mv.addObject("mymusicList", service.selectPlaylist(member.getM_id()));
 		mv.addObject("MyMusic", service.selectPlaylistDetail(mymusic));
 		mv.setViewName("mymusic/updatePlaylist");
 		return mv;

@@ -651,8 +651,16 @@ function selectAlbumDetail(a_no){
 								</div>
 								<div class="card report_div">
 									<div class="card-body">
-									<h4 class="card-title">최고 순위</h4>
-									<p class="text-muted mb-0">${sound.s_name}</p>
+									<h4 class="card-title">최고 순위(일간)</h4>
+									<c:choose>
+										<c:when test="${bestChart =='N' }">
+											<p class="text-muted mb-0">순위권 밖</p>
+										</c:when>
+										<c:otherwise>
+											<p class="text-muted mb-0"><fmt:formatDate value="${bestChart.p_date }" pattern="yyyy-MM-dd"/></p>
+											<p class="text-muted mb-0">${bestChart.chart } 위</p>
+										</c:otherwise>
+									</c:choose>
 									</div>
 								</div>
 							</div>

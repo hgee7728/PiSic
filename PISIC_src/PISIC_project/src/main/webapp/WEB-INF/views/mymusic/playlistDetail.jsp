@@ -37,6 +37,7 @@
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resources/assets/js/_soundList.js"></script>
 <style>
 .content_div1 {
 	display: flex;
@@ -105,64 +106,11 @@ $(function(){
 	// 미니 버튼들 a태그 색상 바꾸기
 	$("i.mdi").parent('a').css('color','#8f5fe8');
 	
-	// 더보기 기능
-	var content = $(".intro_box");
-    var content_txt = content.text();
-    var content_html = content.html();
-    var content_txt_short = content_txt.substring(0,100)+"...";
-    
-    if(content_txt.length >= 100){
-        content.html(content_txt_short)
-        
-    }else{
-        $(".btn_more").hide()
-    }
-    
-    $(".btn_more").click(toggle_content);
-    function toggle_content(){
-        if($(this).hasClass('short')){
-            // 접기 상태
-            $(this).html('더보기');
-            content.html(content_txt_short)
-            $(this).removeClass('short');
-        }else{
-            // 더보기 상태
-            $(this).html('접기');
-            content.html(content_html);
-            $(this).addClass('short');
 
-        }
-    }
- // 체크박스 전체선택
-    $("#check_all").click(function(){
-    	if($('#check_all').is(':checked')){
-    		$('input:checkbox').prop('checked',true);
-    	} else {
-    		$('input:checkbox').prop('checked',false);
-    	}
-    })
     
-    // 선택 재생
-    $("#select_play").click(function(){
-    	if($('input[name=s_no]:checked').length == '0'){
-			alert("곡을 선택하세요.");
-		} else {
-			/* // 체크된 노래 확인 후 , 체크 안되어있다면 input-hidden 지우기
-	    	$("input[name=s_no]").each(function(){
-	    		if(!(this.checked)){
-	    			console.log("히든 지우기");
-	    			$(this).parent().next("input[name=a_no]").remove();
-	    		} 
-	    		console.log(this.checked);
-	    	}); */
-	    	// Post 방식으로 새창 열기
-	    	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
-	    	sound_frm.action= root_path + "/sound/play";
-	    	sound_frm.target="SoundPlayer";
-	    	sound_frm.method="post";
-	    	sound_frm.submit();
-		}
-    });
+
+
+    
 
     $("#delete_playlist").click(function(){
     	var confm = confirm("선택된 플레이리스트를 삭제 하시겠습니까?");
@@ -176,77 +124,7 @@ $(function(){
     
 	
 }); // $(function(){}) 끝
-//로그인 페이지로
-function goLogin(){
-	location.href= root_path + "/member/login"
-};
-// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
-function selectSoundDetail(a_no, s_no){
-	location.href = root_path + "/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
-};
-function selectArtistDetail(artist_no){
-	location.href = root_path + "/sound/artistDetail?artist_no=" + artist_no;
-};
-function selectAlbumDetail(a_no){
-	location.href = root_path + "/sound/albumDetail?a_no=" + a_no;
-};
 
-//한곡 재생 - post방식으로 a태그 이용해서 이동
-function playOne(a_no,s_no){
-	console.log("한곡재생");
-
-	var frm = document.createElement('form');
-    var input_s_no = document.createElement('input');
-    input_s_no.setAttribute('type', 'hidden');
-    input_s_no.setAttribute('name', 's_no');
-    input_s_no.setAttribute('value', s_no);
-	var input_a_no = document.createElement('input');
-    input_a_no.setAttribute('type', 'hidden');
-    input_a_no.setAttribute('name', 'a_no');
-    input_a_no.setAttribute('value', a_no);
-    
-    frm.appendChild(input_s_no);
-    frm.appendChild(input_a_no);
-    frm.setAttribute('method', 'post');
-    frm.setAttribute('action', root_path + '/sound/play');
-    document.body.appendChild(frm);
-	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
-	frm.target="SoundPlayer";
-    frm.submit();
-};
-
-//노래 좋아요 - ajax
-function soundLike(a_no,s_no){
-	console.log("좋아요");
-	$.ajax({
-		url:root_path + "/sound/like",
-		type:"post",
-		data:{
-			a_no:a_no,
-			s_no:s_no
-			},
-		success: function(result){
-			if(result == "-2"){
-				alert("로그인 후 이용해주세요");
-				location.replace(root_path + "/member/login");
-			} else if(result == "-1"){
-				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
-			} else if(result == "0"){
-				alert("해당 곡을 좋아요를 취소했습니다.");
-				location.reload();
-			} else if(result == "1"){
-				alert("해당 곡을 좋아요를 실패 했습니다. 다시 시도해주세요.");
-			} else if(result == "2"){
-				alert("해당 곡을 좋아요 했습니다.");
-				location.reload();
-			}
-			
-		},
-		error:function(){
-			
-		}
-	}); //ajax 끝
-};
 </script>
 </head>
 <body>

@@ -1,5 +1,6 @@
 package kh.spring.pisic.mymusic.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +46,14 @@ public class MyMusicServiceImpl implements MyMusicService{
 		return dao.deletePlaylist(mymusicList);
 	}
 	
-	// 플레이 리스트 만들기(담을 곡으로 옮기기) - ajax
+	// 플레이 리스트 만들기(담을 곡 들고 가기) - ajax
 	@Override
 	public List<Sound> selectSoundList(List<Sound> soundList){
-		return dao.selectSoundList(soundList);
+		List<Sound> resultSoundList = new ArrayList<Sound>();
+		for(int i = 0 ; i < soundList.size() ; i ++) {
+			resultSoundList.add(dao.selectSoundList(soundList.get(i)));
+		}
+		return resultSoundList;
 	}
 
 	// 플레이 리스트 만들기 - ajax

@@ -37,9 +37,9 @@ public class MyMusicDao {
 		return session.delete("MyMusic.deletePlaylist", mymusicList);
 	}
 	
-	// 플레이 리스트 만들기(담을 곡으로 옮기기) - ajax
-	public List<Sound> selectSoundList(List<Sound> soundList){
-		return session.selectList("MyMusic.selectSoundList", soundList);
+	// 플레이 리스트 만들기(담을 곡 들고 가기) - ajax
+	public Sound selectSoundList(Sound sound){
+		return session.selectOne("MyMusic.selectSoundList", sound);
 	}
 	
 	// 플레이 리스트 만들기

@@ -48,7 +48,7 @@
 <!-- 앨범상세조회 - 수록곡 -->
 <select id="selectAlbumSound" resultMap="soundResultMap">
 	select sound.s_no, sound.a_no, sound.s_name, 
-	sound.s_lyrics1, sound.s_lyrics2, sound.s_age_yn, sound.s_path, album.artist_no, album.a_name
+	sound.s_lyrics1, sound.s_lyrics2, sound.s_age_yn, sound.s_path, album.artist_no, album.a_name, album.a_cover
 	from sound sound
 	join album album on sound.a_no=album.a_no 
 	where album.a_no=#{a_no}
@@ -217,6 +217,31 @@
 		group by s_no, a_no order by cnt desc)t1 
     )t2 
     where t2.a_no=#{a_no} and t2.s_no=#{s_no}
+</select>
+
+<!-- 최고 순위 (일간) -->
+<select id="selectBestChart" parameterType="Sound" resultType="PlayInfo">
+select * from (SELECT *
+  FROM (SELECT s_no
+             , a_no
+             , to_date(p_date,'yyyymmdd') p_date
+             , cnt
+             , chart
+             , RANK() OVER(PARTITION BY s_no, a_no ORDER BY chart) rk1
+          FROM (SELECT s_no
+                     , a_no
+                     , TO_CHAR(p_date, 'yyyymmdd') p_date
+                     , COUNT(*) cnt
+                     , RANK() OVER(PARTITION BY TO_CHAR(p_date, 'yyyymmdd')
+                                       ORDER BY COUNT(*) DESC) chart
+                  FROM playinfo
+                 GROUP BY s_no, a_no
+                     , TO_CHAR(p_date, 'yyyymmdd') order by p_date desc
+                )
+         WHERE s_no = 1
+           AND a_no = 10
+        )
+ WHERE rk1 = 1) where rownum = 1
 </select>
 
 <!-- playInfo 테이블에 데이터 삽입 -->

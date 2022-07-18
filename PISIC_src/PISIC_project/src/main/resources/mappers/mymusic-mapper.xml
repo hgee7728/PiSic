@@ -136,16 +136,12 @@
 	select * from dual
 </insert>
 
-<!-- 플레이 리스트 만들기 - 곡 옮기기 -->
-<select id="selectSoundList" parameterType="list" resultMap="soundResultMap">
+<!-- 플레이 리스트 만들기 - 담을 곡 들고가기 -->
+<select id="selectSoundList" parameterType="Sound" resultMap="soundResultMap">
 	select sound.s_name, album.a_cover, sound.a_no, sound.s_no
 	from sound sound
 	join album album on sound.a_no = album.a_no
-	where (sound.a_no, sound.s_no) in
-	<foreach collection="list" item="item" open="(" separator=","
-		close=")">
-		(#{item.a_no},#{item.s_no})
-	</foreach>
+	where sound.a_no = #{a_no} and sound.s_no = #{s_no}
 </select>
 
 <!-- 플레이 리스트에 담긴 곡 목록 -ajax -->
@@ -162,12 +158,11 @@
 <!-- 최근 들은 곡 --><!-- TODO 날짜 수정해야돼, -->
 <select id="selectSoundRecent" resultMap="soundResultMap">
 	select DISTINCT sound.s_no, sound.a_no, sound.s_name, sound.s_path
-	, album.a_cover, album.a_name, pinfo.p_date
+	, album.a_cover, album.a_name
 	from sound sound
 	join playinfo pinfo on sound.s_no = pinfo.s_no and sound.a_no = pinfo.a_no
 	join album album on sound.a_no = album.a_no
 	where pinfo.m_id = #{m_id} and pinfo.p_date BETWEEN sysdate-100 and sysdate
-	order by pinfo.p_date desc
 </select>
 
 <!-- 자주 들은 곡 -->

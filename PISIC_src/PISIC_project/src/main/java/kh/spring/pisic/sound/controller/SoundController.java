@@ -49,6 +49,7 @@ public class SoundController {
 			, @RequestParam(name="s_no", required = false) int[] s_noArr
 			, HttpSession session
 			) {
+		System.out.println("음악 재생!!");
 		//TODO 로그인 여부 확인
 		Member member = (Member)session.getAttribute("loginSsInfo");
 		
@@ -172,6 +173,12 @@ public class SoundController {
 			mv.addObject("yesterChart", "N");
 		} else {
 			mv.addObject("yesterChart", service.selectYesterChart(sound));
+		}
+		// 최고 순위 (일간)
+		if(service.selectBestChart(sound) == null) {
+			mv.addObject("bestChart", "N");
+		} else {
+			mv.addObject("bestChart", service.selectBestChart(sound));
 		}
 		
 		
