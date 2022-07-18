@@ -26,9 +26,6 @@ $(document).ready(function(){
 	], {
 		playlistOptions: {
 			enableRemoveControls: true
-			, displayTime: 0
-			, addTime: 0
-			, removeTime: 0
 			, shuffleTime: 0
 		},
 		swfPath: "../../dist/jplayer",
@@ -94,6 +91,9 @@ $(document).ready(function(){
 	};
 	$("body").append(html);
 	
+	
+	opener.location.reload();
+
 	// stop watch 방식
 	let timerId;
 	let time = 0;
@@ -209,10 +209,9 @@ $(document).ready(function(){
 		
 	}, 1000)
 	
-	opener.location.reload();
-	
 	// 동적으로 생성된 x 버튼에 기능 추가 - 현재 플레이 리스트 table에서 삭제
 	$(document).on("click", ".jp-playlist-item-remove", function() {
+		alert("x 누른 곡 인덱스 : "+$(this).closest('li').index());
 		console.log("누른곳 인덱스 0: " + $(this).closest('div.jp-playlist').index());
 		console.log("누른곳 인덱스 1: " + $(this).closest('li').index());
 		if($(this).closest('li').hasClass("jp-playlist-current") == true){
@@ -230,15 +229,17 @@ $(document).ready(function(){
 		console.log("누른곡 앨범 번호: " + $('div#soundData'+$(this).closest('li').index()+'').children("input[name=a_no]").val());
 		console.log("누른곡 노래 번호: " + $('div#soundData'+$(this).closest('li').index()+'').children("input[name=s_no]").val());
 		  
-		<%-- $.ajax({
+		$.ajax({
 			url: "<%=request.getContextPath() %>/mymusic/deleteSoundPlaylist0",
 			type: "post",
+			dataType: "json",
 			data:{
 				a_no: $('div#soundData'+$(this).closest('li').index()+'').children("input[name=a_no]").val(),
 				s_no: $('div#soundData'+$(this).closest('li').index()+'').children("input[name=s_no]").val(),
 				s_order: $('div#soundData'+$(this).closest('li').index()+'').children("input[name=s_order]").val()
 			},
 			success: function(result) {
+				console.log(result);
 				if(result == null){
 					alert("로그인 후 이용해 주세요.");
 				} else if(result.s_no == "0" && result.a_no == "0"){
@@ -259,7 +260,7 @@ $(document).ready(function(){
 			error:function(){
 				
 			}
-		}); --%> // ajax 끝
+		}); // ajax 끝
 		
 	   
 	});
@@ -440,7 +441,6 @@ function goInsertPlayinfo(){
 			<input type="hidden" name="id" id="sid" value="aaa">
 			<button type="button" id="btn">테스트버튼</button>
 			<button type="button" id="current_name">현재곡 뭐야</button>
-			
 </body>
 
 

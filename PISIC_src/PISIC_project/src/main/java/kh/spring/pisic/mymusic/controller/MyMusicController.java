@@ -396,7 +396,7 @@ public class MyMusicController {
 	// 현재 플레이 리스트에서 곡 삭제 - ajax
 	@PostMapping(value = "/deleteSoundPlaylist0", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public Sound deleteSoundPlaylist0(
+	public String deleteSoundPlaylist0(
 			//@RequestParam(name = "a_no", required = false) int a_no
 			//, @RequestParam(name = "s_no", required = false) int s_no
 			Sound sound
@@ -412,9 +412,9 @@ public class MyMusicController {
 		if(service.deleteSoundPlaylist0(sound) < 1) {
 			sound.setA_no(0);
 			sound.setS_no(0);
-			return sound;
+			return  new Gson().toJson(sound);
 		} else {
-			return sound;
+			return new Gson().toJson(sound);
 		}
 	}
 	
