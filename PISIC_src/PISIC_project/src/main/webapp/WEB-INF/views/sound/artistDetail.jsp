@@ -289,7 +289,7 @@ table.sound_list a {
 								</c:when>
 								<c:when test="${artist.artist_profile eq null}">
 									<img
-										src="<%=request.getContextPath()%>/resources/assets/images/artist (1).png"
+										src="<%=request.getContextPath()%>/resources/assets/images/artist.png"
 										alt="image" id="main_img" width="300" height="300"/>
 								</c:when>
 							</c:choose>

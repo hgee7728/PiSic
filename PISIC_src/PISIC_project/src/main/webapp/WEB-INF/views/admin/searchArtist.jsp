@@ -231,7 +231,7 @@ $(function(){
 														</c:when>
 														<c:when test="${artist.artist_profile eq null}">
 															<img
-																src="<%=request.getContextPath()%>/resources/assets/images/artist (1).png"
+																src="<%=request.getContextPath()%>/resources/assets/images/artist.png"
 																alt="image" />
 														</c:when>
 													</c:choose></td>
