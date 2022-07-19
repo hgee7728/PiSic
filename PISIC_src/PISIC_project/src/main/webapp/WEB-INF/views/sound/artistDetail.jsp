@@ -39,42 +39,41 @@
 <script
 	src="<%=request.getContextPath()%>/resources/assets/js/_soundList.js"></script>
 <script>
-const root_path = '<%=request.getContextPath()%>
-	';
-	$(function() {
-		var msg = '${msg}';
-		if (msg) {
-			alert(msg);
-		}
-		// 더보기 기능
-		var content = $(".intro_box");
-		var content_txt = content.text();
-		var content_html = content.html();
-		var content_txt_short = content_txt.substring(0, 100) + "...";
+const root_path = '<%=request.getContextPath() %>';
+$(function(){
+	var msg = '${msg}';
+	if(msg){
+		alert(msg);
+	}
+	// 더보기 기능
+	var content = $(".intro_box");
+    var content_txt = content.text();
+    var content_html = content.html();
+    var content_txt_short = content_txt.substring(0,100)+"...";
+    
+    if(content_txt.length >= 100){
+        content.html(content_txt_short)
+        
+    }else{
+        $(".btn_more").hide()
+    }
+    
+    $(".btn_more").click(toggle_content);
+    function toggle_content(){
+        if($(this).hasClass('short')){
+            // 접기 상태
+            $(this).html('더보기');
+            content.html(content_txt_short)
+            $(this).removeClass('short');
+        }else{
+            // 더보기 상태
+            $(this).html('접기');
+            content.html(content_html);
+            $(this).addClass('short');
 
-		if (content_txt.length >= 100) {
-			content.html(content_txt_short)
-
-		} else {
-			$(".btn_more").hide()
-		}
-
-		$(".btn_more").click(toggle_content);
-		function toggle_content() {
-			if ($(this).hasClass('short')) {
-				// 접기 상태
-				$(this).html('더보기');
-				content.html(content_txt_short)
-				$(this).removeClass('short');
-			} else {
-				// 더보기 상태
-				$(this).html('접기');
-				content.html(content_html);
-				$(this).addClass('short');
-
-			}
-		}
-	});
+        }
+    }
+});
 </script>
 <style>
 .content_div1 {

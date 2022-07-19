@@ -34,7 +34,7 @@ public class AdminController {
 	public ModelAndView SearchArtistPage(ModelAndView mv) { 
 		// TODO
 		mv.addObject("aristList",  service.selectArtistList());
-		mv.setViewName("admin/searchArtist");
+		mv.setViewName("admin/artistList");
 		return mv; 
 	}
 	
@@ -119,8 +119,6 @@ public class AdminController {
 			return mv;
 		}
 		
-
-		
 		int result = service.insertArtist(artist);
 		
 		if(result==0) {
@@ -134,11 +132,9 @@ public class AdminController {
 	}
 	
 	/*아티스트 삭제하기*/
-	@ResponseBody
-	@PostMapping(value = "/delete", produces = "text/plain;charset=UTF-8")
-	public String deleteArtist(
-			@RequestParam(name="artist_no", required = false) String artist_no
-			) throws Throwable{
+	@GetMapping("/delete")
+	public String deleteArtist(@RequestParam(name = "artist_no", defaultValue = "0") String artist_no) {
+		
 		int result = service.deleteArtist(artist_no);
 		
 		String msg;
@@ -147,7 +143,24 @@ public class AdminController {
 		}else {
 			msg="게시글 삭제를 하지못했습니다. 다시 시도해주세요.";
 		}
-		return msg;
+		return "redirect:/admin/artist";
+		
+	}
+	
+	
+	/*아티스트 선택 삭제하기*/
+	@ResponseBody
+	@PostMapping(value = "/delete", produces = "text/plain;charset=UTF-8")
+	public String deleteCheckArtist(
+			HttpServletRequest request){
+		String[] ajaxMsg = request.getParameterValues("artistArr");
+		int size = ajaxMsg.length;
+		for(int i=0; i<size; i++) {
+			service.deleteArtist(ajaxMsg[i]);
+		}
+		return "redirect:admin/artist";
+		
+		
 	}
 	
 	

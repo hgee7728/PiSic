@@ -53,7 +53,72 @@ table.artist_list  tr>td:nth-child(5), table.artist_list  tr>td:nth-child(6),
 	table.artist_list  tr>td:nth-child(9) {
 	text-align: center;
 }
+
+table.artist_list  tr>td:nth-child(4),
+table.artist_list  tr>td:nth-child(5),
+table.artist_list  tr>td:nth-child(6),
+table.artist_list  tr>td:nth-child(7){
+	width: 12%;
+}
 </style>
+<script>
+$(function() {
+	var chkObj = document.getElementsByName("RowCheck");
+	var rowCnt = chkObj.length;
+
+	$("input[name='allCheck']").click(function() {
+		var chk_listArr = $("input[name='RowCheck']");
+		for(var i=0; i<chk_listArr.length; i++){
+			chk_listArr[i].checked = this.checked;
+		}
+	});
+
+	$("input[name='RowCheck']").click(function() {
+		if($("input[name='RowCheck']:checked").length == rowCnt){
+			$("input[name='allCheck']")[0].checked = true;
+		}
+		else{
+			$("input[name='allCheck']")[0].checked = false;
+		}
+	});
+});
+
+$(function(){
+	$("#delete-select").click(function deleteArtist() {
+		var url = "admin/delete";
+		var artistArr = new Array();
+		var list = $("input[name='RowCheck']");
+		for(var i =0; i<list.length; i++){
+			if(list[i].checked){
+				artistArr.push(list[i].value);
+			}
+		}
+		if(artistArr.length == 0){
+			alert("선택된 아티스트가 없습니다.");
+		}
+		else{
+			var chk = confirm("정말 삭제하시겠습니까?");
+			$.ajax({
+				url : url,
+				type : "POST",
+				traditional : true,
+				data :{
+					artistArr : artistArr
+				},
+				success : function(jdata) {
+					if(jdata =1){
+						alert("삭제 성공");
+						location.replace("admin/artist")
+					}
+					else{
+						alert("삭제 실패")
+					}
+				}
+			});
+		}
+	}
+});
+</script>
 <script>
 $(function(){
 	$("#search-artist").click(function(){
@@ -77,7 +142,7 @@ $(function(){
 						html += '			<div class="form-check form-check-muted m-0">								';
 						html += '			<label class="form-check-label"> <input										';
 						html += '							type="checkbox" class="form-check-input sound_checkbox"		';
-						html += '							name="artist_no">			';
+						html += '							value="${artist.artist_no }" name="RowCheck" >			';
 						html += '			<i class="input-helper"></i>  			';
 						html += '			</label>								';
 						html += '			</div>									';
@@ -90,17 +155,35 @@ $(function(){
 						html += '					<img src=" ' + resultData.artist_profile +' " alt="image" />		';
 						
 						}
-						if(resultData.artist_profile==null){
+						else if(resultData.artist_profile==null){
 						
-						html += '					<img src=" ' + "<%=request.getContextPath()%>/resources/assets/images/favicon.png" +' " alt="image" />			';
+						html += '					<img src=" ' + "<%=request.getContextPath()%>/resources/assets/images/artist.png" +' " alt="image" />			';
 						
 						}
 						
 						html += '		</td>										';
 						html += '		<td> '+ resultData.artist_name + ' </td>				';
+						
+						if(resultData.artist_nation!=null){
 						html += '		<td> '+ resultData.artist_nation + ' </td>			';
+						}
+						else if(resultData.artist_nation==null){
+						html += '		<td>(정보없음)</td>			';	
+						}
+						
+						if(resultData.artist_company!=null){
 						html += '		<td> '+ resultData.artist_company + ' </td>			';
-						html += '		<td> '+ resultData.artist_type + ' </td>				';				
+						}
+						else if(resultData.artist_company==null){
+						html += '		<td>(정보없음)</td>			';	
+						}
+					
+						if(resultData.artist_type!=null){
+						html += '		<td> '+ resultData.artist_type + ' </td>			';
+						}
+						else if(resultData.artist_type==null){
+						html += '		<td>(정보없음)</td>			';	
+						}
 						html += '		<td>										';
 						html += '		<div class="select_btns">					';
 						html += '			<button type="button" id="select_artist"									';
@@ -125,35 +208,7 @@ $(function(){
 	});
 })
 </script>
-<script>
-	$(".btn.update").click(function(){
-		if($(this).hasClass("update")){
-			frmArtist.action="<%=request.getContextPath()%>/admin/update";
-		}else {
-			frmArtist.action="<%=request.getContextPath()%>/admin/delete";
-		}
-		frmArtist.method="post";
-		frmArtist.submit();
-	});
-	
-	$(".btn.delete").click(function(){
-		$.ajax({
-			url:"<%=request.getContextPath()%>/admin/delete",
-			type:"post",
-			data:{artist_no:"${artist.artist_no }"},
-			success:function(result){
-				console.log(result);
-				if(result){
-					alert(result);
-				}
-				location.href="<%=request.getContextPath() %>/admin/artist";
-			},
-			error:function(error){
-				
-			}
-		});
-	});
-</script>
+
 </head>
 <body>
 	<div class="container-scroller">
@@ -183,11 +238,11 @@ $(function(){
 						
 					<form name="frmArtist" id="frmArtist">
 						<div class="select_btns">
-							<button type="button" id="select_play"
+							<button type="button" id="add-artist"
 								class="btn btn-info btn-fw"
-								onclick="location.href='<%=request.getContextPath()%>/admin/artistAdd'">아티스트
+								onclick="location.href='<%=request.getContextPath()%>/admin/addArtist'">아티스트
 								추가</button>
-							<button type="button" id="select_insert"
+							<button type="button" id="delete-select"
 								class="btn btn-info btn-fw">선택 삭제</button>
 						</div>
 						<br>
@@ -199,7 +254,7 @@ $(function(){
 										<tr>
 											<td><div class="form-check form-check-muted m-0">
 													<label class="form-check-label"> <input
-														type="checkbox" class="form-check-input" id="check_all">
+														type="checkbox" class="form-check-input" id="allCheck" name="allCheck">
 													</label>
 												</div></td>
 											<td>No</td>
@@ -220,7 +275,7 @@ $(function(){
 													<div class="form-check form-check-muted m-0">
 														<label class="form-check-label"> <input
 															type="checkbox" class="form-check-input sound_checkbox"
-															value="${artist.artist_no }" name="artist_no">
+															value="${artist.artist_no }" name="RowCheck">
 														</label>
 													</div>
 												</td>
@@ -236,13 +291,40 @@ $(function(){
 														</c:when>
 													</c:choose></td>
 												<td>${artist.artist_name}</td>
-												<td>${artist.artist_nation}</td>
-												<td>${artist.artist_company}</td>
-												<td>${artist.artist_type}</td>
+												<td>
+												<c:choose>
+													<c:when test="${artist.artist_nation ne null}">
+													${artist.artist_nation}
+													</c:when>
+													<c:when test="${artist.artist_nation eq null}">
+													(정보 없음)
+													</c:when>
+												</c:choose>
+												</td>
+												<td>
+												<c:choose>
+													<c:when test="${artist.artist_company ne null}">
+													${artist.artist_company}
+													</c:when>
+													<c:when test="${artist.artist_company eq null}">
+													(정보 없음)
+													</c:when>
+												</c:choose>
+												</td>
+												<td>
+												<c:choose>
+													<c:when test="${artist.artist_type ne null}">
+													${artist.artist_type}
+													</c:when>
+													<c:when test="${artist.artist_type eq null}">
+													(정보 없음)
+													</c:when>
+												</c:choose>
+												</td>
 												<td>
 
 													<div class="select_btns">
-														<button type="button" id="select_artist"
+														<button type="button" id="update_artist"
 															class="btn btn-info btn-fw update"
 															onclick="location.href='<%=request.getContextPath() %>/admin/editArtist?artist_no=${artist.artist_no }'">
 															수정</button>
@@ -250,8 +332,9 @@ $(function(){
 												</td>
 												<td>
 													<div class="select_btns">
-														<button type="button" id="select_artist"
-															class="btn btn-info btn-fw delete">삭제</button>
+														<button type="button" id="delete_artist"
+															class="btn btn-info btn-fw delete"
+															onclick="location.href='<%=request.getContextPath() %>/admin/delete?artist_no=${artist.artist_no }'">삭제</button>
 													</div>
 												</td>
 											</tr>

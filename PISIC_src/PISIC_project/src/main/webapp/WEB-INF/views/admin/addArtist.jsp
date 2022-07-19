@@ -67,15 +67,6 @@
 	display: none;
 }
 </style>
-<script>
-$(function(){
-	var msg = '${msg}';
-	if(msg){
-		alert(msg);
-	}
-
-});
-</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -99,7 +90,7 @@ $(function(){
 								<br>
 								
 									<div class="form-group">
-										<label for="artistNo">아티스트 코드 : (자동 부여)</label> 
+										<label for="artistNo">아티스트 코드 : (자동 부여 예정)</label> 
 										<input type="hidden" value="${artist_no }" class="form-control" id="artistNo" name="artist_no" readonly>
 
 									</div>
