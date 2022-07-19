@@ -32,6 +32,7 @@ public class AdminController {
 	/*아티스트 관리자 페이지*/
 	@GetMapping("/artist")
 	public ModelAndView SearchArtistPage(ModelAndView mv) { 
+		// TODO
 		mv.addObject("aristList",  service.selectArtistList());
 		mv.setViewName("admin/searchArtist");
 		return mv; 
