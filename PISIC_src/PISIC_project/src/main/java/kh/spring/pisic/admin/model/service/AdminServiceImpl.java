@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.spring.pisic.admin.model.dao.AdminDao;
+import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 
 @Service
@@ -41,6 +42,24 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int deleteArtist(String artist_no) {
 		return dao.deleteArtist(artist_no);
+	}
+	
+	// 앨범 목록 조회
+	@Override
+	public List<Album> selectAlbumList() {
+		return dao.selectAlbumList();
+	}
+
+	// 앨범 검색
+	@Override
+	public List<Album> selectSearchAlbumList(String keyword) {
+		return dao.selectSearchAlbumList(keyword);
+	}
+
+	// 앨범 추가하기
+	@Override
+	public int insertAlbum(Album album) {
+		return dao.insertAlbum(album);
 	}
 
 }

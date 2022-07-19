@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class Album {
 	private int a_no;
@@ -21,12 +22,14 @@ public class Album {
 //	crawling-field
 	private String artist_name;
 	
+	// 검색
+	private String keyword;
 	@Override
 	public String toString() {
 		return "Album [a_no=" + a_no + ", a_name=" + a_name + ", a_cover=" + a_cover + ", a_date=" + a_date
 				+ ", a_publishing=" + a_publishing + ", a_agency=" + a_agency + ", a_introduce1=" + a_introduce1
 				+ ", a_introduce2=" + a_introduce2 + ", artist_no=" + artist_no + ", sounds=" + sounds
-				+ ", artist_name=" + artist_name + "]";
+				+ ", artist_name=" + artist_name + ", keyword=" + keyword + "]";
 	}
 
 
@@ -118,6 +121,16 @@ public class Album {
 
 	public void setSounds(List<Sound> sounds) {
 		this.sounds = sounds;
+	}
+
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
 	

@@ -17,8 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
+
 import kh.spring.pisic.admin.model.service.AdminService;
 import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 
 
@@ -162,6 +165,57 @@ public class AdminController {
 		
 		
 	}
+	
+	// 앨범 목록 조회
+	@GetMapping("/album")
+	public ModelAndView pageAlbumList(ModelAndView mv) {
+		
+		mv.addObject("albumList", service.selectAlbumList());
+		mv.setViewName("admin/albumList");
+		return mv;
+	}
+	
+	// 앨범 검색
+	@GetMapping("/album.do")
+	@ResponseBody
+	public String searchAlbumList(ModelAndView mv, Album album) { 
+		return new Gson().toJson(service.selectSearchAlbumList(album.getKeyword())); 
+	}
+	
+	// 앨범 추가 페이지로 이동
+	@GetMapping("/insertAlbum")
+	public ModelAndView pageInsertAlbum(ModelAndView mv) {
+		mv.setViewName("admin/insertAlbum");
+		return mv;
+	}
+	
+	// 앨범 추가하기
+	@PostMapping("/insertAlbum")
+	public ModelAndView insertAlbum(ModelAndView mv
+			, Album album
+			, HttpSession session
+			, RedirectAttributes rttr){ 
+		
+		// TODO
+		Member loginInfo = (Member)session.getAttribute("loginSsInfo");
+		if(loginInfo == null) {
+			rttr.addFlashAttribute("msg", "관리자로 접근하여 다시 시도해 주세요.");
+			mv.setViewName("redirect:/member/login");
+			return mv;
+		}
+		
+		int result = service.insertAlbum(album);
+		if(result==0) {
+			rttr.addFlashAttribute("msg", "앨범 추가에 실패했습니다. 다시 시도해주세요");
+			mv.setViewName("redirect:/admin/album");
+		}else {
+			rttr.addFlashAttribute("msg", "앨범 추가 성공하였습니다");
+		mv.setViewName("redirect:/admin/album");
+		}
+		return mv; 
+	}
+	
+	
 	
 	
 	

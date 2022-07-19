@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 
 @Repository
@@ -37,6 +38,20 @@ public class AdminDao {
 		return session.delete("Admin.deleteArtist", artist_no);
 	}
 	
+	// 앨범 목록 조회
+	public List<Album> selectAlbumList() {
+		return session.selectList("Admin.selectAlbumList");
+	}
+	
+	// 앨범 검색
+	public List<Album> selectSearchAlbumList(String keyword) {
+		return session.selectList("Admin.selectSearchAlbumList", keyword);
+	}
+
+	// 앨범 추가하기
+	public int insertAlbum(Album album) {
+		return session.insert("Admin.insertAlbum", album);
+	}
 
 	
 	
