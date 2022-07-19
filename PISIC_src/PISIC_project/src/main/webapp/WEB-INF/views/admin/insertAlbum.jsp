@@ -66,6 +66,47 @@
 	.uploadcare--widget__file-size, .uploadcare--widget__text {
 	display: none;
 }
+
+/* modal 아티스트 검색*/
+#search_artist_modal.search_artist_modal_overlay {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 10px;
+	border: 1px solid black;
+	z-index: 1000;
+	
+}
+#search_artist_modal .search_artist_modal_window {
+	border-radius: 10px;
+	width: 600px;
+	height: 700px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	overflow: auto;
+}
+.search_artist_modal_new{
+	padding:30px !important;
+	display: flex;
+}
+.search_artist_modal_content p.modal_content {
+	line-height: 40px !important;
+}
+.search_artist_modal{
+	overflow: auto !important;
+}
+table#search_artist_table a{
+	cursor: pointer;
+}
 </style>
 <script>
 $(function(){
@@ -109,7 +150,7 @@ $(function(){
 										<label for="artist_name">아티스트명*</label>
 										<input type="text" class="form-control" placeholder="검색하세요" name="artist_name" readonly>
 										<input type="hidden" name="artist_no" value="">
-										<button type="button" class="btn btn-info btn-fw">검색</button>
+										<button type="button" class="btn btn-info btn-fw" id="search_aritst_btn">검색</button>
 									</div>
 									<div class="form-group">
 										<label for="a_date" id="label_a_date">발매일*</label> 
@@ -164,12 +205,47 @@ $(function(){
 			</div>
 		</div>
 	</div>
-	<script>
-	var msg = "${msg}";
-	if(msg){
-		alret(msg);
-	}
-	</script>
+	<div id="search_artist_modal" class="search_artist_modal_overlay">
+		<div class="col-md-8 grid-margin stretch-card search_artist_modal_window">
+			<div class="card search_artist_modal">
+				<div class="card-body">
+					<div class="d-flex flex-row justify-content-between">
+						<h3 class="card-title mb-1">아티스트 검색</h3>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="preview-list">
+								<div class="preview-item-content d-sm-flex flex-grow search_artist_modal_content">
+									<div class="flex-grow search_artist_modal_new">
+										<input type="text" class="form-control"
+										placeholder="아티스트명으로 조회하기" name="keyword">
+										<div class="input-group-append">
+											<button class="btn btn-info btn-fw" type="button"
+												id="search_artist_do">조회하기</button>
+										</div>
+									</div>
+								</div>
+								<div>
+									<table class="table" id="search_artist_table">
+										<thead>
+											<tr>
+												<th>No</th>
+												<th></th>
+												<th>아티스트명</th>
+												<th>소속사</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script>
 		// 프로필 사진
 		$("#BtnProfile").on("click",
@@ -233,8 +309,81 @@ $(function(){
 		    		$("#frm_album").submit();
 		    	}
 	    	})
+	    	
+	    /* 아티스트 검색 - modal */
+		$("#search_aritst_btn").click(function() {
+			$("#search_artist_modal").show();
+		});
+	    
+		
+	    // 모달창 끄기 2가지
+		$(".search_artist_modal_close").click(function() {
+			$("#search_artist_modal").hide();
+		});
+		
+		search_artist_modal.addEventListener("click", e => {
+			const evTarget = e.target
+			if (evTarget.classList.contains("search_artist_modal_overlay")) {
+				$("#search_artist_modal").hide();
+			}
+		});
+		
+		// 아티스트 검색 - ajax
+		$("#search_artist_do").click(function(){
+			/* if($("input[name=keyword]").val() == null || $("input[name=keyword]").val() == ""){
+				alert("검색어를 입력해주세요");
+				return;
+			} */
+			$.ajax({
+				url: "<%= request.getContextPath()%>/admin/artist.do",
+				type: "get",
+				data : {
+					keyword: $("input[name=keyword]").val()
+				},
+				success: function(result) {
+					// 테이블 초기화
+					$('#search_artist_table > tbody').empty();
+					var html = "";
+					if(result.length>=1){
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+							// TODO
+							html += '<tr onclick="artist_submit('+resultData.artist_no +',' + resultData.artist_name +')">';
+							html += '<td>'+resultData.artist_no+'</td>';
+							html += '<td>';
+							if(resultData.artist_profile != null){
+								html += '<img src=" ' + resultData.artist_profile +' " alt="image" />';
+							}
+							else if(resultData.artist_profile==null){
+								html += '<img src=" ' + "<%=request.getContextPath()%>/resources/assets/images/artist.png" +' " alt="image" />';
+							}
+							html += '</td>';
+							html += '<td>'+resultData.artist_name+'</td>';
+							if(resultData.artist_company != null){
+								html += '<td>'+resultData.artist_company+'</td>';
+							}
+							else if(resultData.artist_company==null){
+								html += '<td>(정보없음)</td>';
+							}
+						}
+					} else {
+						html += '<tr>';
+						html += '<td colspan="4" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>	';
+						html += '</tr>';
+					}
+					
+					$("#search_artist_table > tbody").append(html);
+				}
+			}); // ajax 끝
+		});
+		function artist_submit(artist_no, artist_name){
+			console.log("클릭했니");
+			$("#search_artist_modal").hide();
+			$("input[name=artist_name]").val(artist_name);
+			$("input[name=artist_no]").val(artist_no);
+		}
 	</script>
-
+	
 
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/vendors/js/vendor.bundle.base.js"></script>

@@ -120,9 +120,14 @@ $(function(){
 						html += '		</td>										';
 						html += '	</tr>											';
 							
-					}
-					$("table.album_list tbody").append(html);				 
+					} 
+							 
+				} else {
+					html += '	<tr>   											';
+					html += '		<td colspan="10" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>			';
+					html += '	</tr>											';
 				}
+				$("table.album_list tbody").append(html);
 			}
 		})
 	});
