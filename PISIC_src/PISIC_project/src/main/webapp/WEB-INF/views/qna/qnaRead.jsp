@@ -53,10 +53,10 @@
 					<br>
 					<h3 class=" card-title">1:1 문의 게시판</h3>
 						
-				 <div class="col-md-6 grid-margin stretch-card">
+			 <div class="col-md-6 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">		
-			<!-- 			<c:choose>
+			 			<c:choose>
 						<c:when test="${empty qnaBoard}">
 							<script>
 								alert("해당 글이 없습니다. 글목록으로 이동합니다.");
@@ -68,15 +68,15 @@
 									<c:if test="${qnaBoard.m_id eq loginSsInfo.m_id }">
 										<form id="frmNum">
 											<input type="hidden" name="qna_no" value="${qnaBoard.qna_no }">
-											<button type="button" class="btn update">수정</button>
-											<button type="button" class="btn delete">삭제</button>
+											<button type="button" class="btn btn-info btn-fw">수정</button>
+											<button type="button" class="btn btn-info btn-fw">삭제</button>
 										</form>
 										<script>
 											$(".btn.update").click(function(){
 												if($(this).hasClass("update")){
-													frmNum.action="<%=request.getContextPath()%>/qna/update";
+													frmNum.action="<%=request.getContextPath()%>/qna/qnaUpdate";
 												}else {
-													frmNum.action="<%=request.getContextPath()%>/qna/delete";
+													frmNum.action="<%=request.getContextPath()%>/qna/qnaDelete";
 												}
 												frmNum.method="post";
 												frmNum.submit();
@@ -103,7 +103,6 @@
 											</c:if>
 										<table border="1">
 											<tr>
-												<td>답글쓰기</td>
 												<td>level</td>	
 												<td>ref</td>	
 												<td>seq</td>			
@@ -114,7 +113,6 @@
 												<td>비밀글</td>				
 											</tr>
 											<tr>
-												<td><a href="<%=request.getContextPath()%>/qna/qnaWrite?refnum=${qnaBoard.qna_no }">답글쓰기</a></td>
 												<td>${qnaBoard.gr_layer }</td>	
 												<td>${qnaBoard.gr_ord }</td>	
 												<td>${qnaBoard.orgin_no }</td>			
@@ -134,27 +132,40 @@
 											<% pageContext.setAttribute("newLineChar", "\n"); %>
 											내용:${fn:replace(qnaBoard.qna_content, newLineChar, "<br/>")}
 										</div>
-								
+										
+										
+								<div class="btnSet">
+									<!-- 관리자인 경우 수정 삭제 가능 -->
+									<core:if test="${login_info.admin eq 'Y' }">
+										<a class="btn btn-info btn-fw" href="qnaUpdate?id=${member.m_id }">수정</a>
+										<a class="btn btn-info btn-fw" onclick="if(confirm('정말 삭제하시겠습니까?')) { href='qnaDelete?id=${member.m_id }' }">삭제</a>
+									</core:if>
+									<!-- 로그인이 된 경우 답글 쓰기 가능 -->
+									<core:if test="${!empty login_info }">
+										<a class="btn btn-info btn-fw" href="<%=request.getContextPath()%>/qna/qnaWrite?refnum=${qnaBoard.qna_no }">답글 쓰기</a>
+									</core:if>
+								</div>
 								
 									</div>
 									<hr>
-								<!--  	<div>답글작성</div>
-									<form action="<%=request.getContextPath() %>/qna/qnaWrite" method="post" enctype="multipart/form-data">
+									<!-- 관리자만 보이게하기  
+								  	<div>답글작성</div>
+									<form action="<%=request.getContextPath() %>/qna/qnaWrite" method="post">
 									 	<input type="text" name="refnum" value="${qnaBoard.qna_no }" readonly>
 										<div>제목:<input type="text" name="qna_title" required></div>
 										<div>내용:<input type="text" name="qna_content" required></div>
 										<div><button type="submit">답글등록</button></div>
 									</form>-->
-					<!--  			</c:otherwise>
+								</c:otherwise>
 							</c:choose>
 								
-								<div>
+						<div>
 						<button type="button" class="btn btn-info btn-fw" onclick="location.href='<%=request.getContextPath() %>/'">메인으로 돌아가기</button>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div> 
 
 					<!-- content-wrapper ends -->
 					<!-- partial:partials/_footer.html -->

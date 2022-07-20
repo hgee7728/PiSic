@@ -1,5 +1,6 @@
 package kh.spring.pisic.pymusic.model.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,15 @@ public class PymusicServiceImpl implements PymusicService{
 	@Override
 	public List<Sound> selectPyAgender(String agender) {
 		return dao.selectPyAgender(agender);
+	}
+	
+	@Override
+	public List<Sound> selectPyWeather(String weather) {
+		return dao.selectPyWeather(weather);
+	}
+	
+	@Override
+	public List<Sound> selectPyTime(String p_date) {
+		return dao.selectPyTime(p_date);
 	}
 }

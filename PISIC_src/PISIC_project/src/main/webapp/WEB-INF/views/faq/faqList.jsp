@@ -95,7 +95,7 @@
 
 															<td>No.</td>
 															<td>제목</td>
-															<td>수정일</td>
+															<td>최종 수정일</td>
 															<td>조회수</td>
 														</tr>
 
@@ -107,15 +107,15 @@
 																<td>${faqBoard.faq_title }</td>
 																<td><fmt:formatDate pattern="yyyy-MM-dd"
 																		value="${faqBoard.faq_date }" /></td>
-																<td>${faqBoard.faq_cnt }</td>
+																<td><c:out value="${faqBoard.faq_cnt }" /></td>
 															</tr>
 															<tr class="contents">
 																<td></td>
 																<td style="height: 300px;">
-																<div>
-											<% pageContext.setAttribute("newLineChar", "\n"); %>
-											내용:${fn:replace(faqBoard.faq_content, newLineChar, "<br/>")}
-										</div>
+																	<div>
+																		<% pageContext.setAttribute("newLineChar", "\n"); %>
+																		내용:${fn:replace(faqBoard.faq_content, newLineChar, "<br/>")}
+																	</div>
 																</td>
 																<td></td>
 																<td></td>

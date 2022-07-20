@@ -1,5 +1,6 @@
 package kh.spring.pisic.pymusic.model.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -23,5 +24,13 @@ public class PymusicDao {
 	
 	public List<Sound> selectPyAgender(String agender) {
 		return session.selectList("Pymusic.selectPyAgender", agender);
+	}
+	
+	public List<Sound> selectPyWeather(String weather){
+		return session.selectList("Pymusic.selectPyWeather", weather);
+	}
+
+	public List<Sound> selectPyTime(String p_date) {
+		return session.selectList("Pymusic.selectPyTime", p_date);
 	}
 }

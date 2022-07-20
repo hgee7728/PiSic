@@ -79,12 +79,13 @@ text-decoration: none;
 }
 
 .qnalist_page {
-	margin: 200px 500px 100px;
+	margin: 200px auto;
 }
-th:nth-of-type(1) { 
+/*th:nth-of-type(1) { 
 display: none;
- }  
+ } */
 </style>
+
 </head>
 <body>
 	<div class="container-scroller">
@@ -125,18 +126,6 @@ display: none;
 													<tbody>
 													
 													<c:forEach items="${qnalist }" var="qnaBoard">
-													
-								<!-- 		 <c:if test="${qnaBoard.qna_secret == Y}">
-										    <c:choose>
-										        <c:when test="${qnaBoard.qna_writer eq member.m_id || member.authorities eq '[, ]'}"> <!-- 작성자이거나 관리자일 때 -->
-										     <!--        <td><a href="get${pageMaker.cri.listLink}&q_no=${qnaBoard.q_no}" class="text-secondary text-center"><i class="icofont-lock"></i><c:out value="${qnaBoard.qna_title}"/></a></td>
-										        </c:when>
-										        <c:otherwise>
-										            <td class="text-secondary"><i class="icofont-lock"></i><c:out value="${qnaBoard.qna_title}"/></td>
-										        </c:otherwise>
-										    </c:choose>                                            
-										</c:if>  -->
-										
 									
 									<c:if test="${qnaBoard.gr_layer == 0} ">
 										<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nbsp;</span>
@@ -149,17 +138,17 @@ display: none;
 										&nbsp;&nbsp;
 									</c:forEach>
 
-																<td>
-																	<form id="frm${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">									
-																	    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
-																	    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
-																	</form>
-																</td>
-																<td>${qnaBoard.m_id }</td>
-																<td>${qnaBoard.qna_date }</td>
-															</tr>
-															
-															</c:forEach>
+										<td>
+											<form id="frm${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">									
+											    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
+											    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
+											</form>
+										</td>
+										<td>${qnaBoard.m_id }</td>
+										<td>${qnaBoard.qna_date }</td>
+									</tr>
+									
+									</c:forEach>
 															
 															
 														<!-- 답변글 아닌 원글 -->

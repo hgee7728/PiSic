@@ -15,7 +15,7 @@
 	<typeAlias type="kh.spring.pisic.sound.domain.AssociationAS" alias="AssociationAS"/>
 	<typeAlias type="kh.spring.pisic.mymusic.domain.MyMusic" alias="MyMusic"/>
 	<typeAlias type="kh.spring.pisic.sound.domain.PlayInfo" alias="PlayInfo"/>
- 	<typeAlias type="kh.spring.pisic.faq.domain.FaqBoard" alias="faqBoard"/>
+ 	<typeAlias type="kh.spring.pisic.faq.domain.FaqBoard" alias="FaqBoard"/>
  	<typeAlias type="kh.spring.pisic.pjboard.domain.PjBoard" alias="PjBoard"/>
  	<typeAlias type="kh.spring.pisic.qna.domain.QnaBoard" alias="QnaBoard"/>
  	<typeAlias type="kh.spring.pisic.sound.domain.SoundRecomment" alias="SoundRecomment"/>

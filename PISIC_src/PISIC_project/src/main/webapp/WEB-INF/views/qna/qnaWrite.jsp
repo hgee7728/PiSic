@@ -73,6 +73,11 @@
 	width: 100%;
 	min-width: 100%;
 }
+.btn_qna {
+	position: relative;
+	margin:30px auto;
+/*center*/
+}
 </style>
 </head>
 <body>
@@ -85,13 +90,10 @@
 			<jsp:include page="../_navbar.jsp" />
 			<div class="main-panel">
 				<div class="content-wrapper">
-
 					<h2 class=" card-title">고객센터</h2>
 					<br>
 					<h3 class=" card-title">1:1 문의하기</h3>
 
-					<div class=" content_div1" style="display: flex;">
-						<div class="row" style="width: 100%">
 							<div class="col-lg-12 grid-margin stretch-card">
 								<div class="card">
 									<div class="card-body">
@@ -102,30 +104,22 @@
 											<div  class="form-group">
 												<label  for="qna_title">제목</label>             
 												<input  type="text"  class="form-control"  id="qna_title" name="qna_title" placeholder="제목을 작성해주세요." style="width: 1000px;"> 
-												</div>
-												<div class="form-check form-check-inline mt-3">
-												    <input class="form-check-input" type="checkbox" name="qna_secret" id="qna_secret">
-												    <label class="form-check-label">비밀글 설정</label>
-												</div>
+											</div>
+											<div class="form-check form-check-inline mt-3">
+											   <label class="form-check-label">비밀글 설정</label>
+												<input class="form-check-input" type="checkbox" name="qna_secret" id="qna_secret">
+											</div>
 											<div  class="form-group">	
 												<label  for="qna_content">내용</label>            
 												<textarea  class="form-control" id="qna_content" name="qna_content" placeholder="1:1문의할 내용을 입력해주세요."  maxlength="2048" style="height: 400px; width: 1000px;"></textarea>
 											</div>
-											<div class="btn_qna">
-											<button  type="submit"  class="btn btn-info btn-fw">등록하기</button>
-											<button  type="button"  class="btn btn-info btn-fw"
-												onclick="location.href='<%=request.getContextPath()%>/qna/qnaList'">
-												목록으로</a>
-											</button>
+										<div class="btn_qna">
+											<button type="submit" class="btn btn-info btn-fw">등록하기</button>
+											<button type="button" class="btn btn-info btn-fw"  onclick="location.href='<%=request.getContextPath()%>/qna/qnaList'">목록으로</button>
 										</div>
-										</form>
-										
-										
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
 					<!-- content-wrapper ends -->
 				</div>
 				<!-- partial:partials/_footer.html -->

@@ -43,8 +43,8 @@ gr_ord asc
 <update id="updateQnaReplySeq" parameterType="QnaBoard">
 <![CDATA[
 	update qna set board_reply_seq = gr_layer+1
-	where gr_ord = (select gr_ord from qna where qna_no=#{refnum})
-	and gr_layer > (select gr_layer from qna where qna_no=#{refnum})
+	where gr_ord = (select gr_ord from qna where qna_no=#{gr_ord})
+	and gr_layer > (select gr_layer from qna where qna_no=#{gr_ord})
 ]]>
 </update>
 

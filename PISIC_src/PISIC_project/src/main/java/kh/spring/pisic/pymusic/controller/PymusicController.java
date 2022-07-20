@@ -1,5 +1,6 @@
 package kh.spring.pisic.pymusic.controller;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -66,6 +67,40 @@ public class PymusicController {
 		mv.addObject("pyAgender", service.selectPyAgender(agender));
 		mv.addObject("agender", agender);
 		mv.setViewName("pymusic/agender");
+		model.addAttribute("serverTime", formattedDate);
+
+		return mv;
+		
+	}
+	
+	@GetMapping("/weather")
+	public ModelAndView selectPyWeather (ModelAndView mv, Model model, String weather) {
+		
+		Date date = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 기준");
+		
+		String formattedDate = dateFormat.format(date);
+		
+		mv.addObject("PyWeather", service.selectPyWeather(weather));
+		mv.addObject("weather", weather);
+		mv.setViewName("pymusic/weather");
+		model.addAttribute("serverTime", formattedDate);
+
+		return mv;
+		
+	}
+	
+	@GetMapping("/time")
+	public ModelAndView selectPyTime (ModelAndView mv, Model model, String p_date) {
+		
+		Date date = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 기준");
+		
+		String formattedDate = dateFormat.format(date);
+		
+		mv.addObject("PyTime", service.selectPyTime(p_date));
+		mv.addObject("p_date", p_date);
+		mv.setViewName("pymusic/time");
 		model.addAttribute("serverTime", formattedDate);
 
 		return mv;

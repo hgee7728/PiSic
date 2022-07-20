@@ -129,35 +129,40 @@
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre">맑은날</button>
+									<button class="btn btn_genre"
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">맑음</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre">흐린날</button>
+									<button class="btn btn_genre"
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">구름 많음</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre">비 오는 날</button>
+									<button class="btn btn_genre"
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">흐림</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre">천둥번개</button>
+									<button class="btn btn_genre"
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">비</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre">눈오는 날</button>
+									<button class="btn btn_genre"
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">눈</button>
 								</div>
 							</div>
 						</div>
@@ -264,56 +269,32 @@
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre">0-3</button>
+									<button class="btn btn_genre"
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">새벽 MIX</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre">3-6</button>
+									<button class="btn btn_genre"
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">아침 MIX</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre">6-9</button>
+									<button class="btn btn_genre"
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">오후 MIX</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre">9-12</button>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-							<div class="card">
-								<div class="card-body">
-									<button class="btn btn_genre">12-15</button>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-							<div class="card">
-								<div class="card-body">
-									<button class="btn btn_genre">15-18</button>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-							<div class="card">
-								<div class="card-body">
-									<button class="btn btn_genre">18-21</button>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-							<div class="card">
-								<div class="card-body">
-									<button class="btn btn_genre">21-24</button>
+									<button class="btn btn_genre"
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">밤 MIX</button>
 								</div>
 							</div>
 						</div>

@@ -16,6 +16,10 @@
 		<result column="chart" property="chart" />
 		<result column="area_code" property="area_code"/>
 		<result column="area_name" property="area_name"/>
+		<result column="p_date" property="p_date"/>
+		<result column="SKY" property="sky"/>
+		<result column="PTY" property="pty"/>
+		<result column="TMP" property="tmp"/>
 		<collection column="{a_no=a_no, s_no=s_no}"
 			property="singers" select="soundSingerList"></collection>
 	</resultMap>
@@ -122,6 +126,36 @@
 		artist.artist_no
 		where sound.a_no=#{a_no} and sound.s_no=#{s_no}
 	</select>
-
+	
+	
+	<select id="selectPyWeather" parameterType="String" resultMap="soundResultMap" >
+		select t2.*
+		from (
+		select distinct t1.*, (select sky from playinfo where sky=t1.'맑음') sky
+		    ,rank() over (partition by g_no order by cnt desc, s_no, a_no ) chart
+		from
+		    (select  a_cover, a_name, s_no, a_no, g_no,s_name,s_path, count(*) cnt 
+		    from (select s_no, a_no, g_no, s_name, s_path from sound where g_no=#{g_no}) 
+		    join album using(a_no)
+		    join (select p_no, a_no, s_no from playinfo) using (a_no, s_no)
+		    group by a_cover, a_name, s_no, a_no, g_no, s_name,s_path order by cnt) t1	
+		) t2
+		where chart &lt;= 10		
+	</select>
+	
+	<select id="selectPyTime" parameterType="String" resultMap="soundResultMap" >
+		select t2.*
+		from (
+		select distinct t1.*, (select g_name from genre where g_no=t1.g_no) g_name
+		    ,rank() over (partition by g_no order by cnt desc, s_no, a_no ) chart
+		from
+		    (select  a_cover, a_name, s_no, a_no, g_no,s_name,s_path, count(*) cnt 
+		    from (select s_no, a_no, g_no, s_name, s_path from sound where g_no=#{g_no}) 
+		    join album using(a_no)
+		    join (select p_no, a_no, s_no from playinfo) using (a_no, s_no)
+		    group by a_cover, a_name, s_no, a_no, g_no, s_name,s_path order by cnt) t1	
+		) t2
+		where chart &lt;= 10		
+	</select>
 
 </mapper>

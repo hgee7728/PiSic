@@ -4,19 +4,20 @@
 
 
 <select id="pageSelectFaq" resultType="FaqBoard">
-	   	    select * from faq
-	order by faq_no desc
+	SELECT * FROM faq
+	ORDER BY faq_no DESC
 </select>
 <select id="selectFaqBoard" resultType="FaqBoard" parameterType="string">
-	select * from faq
-	where faq_no=#{faq_no}
+	SELECT * FROM faq
+	WHERE faq_no=#{faq_no}
 </select>
-<update id="updateCnt" parameterType="hashmap">
-UPDATE FAQ
-SET
-FAQ_CNT = NVL(FAQ_CNT,0) + 1
-WHERE
-FAQ_NO = ${FAQ_NO}
+<update id="qnaBoardCnt" parameterType="int">
+	UPDATE faq
+	SET
+	faq_cnt = faq_cnt + 1
+	WHERE
+	faq_no = ${faq_no}
 </update>
+
 
 </mapper>

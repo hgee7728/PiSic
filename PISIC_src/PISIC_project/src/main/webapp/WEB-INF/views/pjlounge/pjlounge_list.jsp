@@ -10,7 +10,7 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<title>PJ LOUNGE</title>
+<title>PJ LOUNGE MAIN</title>
 
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -65,12 +65,36 @@ transform: translate(-50%, -50%);
 					<h2 class=" card-title">PJ LOUNGE</h2>
 					<br>
 					<h3 class=" card-title">나의 플레이리스트를 공유해보세요</h3>
-
+							<form method="post" action="list.qna" id="list">
+								<input type="hidden" name="curPage" value="1" />
+								
+								<div id="list-top">
+									<div>
+										<ul>
+											<li>
+												<select name="search" class="w-px80">
+													<option value="all" ${page.search eq 'all' ? 'selected' : '' }>전체</option>
+													<option value="title" ${page.search eq 'title' ? 'selected' : '' }>제목</option>
+													<option value="content" ${page.search eq 'content' ? 'selected' : '' }>내용</option>
+													<option value="writer" ${page.search eq 'writer' ? 'selected' : '' }>작성자</option>
+												</select>
+											</li>
+											<li><input value="${page.keyword }" type="text" name="keyword" class="w-px300" /></li>
+											<li><a class="btn-fill" onclick="$('form').submit()">검색</a></li>
+										</ul>
+										<ul>
+											<core:if test="${login_info.admin eq 'Y' }">
+												<li><a class="btn-fill" href="new.qna">글쓰기</a></li>
+											</core:if>			
+										</ul>
+									</div>
+								</div>
+							</form>
 					<div class="container">
 						<div class="search-window">
 							<div class="search-wrap">
-								<label for="search" class="blind">PJ 검색하기</label> <input
-									id="search" type="search" name="" placeholder="플레이리스트를 입력해주세요."
+								<label for="search" class="blind">PJ 검색하기</label> 
+								<input id="search" type="search" name="" placeholder="플레이리스트를 입력해주세요."
 									value="">
 								<button type="submit" class="btn btn-info btn-fw">검색</button>
 							</div>
@@ -172,7 +196,8 @@ transform: translate(-50%, -50%);
 							</div>
 						</div>
 						<div class="select_btns">
-							<button type="submit" class="btn btn-info btn-fw" 	action="<%=request.getContextPath()%>/pjlounge/pjlounge_write">
+							<button type="submit" class="btn btn-info btn-fw"
+							onclick="location.href='<%=request.getContextPath() %>/pjlounge/pjlounge_write'">
 								플레이리스트<br>만들기
 							</button>
 						</div>
