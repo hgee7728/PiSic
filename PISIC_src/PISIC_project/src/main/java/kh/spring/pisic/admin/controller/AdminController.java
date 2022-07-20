@@ -30,130 +30,142 @@ import kh.spring.pisic.sound.domain.Sound;
 public class AdminController {
 	@Autowired
 	private AdminService service;
-
-	/* 아티스트 관리자 페이지 */
+	
+	
+	/*아티스트 관리자 페이지*/
 	@GetMapping("/artist")
-	public ModelAndView SearchArtistPage(ModelAndView mv) {
+	public ModelAndView SearchArtistPage(ModelAndView mv) { 
 		// TODO
-		mv.addObject("aristList", service.selectArtistList());
+		mv.addObject("aristList",  service.selectArtistList());
 		mv.setViewName("admin/artistList");
-		return mv;
+		return mv; 
 	}
-
-	/* 아티스트 검색 */
+	
+	/*아티스트 검색*/
 	@GetMapping("/artist.do")
 	@ResponseBody
-	public List<Artist> SearchArtistAjax(ModelAndView mv, @RequestParam("keyword") String keyword) {
+	public List<Artist> SearchArtistAjax(ModelAndView mv, @RequestParam("keyword") String keyword) { 
 		Artist artist = new Artist();
 		artist.setKeyword(keyword);
-		return service.selectArtistAjax(keyword);
+		return service.selectArtistAjax(keyword); 
 	}
-
-	/* 아티스트 수정 페이지로 이동 */
+	
+	/*아티스트 수정 페이지로 이동*/
 	@GetMapping("/editArtist")
-	public ModelAndView EditArtistPage(ModelAndView mv,
-			@RequestParam(name = "artist_no", defaultValue = "0") String artist_no) {
+	public ModelAndView EditArtistPage(ModelAndView mv
+			, @RequestParam(name = "artist_no", defaultValue = "0") String artist_no) {
 		int artist_no_new = 0;
 		try {
 			artist_no_new = Integer.parseInt(artist_no);
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		mv.addObject("artistInfo", service.selectArtist(artist_no));
+		mv.addObject("artistInfo",  service.selectArtist(artist_no));
 		mv.addObject("artist_no", artist_no_new);
 		mv.setViewName("admin/editArtist");
-		return mv;
+		return mv; 
 	}
-
+	
 	@PostMapping("/editArtist")
-	public ModelAndView EditArtist(ModelAndView mv, Artist artist, HttpServletRequest req, HttpSession session,
-			RedirectAttributes rttr) throws Throwable {
-		Member loginInfo = (Member) session.getAttribute("loginSsInfo");
-		if (loginInfo == null) {
+	public ModelAndView EditArtist(ModelAndView mv
+			, Artist artist
+			, HttpServletRequest req
+			, HttpSession session
+			, RedirectAttributes rttr) throws Throwable { 
+		Member loginInfo = (Member)session.getAttribute("loginSsInfo");
+		if(loginInfo == null) {
 			rttr.addFlashAttribute("msg", "관리자로 접근하여 다시 시도해 주세요.");
 			mv.setViewName("redirect:/member/login");
 			return mv;
 		}
-
+		
 		int result = service.updateArtist(artist);
-
-		if (result == 0) {
+		
+		if(result==0) {
 			rttr.addFlashAttribute("msg", "아티스트 정보 수정에 실패했습니다. 다시 시도해주세요");
 			mv.setViewName("redirect:/admin/artist");
-		} else {
+		}else {
 			rttr.addFlashAttribute("msg", "아티스트 정보 수정 성공하였습니다.");
-			mv.setViewName("redirect:/admin/artist");
+		mv.setViewName("redirect:/admin/artist");
 		}
-		return mv;
+		return mv; 
 	}
-
-	/* 아티스트 추가 페이지로 이동 */
+	
+	/*아티스트 추가 페이지로 이동*/
 	@GetMapping("/addArtist")
-	public ModelAndView AddArtistPage(ModelAndView mv,
-			@RequestParam(name = "artist_no", defaultValue = "0") String artist_noStr) {
+	public ModelAndView AddArtistPage(ModelAndView mv
+			, @RequestParam(name = "artist_no", defaultValue = "0") String artist_noStr) {
 		int artist_no = 0;
 		try {
 			artist_no = Integer.parseInt(artist_noStr);
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		mv.addObject("artist_no", artist_no);
 		mv.setViewName("admin/addArtist");
-
+		
 		return mv;
 	}
-
-	/* 아티스트 추가하기 */
+	
+	/*아티스트 추가하기*/
 	@PostMapping("/addArtist")
-	public ModelAndView AddArtist(ModelAndView mv, Artist artist, HttpServletRequest req, HttpSession session,
-			RedirectAttributes rttr) throws Throwable {
-		Member loginInfo = (Member) session.getAttribute("loginSsInfo");
-		if (loginInfo == null) {
+	public ModelAndView AddArtist(ModelAndView mv
+			, Artist artist
+			, HttpServletRequest req
+			, HttpSession session
+			, RedirectAttributes rttr) throws Throwable { 
+		Member loginInfo = (Member)session.getAttribute("loginSsInfo");
+		if(loginInfo == null) {
 			rttr.addFlashAttribute("msg", "관리자로 접근하여 다시 시도해 주세요.");
 			mv.setViewName("redirect:/member/login");
 			return mv;
 		}
-
+		
 		int result = service.insertArtist(artist);
-
-		if (result == 0) {
+		
+		if(result==0) {
 			rttr.addFlashAttribute("msg", "아티스트 추가에 실패했습니다. 다시 시도해주세요");
 			mv.setViewName("redirect:/admin/artist");
-		} else {
+		}else {
 			rttr.addFlashAttribute("msg", "아티스트 추가 성공하였습니다");
-			mv.setViewName("redirect:/admin/artist");
+		mv.setViewName("redirect:/admin/artist");
 		}
-		return mv;
+		return mv; 
 	}
-
-	/* 아티스트 삭제하기 */
-	@GetMapping("/delete")
-	public String deleteArtist(@RequestParam(name = "artist_no", defaultValue = "0") String artist_no) {
-
+	
+	/*아티스트 삭제하기*/
+	@GetMapping("/deleteArtist")
+	public String deleteArtist(@RequestParam(name = "artist_no", defaultValue = "0") String artist_no,
+			RedirectAttributes rttr) {
+		
 		int result = service.deleteArtist(artist_no);
-
+		
 		String msg;
-		if (result > 0) {
-			msg = "게시글 " + artist_no + "번이 삭제되었습니다.";
-		} else {
-			msg = "게시글 삭제를 하지못했습니다. 다시 시도해주세요.";
+		if(result>0) {
+			msg="게시글 "+artist_no+"번이 삭제되었습니다.";
+		}else {
+			msg="게시글 삭제를 하지못했습니다. 다시 시도해주세요.";
 		}
+		rttr.addFlashAttribute("msg", msg);
 		return "redirect:/admin/artist";
-
+		
 	}
-
-	/* 아티스트 선택 삭제하기 */
+	
+	
+	/*아티스트 선택 삭제하기*/
 	@ResponseBody
-	@PostMapping(value = "/delete", produces = "text/plain;charset=UTF-8")
-	public String deleteCheckArtist(HttpServletRequest request) {
+	@PostMapping(value = "/deleteArtist", produces = "text/plain;charset=UTF-8")
+	public String deleteCheckArtist(
+			HttpServletRequest request){
 		String[] ajaxMsg = request.getParameterValues("artistArr");
 		int size = ajaxMsg.length;
-		for (int i = 0; i < size; i++) {
+		for(int i=0; i<size; i++) {
 			service.deleteArtist(ajaxMsg[i]);
 		}
 		return "redirect:admin/artist";
-
+		
+		
 	}
 
 	// 앨범 목록 조회

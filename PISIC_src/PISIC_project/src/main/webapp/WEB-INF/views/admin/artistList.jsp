@@ -62,6 +62,14 @@ table.artist_list  tr>td:nth-child(7){
 }
 </style>
 <script>
+function deleteArtist(artist_no){
+	location.href = "<%=request.getContextPath()%>/admin/deleteArtist?artist_no="+artist_no;
+};
+function updateArtist(artist_no){
+	location.href = "<%=request.getContextPath()%>/admin/editArtist?artist_no="+artist_no;
+};
+
+
 $(function() {
 	var chkObj = document.getElementsByName("RowCheck");
 	var rowCnt = chkObj.length;
@@ -83,41 +91,69 @@ $(function() {
 	});
 });
 
-$(function(){
-	$("#delete-select").click(function deleteArtist() {
-		var url = "admin/delete";
+
+	
+$(function() {
+	$("#selet_all_delete").click(function deleteArtist() {
 		var artistArr = new Array();
 		var list = $("input[name='RowCheck']");
-		for(var i =0; i<list.length; i++){
+		for(var i=0;i<list.length;i++){
 			if(list[i].checked){
 				artistArr.push(list[i].value);
 			}
 		}
-		if(artistArr.length == 0){
-			alert("선택된 아티스트가 없습니다.");
+		if(artistArr.length==0){
+			alret("선택된 아티스트가 없습니다.");
 		}
 		else{
 			var chk = confirm("정말 삭제하시겠습니까?");
 			$.ajax({
-				url : url,
 				type : "POST",
+				url : "<%=request.getContextPath()%>/admin/deleteArtist",
 				traditional : true,
-				data :{
+				data: {
 					artistArr : artistArr
 				},
-				success : function(jdata) {
-					if(jdata =1){
+				success:function(jdata){
+					if(jdata=1){
 						alert("삭제 성공");
-						location.replace("admin/artist")
+						location.replace("<%=request.getContextPath()%>/admin/artist");
 					}
 					else{
-						alert("삭제 실패")
+						alert("삭제 실패");
+						location.replace("<%=request.getContextPath()%>/admin/artist");
 					}
 				}
-			});
+			})
 		}
-	}
+		
+	})
 });
+	
+	
+<%-- 	
+$(function(){
+	$("#select_artist_delete").click(function deleteArtistOne(){
+		$.ajax({
+			type : "POST",
+			url : "<%=request.getContextPath()%>/admin/deleteArtist",
+			data :{
+				artist_no: $("input[name=artist_no]")
+			},
+			success : function(jdata){
+				if(jdata=1){
+					alert("삭제 성공");
+					location.replace("<%=request.getContextPath()%>/admin/artist");
+				}
+				else{
+					alert("삭제 실패");
+					location.replace("<%=request.getContextPath()%>/admin/artist");
+				}
+			}
+		})
+	})
+});
+ --%>	
 </script>
 <script>
 $(function(){
@@ -186,15 +222,15 @@ $(function(){
 						}
 						html += '		<td>										';
 						html += '		<div class="select_btns">					';
-						html += '			<button type="button" id="select_artist"									';
-						html += '			class="btn btn-info btn-fw">				';
+						html += '			<button type="button" id="select_artist_update"									';
+						html += '			class="btn btn-info btn-fw" onclick="javasctipt:updateArtist('+resultData.artist_no+')">				';
 						html += '			수정</button>								';
 						html += '		</div>										';
 						html += '		</td>										';
 						html += '		<td>										';
 						html += '			<div class="select_btns">				';
-						html += '			<button type="button" id="select_artist"									';
-						html += '			class="btn btn-info btn-fw">삭제</button>										';
+						html += '			<button type="button" id="select_artist_delete"									';
+						html += '			class="btn btn-info btn-fw" onclick="javasctipt:deleteArtist('+resultData.artist_no+')">삭제</button>										';
 						html += '			</div>									';
 						html += '		</td>										';
 						html += '	</tr>											';
@@ -208,7 +244,15 @@ $(function(){
 	});
 })
 </script>
+<script>
+$(function(){
+	var msg = '${msg}';
+	if(msg){
+		alert(msg);
+	}
 
+});
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -242,7 +286,7 @@ $(function(){
 								class="btn btn-info btn-fw"
 								onclick="location.href='<%=request.getContextPath()%>/admin/addArtist'">아티스트
 								추가</button>
-							<button type="button" id="delete-select"
+							<button type="button" id="select_all_delete"
 								class="btn btn-info btn-fw">선택 삭제</button>
 						</div>
 						<br>
@@ -324,7 +368,7 @@ $(function(){
 												<td>
 
 													<div class="select_btns">
-														<button type="button" id="update_artist"
+														<button type="button" id="select_artist_update"
 															class="btn btn-info btn-fw update"
 															onclick="location.href='<%=request.getContextPath() %>/admin/editArtist?artist_no=${artist.artist_no }'">
 															수정</button>
@@ -332,9 +376,10 @@ $(function(){
 												</td>
 												<td>
 													<div class="select_btns">
-														<button type="button" id="delete_artist"
+														<button type="button" id="select_artist_delete"
 															class="btn btn-info btn-fw delete"
-															onclick="location.href='<%=request.getContextPath() %>/admin/delete?artist_no=${artist.artist_no }'">삭제</button>
+															onclick="location.href='<%=request.getContextPath() %>/admin/deleteArtist?artist_no=${artist.artist_no }'">
+															삭제</button>
 													</div>
 												</td>
 											</tr>
@@ -374,7 +419,6 @@ $(function(){
 		src="<%=request.getContextPath()%>/resources/assets/js/todolist.js"></script>
 	<script
 		src="<%=request.getContextPath()%>/resources/assets/js/dashboard.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script type="text/javascript"
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 </body>
