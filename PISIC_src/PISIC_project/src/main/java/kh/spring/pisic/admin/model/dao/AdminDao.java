@@ -53,6 +53,20 @@ public class AdminDao {
 		return session.insert("Admin.insertAlbum", album);
 	}
 
+	// 앨범 수정하기 - 앨범 조회
+	public Album selectAlbum(int a_no) {
+		return session.selectOne("Admin.selectAlbum", a_no);
+	}
 	
+	// 앨범 정보 수정
+	public int updateAlbum(Album album) {
+		return session.update("Admin.updateAlbum", album);
+	}
+	
+	// 앨범 삭제
+	public int deleteAlbum(List<Album> albumList) {
+		return session.delete("Admin.deleteAlbum", albumList);
+	}
+
 	
 }

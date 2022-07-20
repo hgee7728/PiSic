@@ -60,6 +60,11 @@ table.album_list  tr>td:nth-child(4){
 </style>
 <script>
 $(function(){
+	var msg = '${msg}';
+	if(msg){
+		alert(msg);
+	}
+	
 	// 체크박스 전체선택
     $("#check_all").click(function(){
     	if($('#check_all').is(':checked')){
@@ -137,32 +142,68 @@ $(function(){
 	$("#insert_album").click(function(){
 		location.href="<%=request.getContextPath()%>/admin/insertAlbum";
 	});
-    $(".btn.update").click(function(){
-		if($(this).hasClass("update")){
-			frmArtist.action="<%=request.getContextPath()%>/admin/update";
-		}else {
-			frmArtist.action="<%=request.getContextPath()%>/admin/delete";
-		}
-		frmArtist.method="post";
-		frmArtist.submit();
+	
+	
+	
+	// 한개 삭제 버튼
+	$(".delete_album_btn").click(function(){
+		var confm = confirm("해당 앨범을 삭제 하시겠습니까?");
+    	if (confm == false) {
+    		alert("취소하셨습니다.");
+    	} else {
+    		$.ajax({
+    			url:"<%=request.getContextPath()%>/admin/deleteAlbum",
+    			type:"post",
+    			data:{
+    				a_no: $(this).next("input[name=delete_one_a_no]").val()
+    				},
+    			success:function(result){
+    				console.log(result);
+    				if(result == "0"){
+    					alert("앨범 삭제가 실패했습니다. 다시 시도해주세요");
+    				} else {
+    					alert("앨범이 삭제 되었습니다.");
+    				}
+    			},
+    			error:function(error){
+    				
+    			}
+    		}); // ajax 끝
+    	}
 	});
 	
-	$(".btn.delete").click(function(){
-		$.ajax({
-			url:"<%=request.getContextPath()%>/admin/delete",
-			type:"post",
-			data:{artist_no:"${artist.artist_no }"},
-			success:function(result){
-				console.log(result);
-				if(result){
-					alert(result);
-				}
-				location.href="<%=request.getContextPath() %>/admin/artist";
-			},
-			error:function(error){
-				
-			}
-		});
+	// 선택 삭제
+	$("#select_delete").click(function(){
+		var confm = confirm("선택된 앨범을 삭제 하시겠습니까?");
+    	if (confm == false) {
+    		alert("취소하셨습니다.");
+    	} else {
+    		var a_noArray = [];
+    		$('input[name=a_no]:checked').each(function(){ //체크된 리스트 저장
+    			a_noArray.push($(this).val());
+    	    });
+    		console.log("a_noArray : " + a_noArray);
+    		$.ajax({
+    			url:"<%=request.getContextPath()%>/admin/deleteAlbum",
+    			type:"post",
+    			traditional:true,
+    			data:{
+    				a_no: a_noArray
+    				},
+    			success:function(result){
+    				console.log(result);
+    				if(result == "0"){
+    					alert("앨범 삭제가 실패했습니다. 다시 시도해주세요");
+    				} else {
+    					alert("앨범이 삭제 되었습니다.");
+    					location.reload();
+    				}
+    			},
+    			error:function(error){
+    				
+    			}
+    		}); // ajax 끝
+    	}
 	});
 	
 }); // $(function(){}) 끝
@@ -194,7 +235,7 @@ $(function(){
 							</form>
 						</div>
 						
-					<form name="frm_album" id="frm_album">
+					<form name="frm_album">
 						<div class="select_btns">
 							<button type="button" id="insert_album"
 								class="btn btn-info btn-fw" >앨범
@@ -239,7 +280,16 @@ $(function(){
 												</td>
 												<td>${album.a_no }</td>
 												<td>
-													<img src="${album.a_cover}" alt="image" />
+													<c:choose>
+														<c:when test="${album.a_cover ne null}">
+															<img src="${album.a_cover}" alt="image" />
+														</c:when>
+														<c:when test="${album.a_cover eq null}">
+															<img
+																src="<%=request.getContextPath()%>/resources/assets/images/favicon.png"
+																alt="image" />
+														</c:when>
+													</c:choose>
 												</td>
 												<td>${album.a_name}</td>
 												<td>${album.artist_name}</td>
@@ -249,15 +299,17 @@ $(function(){
 												<td>
 
 													<div class="select_btns">
-														<button type="button" id="update_album"
-															class="btn btn-info btn-fw update">
+														<button type="button" 
+															class="btn btn-info btn-fw update_album_btn"
+															onclick="location.href='<%=request.getContextPath() %>/admin/updateAlbum?a_no=${album.a_no }'">
 															수정</button>
 													</div>
 												</td>
 												<td>
 													<div class="select_btns">
-														<button type="button" id="delete_album"
-															class="btn btn-info btn-fw delete">삭제</button>
+														<button type="button"
+															class="btn btn-info btn-fw delete_album_btn">삭제</button>
+														<input type="hidden" value="${album.a_no}" name="delete_one_a_no">
 													</div>
 												</td>
 											</tr>

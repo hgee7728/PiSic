@@ -109,4 +109,33 @@
 		, #{a_publishing }, #{a_agency }, #{a_introduce1 },
 		#{a_introduce2 }, #{artist_no })
 	</insert>
+	
+	<!-- 앨범 조회 -->
+	<select id="selectAlbum" resultType="Album">
+		select a_no, a_name, a_cover, a_date, a_publishing,
+		a_agency, a_introduce1, a_introduce2, artist.artist_no, artist.artist_name
+		from album album
+		join artist artist on album.artist_no = artist.artist_no
+		where
+		a_no=#{a_no}
+	</select>
+	
+	<!-- 앨범 수정 -->
+	<update id="updateAlbum" parameterType="Album">
+		update album set
+		a_name=#{a_name }, a_cover=#{a_cover }, a_date=#{a_date }
+		,a_publishing=#{a_publishing}, a_agency=#{a_agency }
+		, a_introduce1=#{a_introduce1 } , a_introduce2=#{a_introduce2 }
+		, artist_no=#{artist_no }
+		where a_no=#{a_no}
+	</update>
+	
+	<!-- 앨범 삭제 -->
+	<delete id="deleteAlbum" parameterType="list">
+		delete from album
+		where
+		<foreach collection="list" item="item" separator="or">
+			(a_no = #{item.a_no})
+		</foreach>
+	</delete>
 </mapper>

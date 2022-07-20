@@ -62,4 +62,22 @@ public class AdminServiceImpl implements AdminService{
 		return dao.insertAlbum(album);
 	}
 
+	// 앨범 수정하기 - 앨범 조회
+	@Override
+	public Album selectAlbum(int a_no) {
+		return dao.selectAlbum(a_no);
+	}
+
+	// 앨범 정보 수정
+	@Override
+	public int updateAlbum(Album album) {
+		return dao.updateAlbum(album);
+	}
+
+	// 앨범 삭제
+	@Override
+	public int deleteAlbum(List<Album> albumList) {
+		return dao.deleteAlbum(albumList);
+	}
+
 }

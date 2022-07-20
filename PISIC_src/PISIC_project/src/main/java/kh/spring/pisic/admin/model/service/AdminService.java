@@ -15,4 +15,7 @@ public interface AdminService {
 	public List<Album> selectAlbumList();
 	public List<Album> selectSearchAlbumList(String keyword);
 	public int insertAlbum(Album album);
+	public Album selectAlbum(int a_no);
+	public int updateAlbum(Album album);
+	public int deleteAlbum(List<Album> albumList);
 }
