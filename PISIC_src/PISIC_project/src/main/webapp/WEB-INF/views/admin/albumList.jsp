@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -244,7 +245,7 @@ $(function(){
 												<td>${album.artist_name}</td>
 												<td>${album.a_publishing}</td>
 												<td>${album.a_agency}</td>
-												<td>${album.a_date}</td>
+												<td><fmt:formatDate value="${album.a_date}" pattern="yyyy-MM-dd"/></td>
 												<td>
 
 													<div class="select_btns">

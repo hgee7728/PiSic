@@ -143,30 +143,30 @@ $(function(){
 										<label for="a_no">앨범 코드 : (자동 부여)</label> 
 									</div>
 									<div class="form-group">
-										<label for="album_name">앨범 이름*</label> 
-										<input type="text" class="form-control" placeholder="Name" name="a_name" required>
+										<label for="album_name" id="label_a_name">앨범 이름*</label> 
+										<input type="text" class="form-control" placeholder="Name" name="a_name">
 									</div>
 									<div class="form-group">
-										<label for="artist_name">아티스트명*</label>
+										<label for="artist_name" id="label_artist_name">아티스트명*</label>
 										<input type="text" class="form-control" placeholder="검색하세요" name="artist_name" readonly>
-										<input type="hidden" name="artist_no" value="">
+										<input type="hidden" name="artist_no" value="1">
 										<button type="button" class="btn btn-info btn-fw" id="search_aritst_btn">검색</button>
 									</div>
 									<div class="form-group">
 										<label for="a_date" id="label_a_date">발매일*</label> 
-										<input type="text" class="form-control" placeholder="YYYYMMDD" name="a_date" required>
+										<input type="text" class="form-control" placeholder="YYYYMMDD" name="a_date" maxlength="8">
 									</div>
 									<div class="form-group">
-										<label for="a_publishing">발매사*</label> 
-										<input type="text" class="form-control" placeholder="Publishing" name="a_publishing" required>
+										<label for="a_publishing" id="label_a_publishing">발매사*</label> 
+										<input type="text" class="form-control" placeholder="Publishing" name="a_publishing">
 									</div>
 									<div class="form-group">
-										<label for="a_agency">기획사*</label> 
-										<input type="text" class="form-control" placeholder="Agency" name="a_agency" required>
+										<label for="a_agency" id="label_a_agency">기획사*</label> 
+										<input type="text" class="form-control" placeholder="Agency" name="a_agency">
 									</div>
 									<div class="form-group">
-										<label for="a_introduce1">앨범 소개 1*</label>
-										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" name="a_introduce1" required></textarea>
+										<label for="a_introduce1" id="label_a_introdece1">앨범 소개 1*</label>
+										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" name="a_introduce1"></textarea>
 									</div>
 									<div class="form-group">
 										<label for="a_introduce2">앨범 소개 2</label>
@@ -183,7 +183,7 @@ $(function(){
 													class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
 											</span>
 										</div>
-										<input type="hidden" id="InputProfile" name="a_cover" value="">
+										<input type="hidden" id="InputProfile" name="a_cover" value="<%=request.getContextPath()%>/resources/assets/images/favicon.png">
 										<input type="hidden" id="InputProfileUC"
 											role="uploadcare-uploader"
 											data-public-key="183400fad159d76bdf53"
@@ -191,12 +191,11 @@ $(function(){
 									</div>
 
 
-									<button type="button" class="btn btn-primary mr-2" id="submit">추가하기</button>
+									<button type="button" class="btn btn-primary mr-2" id="insert_btn">추가하기</button>
 									<button type="button" class="btn btn-dark" id="btn_cancle" onclick="history.back(-1);">취소</button>
 								</form>
 							</div>
 						</div>
-					</div>
 
 
 
@@ -277,7 +276,7 @@ $(function(){
 							.html(
 									'프로필사진 <span id="SpanProfile"><i class="mdi mdi-check"></i></span>');
 					$("#SpanProfile").css("color", "green");
-					$("#InputProfile").attr("value", fileUrl);
+					$("input[name=a_cover]").attr("value", fileUrl);
 				});
 		
 		
@@ -289,23 +288,80 @@ $(function(){
 			InputDate = $("input[name=a_date]").val();		
 			
 			if (!regexDate.test(InputDate)) {
-				console.log("발매일 안맞아");
 				$("#label_a_date").html('발매일* <span id="Span_a_date"><i class="mdi mdi-close"></i> 형식이 맞지 않습니다. ex)YYYYMMDD</span>');
 				FlagDate = false;
 				$("#Span_a_date").css("color", "red");
 			} else {
-				console.log("발매일 맞아");
 				$("#label_a_date").html('발매일* <span id="Span_a_date"><i class="mdi mdi-check"></i></span>');
 				$("#Span_a_date").css("color", "green");
 				FlagDate = true;
 			}
 		})
 		
-		// Submit 유효성 검사
-	    	$("#submit").on("click", function(){
-		    	if (FlagDate == false) {
-		    		$("input[name=a_date]").focus();
-		    	} else {
+		// 필수항목 입력했는지 체크
+	    	$("#insert_btn").on("click", function(){
+	    		var checkFlag = false;
+	    		// 앨범명
+	    		if ($("input[name=a_name]").val() == '') {
+					$("#label_a_name").html('앨범이름 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_a_name").children('span').css("color", "red");
+					$("input[name=a_name]").focus();
+					checkFlag = false;
+					return;
+    			} 
+	    		// 아티스트명
+	    		if ($("input[name=artist_name]").val() == '') {
+					$("#label_artist_name").html('아티스트명 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_artist_name").children('span').css("color", "red");
+					$("input[name=artist_name]").focus();
+					checkFlag = false;
+					return;
+    			}
+	    		// 발매일
+		    	if ($("input[name=a_date]").val() == '') {
+					$("#label_a_date").html('발매일 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_a_date").children('span').css("color", "red");
+					$("input[name=a_date]").focus();
+					checkFlag = false;
+					return;
+    			} 
+    			if(!FlagDate){
+    				$("input[name=a_date]").focus();
+    				checkFlag = false;
+					return;
+    			}
+		    	// 발매사
+		    	if ($("input[name=a_publishing]").val() == '') {
+					$("#label_a_publishing").html('발매사 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_a_publishing").children('span').css("color", "red");
+					$("input[name=a_publishing]").focus();
+					checkFlag = false;
+					return;
+    			} 
+		    	// 기획사
+		    	if ($("input[name=a_agency]").val() == '') {
+					$("#label_a_agency").html('기획사 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_a_agency").children('span').css("color", "red");
+					$("input[name=a_agency]").focus();
+					checkFlag = false;
+					return;
+    			} 
+		    	// 앨범소개1
+		    	if ($("input[name=a_introdece1]").val() == '') {
+					$("#label_a_introdece1").html('앨범 소개1 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_a_introdece1").children('span').css("color", "red");
+					$("input[name=a_introdece1]").focus();
+					checkFlag = false;
+					return;
+    			} 
+		    	checkFlag = true;
+		    	if(checkFlag){
+		    		// controller에서 date type으로 받기 위한 파싱
+		    		var dateY = $("input[name=a_date]").val().substr(0,4);
+		    		var dateM = $("input[name=a_date]").val().substr(4,2);
+		    		var dateD = $("input[name=a_date]").val().substr(6);
+		    		var a_date = dateY + '-' + dateM + '-' + dateD;
+		    		$("input[name=a_date]").val(a_date);
 		    		$("#frm_album").submit();
 		    	}
 	    	})

@@ -210,7 +210,7 @@ public class AdminController {
 			mv.setViewName("redirect:/admin/album");
 		}else {
 			rttr.addFlashAttribute("msg", "앨범 추가 성공하였습니다");
-		mv.setViewName("redirect:/admin/album");
+			mv.setViewName("redirect:/admin/album");
 		}
 		return mv; 
 	}

@@ -3,6 +3,7 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/css/reset.css">
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -141,7 +142,7 @@ $(function(){
 										</tr>
 										<tr>
 											<td>발매일 :</td>
-											<td>${album.a_date}</td>
+											<td><fmt:formatDate value="${album.a_date}" pattern="yyyy-MM-dd"/></td>
 										</tr>
 										<tr>
 											<td>발매사 :</td>
