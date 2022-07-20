@@ -34,9 +34,6 @@
   		margin: 0 auto;
     	display: block;
   	}
-  	.btn.btn-inverse-secondary.btn-fw {
-  		
-  	}
   	#ImgProfilePre {
   		margin-right: 10px;
   		width: calc(100% - 160px);
@@ -79,7 +76,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">정보수정</h4>
-                    <form id="insertForm" class="forms-sample" action="<%=request.getContextPath() %>/member/updateMyInfo" method="post">
+                    <form id="updateForm" class="forms-sample" action="<%=request.getContextPath() %>/member/updateMyInfo" method="post">
                       <div class="form-group">
                       	<label id="LabelId" for="InputId">아이디</label>
                       	<input type="text" class="form-control file-upload-info" id="InputId" placeholder="ID" name="m_id" value="${loginSsInfo.m_id}" readonly required>
@@ -226,7 +223,6 @@
     		var InputNickname = null;
     		var InputEmail = null;
     		var InputPhone = null;
-    		var InputBirth = null;
     		var InputAddress = null;
     		var InputAddressDetail = null;
     		var InputProfile = null;
@@ -247,7 +243,6 @@
     		var FlagNickname = false;
     		var FlagEmail = false;
     		var FlagPhone = false;
-    		var FlagBirth = false;
     		var FlagGender = false;
     		var FlagAddressDetail = false;
     		
@@ -440,27 +435,6 @@
     			console.log(FlagPhone);
     		})
     		
-    		// 생년월일
-    		$("#InputBirth").on("input", function FxBirth(){
-    			var regexBirth = /^[0-9]{8}$/;
-    			InputBirth = $("#InputBirth").val();		
-    			
-    			if (!regexBirth.test(InputBirth)) {
-    				if (InputBirth == '') {
-    					$("#LabelBirth").html('생년월일 <span id="SpanBirth"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-    				} else {
-    					$("#LabelBirth").html('생년월일 <span id="SpanBirth"><i class="mdi mdi-close"></i> 생년월일 형식이 맞지 않습니다. ex)YYYYMMDD</span>');
-    				}
-    				FlagBirth = false;
-    				$("#SpanBirth").css("color", "red");
-    			} else {
-    				$("#LabelBirth").html('생년월일 <span id="SpanBirth"><i class="mdi mdi-check"></i></span>');
-    				$("#SpanBirth").css("color", "green");
-    				FlagBirth = true;
-    			}
-    			console.log(FlagBirth);
-    		})
-    		
     		// 성별
     		$("#SelectGender").on("click", function(){
     			$("#LabelGender").html('성별 <span id="SpanGender"><i class="mdi mdi-check"></i></span>');
@@ -556,7 +530,7 @@
 		    	} else if (FlagAddressDetail == false) {
 		    		$("#InputAddressDetail").focus();
 		    	} else {
-		    		$("#insertForm").submit();
+		    		$("#updateForm").submit();
 		    	}
 	    	})
     	});

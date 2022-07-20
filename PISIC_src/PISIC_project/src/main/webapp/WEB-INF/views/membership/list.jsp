@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,6 +23,7 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     <div class="container-scroller">
@@ -34,32 +36,45 @@
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
+          	<div class="page-header">
+              <h2 class="card-title">MEMBERSHIP</h2>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">이용권</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">이용권 구매</li>
+                </ol>
+              </nav>
+            </div>
           	<div class="card">
                   <div class="card-body">
                     <div class="d-flex flex-row justify-content-between">
-                      <h4 class="card-title mb-1">Open Projects</h4>
-                      <p class="text-muted mb-1">Your data status</p>
+                      <h4 class="card-title mb-1">Membership</h4>
+                      <p class="text-muted mb-1">price</p>
                     </div>
                     <div class="row">
                       <div class="col-12">
                         <div class="preview-list">
-                          <div class="preview-item border-bottom">
-                            <div class="preview-thumbnail">
+                        <c:forEach items="${membershipList}" var="membershipList">
+                          <!-- 1행 시작 -->
+                          <div id="icon-wrapper" class="preview-item border-bottom">
+                            <div id="icon" class="preview-thumbnail">
                               <div class="preview-icon bg-primary">
                                 <i class="mdi mdi-file-document"></i>
                               </div>
                             </div>
                             <div class="preview-item-content d-sm-flex flex-grow">
                               <div class="flex-grow">
-                                <h6 class="preview-subject">Admin dashboard design</h6>
-                                <p class="text-muted mb-0">Broadcast web app mockup</p>
+                                <h6 class="preview-subject">${membershipList.ms_name}</h6>
+                                <p class="text-muted mb-0">${membershipList.ms_no}</p>
                               </div>
                               <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                <p class="text-muted">15 minutes ago</p>
-                                <p class="text-muted mb-0">30 tasks, 5 issues </p>
+                                <p class="text-muted">${membershipList.ms_price}</p>
+                                <p class="text-muted mb-0">${membershipList.ms_period}</p>
                               </div>
                             </div>
                           </div>
+                          <!-- 1행 끝 -->
+                        </c:forEach>
                           <div class="preview-item border-bottom">
                             <div class="preview-thumbnail">
                               <div class="preview-icon bg-success">
@@ -143,6 +158,15 @@
       </div>
       <!-- page-body-wrapper ends -->
     </div>
+    <script>
+    	$(document).ready(function(){
+    		$("#icon-wrapper #icon:nth-child(5n+1)").html('<div class="preview-icon bg-primary"><i class="mdi mdi-file-document"></i></div>');
+            $("#icon-wrapper #icon:nth-child(5n+2)").html('<div class="preview-icon bg-success"><i class="mdi mdi-cloud-download"></i></div>');
+            $("#icon-wrapper #icon:nth-child(5n+3)").html('<div class="preview-icon bg-info"><i class="mdi mdi-clock"></i></div>');
+            $("#icon-wrapper #icon:nth-child(5n+4)").html('<div class="preview-icon bg-danger"><i class="mdi mdi-email-open"></i></div>');
+            $("#icon-wrapper #icon:nth-child(5n+5)").html('<div class="preview-icon bg-warning"><i class="mdi mdi-chart-pie"></i></div>');
+    	});
+    </script>
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="<%=request.getContextPath()%>/resources/assets/vendors/js/vendor.bundle.base.js"></script>

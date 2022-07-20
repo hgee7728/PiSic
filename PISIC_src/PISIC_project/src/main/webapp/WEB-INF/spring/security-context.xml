@@ -2,14 +2,99 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:security="http://www.springframework.org/schema/security"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.7.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean class="kh.spring.pisic.springsecurity.AuthLoginSuccessHandler" id="authLoginSuccess">
+		<constructor-arg value="/"></constructor-arg>
+	</bean>
+
+	<!-- resources 폴더 안은 security X -->
+	<security:http pattern="/resources/**" security="none"></security:http>
+	<security:http pattern="/error/**" security="none"></security:http>
+	<security:http pattern="/test/**" security="none"></security:http>
+	
+	<security:http use-expressions="true">
+		<security:intercept-url pattern="/test/list" access="permitAll"/>
+		<security:intercept-url pattern="/member/**" access="hasRole('ROLE_MEMBER')"/>
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+		<security:form-login login-page="/login"
+							authentication-success-handler-ref="authLoginSuccess"
+							authentication-details-source-ref=""
+							username-parameter="m_id"
+							password-parameter="m_password"/>
+						<!-- authentication-failure-handler-ref="customAccessFailure" -->
+		<security:logout logout-url="/logout"
+				logout-success-url="/"
+				invalidate-session="true"
+				delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE"/>
+		<!-- 자동로그인 (4주) -->
+		<!-- <security:remember-me data-source-ref="dataSource" authentication-success-handler-ref="authLoginSuccess" token-validity-seconds="2419200"/> -->
+	</security:http>
+	
+	<!-- 임시 로그인 test -->
+	<!-- <security:authentication-manager>
+		<security:authentication-provider>
+       	  	아래 name, password를 통해서 임시 로그인 성공 여부 확인
+        	<security:user-service>
+              <security:user name="member" password="{noop}member" authorities="ROLE_MEMBER" />
+              <security:user name="admin" password="{noop}admin" authorities="ROLE_ADMIN" />
+            </security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager> -->
+
+	<!-- DB 통해 로그인 성공 여부 확인 
+             	참고(로그인) : users-by-username-query 생략시 select username,password,enabled from users where username = ? 
+				참고(ROLE) : authorities-by-username-query 생략시 select username,authority from authorities where username = ?
+				-->
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:password-encoder hash="bcrypt" />
+			<security:jdbc-user-service
+				data-source-ref="dataSource"
+				users-by-username-query="SELECT M_ID username, M_PASSWORD password, 
+					CASE WHEN M_DELETE_YN='N' THEN 1 ELSE 0 END as enable
+					FROM MEMBER WHERE M_ID=?"
+				authorities-by-username-query="SELECT M_ID username, 
+					CASE WHEN M_GRADE=1 THEN 'ROLE_MEMBER' WHEN M_GRADE=0 THEN 'ROLE_ADMIN' END as authority
+					FROM MEMBER WHERE M_ID=?"
+				/>
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	<bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder"/>
 	
 	<!-- <security:http>
-		<security:form-login/>
+		<security:intercept-url pattern="/member/all" access="permitAll"/>
+		<security:intercept-url pattern="/member/member" access="hasRole('ROLE_MEMBER')"/>
+		<security:intercept-url pattern="/member/admin" access="hasRole('ROLE_ADMIN')"/>
+		로그인 페이지
+		<security:form-login
+			login-page="/member/login"
+			authentication-success-handler-ref="LoginTest"
+			username-parameter="m_id"
+			password-parameter="m_password"
+			login-processing-url="/member/login"
+		/>
+		<security:logout
+			logout-url="/security_logout"
+			logout-success-url="/"
+			invalidate-session="true"
+			delete-cookies="true"
+		/>
+		
+		<security:logout
+			logout-url="member/logout"
+			logout-success-url="/"
+			invalidate-session="true"
+			delete-cookies="true"/>
+			
 	</security:http>
 	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="loginService"/>
+			<security:user-service>
+				<security:user name="member" password="{noop}member" authorities="ROLE_MEMBER"/>
+			</security:user-service>
 	</security:authentication-manager> -->
 	
-	<bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder"/>
 </beans>

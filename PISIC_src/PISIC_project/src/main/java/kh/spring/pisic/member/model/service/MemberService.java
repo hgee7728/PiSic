@@ -28,4 +28,8 @@ public interface MemberService {
 	public List<Member> listMember();
 	
 	public List<Member> listAdmin();
+	
+	public int updateMyInfo(Member member);
+	
+	public Member selectLoginMember(String username);
 }

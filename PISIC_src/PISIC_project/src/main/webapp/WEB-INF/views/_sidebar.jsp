@@ -1,6 +1,10 @@
+<%@page import="org.springframework.security.core.userdetails.UserDetails"%>
+<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
     <a class="sidebar-brand brand-logo" href="<%=request.getContextPath()%>/main"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo.png" alt="logo" /></a>
@@ -86,27 +90,29 @@
         -->
       </div>
     </li>
-    <c:if test="${empty loginSsInfo}">
+   <sec:authorize access="isAnonymous()">
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/member/login">
+      <a class="nav-link" href="<%=request.getContextPath()%>/login">
         <span class="menu-icon">
           <i class="mdi mdi-playlist-play"></i>
         </span>
         <span class="menu-title">LOGIN</span>
        </a>
     </li>
-    </c:if>
-    <c:if test="${not empty loginSsInfo}">
-    <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/member/logout">
-        <span class="menu-icon">
-          <i class="mdi mdi-playlist-play"></i>
-        </span>
-        <span class="menu-title">LOGOUT</span>
-      </a>
-    </li>
-    </c:if>
-      
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+	    <form action="${pageContext.request.contextPath}/logout" method="POST" id="frmLogout">
+			<li class="nav-item menu-items">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />				
+		      <a class="nav-link" href="javascript:;" onclick="document.getElementById('frmLogout').submit();">
+		        <span class="menu-icon">
+		          <i class="mdi mdi-playlist-play"></i>
+		        </span>
+		        <span class="menu-title">LOGOUT</span>
+		      </a>
+		    </li>
+		</form>
+    </sec:authorize>
     <li class="nav-item w-100">
       <form class="nav-link mt-2 mt-md-0 d-lg-flex search">
         <input type="text" class="form-control" placeholder="Search products">
@@ -193,9 +199,9 @@
       </a>
       <div class="collapse" id="membership">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html">이용권 구매</a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html">이용권 해지</a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html">결제내역</a></li>
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/membership/list">이용권 구매</a></li>
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/membership/cancel">이용권 해지</a></li>
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/membership/history">결제내역</a></li>
         </ul>
       </div>
     </li>

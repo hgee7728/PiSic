@@ -5,6 +5,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+	<meta name="_csrf" th:content="${_csrf.token}">
     <title>회원가입</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -78,7 +80,9 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">회원가입</h4>
-                    <form id="insertForm" class="forms-sample" action="<%=request.getContextPath() %>/member/join" method="post">
+                    <form id="insertForm" class="forms-sample" action="<%=request.getContextPath() %>/join" method="post">
+                      <!-- csrf 공격 방지 -->
+                      <input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
                       <div class="form-group">
                       	<label id="LabelId" for="InputId">아이디 *</label>
                       	<input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
@@ -232,6 +236,11 @@
     		var FlagGender = false;
     		var FlagAddressDetail = false;
     		
+    		var header = $("meta[name='_csrf_header']").attr('th:content');
+    		var token = $("meta[name='_csrf']").attr('th:content');
+			console.log(header);
+			console.log(token);
+    		
     		// 아이디
     		$("#InputId").on("input", function FxId(){
     			var regexId = /^[0-9a-zA-Z]{7,15}$/;
@@ -247,11 +256,14 @@
     				FlagId = false;
     			} else {
     				$.ajax({
-    					url: "<%=request.getContextPath()%>/member/idCheck.ax",
+    					url: "<%=request.getContextPath()%>/idCheck.ax",
     					data: {
     					    m_id: InputId
     					},
     					type: "post",
+    					beforeSend: function(xhr){
+    				        xhr.setRequestHeader(header, token);
+    				    },
     					success: function(result){
     					    if (result == 1) {
     			    			$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-delta"></i> 중복된 아이디가 있습니다.</span>');
@@ -350,6 +362,9 @@
     					    m_nickname: InputNickname
     					},
     					type: "post",
+    					beforeSend: function(xhr){
+    				        xhr.setRequestHeader(header, token);
+    				    },
     					success: function(result){
     					    if (result == 1) {
     			    			$("#LabelNickname").html('닉네임 <span id="SpanNickName"><i class="mdi mdi-delta"></i> 중복된 닉네임이 있습니다.</span>');
@@ -385,10 +400,13 @@
     				$("#SpanEmail").css("color", "red");
     			} else {
     				$.ajax({
-    					url: "<%=request.getContextPath()%>/member/emailCheck.ax",
+    					url: "<%=request.getContextPath()%>/emailCheck.ax",
     					data: {
     					    m_email: InputEmail
     					},
+    					beforeSend: function(xhr){
+    				        xhr.setRequestHeader(header, token);
+    				    },
     					type: "post",
     					success: function(result){
     					    if (result == 1) {
@@ -425,10 +443,13 @@
     				$("#SpanPhone").css("color", "red");
     			} else {
     				$.ajax({
-    					url: "<%=request.getContextPath()%>/member/phoneCheck.ax",
+    					url: "<%=request.getContextPath()%>/phoneCheck.ax",
     					data: {
     					    m_phone: InputPhone
     					},
+    					beforeSend: function(xhr){
+    				        xhr.setRequestHeader(header, token);
+    				    },
     					type: "post",
     					success: function(result){
     					    if (result == 1) {

@@ -111,11 +111,13 @@
                             "user : \n" + "email : "
                             + data['email']  
                             + "\n nickname : " 
-                            + data['nickname']);
+                            + data['nickname'];
                         }
                     });                     	
                     </script>
-                    <form class="forms-sample" action="<%=request.getContextPath() %>/member/login" method="post">
+                    <form class="forms-sample" action="<%=request.getContextPath() %>/login" method="post">
+                      <!-- csrf 공격 방지 -->
+                      <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
                       <div class="form-group">
                         <label for="InputId">아이디</label>
                         <input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
@@ -124,12 +126,17 @@
                         <label for="InputPassword">비밀번호</label>
                         <input type="password" class="form-control" id="InputPassword" placeholder="Password" name="m_password" required>
                       </div>
+                      <div class="form-check form-check-flat form-check-info">
+                        <label class="form-check-label">
+                          <input id="remember_me" name="_spring_security_remember_me" type="checkbox" class="form-check-input">Remember me
+                        </label>
+                      </div>
                       <button type="submit" class="btn btn-info btn-fw">로그인</button>
                     </form>
                     <div class="row">
-	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/findId'">아이디 찾기</button>
-	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/findPw'">비밀번호 찾기</button>
-	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/join'">회원가입</button>
+	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/findId'">아이디 찾기</button>
+	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/findPw'">비밀번호 찾기</button>
+	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/join'">회원가입</button>
                     </div>
                   </div>
                 </div>

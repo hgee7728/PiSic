@@ -1,5 +1,7 @@
 package kh.spring.pisic.membership.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,5 +17,28 @@ import kh.spring.pisic.membership.model.service.MembershipService;
 public class MembershipController {
 	@Autowired
 	private MembershipService service;
+	
+	@GetMapping("/list")
+	public String pageSelectMembership(
+			HttpSession session) {
+		
+		session.setAttribute("membershipList", service.selectMembership());
+		return "membership/list";
+	}
+	
+	@GetMapping("/cancel")
+	public String pageCancelMembership(
+			HttpSession session) {
+		
+		return "membership/cancel";
+	}
+	
+	@GetMapping("/history")
+	public String pageHistoryMembership(
+			HttpSession session) {
+		
+		return "membership/history";
+	}
+	
 	
 }

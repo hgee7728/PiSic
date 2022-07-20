@@ -69,4 +69,14 @@ public class MemberServiceImpl implements MemberService{
 		return dao.listAdmin();
 	}
 
+	@Override
+	public int updateMyInfo(Member member) {
+		return dao.updateMyInfo(member);
+	}
+
+	@Override
+	public Member selectLoginMember(String username) {
+		return dao.selectLoginMember(username);
+	}
+
 }

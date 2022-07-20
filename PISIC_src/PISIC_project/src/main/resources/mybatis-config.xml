@@ -19,6 +19,7 @@
  	<typeAlias type="kh.spring.pisic.pjboard.domain.PjBoard" alias="PjBoard"/>
  	<typeAlias type="kh.spring.pisic.qna.domain.QnaBoard" alias="QnaBoard"/>
  	<typeAlias type="kh.spring.pisic.sound.domain.SoundRecomment" alias="SoundRecomment"/>
+ 	<typeAlias type="kh.spring.pisic.membership.domain.Membership" alias="Membership"/>
 </typeAliases>
 <mappers>
 	<mapper resource="mappers/member-mapper.xml"/>
@@ -31,5 +32,6 @@
 	<mapper resource="mappers/faqBoard-mapper.xml"/>
 	<mapper resource="mappers/qnaBoard-mapper.xml"/>
 	<mapper resource="mappers/admin-mapper.xml"/>
+	<mapper resource="mappers/membership-mapper.xml"/>
 </mappers>
 </configuration>

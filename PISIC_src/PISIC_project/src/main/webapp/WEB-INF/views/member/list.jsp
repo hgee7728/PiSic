@@ -63,7 +63,7 @@
               </div>
             </div>
           </div>
-          <form action="<%=request.getContextPath() %>/member/login" method="post" id="listForm">
+          <form action="<%=request.getContextPath() %>/login" method="post" id="listForm">
           	<input type="hidden" id="formId" name="m_id">
           	<input type="hidden" id="formPassword" name="m_password">
           </form>
