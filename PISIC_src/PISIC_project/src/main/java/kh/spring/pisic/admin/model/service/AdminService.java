@@ -12,7 +12,7 @@ public interface AdminService {
 	public List<Artist> selectArtistAjax(String keyword);
 	public int insertArtist(Artist artist);
 	public int updateArtist(Artist artist);
-	public int deleteArtist(String artist_no);
+	public int deleteArtist(List<Artist> aritstList);
 	public List<Album> selectAlbumList();
 	public List<Album> selectSearchAlbumList(String keyword);
 	public int insertAlbum(Album album);

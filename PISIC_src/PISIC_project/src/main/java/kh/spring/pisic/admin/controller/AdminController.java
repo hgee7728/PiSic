@@ -33,7 +33,6 @@ public class AdminController {
 	/*아티스트 관리자 페이지*/
 	@GetMapping("/artist")
 	public ModelAndView SearchArtistPage(ModelAndView mv) { 
-		// TODO
 		mv.addObject("aristList",  service.selectArtistList());
 		mv.setViewName("admin/artistList");
 		return mv; 
@@ -70,12 +69,6 @@ public class AdminController {
 			, HttpServletRequest req
 			, HttpSession session
 			, RedirectAttributes rttr) throws Throwable { 
-		Member loginInfo = (Member)session.getAttribute("loginSsInfo");
-		if(loginInfo == null) {
-			rttr.addFlashAttribute("msg", "관리자로 접근하여 다시 시도해 주세요.");
-			mv.setViewName("redirect:/member/login");
-			return mv;
-		}
 		
 		int result = service.updateArtist(artist);
 		
@@ -113,12 +106,6 @@ public class AdminController {
 			, HttpServletRequest req
 			, HttpSession session
 			, RedirectAttributes rttr) throws Throwable { 
-		Member loginInfo = (Member)session.getAttribute("loginSsInfo");
-		if(loginInfo == null) {
-			rttr.addFlashAttribute("msg", "관리자로 접근하여 다시 시도해 주세요.");
-			mv.setViewName("redirect:/member/login");
-			return mv;
-		}
 		
 		int result = service.insertArtist(artist);
 		
@@ -132,37 +119,27 @@ public class AdminController {
 		return mv; 
 	}
 	
+	
+	
 	/*아티스트 삭제하기*/
-	@GetMapping("/deleteArtist")
-	public String deleteArtist(@RequestParam(name = "artist_no", defaultValue = "0") String artist_no,
-			RedirectAttributes rttr) {
-		
-		int result = service.deleteArtist(artist_no);
-		
-		String msg;
-		if(result>0) {
-			msg="게시글 "+artist_no+"번이 삭제되었습니다.";
-		}else {
-			msg="게시글 삭제를 하지못했습니다. 다시 시도해주세요.";
-		}
-		rttr.addFlashAttribute("msg", msg);
-		return "redirect:/admin/artist";
-		
-	}
-	
-	
-	/*아티스트 선택 삭제하기*/
 	@ResponseBody
 	@PostMapping(value = "/deleteArtist", produces = "text/plain;charset=UTF-8")
-	public String deleteCheckArtist(
-			HttpServletRequest request){
-		String[] ajaxMsg = request.getParameterValues("artistArr");
-		int size = ajaxMsg.length;
-		for(int i=0; i<size; i++) {
-			service.deleteArtist(ajaxMsg[i]);
-		}
-		return "redirect:admin/artist";
+	public String deleteArtist(
+			@RequestParam(name = "artist_no", required = false) int[] artist_noArray){
+		List<Artist> artistList = new ArrayList<Artist>();
 		
+		for (int i = 0; i < artist_noArray.length; i++) {
+			Artist artist = new Artist();
+			artist.setArtist_no(artist_noArray[i]);
+			artistList.add(artist);
+		}
+		System.out.println("[[[artistList]]] : " + artistList);
+
+		if (service.deleteArtist(artistList) < 1) { // 삭제 실패
+			return "0";
+		} else {
+			return "1";
+		}
 		
 	}
 

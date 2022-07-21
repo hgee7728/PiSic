@@ -87,8 +87,11 @@
 
 	<!-- 아티스트 삭제 -->
 	<delete id="deleteArtist" parameterType="string">
-		delete from artist 
-		where artist_no=#{artist_no}
+		delete from artist
+		where
+		<foreach collection="list" item="item" separator="or">
+			(artist_no = #{item.artist_no})
+		</foreach>
 	</delete>
 
 	<!-- 앨범 리스트 조회 -->

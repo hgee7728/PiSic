@@ -35,8 +35,8 @@ public class AdminDao {
 		return session.update("Admin.updateArtist", artist);
 	}
 	
-	public int deleteArtist(String artist_no) {
-		return session.delete("Admin.deleteArtist", artist_no);
+	public int deleteArtist(List<Artist> aritstList) {
+		return session.delete("Admin.deleteArtist", aritstList);
 	}
 	
 	// 앨범 목록 조회

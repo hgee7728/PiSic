@@ -94,13 +94,11 @@ $(function(){
 							
 								<form id="editArtistForm" class="editArtistForm" action="<%=request.getContextPath() %>/admin/editArtist" 
 									method="post">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<h4 class="card-title">아티스트 정보 입력</h4>
 								<br>
-									
-									
-									
 								<div class="form-group">
-										<label for="artistNo">아티스트 코드 : (자동 부여)</label> 
+										<label for="artistNo">아티스트 코드 : ${artist_no }</label> 
 										<input type="hidden" value="${artist_no }" class="form-control" id="artistNo" name="artist_no" readonly>
 
 									</div>

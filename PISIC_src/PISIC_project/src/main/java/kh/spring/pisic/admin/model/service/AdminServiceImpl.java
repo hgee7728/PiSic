@@ -41,8 +41,8 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public int deleteArtist(String artist_no) {
-		return dao.deleteArtist(artist_no);
+	public int deleteArtist(List<Artist> aritstList) {
+		return dao.deleteArtist(aritstList);
 	}
 	
 	// 앨범 목록 조회

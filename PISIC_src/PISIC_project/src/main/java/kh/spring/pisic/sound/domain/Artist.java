@@ -21,20 +21,16 @@ public class Artist {
 	//검색 필터
 	private String keyword;
 	
-	private String artist_profile_rename;
+
 	
-
-
 	@Override
 	public String toString() {
 		return "Artist [artist_no=" + artist_no + ", artist_name=" + artist_name + ", artist_nation=" + artist_nation
 				+ ", artist_company=" + artist_company + ", artist_type=" + artist_type + ", artist_group="
 				+ artist_group + ", artist_member=" + artist_member + ", artist_profile=" + artist_profile
 				+ ", artist_info1=" + artist_info1 + ", artist_info2=" + artist_info2 + ", m_id=" + m_id + ", like_cnt="
-				+ like_cnt + ", keyword=" + keyword + ", artist_profile_rename=" + artist_profile_rename + "]";
+				+ like_cnt + ", keyword=" + keyword + "]";
 	}
-	
-	
 
 	public int getArtist_no() {
 		return artist_no;
@@ -141,14 +137,6 @@ public class Artist {
 	}
 
 
-
-	public String getArtist_profile_rename() {
-		return artist_profile_rename;
-	}
-
-	public void setArtist_profile_rename(String artist_profile_rename) {
-		this.artist_profile_rename = artist_profile_rename;
-	}
 	
 	
 }

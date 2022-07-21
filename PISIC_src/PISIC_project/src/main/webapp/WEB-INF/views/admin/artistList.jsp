@@ -7,6 +7,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>PISIC ADMIN</title>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
@@ -62,101 +64,28 @@ table.artist_list  tr>td:nth-child(7){
 }
 </style>
 <script>
-function deleteArtist(artist_no){
-	location.href = "<%=request.getContextPath()%>/admin/deleteArtist?artist_no="+artist_no;
-};
 function updateArtist(artist_no){
 	location.href = "<%=request.getContextPath()%>/admin/editArtist?artist_no="+artist_no;
 };
 
 
-$(function() {
-	var chkObj = document.getElementsByName("RowCheck");
-	var rowCnt = chkObj.length;
-
-	$("input[name='allCheck']").click(function() {
-		var chk_listArr = $("input[name='RowCheck']");
-		for(var i=0; i<chk_listArr.length; i++){
-			chk_listArr[i].checked = this.checked;
-		}
-	});
-
-	$("input[name='RowCheck']").click(function() {
-		if($("input[name='RowCheck']:checked").length == rowCnt){
-			$("input[name='allCheck']")[0].checked = true;
-		}
-		else{
-			$("input[name='allCheck']")[0].checked = false;
-		}
-	});
-});
-
-
-	
-$(function() {
-	$("#selet_all_delete").click(function deleteArtist() {
-		var artistArr = new Array();
-		var list = $("input[name='RowCheck']");
-		for(var i=0;i<list.length;i++){
-			if(list[i].checked){
-				artistArr.push(list[i].value);
-			}
-		}
-		if(artistArr.length==0){
-			alret("선택된 아티스트가 없습니다.");
-		}
-		else{
-			var chk = confirm("정말 삭제하시겠습니까?");
-			$.ajax({
-				type : "POST",
-				url : "<%=request.getContextPath()%>/admin/deleteArtist",
-				traditional : true,
-				data: {
-					artistArr : artistArr
-				},
-				success:function(jdata){
-					if(jdata=1){
-						alert("삭제 성공");
-						location.replace("<%=request.getContextPath()%>/admin/artist");
-					}
-					else{
-						alert("삭제 실패");
-						location.replace("<%=request.getContextPath()%>/admin/artist");
-					}
-				}
-			})
-		}
-		
-	})
-});
-	
-	
-<%-- 	
 $(function(){
-	$("#select_artist_delete").click(function deleteArtistOne(){
-		$.ajax({
-			type : "POST",
-			url : "<%=request.getContextPath()%>/admin/deleteArtist",
-			data :{
-				artist_no: $("input[name=artist_no]")
-			},
-			success : function(jdata){
-				if(jdata=1){
-					alert("삭제 성공");
-					location.replace("<%=request.getContextPath()%>/admin/artist");
-				}
-				else{
-					alert("삭제 실패");
-					location.replace("<%=request.getContextPath()%>/admin/artist");
-				}
-			}
-		})
-	})
-});
- --%>	
-</script>
-<script>
-$(function(){
+	var msg = '${msg}';
+	if(msg){
+		alert(msg);
+	}
+	
+	// 체크박스 전체선택
+    $("#check_all").click(function(){
+    	if($('#check_all').is(':checked')){
+    		$('input:checkbox').prop('checked',true);
+    	} else {
+    		$('input:checkbox').prop('checked',false);
+    	}
+    })
+
+
+
 	$("#search-artist").click(function(){
 		$.ajax({
 			type: 'GET',
@@ -222,15 +151,15 @@ $(function(){
 						}
 						html += '		<td>										';
 						html += '		<div class="select_btns">					';
-						html += '			<button type="button" id="select_artist_update"									';
-						html += '			class="btn btn-info btn-fw" onclick="javasctipt:updateArtist('+resultData.artist_no+')">				';
+						html += '			<button type="button" "								';
+						html += '			class="btn btn-info btn-fw select_artist_update" onclick="javasctipt:updateArtist('+resultData.artist_no+')">				';
 						html += '			수정</button>								';
 						html += '		</div>										';
 						html += '		</td>										';
 						html += '		<td>										';
 						html += '			<div class="select_btns">				';
-						html += '			<button type="button" id="select_artist_delete"									';
-						html += '			class="btn btn-info btn-fw" onclick="javasctipt:deleteArtist('+resultData.artist_no+')">삭제</button>										';
+						html += '			<button type="button" 									';
+						html += '			class="btn btn-info btn-fw select_artist_delete")">삭제</button>										';
 						html += '			</div>									';
 						html += '		</td>										';
 						html += '	</tr>											';
@@ -242,17 +171,88 @@ $(function(){
 			}
 		})
 	});
-})
-</script>
-<script>
-$(function(){
-	var msg = '${msg}';
-	if(msg){
-		alert(msg);
-	}
+	
+	//한개 삭제 버튼
+	$(".select_artist_delete").click(function(){
+		var confm = confirm("해당 아티스트를 삭제 하시겠습니까?");
+		var header = $("meta[name='_csrf_header']").attr('th:content');
+		var token = $("meta[name='_csrf']").attr('th:content');
+		console.log(header);
+		console.log(token);
+		
+		if (confm == false) {
+			alert("취소하셨습니다.");
+		} else {
+			$.ajax({
+				url:"<%=request.getContextPath()%>/admin/deleteArtist",
+				type:"post",
+				data:{
+					artist_no: $(this).next("input[name=delete_one_artist_no]").val()
+					},
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
+				success:function(result){
+					console.log(result);
+					if(result == "0"){
+						alert("아티스트 삭제가 실패했습니다. 다시 시도해주세요");
+						
+					} else {
+						alert("아티스트가 삭제 되었습니다.");
+						location.reload();
+					}
+				},
+				error:function(error){
+					
+				}
+			}); // ajax 끝
+		}
+	});
 
+	// 선택 삭제
+	$("#select_all_delete").click(function(){
+		var confm = confirm("선택된 아티스트를 삭제 하시겠습니까?");
+		var header = $("meta[name='_csrf_header']").attr('th:content');
+		var token = $("meta[name='_csrf']").attr('th:content');
+		console.log(header);
+		console.log(token);
+		
+		if (confm == false) {
+			alert("취소하셨습니다.");
+		} else {
+			var artist_noArray = [];
+			$('input[name=artist_no]:checked').each(function(){ //체크된 리스트 저장
+				artist_noArray.push($(this).val());
+		    });
+			console.log("artist_noArray : " + artist_noArray);
+			$.ajax({
+				url:"<%=request.getContextPath()%>/admin/deleteArtist",
+				type:"post",
+				traditional:true,
+				data:{
+					artist_no: artist_noArray
+					},
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
+				success:function(result){
+					console.log(result);
+					if(result == "0"){
+						alert("아티스트 삭제가 실패했습니다. 다시 시도해주세요");
+					} else {
+						alert("아티스트가 삭제 되었습니다.");
+						location.reload();
+					}
+				},
+				error:function(error){
+					
+				}
+			}); // ajax 끝
+		}
+	});
 });
 </script>
+
 </head>
 <body>
 	<div class="container-scroller">
@@ -281,6 +281,7 @@ $(function(){
 						</div>
 						
 					<form name="frmArtist" id="frmArtist">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						<div class="select_btns">
 							<button type="button" id="add-artist"
 								class="btn btn-info btn-fw"
@@ -298,7 +299,7 @@ $(function(){
 										<tr>
 											<td><div class="form-check form-check-muted m-0">
 													<label class="form-check-label"> <input
-														type="checkbox" class="form-check-input" id="allCheck" name="allCheck">
+														type="checkbox" class="form-check-input" id="check_all" name="check_all">
 													</label>
 												</div></td>
 											<td>No</td>
@@ -319,7 +320,7 @@ $(function(){
 													<div class="form-check form-check-muted m-0">
 														<label class="form-check-label"> <input
 															type="checkbox" class="form-check-input sound_checkbox"
-															value="${artist.artist_no }" name="RowCheck">
+															value="${artist.artist_no }" name="artist_no">
 														</label>
 													</div>
 												</td>
@@ -368,18 +369,18 @@ $(function(){
 												<td>
 
 													<div class="select_btns">
-														<button type="button" id="select_artist_update"
-															class="btn btn-info btn-fw update"
+														<button type="button"
+															class="btn btn-info btn-fw update select_artist_update"
 															onclick="location.href='<%=request.getContextPath() %>/admin/editArtist?artist_no=${artist.artist_no }'">
 															수정</button>
 													</div>
 												</td>
 												<td>
 													<div class="select_btns">
-														<button type="button" id="select_artist_delete"
-															class="btn btn-info btn-fw delete"
-															onclick="location.href='<%=request.getContextPath() %>/admin/deleteArtist?artist_no=${artist.artist_no }'">
+														<button type="button"
+															class="btn btn-info btn-fw delete select_artist_delete">
 															삭제</button>
+														<input type="hidden" value="${artist.artist_no}" name="delete_one_artist_no">
 													</div>
 												</td>
 											</tr>

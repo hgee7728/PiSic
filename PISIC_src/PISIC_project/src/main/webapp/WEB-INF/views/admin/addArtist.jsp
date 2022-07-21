@@ -85,7 +85,7 @@
 								
 								<form id="addArtistForm" class="addArtistForm" action="<%=request.getContextPath() %>/admin/addArtist" 
 									method="post">
-									
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 								<h4 class="card-title">아티스트 정보 입력</h4>
 								<br>
 								
