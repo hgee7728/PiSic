@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kh.spring.pisic.admin.model.dao.AdminDao;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
+import kh.spring.pisic.sound.domain.Sound;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -78,6 +79,12 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int deleteAlbum(List<Album> albumList) {
 		return dao.deleteAlbum(albumList);
+	}
+
+	// 곡 목록 조회
+	@Override
+	public List<Sound> selectSoundList() {
+		return dao.selectSoundList();
 	}
 
 }

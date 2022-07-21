@@ -8,6 +8,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>플레이리스트 목록</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
@@ -126,7 +128,12 @@ function updatePlaylist(l_no){
     input_l_no.setAttribute('name', 'l_no');
     input_l_no.setAttribute('value', l_no);
 	
-    
+    var input_csrf = document.createElement('input');
+    input_csrf.setAttribute('type', 'hidden');
+    input_csrf.setAttribute('id', 'csrf');
+    input_csrf.setAttribute('name', '${_csrf.parameterName }');
+    input_csrf.setAttribute('value', '${_csrf.token }');
+	frm.appendChild(input_csrf);
     frm.appendChild(input_l_no);
     frm.setAttribute('method', 'post');
     frm.setAttribute('action', '<%=request.getContextPath() %>/mymusic/updatePlaylist');
@@ -150,6 +157,8 @@ function updatePlaylist(l_no){
 			<div class="main-panel">
 				<div class="content-wrapper">
 					<form method="post" name="playlist_frm" action="<%=request.getContextPath() %>/mymusic/deletePlaylist">
+					<!-- csrf 공격 방지 -->
+                    <input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 						<div class="title_div">
 							<h2 class="card-title">내 플레이 리스트</h2>
 						</div>

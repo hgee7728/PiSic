@@ -5,6 +5,8 @@
 <html>
 <head>
 <meta charset="utf-8" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <!-- Website Design By: www.happyworm.com -->
 <title>PISIC Player</title>
 <link href="<%=request.getContextPath() %>/resources/jPlayer/dist/skin/pink.flag/css/jplayer.pink.flag.min.css" rel="stylesheet" type="text/css" />
@@ -15,6 +17,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 //<![CDATA[
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
 $(document).ready(function(){
 	
 	// jPlayer API
@@ -233,6 +239,9 @@ $(document).ready(function(){
 			url: "<%=request.getContextPath() %>/mymusic/deleteSoundPlaylist0",
 			type: "post",
 			dataType: "json",
+			beforeSend: function(xhr){
+		        xhr.setRequestHeader(header, token);
+		    },
 			data:{
 				a_no: $('div#soundData'+$(this).closest('li').index()+'').children("input[name=a_no]").val(),
 				s_no: $('div#soundData'+$(this).closest('li').index()+'').children("input[name=s_no]").val(),
@@ -240,9 +249,7 @@ $(document).ready(function(){
 			},
 			success: function(result) {
 				console.log(result);
-				if(result == null){
-					alert("로그인 후 이용해 주세요.");
-				} else if(result.s_no == "0" && result.a_no == "0"){
+				if(result.s_no == "0" && result.a_no == "0"){
 					alert("리스트에서 삭제에 실패하였습니다. 다시 시도해주세요.");
 				} else {
 					//alert("해당 곡을 플레이 리스트에서 삭제했습니다.");
@@ -290,6 +297,9 @@ $(document).ready(function(){
 		$.ajax({
 			url: "<%=request.getContextPath() %>/mymusic/insertPlaylist0Order",
 			type: "post",
+			beforeSend: function(xhr){
+		        xhr.setRequestHeader(header, token);
+		    },
 			traditional:true,
 			data:{
 				s_name: s_nameArray,
@@ -341,6 +351,9 @@ function goInsertPlayinfo(){
 	$.ajax({
 		url: "<%=request.getContextPath() %>/sound/insertPalyInfo",
 		type: "post",
+		beforeSend: function(xhr){
+	        xhr.setRequestHeader(header, token);
+	    },
 		data:{
 			a_no: $('div#soundData'+$("li.jp-playlist-current").index()+'').children("input[name=a_no]").val(),
 			s_no: $('div#soundData'+$("li.jp-playlist-current").index()+'').children("input[name=s_no]").val(),

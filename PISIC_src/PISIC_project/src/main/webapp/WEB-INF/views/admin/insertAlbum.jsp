@@ -108,15 +108,7 @@ table#search_artist_table a{
 	cursor: pointer;
 }
 </style>
-<script>
-$(function(){
-	var msg = '${msg}';
-	if(msg){
-		alert(msg);
-	}
 
-});
-</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -135,7 +127,8 @@ $(function(){
 								
 								<form id="frm_album" class="frm_album" action="<%=request.getContextPath() %>/admin/insertAlbum" 
 									method="post">
-									
+								<!-- csrf 공격 방지 -->
+                   				<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 								<h4 class="card-title">앨범 정보 입력</h4>
 								<br>
 								
@@ -261,7 +254,13 @@ $(function(){
 				}
 			}
 		}
+		
+		var msg = '${msg}';
+		if(msg){
+			alert(msg);
+		}
 
+		
 		/* uploadcare */
 		var singleWidget = uploadcare
 				.SingleWidget('[role=uploadcare-uploader]');

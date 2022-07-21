@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
+import kh.spring.pisic.sound.domain.Sound;
 
 @Repository
 public class AdminDao {
@@ -66,6 +67,11 @@ public class AdminDao {
 	// 앨범 삭제
 	public int deleteAlbum(List<Album> albumList) {
 		return session.delete("Admin.deleteAlbum", albumList);
+	}
+	
+	// 곡 목록 조회
+	public List<Sound> selectSoundList() {
+		return session.selectList("Admin.selectSoundList");
 	}
 
 	

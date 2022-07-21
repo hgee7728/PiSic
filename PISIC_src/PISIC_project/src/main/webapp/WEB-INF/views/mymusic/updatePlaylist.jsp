@@ -8,6 +8,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>Update Playlist</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
@@ -122,6 +124,10 @@ UPLOADCARE_LOCALE = "ko"
 			}
 		}
 	}
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
 	$(function() {
 		
 		// 사진 등록하면 미리보기 + input-hidden에 값 넣기
@@ -141,6 +147,9 @@ UPLOADCARE_LOCALE = "ko"
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/playlistSound",
 				type: "post",
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
 				data:{
 					l_no:$("#myplaylist_select").val()
 				},
@@ -185,6 +194,9 @@ UPLOADCARE_LOCALE = "ko"
 				url: "<%=request.getContextPath()%>/mymusic/soundRecent",
 				type: "post",
 				dataType: 'json',
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
 				success: function(result) {
 					$(".left_title").text("최근 들은 곡");
 					console.log(result);
@@ -224,6 +236,9 @@ UPLOADCARE_LOCALE = "ko"
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/soundOften",
 				type: "post",
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
 				dataType: 'json',
 				success: function(result) {
 					$(".left_title").text("자주 들은 곡");
@@ -264,6 +279,9 @@ UPLOADCARE_LOCALE = "ko"
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/soundLike",
 				type: "post",
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
 				dataType: 'json',
 				success: function(result) {
 					$(".left_title").text("좋아요 곡");
@@ -415,6 +433,9 @@ UPLOADCARE_LOCALE = "ko"
 	    	$.ajax({
 	    		url: "<%=request.getContextPath() %>/mymusic/updatePlaylist.do",
 	    		type: "post",
+	    		beforeSend: function(xhr){
+	    	        xhr.setRequestHeader(header, token);
+	    	    },
 	    		dataType: "json",
 	    		data: ajaxData,
 	    		traditional:true,
@@ -626,6 +647,8 @@ UPLOADCARE_LOCALE = "ko"
 											</div>
 											<div class="table-responsive">
 											<form name="left_sound_list_frm">
+											<!-- csrf 공격 방지 -->
+                      						<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 												<table class="table left_sound_list sound_list">
 													<thead>
 														<tr>
@@ -664,6 +687,8 @@ UPLOADCARE_LOCALE = "ko"
 											</div>
 											<div class="table-responsive">
 											<form name="right_sound_list_frm">
+											<!-- csrf 공격 방지 -->
+                      						<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 												<table class="table right_sound_list sound_list">
 													<thead>
 														<tr>

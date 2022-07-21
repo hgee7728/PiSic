@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,7 +22,6 @@ import kh.spring.pisic.admin.model.service.AdminService;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
-import kh.spring.pisic.sound.domain.Sound;
 
 @Controller
 @RequestMapping("/admin")
@@ -193,16 +191,8 @@ public class AdminController {
 
 	// 앨범 추가하기
 	@PostMapping("/insertAlbum")
-	public ModelAndView insertAlbum(ModelAndView mv, Album album, HttpSession session, RedirectAttributes rttr) {
-
-		// TODO
-		Member loginInfo = (Member) session.getAttribute("loginSsInfo");
-		if (loginInfo == null) {
-			rttr.addFlashAttribute("msg", "관리자로 접근하여 다시 시도해 주세요.");
-			mv.setViewName("redirect:/member/login");
-			return mv;
-		}
-
+	public ModelAndView insertAlbum(ModelAndView mv, Album album, RedirectAttributes rttr) {
+	
 		int result = service.insertAlbum(album);
 		if (result == 0) {
 			rttr.addFlashAttribute("msg", "앨범 추가에 실패했습니다. 다시 시도해주세요");
@@ -255,6 +245,15 @@ public class AdminController {
 		} else {
 			return "1";
 		}
+	}
+	
+	// 곡 목록 조회
+	@GetMapping("/sound")
+	public ModelAndView pageSoundList(ModelAndView mv) {
+
+		mv.addObject("soundList", service.selectSoundList());
+		mv.setViewName("admin/soundList");
+		return mv;
 	}
 
 	@GetMapping("/test")

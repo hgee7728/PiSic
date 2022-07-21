@@ -11,6 +11,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>Playlist Detail</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
@@ -105,12 +107,6 @@ $(function(){
 
 	// 미니 버튼들 a태그 색상 바꾸기
 	$("i.mdi").parent('a').css('color','#8f5fe8');
-	
-
-    
-
-
-    
 
     $("#delete_playlist").click(function(){
     	var confm = confirm("선택된 플레이리스트를 삭제 하시겠습니까?");
@@ -176,12 +172,16 @@ $(function(){
 										<tr>
 											<td>
 												<form name="playlist_update_frm" action="<%=request.getContextPath() %>/mymusic/updatePlaylist" method="post">
+												<!-- csrf 공격 방지 -->
+                      							<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 													<input type="hidden" name="l_no" value="${MyMusic.l_no }">
 													<button type="submit" id="update_playlist" class="btn">변경</button>
 												</form>
 											</td>
 											<td>
 												<form name="playlist_delete_frm" action="<%=request.getContextPath() %>/mymusic/deletePlaylist" method="post">
+												<!-- csrf 공격 방지 -->
+                      							<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 													<input type="hidden" name="l_no" value="${MyMusic.l_no }">
 													<button type="button" id="delete_playlist" class="btn">삭제</button>
 												</form>
@@ -203,6 +203,8 @@ $(function(){
 										</div>
 										<div class="table-responsive">
 										<form name="sound_frm">
+										<!-- csrf 공격 방지 -->
+                      					<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 											<table class="table sound_list">
 												<thead>
 													<tr>

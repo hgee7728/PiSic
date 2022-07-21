@@ -61,8 +61,7 @@ $(function(){
 	}
 	
 	
-	
-	
+
 }); // $(function(){}) 끝
 
 // 아티스트 상세조회
@@ -80,7 +79,14 @@ function artistLike(artist_no){
 	    input_artist_no.setAttribute('type', 'hidden');
 	    input_artist_no.setAttribute('name', 'artist_no');
 	    input_artist_no.setAttribute('value', artist_no);
+	
+		var input_csrf = document.createElement('input');
+	    input_csrf.setAttribute('type', 'hidden');
+	    input_csrf.setAttribute('id', 'csrf');
+	    input_csrf.setAttribute('name', '${_csrf.parameterName }');
+	    input_csrf.setAttribute('value', '${_csrf.token }');
 		frm.appendChild(input_artist_no);
+		frm.appendChild(input_csrf);
 		frm.setAttribute('method', 'post');
 	    frm.setAttribute('action', '<%=request.getContextPath() %>/mymusic/deleteArtistLike');
 	    document.body.appendChild(frm);
@@ -109,45 +115,55 @@ function artistLike(artist_no){
 						</div>
 						<div class="content_div">
 						<div class="row">
-							<c:forEach items="${ArtistList }" var="ArtistList">
-							<div class="artist_div">
-								<div class="main_img_div">
-									<a href="javascript:selectArtistDetail('${ArtistList.artist_no }')">
-										<img id="main_img" src="${ArtistList.artist_profile }" width="200" height="200">
-									</a>
+						<c:choose>
+							<c:when test="${empty ArtistList}">
+								<div class="artist_div">
+									<h4 class="card-title">좋아하는 아티스트가 없어요</h4>
 								</div>
-								<div class="content_info">
-									<div class="card-body">
-										<table class="table artist_table">
-											<thead>
-												<tr>
-													<th>아티스트명 :</th>
-													<th>
-														<a href="javascript:selectArtistDetail('${ArtistList.artist_no }')">
-															${ArtistList.artist_name}
-														</a>
-													</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>좋아요</td>
-													<td>${ArtistList.like_cnt}</td>
-												</tr>
-												<tr>
-													<td colspan="2" style="text-align: center;">
-														<a href="javascript:artistLike(${ArtistList.artist_no })">
-														좋아요 취소
-														</a>
-													</td>
-														
-												</tr>
-											</tbody>
-										</table>
+							</c:when>
+							<c:otherwise>
+								<c:forEach items="${ArtistList }" var="ArtistList">
+								<div class="artist_div">
+									<div class="main_img_div">
+										<a href="javascript:selectArtistDetail('${ArtistList.artist_no }')">
+											<img id="main_img" src="${ArtistList.artist_profile }" width="200" height="200">
+										</a>
+									</div>
+									<div class="content_info">
+										<div class="card-body">
+											<table class="table artist_table">
+												<thead>
+													<tr>
+														<th>아티스트명 :</th>
+														<th>
+															<a href="javascript:selectArtistDetail('${ArtistList.artist_no }')">
+																${ArtistList.artist_name}
+															</a>
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>좋아요</td>
+														<td>${ArtistList.like_cnt}</td>
+													</tr>
+													<tr>
+														<td colspan="2" style="text-align: center;">
+															<a href="javascript:artistLike(${ArtistList.artist_no })">
+															좋아요 취소
+															</a>
+														</td>
+															
+													</tr>
+												</tbody>
+											</table>
+										</div>
 									</div>
 								</div>
-							</div>
-							</c:forEach>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
+							
 							</div>
 						</div>
 				</div>

@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.google.gson.Gson;
 
 import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.member.model.service.MemberService;
 import kh.spring.pisic.sound.domain.PlayInfo;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
@@ -41,18 +44,18 @@ public class SoundController {
 	private static final Logger logger = LoggerFactory.getLogger(SoundController.class);
 	@Autowired
 	private SoundService service;
-
+	@Autowired
+	private MemberService memberService;
 	// 음악 재생
 	@PostMapping("/play")
 	public ModelAndView musicPlayer(ModelAndView mv
 			, @RequestParam(name="a_no", required = false) int[] a_noArr
 			, @RequestParam(name="s_no", required = false) int[] s_noArr
-			, HttpSession session
+			, Authentication auth
 			) {
 		System.out.println("음악 재생!!");
-		//TODO 로그인 여부 확인
-		Member member = (Member)session.getAttribute("loginSsInfo");
-		
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		Member member = memberService.selectLoginMember(ud.getUsername());
 		
 		List<Sound> soundList = new ArrayList<Sound>();
 
@@ -63,7 +66,7 @@ public class SoundController {
 			System.out.println(s_noArr[i]);
 			sound.setA_no(a_noArr[i]);
 			sound.setS_no(s_noArr[i]);
-			sound.setM_id(member.getM_id());
+			sound.setM_id(ud.getUsername());
 			soundList.add(sound);
 		}
 		System.out.println("[[[soundList]]] : " + soundList);
@@ -150,8 +153,9 @@ public class SoundController {
 	
 	// 곡 상세조회
 	@GetMapping("/soundDetail")
-	public ModelAndView selectSoundDetail(ModelAndView mv, Sound sound, HttpSession session) {
-		
+	public ModelAndView selectSoundDetail(ModelAndView mv, Sound sound, Authentication auth) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		Member member = memberService.selectLoginMember(ud.getUsername());
 		// 곡 기본정보 + 댓글
 		mv.addObject("sound", service.selectSound(sound));
 		// 수록곡 앨범
@@ -183,7 +187,6 @@ public class SoundController {
 		
 		
 		// 스트리밍 리포트
-		Member member = (Member)session.getAttribute("loginSsInfo");
 		// 내가 처음 들은 날
 		mv.addObject("firstDay",service.selectSoundFirstDay(member,sound));
 		// 총 감상 횟수
@@ -214,73 +217,64 @@ public class SoundController {
 	// 노래 좋아요 - ajax
 	@PostMapping(value = "/like", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String soundLike(Sound sound, HttpSession session) {
-
-		// 로그인 여부 확인
+	public String soundLike(Sound sound, Authentication auth) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 		String resultAjax = "";
-		if (session.getAttribute("loginSsInfo") == null) {
-			resultAjax = "-2"; 
-		} else {
-			// 좋아요 여부 확인
-			Member member = (Member)session.getAttribute("loginSsInfo");
-			if(service.checkLike(member,sound) > 0) { // 좋아요가 되어있는 경우
-				int result = service.deleteLike(member,sound);
-				if(result < 1) { // 좋아요 취소 실패
-					resultAjax = "-1";
-				} else { // 좋아요 취소 성공
-					resultAjax = "0";
-				}
-			} else { // 좋아요가 안되어있는 경우
-				int result = service.insertLike((Member)session.getAttribute("loginSsInfo"),sound);
-				if(result < 1) { // 좋아요 실패
-					resultAjax = "1";
-				} else { // 좋아요 성공
-					resultAjax = "2";
-				}
+		
+		// 좋아요 여부 확인
+		Member member = memberService.selectLoginMember(ud.getUsername());
+		if(service.checkLike(member,sound) > 0) { // 좋아요가 되어있는 경우
+			int result = service.deleteLike(member,sound);
+			if(result < 1) { // 좋아요 취소 실패
+				resultAjax = "-1";
+			} else { // 좋아요 취소 성공
+				resultAjax = "0";
+			}
+		} else { // 좋아요가 안되어있는 경우
+			int result = service.insertLike(member,sound);
+			if(result < 1) { // 좋아요 실패
+				resultAjax = "1";
+			} else { // 좋아요 성공
+				resultAjax = "2";
 			}
 		}
+		
 		return resultAjax;
 	}
 
 	// 노래 댓글 등록 - ajax
 	@PostMapping(value = "/insertRecomment", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String insertRecomment(SoundRecomment soundRecomment, HttpSession session) {
-		
-		// 로그인 여부 확인
+	public String insertRecomment(SoundRecomment soundRecomment, Authentication auth) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		Member member = memberService.selectLoginMember(ud.getUsername());
 		String resultAjax = "";
-		if (session.getAttribute("loginSsInfo") == null) {
-			resultAjax = "-1"; 
-		} else { // 댓글 등록
-			Member member = (Member)session.getAttribute("loginSsInfo");
-			int result = service.insertSoundRecomment(member, soundRecomment);
-			if(result < 1) { // 댓글 등록 실패
-				resultAjax = "0"; 
-			} else { // 댓글 등록 성공
-				resultAjax = "1";
-			}
+		// 댓글 등록
+		int result = service.insertSoundRecomment(member, soundRecomment);
+		if(result < 1) { // 댓글 등록 실패
+			resultAjax = "0"; 
+		} else { // 댓글 등록 성공
+			resultAjax = "1";
 		}
+		
 		return resultAjax;
 	}
 	
 	// 노래 댓글 삭제 - ajax
 	@PostMapping(value = "/deleteRecomment", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String deleteRecomment(SoundRecomment soundRecomment, HttpSession session) {
-		
-		// 로그인 여부 확인
+	public String deleteRecomment(SoundRecomment soundRecomment, Authentication auth) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		Member member = memberService.selectLoginMember(ud.getUsername());
 		String resultAjax = "";
-		if (session.getAttribute("loginSsInfo") == null) {
-			resultAjax = "-1"; 
-		} else { // 댓글 삭제
-			Member member = (Member)session.getAttribute("loginSsInfo");
-			int result = service.deleteSoundRecomment(member, soundRecomment);
-			if(result < 1) { // 댓글 삭제 실패
-				resultAjax = "0"; 
-			} else { // 댓글 삭제 성공
-				resultAjax = "1";
-			}
+		// 댓글 삭제
+		int result = service.deleteSoundRecomment(member, soundRecomment);
+		if(result < 1) { // 댓글 삭제 실패
+			resultAjax = "0"; 
+		} else { // 댓글 삭제 성공
+			resultAjax = "1";
 		}
+		
 		return resultAjax;
 	}
 	
@@ -289,11 +283,11 @@ public class SoundController {
 	@ResponseBody
 	public String insertPalyInfo(
 			PlayInfo playInfo
-			, HttpSession session
+			, Authentication auth
 			) {
 		//TODO 로그인 여부
-		Member member = (Member)session.getAttribute("loginSsInfo");
-		playInfo.setM_id(member.getM_id());
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		playInfo.setM_id(ud.getUsername());
 		
 		// TODO 위치 정보 담기
 //		playInfo.setArea_code(0);

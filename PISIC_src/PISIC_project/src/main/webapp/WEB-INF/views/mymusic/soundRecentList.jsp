@@ -11,6 +11,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>최근 들은 노래</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
@@ -79,6 +81,10 @@ div.table-responsive{
 </style>
 <script>
 const root_path = '<%=request.getContextPath() %>';
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
 $(function(){
 	var msg = '${msg}';
 	if(msg){
@@ -172,11 +178,18 @@ function playOne(a_no,s_no){
     input_s_no.setAttribute('type', 'hidden');
     input_s_no.setAttribute('name', 's_no');
     input_s_no.setAttribute('value', s_no);
+
 	var input_a_no = document.createElement('input');
     input_a_no.setAttribute('type', 'hidden');
     input_a_no.setAttribute('name', 'a_no');
     input_a_no.setAttribute('value', a_no);
     
+	var input_csrf = document.createElement('input');
+    input_csrf.setAttribute('type', 'hidden');
+    input_csrf.setAttribute('id', 'csrf');
+    input_csrf.setAttribute('name', csrf_parameterName);
+    input_csrf.setAttribute('value', csrf_token);
+	frm.appendChild(input_csrf);
     frm.appendChild(input_s_no);
     frm.appendChild(input_a_no);
     frm.setAttribute('method', 'post');
@@ -193,15 +206,15 @@ function soundLike(a_no,s_no){
 	$.ajax({
 		url:"<%=request.getContextPath() %>/sound/like",
 		type:"post",
+		beforeSend: function(xhr){
+	        xhr.setRequestHeader(header, token);
+	    },
 		data:{
 			a_no:a_no,
 			s_no:s_no
 			},
 		success: function(result){
-			if(result == "-2"){
-				alert("로그인 후 이용해주세요");
-				location.replace("<%=request.getContextPath() %>/member/login");
-			} else if(result == "-1"){
+			if(result == "-1"){
 				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 			} else if(result == "0"){
 				alert("해당 곡을 좋아요를 취소했습니다.");
@@ -238,6 +251,7 @@ function selectAlbumDetail(a_no){
 </script>
 </head>
 <body>
+	<jsp:include page="../commonSoundList.jsp" />
 	<div class="container-scroller">
 		<!-- partial:partials/_sidebar.html -->
 		<jsp:include page="../_sidebar.jsp" />
@@ -254,28 +268,28 @@ function selectAlbumDetail(a_no){
 					</div>
 					<div class="content_div1">
 						<div class="main_img_div">
-							<img id="main_img" src="${loginSsInfo.m_profile }" width="300" height="300">
+							<img id="main_img" src="${member.m_profile }" width="300" height="300">
 						<div class="content_info  card">
 							<div class="card-body">
 								<table class="table intro_table">
 									<thead>
 										<tr>
 											<th>아이디 :</th>
-											<th>${loginSsInfo.m_id}</th>
+											<th>${member.m_id}</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
 											<td>닉네임 :</td>
-											<td><a href="javascript:selectMemberDetail('${loginSsInfo.m_id }')">${loginSsInfo.m_nickname}</a></td>
+											<td><a href="javascript:selectMemberDetail('${member.m_id }')">${member.m_nickname}</a></td>
 										</tr>
 										<tr>
 											<td>성별 :</td>
 											<c:choose>
-												<c:when test="${loginSsInfo.m_gender == 'M'}">
+												<c:when test="${member.m_gender == 'M'}">
 													<td>남성</td>
 												</c:when>
-												<c:when test="${loginSsInfo.m_gender == 'F'}">
+												<c:when test="${member.m_gender == 'F'}">
 													<td>여성</td>
 												</c:when>
 											</c:choose>
@@ -300,6 +314,8 @@ function selectAlbumDetail(a_no){
 										</div>
 										<div class="table-responsive">
 										<form name="sound_frm">
+										<!-- csrf 공격 방지 -->
+                      					<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 											<table class="table sound_list">
 												<thead>
 													<tr>
@@ -323,7 +339,7 @@ function selectAlbumDetail(a_no){
 													<c:choose>
 														<c:when test="${empty SoundList}">
 														<tr>
-															<td colspan="8" style="text-align: center"><h4 class="card-title">좋아요 한 곡이 없어요</h4></td>
+															<td colspan="8" style="text-align: center"><h4 class="card-title">들은 곡이 없어요</h4></td>
 														</tr>
 														</c:when>
 														<c:otherwise>

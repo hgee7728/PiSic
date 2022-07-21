@@ -108,15 +108,7 @@ table#search_artist_table a{
 	cursor: pointer;
 }
 </style>
-<script>
-$(function(){
-	var msg = '${msg}';
-	if(msg){
-		alert(msg);
-	}
 
-});
-</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -262,7 +254,12 @@ $(function(){
 				}
 			}
 		}
-
+		
+		var msg = '${msg}';
+		if(msg){
+			alert(msg);
+		}
+		
 		/* uploadcare */
 		var singleWidget = uploadcare
 				.SingleWidget('[role=uploadcare-uploader]');

@@ -8,8 +8,6 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="_csrf_header" th:content="${_csrf.headerName}">
-	<meta name="_csrf" th:content="${_csrf.token}">
 <title>PISIC ADMIN</title>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
@@ -51,12 +49,12 @@ div.search_album {
 	width: 100px;
 }
 
-table.album_list  tr>td:nth-child(5), table.album_list  tr>td:nth-child(6),
-	table.album_list  tr>td:nth-child(7), table.album_list  tr>td:nth-child(8),
-	table.album_list  tr>td:nth-child(9) {
+table.sound_list  tr>td:nth-child(5), table.sound_list  tr>td:nth-child(6),
+	table.sound_list  tr>td:nth-child(7), table.sound_list  tr>td:nth-child(8),
+	table.sound_list  tr>td:nth-child(9) {
 	text-align: center;
 }
-table.album_list  tr>td:nth-child(4){
+table.sound_list  tr>td:nth-child(4){
 	width:20px !important;
 }
 </style>
@@ -66,8 +64,6 @@ $(function(){
 	if(msg){
 		alert(msg);
 	}
-	var header = $("meta[name='_csrf_header']").attr('th:content');
-	var token = $("meta[name='_csrf']").attr('th:content');
 	
 	// 체크박스 전체선택
     $("#check_all").click(function(){
@@ -158,9 +154,6 @@ $(function(){
     		$.ajax({
     			url:"<%=request.getContextPath()%>/admin/deleteAlbum",
     			type:"post",
-    			beforeSend: function(xhr){
-			        xhr.setRequestHeader(header, token);
-			    },
     			data:{
     				a_no: $(this).next("input[name=delete_one_a_no]").val()
     				},
@@ -194,9 +187,6 @@ $(function(){
     			url:"<%=request.getContextPath()%>/admin/deleteAlbum",
     			type:"post",
     			traditional:true,
-    			beforeSend: function(xhr){
-			        xhr.setRequestHeader(header, token);
-			    },
     			data:{
     				a_no: a_noArray
     				},
@@ -217,6 +207,29 @@ $(function(){
 	});
 	
 }); // $(function(){}) 끝
+
+//한곡 재생 - post방식으로 a태그 이용해서 이동
+function playOne(a_no,s_no){
+	console.log("한곡재생");
+	var frm = document.createElement('form');
+    var input_s_no = document.createElement('input');
+    input_s_no.setAttribute('type', 'hidden');
+    input_s_no.setAttribute('name', 's_no');
+    input_s_no.setAttribute('value', s_no);
+	var input_a_no = document.createElement('input');
+    input_a_no.setAttribute('type', 'hidden');
+    input_a_no.setAttribute('name', 'a_no');
+    input_a_no.setAttribute('value', a_no);
+    
+    frm.appendChild(input_s_no);
+    frm.appendChild(input_a_no);
+    frm.setAttribute('method', 'post');
+    frm.setAttribute('action', root_path + '/sound/play');
+    document.body.appendChild(frm);
+	windowObj = window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
+	frm.target="SoundPlayer";
+    frm.submit();
+};
 </script>
 </head>
 <body>
@@ -227,30 +240,28 @@ $(function(){
 			<div class="main-panel">
 				<div class="content-wrapper">
 					<div class="title_div">
-						<h2 class="card-title">Album Admin Page</h2>
+						<h2 class="card-title">Sound Admin Page</h2>
 					</div>
 					<br>
 					<div class="content_div0 content_div4">
-						<div class="form-group search_album">
+						<div class="form-group search_sound">
 							<form name="search-form" autocomplete="off">
 								<div class="input-group">
 									<input type="text" class="form-control"
-										placeholder="앨범명 혹은 아티스트명으로 조회하기" aria-label="Recipient's username"
+										placeholder="노래명 혹은 아티스트명으로 조회하기" aria-label="Recipient's username"
 										aria-describedby="basic-addon2" name="keyword">
 									<div class="input-group-append">
 										<button class="btn btn-sm btn-search" type="button"
-											id="search_album">조회하기</button>
+											id="search_sound">조회하기</button>
 									</div>
 								</div>
 							</form>
 						</div>
 						
-					<form name="frm_album">
-					<!-- csrf 공격 방지 -->
-                    <input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+					<form name="frm_sound">
 						<div class="select_btns">
-							<button type="button" id="insert_album"
-								class="btn btn-info btn-fw" >앨범
+							<button type="button" id="insert_sound"
+								class="btn btn-info btn-fw" >곡
 								추가</button>
 							<button type="button" id="select_delete"
 								class="btn btn-info btn-fw">선택 삭제</button>
@@ -259,7 +270,7 @@ $(function(){
 						
 							<div class="table-responsive">
 
-								<table class="table album_list" id="album_list">
+								<table class="table sound_list" id="sound_list">
 									<thead>
 										<tr>
 											<td><div class="form-check form-check-muted m-0">
@@ -269,59 +280,63 @@ $(function(){
 												</div></td>
 											<td>No</td>
 											<td></td>
+											<td>노래명</td>
+											<td>가수명</td>
 											<td>앨범명</td>
-											<td>아티스트명</td>
-											<td>발매사</td>
-											<td>기획사</td>
-											<td>발매일</td>
+											<td>듣기</td>
 											<td>수정</td>
 											<td>삭제</td>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${albumList}" var="album">
+										<c:forEach items="${soundList}" var="sound" varStatus="index">
 
 											<tr>
 												<td>
 													<div class="form-check form-check-muted m-0">
 														<label class="form-check-label"> <input
 															type="checkbox" class="form-check-input sound_checkbox"
-															value="${album.a_no }" name="a_no">
+															value="${sound.a_no }" name="a_no">
 														</label>
 													</div>
 												</td>
-												<td>${album.a_no }</td>
+												<td>${index }+1</td>
 												<td>
 													<c:choose>
-														<c:when test="${album.a_cover ne null}">
-															<img src="${album.a_cover}" alt="image" />
+														<c:when test="${sound.a_cover ne null}">
+															<img src="${sound.a_cover}" alt="image" />
 														</c:when>
-														<c:when test="${album.a_cover eq null}">
+														<c:when test="${sound.a_cover eq null}">
 															<img
 																src="<%=request.getContextPath()%>/resources/assets/images/favicon.png"
 																alt="image" />
 														</c:when>
 													</c:choose>
 												</td>
-												<td>${album.a_name}</td>
-												<td>${album.artist_name}</td>
-												<td>${album.a_publishing}</td>
-												<td>${album.a_agency}</td>
-												<td><fmt:formatDate value="${album.a_date}" pattern="yyyy-MM-dd"/></td>
+												<td>${sound.s_name}</td>
+												<td>
+													<c:forEach items="${ sounds.singers}" var="singer">
+													${singer.artist_name}&nbsp;
+													</c:forEach>
+												</td>
+												<td>${sound.a_name}</td>
+												<td>
+													<a href="javascript:playOne(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-play list_icon"></i></a>
+												</td>
 												<td>
 
 													<div class="select_btns">
 														<button type="button" 
-															class="btn btn-info btn-fw update_album_btn"
-															onclick="location.href='<%=request.getContextPath() %>/admin/updateAlbum?a_no=${album.a_no }'">
+															class="btn btn-info btn-fw update_sound_btn"
+															onclick="location.href='<%=request.getContextPath() %>/admin/updatesound?a_no=${sound.a_no }'">
 															수정</button>
 													</div>
 												</td>
 												<td>
 													<div class="select_btns">
 														<button type="button"
-															class="btn btn-info btn-fw delete_album_btn">삭제</button>
-														<input type="hidden" value="${album.a_no}" name="delete_one_a_no">
+															class="btn btn-info btn-fw delete_sound_btn">삭제</button>
+														<input type="hidden" value="${sound.a_no}" name="delete_one_a_no">
 													</div>
 												</td>
 											</tr>

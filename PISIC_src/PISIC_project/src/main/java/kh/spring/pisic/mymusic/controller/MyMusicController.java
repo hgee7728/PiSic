@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 
 import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.member.model.service.MemberService;
 import kh.spring.pisic.mymusic.domain.MyMusic;
 import kh.spring.pisic.mymusic.model.service.MyMusicService;
 import kh.spring.pisic.sound.domain.Artist;
@@ -32,16 +35,17 @@ public class MyMusicController {
 	private MyMusicService service;
 	@Autowired
 	private SoundService soundService;
+	@Autowired
+	private MemberService memberService;
 
 	// 플레이 리스트 이름 조회(모달창) - ajax
 	@ResponseBody
 	@PostMapping(value = "/playlist.ax", produces = "text/plain;charset=UTF-8")
-	public String selectPlaylistName(HttpSession session) {
+	public String selectPlaylistName(Authentication auth) {
 		System.out.println("플레이 리스트 목록 ajax 들어옴");
-
-		Member member = (Member) session.getAttribute("loginSsInfo");
-		System.out.println(member.getM_id());
-		return new Gson().toJson(service.selectPlaylist(member.getM_id()));
+		
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		return new Gson().toJson(service.selectPlaylist(ud.getUsername()));
 	}
 
 	// 플레이 리스트에 노래 담기
@@ -49,10 +53,10 @@ public class MyMusicController {
 	@PostMapping(value = "/insertSound", produces = "text/plain;charset=UTF-8")
 	public String insertSound(ModelAndView mv, @RequestParam(name = "a_no", required = false) String[] a_noArr,
 			@RequestParam(name = "s_no", required = false) String[] s_noArr,
-			@RequestParam(name = "l_no", required = false) String l_no, HttpSession session) {
+			@RequestParam(name = "l_no", required = false) String l_no, Authentication auth) {
 		System.out.println("s_noArr.length: " + s_noArr.length);
 		List<Sound> soundList = new ArrayList<Sound>();
-		Member member = (Member) session.getAttribute("loginSsInfo");
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 
 		// 들고 온 데이터 domain형태로 list 시키기
 		for (int i = 0; i < s_noArr.length; i++) {
@@ -64,7 +68,7 @@ public class MyMusicController {
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
-			sound.setM_id(member.getM_id());
+			sound.setM_id(ud.getUsername());
 			soundList.add(sound);
 		}
 		System.out.println("[[[soundList]]] : " + soundList);
@@ -78,22 +82,20 @@ public class MyMusicController {
 
 	// 새 플레이 리스트 만들기 - page
 	@GetMapping("/insertPlaylist")
-	public ModelAndView pageInsertPlaylist(ModelAndView mv, HttpSession session) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
-		mv.addObject("mymusicList", service.selectPlaylist(member.getM_id()));
+	public ModelAndView pageInsertPlaylist(ModelAndView mv, Authentication auth) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		mv.addObject("mymusicList", service.selectPlaylist(ud.getUsername()));
 		mv.setViewName("mymusic/insertPlaylist");
 		return mv;
 	}
 	// 새 플레이 리스트 만들기(담을 곡 가져가기) - page
 	@PostMapping("/insertPlaylist")
 	public ModelAndView pageInsertPlaylist(ModelAndView mv
-			, HttpSession session
+			, Authentication auth
 			, @RequestParam(name = "a_no", required = false) String[] a_noArr
 			, @RequestParam(name = "s_no", required = false) String[] s_noArr) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
 		
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 		// 들고 온 데이터 domain형태로 list 시키기
 		if(a_noArr != null && s_noArr != null) {
 			List<Sound> soundList = new ArrayList<Sound>();
@@ -105,12 +107,12 @@ public class MyMusicController {
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				}
-				sound.setM_id(member.getM_id());
+				sound.setM_id(ud.getUsername());
 				soundList.add(sound);
 			}
 			mv.addObject("soundList", service.selectSoundList(soundList));
 		} 
-		mv.addObject("mymusicList", service.selectPlaylist(member.getM_id()));
+		mv.addObject("mymusicList", service.selectPlaylist(ud.getUsername()));
 		mv.setViewName("mymusic/insertPlaylist");
 		return mv;
 	}
@@ -119,10 +121,10 @@ public class MyMusicController {
 	@PostMapping(value = "/insertPlaylist.do", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String insertPlaylist(@RequestParam(name = "a_no", required = false) int[] a_noArr,
-			@RequestParam(name = "s_no", required = false) int[] s_noArr, MyMusic mymusic, HttpSession session) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
-		mymusic.setM_id(member.getM_id());
+			@RequestParam(name = "s_no", required = false) int[] s_noArr, MyMusic mymusic, Authentication auth) {
+		
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		mymusic.setM_id(ud.getUsername());
 
 		List<Sound> soundList = new ArrayList<Sound>();
 		// 들고 온 데이터 domain형태로 list 시키기
@@ -136,7 +138,7 @@ public class MyMusicController {
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
-			sound.setM_id(member.getM_id());
+			sound.setM_id(ud.getUsername());
 			soundList.add(sound);
 		}
 		// 플레이 리스트 만들기
@@ -150,22 +152,21 @@ public class MyMusicController {
 
 	// 플레이 리스트 목록 조회
 	@GetMapping("/playlist")
-	public ModelAndView pageSelectPlaylist(ModelAndView mv, HttpSession session) {
+	public ModelAndView pageSelectPlaylist(ModelAndView mv, Authentication auth) {
 
 		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 
-		mv.addObject("listPlaylist", service.selectPlaylist(member.getM_id()));
+		mv.addObject("listPlaylist", service.selectPlaylist(ud.getUsername()));
 		mv.setViewName("mymusic/listPlaylist");
 		return mv;
 	}
 
 	// 플레이 리스트 삭제
 	@PostMapping("/deletePlaylist")
-	public ModelAndView deletePlaylist(ModelAndView mv, HttpSession session, @RequestParam("l_no") int[] l_noArr,
+	public ModelAndView deletePlaylist(ModelAndView mv, Authentication auth, @RequestParam("l_no") int[] l_noArr,
 			RedirectAttributes rttr) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 
 		List<MyMusic> mymusicList = new ArrayList<MyMusic>();
 
@@ -174,7 +175,7 @@ public class MyMusicController {
 			MyMusic mymusic = new MyMusic();
 			System.out.println(l_noArr[i]);
 			mymusic.setL_no(l_noArr[i]);
-			mymusic.setM_id(member.getM_id());
+			mymusic.setM_id(ud.getUsername());
 			mymusicList.add(mymusic);
 		}
 		// 플레이 리스트 삭제
@@ -191,10 +192,9 @@ public class MyMusicController {
 	// 플레이 리스트에 담긴 곡 조회 - ajax
 	@PostMapping(value = "/playlistSound", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String selectPlaylistSound(HttpSession session, MyMusic mymusic) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
-		mymusic.setM_id(member.getM_id());
+	public String selectPlaylistSound(Authentication auth, MyMusic mymusic) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		mymusic.setM_id(ud.getUsername());
 
 		
 		return new Gson().toJson(service.selectPlaylistSound(mymusic));
@@ -203,41 +203,41 @@ public class MyMusicController {
 	// 최근 들은 곡 조회 - ajax
 	@PostMapping(value = "/soundRecent", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String selectSoundRecent(HttpSession session) {
+	public String selectSoundRecent(Authentication auth) {
 		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 
 		
-		return new Gson().toJson(service.selectSoundRecent(member.getM_id()));
+		return new Gson().toJson(service.selectSoundRecent(ud.getUsername()));
 	}
 
 	// 자주 들은 곡 조회 - ajax
 	@PostMapping("/soundOften")
 	@ResponseBody
-	public String selectSoundOften(HttpSession session) {
+	public String selectSoundOften(Authentication auth) {
 		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 		
-		return new Gson().toJson(service.selectSoundOften(member.getM_id()));
+		return new Gson().toJson(service.selectSoundOften(ud.getUsername()));
 	}
 
 	// 좋아요 곡 조회 - ajax
 	@PostMapping(value = "/soundLike", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String selectSoundLike(HttpSession session) {
+	public String selectSoundLike(Authentication auth) {
 		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 		
-		return new Gson().toJson(service.selectSoundLike(member.getM_id()));
+		return new Gson().toJson(service.selectSoundLike(ud.getUsername()));
 	}
 
 	// 플레이 리스트 상세조회
 	@GetMapping("/playlistDetail")
-	public ModelAndView pagePlaylistDetail(ModelAndView mv, HttpSession session, MyMusic mymusic) {
+	public ModelAndView pagePlaylistDetail(ModelAndView mv, Authentication auth, MyMusic mymusic) {
 		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 
-		mymusic.setM_id(member.getM_id());
+		mymusic.setM_id(ud.getUsername());
 		mv.addObject("MyMusic", service.selectPlaylistDetail(mymusic));
 		mv.setViewName("mymusic/playlistDetail");
 		return mv;
@@ -245,11 +245,12 @@ public class MyMusicController {
 	
 	// 내가 좋아하는 아티스트 목록
 	@GetMapping("/artistLikeList")
-	public ModelAndView pageArtistLikeList(ModelAndView mv, HttpSession session) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
-
-		mv.addObject("ArtistList", service.selectArtistLikeList(member.getM_id()));
+	public ModelAndView pageArtistLikeList(ModelAndView mv, Authentication auth) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		;
+		mv.addObject("ArtistList", service.selectArtistLikeList(ud.getUsername()));
+		mv.addObject("member", memberService.selectLoginMember(ud.getUsername()));
+		
 		mv.setViewName("mymusic/artistLikeList");
 		return mv;
 	}
@@ -257,30 +258,26 @@ public class MyMusicController {
 	// 아티스트 좋아요
 	@PostMapping(value = "/artistLike", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String artistLike(Artist artist, HttpSession session) {
+	public String artistLike(Artist artist, Authentication auth) {
 
-		// 로그인 여부 확인
 		String resultAjax = "";
-		if (session.getAttribute("loginSsInfo") == null) {
-			resultAjax = "-2"; 
-		} else {
-			// 좋아요 여부 확인
-			Member member = (Member)session.getAttribute("loginSsInfo");
-			artist.setM_id(member.getM_id());
-			if(service.checkArtistLike(artist) > 0) { // 좋아요가 되어있는 경우
-				int result = service.deleteArtistLike(artist);
-				if(result < 1) { // 좋아요 취소 실패
-					resultAjax = "-1";
-				} else { // 좋아요 취소 성공
-					resultAjax = "0";
-				}
-			} else { // 좋아요가 안되어있는 경우
-				int result = service.insertArtistLike(artist);
-				if(result < 1) { // 좋아요 실패
-					resultAjax = "1";
-				} else { // 좋아요 성공
-					resultAjax = "2";
-				}
+		
+		// 좋아요 여부 확인
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		artist.setM_id(ud.getUsername());
+		if(service.checkArtistLike(artist) > 0) { // 좋아요가 되어있는 경우
+			int result = service.deleteArtistLike(artist);
+			if(result < 1) { // 좋아요 취소 실패
+				resultAjax = "-1";
+			} else { // 좋아요 취소 성공
+				resultAjax = "0";
+			}
+		} else { // 좋아요가 안되어있는 경우
+			int result = service.insertArtistLike(artist);
+			if(result < 1) { // 좋아요 실패
+				resultAjax = "1";
+			} else { // 좋아요 성공
+				resultAjax = "2";
 			}
 		}
 		return resultAjax;
@@ -290,13 +287,12 @@ public class MyMusicController {
 	@PostMapping("/deleteArtistLike")
 	public ModelAndView deleteArtistLike(
 			ModelAndView mv
-			, HttpSession session
+			, Authentication auth
 			, Artist artist
 			, RedirectAttributes rttr
 			) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
-		artist.setM_id(member.getM_id());
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		artist.setM_id(ud.getUsername());
 		int result = service.deleteArtistLike(artist);
 		if(result < 1) {
 			rttr.addFlashAttribute("msg", "좋아요 취소에 실패했습니다. 다시 시도해 주세요");
@@ -309,35 +305,35 @@ public class MyMusicController {
 	
 	// 좋아하는 노래 목록
 	@GetMapping("/soundLikeList")
-	public ModelAndView pageSoundLikeList(ModelAndView mv, HttpSession session) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
+	public ModelAndView pageSoundLikeList(ModelAndView mv, Authentication auth) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 		
-		mv.addObject("selectSoundLikeTotalCnt", service.selectSoundLikeTotalCnt(member.getM_id()));
-		mv.addObject("SoundList", service.selectSoundLikeList(member.getM_id()));
+		mv.addObject("member", memberService.selectLoginMember(ud.getUsername()));
+		mv.addObject("selectSoundLikeTotalCnt", service.selectSoundLikeTotalCnt(ud.getUsername()));
+		mv.addObject("SoundList", service.selectSoundLikeList(ud.getUsername()));
 		mv.setViewName("mymusic/soundLikeList");
 		return mv;
 	}
 	
 	// 최근 들은 노래 목록
 	@GetMapping("/soundRecentList")
-	public ModelAndView pageSoundRecentList(ModelAndView mv, HttpSession session) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
+	public ModelAndView pageSoundRecentList(ModelAndView mv, Authentication auth) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 		
-		mv.addObject("selectSoundRecentTotalCnt", service.selectSoundRecentTotalCnt(member.getM_id()));
-		mv.addObject("SoundList",service.selectSoundRecent(member.getM_id())); 
+		mv.addObject("member", memberService.selectLoginMember(ud.getUsername()));
+		mv.addObject("selectSoundRecentTotalCnt", service.selectSoundRecentTotalCnt(ud.getUsername()));
+		mv.addObject("SoundList",service.selectSoundRecent(ud.getUsername())); 
 		mv.setViewName("mymusic/soundRecentList");
 		return mv;
 	}
 	
 	// 많이 들은 노래 목록
 	@GetMapping("/soundOftenList")
-	public ModelAndView pageSoundOftenList(ModelAndView mv, HttpSession session) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
+	public ModelAndView pageSoundOftenList(ModelAndView mv, Authentication auth) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
 		
-		mv.addObject("SoundList",service.selectSoundOften(member.getM_id())); 
+		mv.addObject("member", memberService.selectLoginMember(ud.getUsername()));
+		mv.addObject("SoundList",service.selectSoundOften(ud.getUsername())); 
 		mv.setViewName("mymusic/soundOftenList");
 		return mv;
 	}
@@ -347,13 +343,12 @@ public class MyMusicController {
 	public ModelAndView pageUpdatePlaylist(
 			ModelAndView mv
 			, MyMusic mymusic
-			, HttpSession session
+			, Authentication auth
 			) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
-		mymusic.setM_id(member.getM_id());
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		mymusic.setM_id(ud.getUsername());
 		
-		mv.addObject("mymusicList", service.selectPlaylist(member.getM_id()));
+		mv.addObject("mymusicList", service.selectPlaylist(ud.getUsername()));
 		mv.addObject("MyMusic", service.selectPlaylistDetail(mymusic));
 		mv.setViewName("mymusic/updatePlaylist");
 		return mv;
@@ -363,10 +358,9 @@ public class MyMusicController {
 	@PostMapping(value = "/updatePlaylist.do", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String updatePlaylist(@RequestParam(name = "a_no", required = false) int[] a_noArr,
-			@RequestParam(name = "s_no", required = false) int[] s_noArr, MyMusic mymusic, HttpSession session) {
-		// TODO 로그인 여부
-		Member member = (Member) session.getAttribute("loginSsInfo");
-		mymusic.setM_id(member.getM_id());
+			@RequestParam(name = "s_no", required = false) int[] s_noArr, MyMusic mymusic, Authentication auth) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		mymusic.setM_id(ud.getUsername());
 		
 		List<Sound> soundList = new ArrayList<Sound>();
 		// 들고 온 데이터 domain형태로 list 시키기
@@ -381,7 +375,7 @@ public class MyMusicController {
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
-			sound.setM_id(member.getM_id());
+			sound.setM_id(ud.getUsername());
 			soundList.add(sound);
 		}
 		// 플레이 리스트 update
@@ -400,15 +394,10 @@ public class MyMusicController {
 			//@RequestParam(name = "a_no", required = false) int a_no
 			//, @RequestParam(name = "s_no", required = false) int s_no
 			Sound sound
-			, HttpSession session
+			, Authentication auth
 			) {
-		// TODO 로그인 여부
-		
-		if(session.getAttribute("loginSsInfo") == null) {
-			return null;
-		} 
-		Member member = (Member) session.getAttribute("loginSsInfo");
-		sound.setM_id(member.getM_id());
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		sound.setM_id(ud.getUsername());
 		if(service.deleteSoundPlaylist0(sound) < 1) {
 			sound.setA_no(0);
 			sound.setS_no(0);
@@ -424,19 +413,18 @@ public class MyMusicController {
 	public String insertPlaylist0Order(
 			 @RequestParam(name="s_name", required = false) String[] s_nameArray
 			, @RequestParam(name="artist_name", required = false) String[] artist_nameArray
-			, HttpSession session
+			, Authentication auth
 			){
 		
-		//TODO 로그인 여부 확인
-		Member member = (Member)session.getAttribute("loginSsInfo");
-		
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		Member member = memberService.selectLoginMember(ud.getUsername());
 		// 들고 온 데이터 domain형태로 list 시키기
 		List<Sound> soundList = new ArrayList<Sound>();
 		
 		for (int i = 0; i < s_nameArray.length; i++) {
 			Sound sound = new Sound();
 			sound.setS_name(s_nameArray[i]);
-			sound.setM_id(member.getM_id());
+			sound.setM_id(ud.getUsername());
 			sound.setArtist_name(artist_nameArray[i]);
 			soundList.add(sound);
 		}

@@ -8,6 +8,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>플레이 리스트 만들기</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
@@ -123,6 +125,8 @@ UPLOADCARE_LOCALE = "ko"
 		}
 	}
 	$(function() {
+		var header = $("meta[name='_csrf_header']").attr('th:content');
+		var token = $("meta[name='_csrf']").attr('th:content');
 		
 		// 사진 등록하면 미리보기 + input-hidden에 값 넣기
 		var singleWidget = uploadcare.SingleWidget('[role=uploadcare-uploader]');
@@ -141,6 +145,9 @@ UPLOADCARE_LOCALE = "ko"
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/playlistSound",
 				type: "post",
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
 				data:{
 					l_no:$("#myplaylist_select").val()
 				},
@@ -183,6 +190,9 @@ UPLOADCARE_LOCALE = "ko"
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/soundRecent",
 				type: "post",
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
 				dataType: 'json',
 				success: function(result) {
 					$(".left_title").text("최근 들은 곡");
@@ -224,6 +234,9 @@ UPLOADCARE_LOCALE = "ko"
 				url: "<%=request.getContextPath()%>/mymusic/soundOften",
 				type: "post",
 				dataType: 'json',
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
 				success: function(result) {
 					$(".left_title").text("자주 들은 곡");
 					console.log(result);
@@ -264,6 +277,9 @@ UPLOADCARE_LOCALE = "ko"
 				url: "<%=request.getContextPath()%>/mymusic/soundLike",
 				type: "post",
 				dataType: 'json',
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
 				success: function(result) {
 					$(".left_title").text("좋아요 곡");
 					console.log(result);
@@ -416,6 +432,9 @@ UPLOADCARE_LOCALE = "ko"
 	    		dataType: "json",
 	    		data: ajaxData,
 	    		traditional:true,
+	    		beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
 	    		success: function(result) {
 	    			if(result == "0"){
 	    				alert("플레이 리스트 만들기에 실패했습니다. 다시 시도해주세요.");
@@ -602,6 +621,8 @@ UPLOADCARE_LOCALE = "ko"
 											</div>
 											<div class="table-responsive">
 											<form name="left_sound_list_frm">
+											<!-- csrf 공격 방지 -->
+                      						<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 												<table class="table left_sound_list sound_list">
 													<thead>
 														<tr>
@@ -640,6 +661,8 @@ UPLOADCARE_LOCALE = "ko"
 											</div>
 											<div class="table-responsive">
 											<form name="right_sound_list_frm">
+											<!-- csrf 공격 방지 -->
+                     						<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 												<table class="table right_sound_list sound_list">
 													<thead>
 														<tr>

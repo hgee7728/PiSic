@@ -12,6 +12,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>Sound Detail</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
@@ -202,6 +204,9 @@ $(function(){
 		$.ajax({
 			url: "<%=request.getContextPath() %>/mymusic/playlist.ax",
 			type: "post",
+			beforeSend: function(xhr){
+		        xhr.setRequestHeader(header, token);
+		    },
 			dataType: 'json',
 			success: function(result) {
 				var html = "";
@@ -249,16 +254,16 @@ $(function(){
 		$.ajax({
 			url:"<%=request.getContextPath() %>/sound/insertRecomment",
 			type:"post",
+			beforeSend: function(xhr){
+		        xhr.setRequestHeader(header, token);
+		    },
 			data:{
 				s_r_content: $("textarea[name=recomment_content]").val(),
 				a_no: $("input[name=a_no]").val(),
 				s_no: $("input[name=s_no]").val()
 				},
 			success: function(result){
-				if(result == "-1"){
-					alert("로그인 후 이용해주세요");
-					location.replace("<%=request.getContextPath() %>/member/login");
-				} else if(result == "0"){
+				if(result == "0"){
 					alert("댓글 등록에 실패했습니다. 다시 시도해주세요.");
 				} else if(result == "1"){
 					alert("댓글을 등록하였습니다.");
@@ -287,13 +292,13 @@ $(function(){
 		$.ajax({
 			url:"<%=request.getContextPath() %>/sound/deleteRecomment",
 			type:"post",
+			beforeSend: function(xhr){
+		        xhr.setRequestHeader(header, token);
+		    },
 			data:{s_r_no: $("input[name=s_r_no]").val()},
 			success:function(result){
 				console.log(result);
-				if(result == "-1"){
-					alert("로그인 후 이용해주세요");
-					location.replace("<%=request.getContextPath() %>/member/login");
-				} else if(result == "0"){
+				if(result == "0"){
 					alert("댓글 삭제를 실패했습니다. 다시 시도해주세요.");
 				} else if(result == "1"){
 					alert("댓글을 삭제하였습니다.");
@@ -318,15 +323,15 @@ function soundLike(a_no,s_no){
 	$.ajax({
 		url:"<%=request.getContextPath() %>/sound/like",
 		type:"post",
+		beforeSend: function(xhr){
+	        xhr.setRequestHeader(header, token);
+	    },
 		data:{
 			a_no:a_no,
 			s_no:s_no
 			},
 		success: function(result){
-			if(result == "-2"){
-				alert("로그인 후 이용해주세요");
-				location.replace("<%=request.getContextPath() %>/member/login");
-			} else if(result == "-1"){
+			if(result == "-1"){
 				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 			} else if(result == "0"){
 				alert("해당 곡을 좋아요를 취소했습니다.");
@@ -350,6 +355,9 @@ function playlistInsertDo(a_no, s_no, l_no){
 	$.ajax({
 		url: "<%=request.getContextPath() %>/mymusic/insertSound",
 		type: "post",
+		beforeSend: function(xhr){
+	        xhr.setRequestHeader(header, token);
+	    },
 		data:{
 			a_no: a_no,
 			s_no: s_no,
@@ -453,6 +461,8 @@ function selectAlbumDetail(a_no){
 										<tr>
 											<td colspan="3">
 												<form name ="sound_frm">
+												<!-- csrf 공격 방지 -->
+                      							<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 													<input type="hidden" name="a_no" value="${sound.a_no }">
 													<input type="hidden" name="s_no" value="${sound.s_no }">
 													<button type="button" id="play" class="btn btn-info btn-fw">재생</button>
@@ -743,6 +753,8 @@ function selectAlbumDetail(a_no){
 											<c:when test="${loginSsInfo.m_id == recomment.m_id}">
 											<td>
 												<form action="<%=request.getContextPath() %>/sound/deleteRecomment" method="post">
+												<!-- csrf 공격 방지 -->
+                      							<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 													<input type="hidden" name="s_r_no" value="${recomment.s_r_no}">
 													<button class="btn delete" type="button">삭제</button>
 												</form>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
+import kh.spring.pisic.sound.domain.Sound;
 
 public interface AdminService {
 	public List<Artist> selectArtistList();
@@ -18,4 +19,5 @@ public interface AdminService {
 	public Album selectAlbum(int a_no);
 	public int updateAlbum(Album album);
 	public int deleteAlbum(List<Album> albumList);
+	public List<Sound> selectSoundList();
 }

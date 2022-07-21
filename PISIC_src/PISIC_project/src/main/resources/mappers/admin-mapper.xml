@@ -2,6 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Admin">
 
+	<resultMap type="Sound" id="soundResultMap">
+		<result column="s_no" property="s_no"/>
+		<result column="a_no" property="a_no"/>
+		<result column="s_name" property="s_name"/>
+		<result column="s_lyrics1" property="s_lyrics1"/>
+		<result column="s_lyrics2" property="s_lyrics2"/>
+		<result column="s_age_yn" property="s_age_yn"/>
+		<result column="s_path" property="s_path"/>
+		<result column="g_no" property="g_no"/>
+		<result column="cnt_like" property="cnt_like"/>
+		<result column="a_cover" property="a_cover"/>
+		<result column="a_name" property="a_name"/>
+		<result column="g_name" property="g_name"/>
+		<collection column="{a_no=a_no, s_no=s_no}" property="soundRecomment" select="selectSoundRecommentList"></collection>
+		<collection column="{a_no=a_no, s_no=s_no}" property="singers" select="soundSingerList"></collection>
+		<collection column="{a_no=a_no, s_no=s_no}" property="sound_writers" select="soundWriterList"></collection>
+		<collection column="{a_no=a_no, s_no=s_no}" property="sound_composers" select="soundComposerList"></collection>
+	</resultMap>
+
 	<!-- 아티스트 리스트 조회 -->
 	<select id="selectArtistList" resultType="Artist">
 		select artist_no,
@@ -138,4 +157,38 @@
 			(a_no = #{item.a_no})
 		</foreach>
 	</delete>
+	
+	<!-- 곡 목록 조회 -->
+	<select id="selectSoundList" resultMap="soundResultMap">
+		select sound.s_no, sound.a_no, sound.s_name, 
+		sound.s_lyrics1, sound.s_lyrics2, sound.s_age_yn, sound.s_path, album.artist_no, album.a_name, album.a_cover
+		from sound sound
+		join album album on sound.a_no=album.a_no 
+		where album.a_no=#{a_no}
+	</select>
+	
+	<!-- 곡 - 가수 -->
+	<select id="soundSingerList" parameterType="map" resultType="Singer">
+		select artist.artist_name, artist.artist_no
+		from sound sound
+		join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no
+		join artist artist on singer.artist_no = artist.artist_no 
+		where sound.a_no=#{a_no} and sound.s_no=#{s_no}
+	</select>
+	
+	<!-- 곡 - 작사가 -->
+	<select id="soundWriterList" parameterType="map" resultType="Writer">
+		select artist.artist_name, artist.artist_no
+		from sound_writer writer 
+		join artist artist on writer.artist_no = artist.artist_no
+		where writer.a_no=#{a_no} and writer.s_no=#{s_no} 
+	</select>
+	
+	<!-- 곡 - 작곡가 -->
+	<select id="soundComposerList" parameterType="map" resultType="Composer">
+		select artist.artist_name, artist.artist_no
+		from sound_composer composer 
+		join artist artist on composer.artist_no = artist.artist_no
+		where composer.a_no=#{a_no} and composer.s_no=#{s_no}
+	</select>
 </mapper>

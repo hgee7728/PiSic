@@ -1,4 +1,6 @@
 $(function(){
+	
+    
 	// 체크박스 전체선택
     $("#check_all").click(function(){
     	if($('#check_all').is(':checked')){
@@ -34,6 +36,9 @@ $(function(){
 				url: root_path + "/mymusic/playlist.ax",
 				type: "post",
 				dataType: 'json',
+				beforeSend: function(xhr){
+    				        xhr.setRequestHeader(header, token);
+    				    },
 				success: function(result) {
 					var html = "";
 					for(var i = 0; i < result.length; i++){
@@ -108,6 +113,9 @@ $(function(){
 			dataType: "json",
 			data: ajaxData,
 			traditional:true,
+			beforeSend: function(xhr){
+    				        xhr.setRequestHeader(header, token);
+    				    },
 			success: function(result) {
 				if(result == "0"){
 					alert("곡 담기에 실패 했습니다. 다시 시도해주세요.");
@@ -127,6 +135,9 @@ $(function(){
 		$.ajax({
 			url: root_path + "/mymusic/insertSound",
 			type: "post",
+			beforeSend: function(xhr){
+    				        xhr.setRequestHeader(header, token);
+    				    },
 			data:{
 				a_no:a_no,
 				s_no:s_no,
@@ -161,11 +172,18 @@ $(function(){
 	    input_s_no.setAttribute('type', 'hidden');
 	    input_s_no.setAttribute('name', 's_no');
 	    input_s_no.setAttribute('value', s_no);
+	
 		var input_a_no = document.createElement('input');
 	    input_a_no.setAttribute('type', 'hidden');
 	    input_a_no.setAttribute('name', 'a_no');
 	    input_a_no.setAttribute('value', a_no);
-	    
+	
+	    var input_csrf = document.createElement('input');
+	    input_csrf.setAttribute('type', 'hidden');
+	    input_csrf.setAttribute('id', 'csrf');
+	    input_csrf.setAttribute('name', csrf_parameterName);
+	    input_csrf.setAttribute('value', csrf_token);
+		frm.appendChild(input_csrf);
 	    frm.appendChild(input_s_no);
 	    frm.appendChild(input_a_no);
 	    frm.setAttribute('method', 'post');
@@ -197,11 +215,18 @@ $(function(){
 	    input_s_no.setAttribute('type', 'hidden');
 	    input_s_no.setAttribute('name', 's_no');
 	    input_s_no.setAttribute('value', s_no);
+	
 		var input_a_no = document.createElement('input');
 	    input_a_no.setAttribute('type', 'hidden');
 	    input_a_no.setAttribute('name', 'a_no');
 	    input_a_no.setAttribute('value', a_no);
-	    
+	
+	    var input_csrf = document.createElement('input');
+	    input_csrf.setAttribute('type', 'hidden');
+	    input_csrf.setAttribute('id', 'csrf');
+	    input_csrf.setAttribute('name', csrf_parameterName);
+	    input_csrf.setAttribute('value', csrf_token);
+		frm.appendChild(input_csrf);
 	    frm.appendChild(input_s_no);
 	    frm.appendChild(input_a_no);
 	    frm.setAttribute('method', 'post');
@@ -216,17 +241,18 @@ $(function(){
 	function soundLike(a_no,s_no){
 		console.log("좋아요");
 		$.ajax({
-			url:root_path + "/sound/like",
+			url: root_path + "/sound/like",
 			type:"post",
+			beforeSend: function(xhr){
+				
+					        xhr.setRequestHeader(header, token);
+					    },
 			data:{
 				a_no:a_no,
 				s_no:s_no
 				},
 			success: function(result){
-				if(result == "-2"){
-					alert("로그인 후 이용해주세요");
-					location.replace(root_path + "/member/login");
-				} else if(result == "-1"){
+				if(result == "-1"){
 					alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 				} else if(result == "0"){
 					alert("해당 곡을 좋아요를 취소했습니다.");
@@ -252,6 +278,9 @@ $(function(){
 			url: root_path + "/mymusic/playlist.ax",
 			type: "post",
 			dataType: "json",
+			beforeSend: function(xhr){
+    				        xhr.setRequestHeader(header, token);
+    				    },
 			success: function(result) {
 				var html = "";
 				for(var i = 0; i < result.length; i++){
