@@ -1,10 +1,8 @@
 package kh.spring.pisic.sound.domain;
 
 
-import java.util.Date;
 import java.util.List;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 
@@ -13,8 +11,7 @@ public class Album {
 	private int a_no;
 	private String a_name;
 	private String a_cover;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date a_date;
+	private int a_date;
 	private String a_publishing;
 	private String a_agency;
 	private String a_introduce1;
@@ -60,11 +57,11 @@ public class Album {
 		this.a_cover = a_cover;
 	}
 
-	public Date getA_date() {
+	public int getA_date() {
 		return a_date;
 	}
 
-	public void setA_date(Date a_date) {
+	public void setA_date(int a_date) {
 		this.a_date = a_date;
 	}
 

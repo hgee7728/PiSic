@@ -300,7 +300,7 @@ function playOne(a_no,s_no){
 														</label>
 													</div>
 												</td>
-												<td>${index }+1</td>
+												<td>${index.count}</td>
 												<td>
 													<c:choose>
 														<c:when test="${sound.a_cover ne null}">
@@ -321,7 +321,7 @@ function playOne(a_no,s_no){
 												</td>
 												<td>${sound.a_name}</td>
 												<td>
-													<a href="javascript:playOne(${sounds.a_no },${sounds.s_no})"><i class="mdi mdi-play list_icon"></i></a>
+													<a href="javascript:playOne(${sound.a_no },${sound.s_no})"><i class="mdi mdi-play list_icon"></i></a>
 												</td>
 												<td>
 
