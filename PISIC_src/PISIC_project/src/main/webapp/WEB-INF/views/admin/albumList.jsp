@@ -101,7 +101,7 @@ $(function(){
 						html += '			<div class="form-check form-check-muted m-0">								';
 						html += '			<label class="form-check-label"> <input										';
 						html += '							type="checkbox" class="form-check-input sound_checkbox"		';
-						html += '							name="a_no">			';
+						html += '							name="a_no" value='+resultData.a_no+'>			';
 						html += '			<i class="input-helper"></i>  			';
 						html += '			</label>								';
 						html += '			</div>									';
@@ -292,16 +292,7 @@ $(function(){
 												</td>
 												<td>${album.a_no }</td>
 												<td>
-													<c:choose>
-														<c:when test="${album.a_cover ne null}">
-															<img src="${album.a_cover}" alt="image" />
-														</c:when>
-														<c:when test="${album.a_cover eq null}">
-															<img
-																src="<%=request.getContextPath()%>/resources/assets/images/favicon.png"
-																alt="image" />
-														</c:when>
-													</c:choose>
+													<img src="${album.a_cover}" alt="image" />
 												</td>
 												<td>${album.a_name}</td>
 												<td>${album.artist_name}</td>

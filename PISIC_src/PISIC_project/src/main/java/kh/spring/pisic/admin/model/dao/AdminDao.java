@@ -73,6 +73,11 @@ public class AdminDao {
 	public List<Sound> selectSoundList() {
 		return session.selectList("Admin.selectSoundList");
 	}
+	
+	// 곡 검색
+	public List<Sound> selectSearchSoundList(String keyword) {
+		return session.selectList("Admin.selectSearchSoundList", keyword);
+	}
 
 	
 }

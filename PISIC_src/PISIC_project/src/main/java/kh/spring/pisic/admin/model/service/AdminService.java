@@ -20,4 +20,5 @@ public interface AdminService {
 	public int updateAlbum(Album album);
 	public int deleteAlbum(List<Album> albumList);
 	public List<Sound> selectSoundList();
+	public List<Sound> selectSearchSoundList(String keyword);
 }

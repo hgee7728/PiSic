@@ -87,4 +87,10 @@ public class AdminServiceImpl implements AdminService{
 		return dao.selectSoundList();
 	}
 
+	// 곡 검색
+	@Override
+	public List<Sound> selectSearchSoundList(String keyword) {
+		return dao.selectSearchSoundList(keyword);
+	}
+
 }

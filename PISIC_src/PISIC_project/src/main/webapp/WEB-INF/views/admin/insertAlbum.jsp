@@ -142,7 +142,7 @@ table#search_artist_table a{
 									<div class="form-group">
 										<label for="artist_name" id="label_artist_name">아티스트명*</label>
 										<input type="text" class="form-control" placeholder="검색하세요" name="artist_name" readonly>
-										<input type="hidden" name="artist_no" value="1">
+										<input type="hidden" name="artist_no" value="">
 										<button type="button" class="btn btn-info btn-fw" id="search_aritst_btn">검색</button>
 									</div>
 									<div class="form-group">
@@ -176,7 +176,7 @@ table#search_artist_table a{
 													class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
 											</span>
 										</div>
-										<input type="hidden" id="InputProfile" name="a_cover" value="<%=request.getContextPath()%>/resources/assets/images/favicon.png">
+										<input type="hidden" id="InputProfile" name="a_cover" value="https://ucarecdn.com/99bacc4f-62fb-471c-8a44-d8130450e4b1/">
 										<input type="hidden" id="InputProfileUC"
 											role="uploadcare-uploader"
 											data-public-key="183400fad159d76bdf53"
@@ -406,8 +406,7 @@ table#search_artist_table a{
 					if(result.length>=1){
 						for(var i = 0; i < result.length; i++){
 							var resultData = result[i];
-							// TODO
-							html += '<tr onclick="artist_submit('+resultData.artist_no +',' + resultData.artist_name +')">';
+							html += '<tr onclick="artist_submit('+resultData.artist_no +',&#39;' + resultData.artist_name +'&#39;)">';
 							html += '<td>'+resultData.artist_no+'</td>';
 							html += '<td>';
 							if(resultData.artist_profile != null){

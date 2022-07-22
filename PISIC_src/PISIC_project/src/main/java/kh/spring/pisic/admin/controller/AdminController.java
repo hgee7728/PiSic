@@ -22,6 +22,7 @@ import kh.spring.pisic.admin.model.service.AdminService;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
+import kh.spring.pisic.sound.domain.Sound;
 
 @Controller
 @RequestMapping("/admin")
@@ -232,7 +233,27 @@ public class AdminController {
 		mv.setViewName("admin/soundList");
 		return mv;
 	}
+	
+//	@RequestMapping(value="/getSoundList", produces="text/plain;charset=UTF-8")
+//	@ResponseBody
+//	public String getSoundList() {
+//		return "";
+//	}
 
+	// 곡 검색
+	@GetMapping("/sound.do")
+	@ResponseBody
+	public String searchSoundList(ModelAndView mv, Sound sound) {
+		return new Gson().toJson(service.selectSearchSoundList(sound.getKeyword()));
+	}
+		
+		
+		
+		
+		
+		
+		
+		
 	@GetMapping("/test")
 	public String TestPage() {
 		return "pymusic/test";

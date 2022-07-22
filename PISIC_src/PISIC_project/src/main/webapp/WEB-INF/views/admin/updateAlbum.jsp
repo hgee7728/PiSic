@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -147,7 +148,8 @@ table#search_artist_table a{
 									</div>
 									<div class="form-group">
 										<label for="a_date" id="label_a_date">발매일*</label> 
-										<input type="text" class="form-control" placeholder="YYYYMMDD" name="a_date" maxlength="8" value="${album.a_date}">
+										<fmt:formatDate var="format_a_date" value="${album.a_date}" pattern="yyyyMMdd"/>
+										<input type="text" class="form-control" placeholder="YYYYMMDD" name="a_date" maxlength="8" value="${format_a_date}">
 									</div>
 									<div class="form-group">
 										<label for="a_publishing" id="label_a_publishing">발매사*</label> 

@@ -33,7 +33,9 @@ public class Sound {
 	
 	// 셔플
 	private String artist_name;
-
+	// 검색
+	private String keyword;
+	
 	@Override
 	public String toString() {
 		return "Sound [s_no=" + s_no + ", a_no=" + a_no + ", s_name=" + s_name + ", s_lyrics1=" + s_lyrics1
@@ -41,7 +43,8 @@ public class Sound {
 				+ ", singers=" + singers + ", sound_writers=" + sound_writers + ", sound_composers=" + sound_composers
 				+ ", cnt_like=" + cnt_like + ", l_no=" + l_no + ", m_id=" + m_id + ", s_order=" + s_order + ", a_cover="
 				+ a_cover + ", soundRecomment=" + soundRecomment + ", chart=" + chart + ", playInfo=" + playInfo
-				+ ", a_name=" + a_name + ", g_name=" + g_name + ", artist_name=" + artist_name + "]";
+				+ ", a_name=" + a_name + ", g_name=" + g_name + ", artist_name=" + artist_name + ", keyword=" + keyword
+				+ "]";
 	}
 
 	public int getS_no() {
@@ -218,6 +221,14 @@ public class Sound {
 
 	public void setArtist_name(String artist_name) {
 		this.artist_name = artist_name;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 	
 	
