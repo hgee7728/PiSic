@@ -167,6 +167,7 @@
 		sound.s_lyrics1, sound.s_lyrics2, sound.s_age_yn, sound.s_path, album.artist_no, album.a_name, album.a_cover
 		from sound sound
 		join album album on sound.a_no=album.a_no 
+		where album.a_no=#{a_no}
 	</select>
 	
 	<!-- 곡 - 가수 -->
@@ -192,14 +193,5 @@
 		from sound_composer composer 
 		join artist artist on composer.artist_no = artist.artist_no
 		where composer.a_no=#{a_no} and composer.s_no=#{s_no}
-	</select>
-	
-	<!-- 곡 - 댓글 목록 -->
-	<select id="selectSoundRecommentList" parameterType="map" resultType="SoundRecomment">
-		select sr.s_r_no, sr.s_r_content, sr.s_r_writer, sr.s_r_date 
-		, member.m_id, member.m_profile
-		from sound_recomment sr
-		join member member on sr.m_id = member.m_id
-		where a_no = #{a_no} and s_no = #{s_no}
 	</select>
 </mapper>
