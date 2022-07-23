@@ -247,7 +247,28 @@ public class AdminController {
 		return new Gson().toJson(service.selectSearchSoundList(sound.getKeyword()));
 	}
 		
-		
+	// 곡 추가 페이지로 이동
+	@GetMapping("/insertSound")
+	public ModelAndView pageInsertSound(ModelAndView mv) {
+		mv.setViewName("admin/insertSound");
+		return mv;
+	}
+
+	// 곡 추가하기
+	@PostMapping("/insertSound")
+	public ModelAndView insertSound(ModelAndView mv, Sound sound, RedirectAttributes rttr) {
+	
+		int result =  0;
+				//service.insertSound(sound);
+		if (result == 0) {
+			rttr.addFlashAttribute("msg", "곡 추가에 실패했습니다. 다시 시도해주세요");
+			mv.setViewName("redirect:/admin/sound");
+		} else {
+			rttr.addFlashAttribute("msg", "곡 추가 성공하였습니다");
+			mv.setViewName("redirect:/admin/sound");
+		}
+		return mv;
+	}
 		
 		
 		

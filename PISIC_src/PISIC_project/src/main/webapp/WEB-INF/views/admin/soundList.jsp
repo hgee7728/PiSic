@@ -137,7 +137,7 @@ $(function(){
 			success : function(result){
 				console.log(result);
 				//테이블 초기화
-				$('#album_list > tbody').empty();
+				$('#sound_list > tbody').empty();
 				if(result.length>=1){
 					
 					var html = "";
@@ -159,26 +159,28 @@ $(function(){
 						html += '		<td>										';
 						html += '					<img src=" ' + resultData.a_cover +' " alt="image" />		';
 						html += '		</td>										';
-						html += '		<td> '+ resultData.a_name + ' </td>			';
+						html += '		<td> '+ resultData.s_name + ' </td>			';
 						html += '<td>';
 						for(var j = 0 ; j < resultData.singers.length ; j ++){
 							var resultData2 = resultData.singers[j]
-							html += resultData2.artist_name &nbsp;
+							html += resultData2.artist_name 
 						}
 						html += '</td>';
-						html += '		<td> '+ resultData.s_name + ' </td>	';
+						html += '		<td> '+ resultData.a_name + ' </td>	';
 						html += '<a href="javascript:playOne('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-play list_icon"></i></a>';
 						html += '		<td>										';
 						html += '		<div class="select_btns">					';
 						html += '			<button type="button"					';
-						html += '			class="btn btn-info btn-fw update_album" onclick="javasctipt:updateSound('+resultData.a_no','+resultData.s_no+')">
+						html += '			class="btn btn-info btn-fw update_sound_btn" onclick="javasctipt:updateSound('+resultData.a_no+','+resultData.s_no+')">';
 						html += '			수정</button>								';
 						html += '		</div>										';
 						html += '		</td>										';
 						html += '		<td>										';
 						html += '			<div class="select_btns">				';
 						html += '			<button type="button"					';
-						html += '			class="btn btn-info btn-fw delete_album">삭제</button>										';
+						html += '			class="btn btn-info btn-fw delete_sound_btn">삭제</button>';
+						html += '<input type="hidden" value='+resultData.a_no+' name="delete_one_a_no">';
+						html += '<input type="hidden" value='+resultData.s_no+' name="delete_one_s_no">';
 						html += '			</div>									';
 						html += '		</td>										';
 						html += '	</tr>											';
@@ -190,39 +192,40 @@ $(function(){
 					html += '		<td colspan="10" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>			';
 					html += '	</tr>											';
 				}
-				$("table.album_list tbody").append(html);
+				$("table.sound_list tbody").append(html);
 			}
 		})
 	});
 	
 	// 앨범 추가 버튼
-	$("#insert_album").click(function(){
-		location.href="<%=request.getContextPath()%>/admin/insertAlbum";
+	$("#insert_sound").click(function(){
+		location.href="<%=request.getContextPath()%>/admin/insertSound";
 	});
 	
 	
 	
 	// 한개 삭제 버튼
-	$(".delete_album_btn").click(function(){
-		var confm = confirm("해당 앨범을 삭제 하시겠습니까?");
+	$(".delete_sound_btn").click(function(){
+		var confm = confirm("해당 곡을 삭제 하시겠습니까?");
     	if (confm == false) {
     		alert("취소하셨습니다.");
     	} else {
     		$.ajax({
-    			url:"<%=request.getContextPath()%>/admin/deleteAlbum",
+    			url:"<%=request.getContextPath()%>/admin/deleteSound",
     			type:"post",
     			beforeSend: function(xhr){
     		        xhr.setRequestHeader(header, token);
     		    },
     			data:{
-    				a_no: $(this).next("input[name=delete_one_a_no]").val()
+    				a_no: $(this).next("input[name=delete_one_a_no]").val(),
+    				s_no: $(this).next("input[name=delete_one_s_no]").val()
     				},
     			success:function(result){
     				console.log(result);
     				if(result == "0"){
-    					alert("앨범 삭제가 실패했습니다. 다시 시도해주세요");
+    					alert("곡 삭제가 실패했습니다. 다시 시도해주세요");
     				} else {
-    					alert("앨범이 삭제 되었습니다.");
+    					alert("곡이 삭제 되었습니다.");
     				}
     			},
     			error:function(error){
@@ -301,7 +304,6 @@ function playOne(a_no,s_no){
 	frm.target="SoundPlayer";
     frm.submit();
 };
-
 // 수정 버튼 클릭
 function updateSound(a_no, s_no){
 	location.href = "<%=request.getContextPath()%>/admin/updateSound?a_no=" + a_no + "&s_no=" + s_no;

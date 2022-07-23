@@ -200,12 +200,12 @@
 	
 	<!-- 곡 검색 -->
 	<select id="selectSearchSoundList" parameterType="string"
-		resultType="Sound">
-		select sound.a_no, album.a_name, album.a_cover
-		, sound.s_no, sound.s_name, artist.artist_name
+		resultMap="soundResultMap">
+		select DISTINCT sound.a_no, album.a_name, album.a_cover
+		, sound.s_no, sound.s_name
 		from album album
 		join sound sound on album.a_no = sound.a_no
-		join singer singer singer.a_no = sound.a_no and sound.s_no = sound.s_no
+		join singer singer on singer.a_no = sound.a_no and sound.s_no = sound.s_no
 		join artist artist on singer.artist_no = artist.artist_no
 		where artist.artist_name
 		like '%'||#{keyword}||'%'
