@@ -62,6 +62,7 @@ table.sound_list  tr>td:nth-child(4){
 }
 </style>
 <script>
+const root_path = '<%=request.getContextPath() %>';
 let header = $("meta[name='_csrf_header']").attr('th:content');
 let token = $("meta[name='_csrf']").attr('th:content');
 let csrf_parameterName = '${_csrf.parameterName }';
@@ -126,6 +127,7 @@ $(function(){
     	}
     })
     
+    // 곡 검색
 	$("#search_sound").click(function(){
 		$.ajax({
 			type: 'GET',
@@ -164,11 +166,10 @@ $(function(){
 						for(var j = 0 ; j < resultData.singers.length ; j ++){
 							var resultData2 = resultData.singers[j]
 							html += resultData2.artist_name ;
-							html += " ";
 						}
 						html += '</td>';
 						html += '		<td> '+ resultData.a_name + ' </td>	';
-						html += '<a href="javascript:playOne('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-play list_icon"></i></a>';
+						html += '<td><a href="javascript:playOne('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-play list_icon"></i></a></td>';
 						html += '		<td>										';
 						html += '		<div class="select_btns">					';
 						html += '			<button type="button"					';
@@ -205,8 +206,11 @@ $(function(){
 	
 	
 	
-	// 한개 삭제 버튼
-	$(".delete_sound_btn").click(function(){
+	// 한개 삭제 버튼 - 동적으로 생기는 버튼도 포함
+	$(document).on("click", ".delete_sound_btn", function() {
+		console.log("한곡 삭제");
+		console.log("a_no : " + $(this).next("input[name=delete_one_a_no]").val());
+		console.log("s_no : " + $(this).nextAll("input[name=delete_one_s_no]").val());
 		var confm = confirm("해당 곡을 삭제 하시겠습니까?");
     	if (confm == false) {
     		alert("취소하셨습니다.");
@@ -219,7 +223,7 @@ $(function(){
     		    },
     			data:{
     				a_no: $(this).next("input[name=delete_one_a_no]").val(),
-    				s_no: $(this).next("input[name=delete_one_s_no]").val()
+    				s_no: $(this).nextAll("input[name=delete_one_s_no]").val()
     				},
     			success:function(result){
     				console.log(result);
@@ -227,6 +231,7 @@ $(function(){
     					alert("곡 삭제가 실패했습니다. 다시 시도해주세요");
     				} else {
     					alert("곡이 삭제 되었습니다.");
+    					location.reload();
     				}
     			},
     			error:function(error){
@@ -238,31 +243,35 @@ $(function(){
 	
 	// 선택 삭제
 	$("#select_delete").click(function(){
-		var confm = confirm("선택된 앨범을 삭제 하시겠습니까?");
+		var confm = confirm("선택된 곡을 삭제 하시겠습니까?");
     	if (confm == false) {
     		alert("취소하셨습니다.");
     	} else {
     		var a_noArray = [];
-    		$('input[name=a_no]:checked').each(function(){ //체크된 리스트 저장
-    			a_noArray.push($(this).val());
+    		var s_noArray = [];
+    		$('input[name=s_no]:checked').each(function(){ //체크된 리스트 저장
+    			s_noArray.push($(this).val());
+    			a_noArray.push($(this).parent().next("input[name=a_no]").val());
     	    });
+    		console.log("s_noArray : " + s_noArray);
     		console.log("a_noArray : " + a_noArray);
     		$.ajax({
-    			url:"<%=request.getContextPath()%>/admin/deleteAlbum",
+    			url:"<%=request.getContextPath()%>/admin/deleteSound",
     			type:"post",
     			traditional:true,
     			beforeSend: function(xhr){
     		        xhr.setRequestHeader(header, token);
     		    },
     			data:{
-    				a_no: a_noArray
+    				a_no: a_noArray,
+    				s_no : s_noArray
     				},
     			success:function(result){
     				console.log(result);
     				if(result == "0"){
-    					alert("앨범 삭제가 실패했습니다. 다시 시도해주세요");
+    					alert("곡 삭제가 실패했습니다. 다시 시도해주세요");
     				} else {
-    					alert("앨범이 삭제 되었습니다.");
+    					alert("곡이 삭제 되었습니다.");
     					location.reload();
     				}
     			},
@@ -408,6 +417,7 @@ function updateSound(a_no, s_no){
 														<button type="button"
 															class="btn btn-info btn-fw delete_sound_btn">삭제</button>
 														<input type="hidden" value="${sound.a_no}" name="delete_one_a_no">
+														<input type="hidden" value="${sound.s_no}" name="delete_one_s_no">
 													</div>
 												</td>
 											</tr>

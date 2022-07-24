@@ -24,4 +24,5 @@ public interface AdminService {
 	public int insertSound(Sound sound, int[] singer_noArr, int[] writer_noArr, int[] composer_noArr);
 	public Sound selectSound(Sound sound);
 	public int updateSound(Sound sound, int[] singer_noArr, int[] writer_noArr, int[] composer_noArr);
+	public int deleteSound(List<Sound> soundList);
 }

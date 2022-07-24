@@ -421,6 +421,30 @@ public class AdminController {
 		return mv;
 	}
 	
+	// 곡 삭제
+	@ResponseBody
+	@PostMapping("/deleteSound")
+	public String deleteSound(
+			@RequestParam(name = "a_no", required = false) int[] a_noArray
+			, @RequestParam(name = "s_no", required = false) int[] s_noArray
+			) {
+		List<Sound> soundList = new ArrayList<Sound>();
+
+		// 들고 온 데이터 domain형태로 list 시키기
+		for (int i = 0; i < a_noArray.length; i++) {
+			Sound sound = new Sound();
+			sound.setA_no(a_noArray[i]);
+			sound.setS_no(s_noArray[i]);
+			soundList.add(sound);
+		}
+		System.out.println("[[[soundList]]] : " + soundList);
+
+		if (service.deleteSound(soundList) < 1) { // 삭제 실패
+			return "0";
+		} else {
+			return "1";
+		}
+	}
 		
 	@GetMapping("/test")
 	public String TestPage() {

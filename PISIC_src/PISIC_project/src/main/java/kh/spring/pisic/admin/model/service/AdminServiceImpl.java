@@ -119,4 +119,10 @@ public class AdminServiceImpl implements AdminService{
 		return dao.updateSound(sound);
 	}
 
+	// 곡 삭제
+	@Override
+	public int deleteSound(List<Sound> soundList) {
+		return dao.deleteSound(soundList);
+	}
+
 }

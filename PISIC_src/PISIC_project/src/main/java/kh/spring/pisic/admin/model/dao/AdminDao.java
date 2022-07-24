@@ -138,4 +138,8 @@ public class AdminDao {
 	public int updateSound(Sound sound) {
 		return session.update("Admin.updateSound", sound);
 	}
+	// 곡 삭제
+	public int deleteSound(List<Sound> soundList) {
+		return session.delete("Admin.deleteSound", soundList);
+	}
 }

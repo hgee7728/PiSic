@@ -334,5 +334,14 @@
 		where a_no=#{a_no} and s_no=#{s_no}
 	</update>
 	
+	<!-- 곡 삭제 -->
+	<delete id="deleteSound" parameterType="list">
+		delete from sound
+		where
+		<foreach collection="list" item="item" separator="or">
+			(a_no = #{item.a_no} and s_no = #{item.s_no})
+		</foreach>
+	</delete>
+	
 	
 </mapper>
