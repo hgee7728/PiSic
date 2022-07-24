@@ -92,8 +92,9 @@ public class SoundController {
 	// 곡 상세조회
 	@GetMapping("/soundDetail")
 	public ModelAndView selectSoundDetail(ModelAndView mv, Sound sound, Authentication auth) {
-		UserDetails ud = (UserDetails)auth.getPrincipal();
-		Member member = memberService.selectLoginMember(ud.getUsername());
+		
+		
+		
 		// 곡 기본정보 + 댓글
 		mv.addObject("sound", service.selectSound(sound));
 		// 수록곡 앨범
@@ -123,12 +124,18 @@ public class SoundController {
 			mv.addObject("bestChart", service.selectBestChart(sound));
 		}
 		
+		if(auth != null) {
+			UserDetails ud = (UserDetails)auth.getPrincipal();
+			Member member = memberService.selectLoginMember(ud.getUsername());
+			mv.addObject("member", member);
+			
+			// 스트리밍 리포트
+			// 내가 처음 들은 날
+			mv.addObject("firstDay",service.selectSoundFirstDay(member,sound));
+			// 총 감상 횟수
+			mv.addObject("totalListen",service.selectTotalListen(member,sound));
+		}
 		
-		// 스트리밍 리포트
-		// 내가 처음 들은 날
-		mv.addObject("firstDay",service.selectSoundFirstDay(member,sound));
-		// 총 감상 횟수
-		mv.addObject("totalListen",service.selectTotalListen(member,sound));
 		
 		
 		mv.setViewName("sound/soundDetail");
@@ -156,26 +163,32 @@ public class SoundController {
 	@PostMapping(value = "/like", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String soundLike(Sound sound, Authentication auth) {
-		UserDetails ud = (UserDetails)auth.getPrincipal();
 		String resultAjax = "";
-		
-		// 좋아요 여부 확인
-		Member member = memberService.selectLoginMember(ud.getUsername());
-		if(service.checkLike(member,sound) > 0) { // 좋아요가 되어있는 경우
-			int result = service.deleteLike(member,sound);
-			if(result < 1) { // 좋아요 취소 실패
-				resultAjax = "-1";
-			} else { // 좋아요 취소 성공
-				resultAjax = "0";
+		if(auth != null) {
+			UserDetails ud = (UserDetails)auth.getPrincipal();
+			
+			
+			// 좋아요 여부 확인
+			Member member = memberService.selectLoginMember(ud.getUsername());
+			if(service.checkLike(member,sound) > 0) { // 좋아요가 되어있는 경우
+				int result = service.deleteLike(member,sound);
+				if(result < 1) { // 좋아요 취소 실패
+					resultAjax = "-1";
+				} else { // 좋아요 취소 성공
+					resultAjax = "0";
+				}
+			} else { // 좋아요가 안되어있는 경우
+				int result = service.insertLike(member,sound);
+				if(result < 1) { // 좋아요 실패
+					resultAjax = "1";
+				} else { // 좋아요 성공
+					resultAjax = "2";
+				}
 			}
-		} else { // 좋아요가 안되어있는 경우
-			int result = service.insertLike(member,sound);
-			if(result < 1) { // 좋아요 실패
-				resultAjax = "1";
-			} else { // 좋아요 성공
-				resultAjax = "2";
-			}
+		} else {
+			resultAjax = "-2";
 		}
+		
 		
 		return resultAjax;
 	}

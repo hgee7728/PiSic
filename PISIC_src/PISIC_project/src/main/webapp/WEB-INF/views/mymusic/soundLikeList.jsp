@@ -213,7 +213,10 @@ function soundLike(a_no,s_no){
 			s_no:s_no
 			},
 		success: function(result){
-			if(result == "-1"){
+			if(result == "-2"){
+				alert("로그인 후 이용해 주세요.");
+				location.href = root_path + "/member/login";
+			} else if(result == "-1"){
 				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 			} else if(result == "0"){
 				alert("해당 곡을 좋아요를 취소했습니다.");
@@ -267,7 +270,7 @@ function selectAlbumDetail(a_no){
 					</div>
 					<div class="content_div1">
 						<div class="main_img_div">
-							<img id="main_img" src="${loginSsInfo.m_profile }" width="300" height="300">
+							<img id="main_img" src="${member.m_profile }" width="300" height="300">
 						<div class="content_info  card">
 							<div class="card-body">
 								<table class="table intro_table">

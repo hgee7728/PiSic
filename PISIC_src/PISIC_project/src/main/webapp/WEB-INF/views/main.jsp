@@ -35,6 +35,8 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script
+		src="<%=request.getContextPath()%>/resources/assets/js/_soundListMini.js"></script>
 <style>
 .map {
 	display: block;
@@ -212,71 +214,11 @@ table.sound_list a {
 }
 </style>
 <script>
-//한곡 재생 - post방식으로 a태그 이용해서 이동
-function playOne(a_no,s_no){
-	console.log("한곡재생");
-
-	var frm = document.createElement('form');
-    var input_s_no = document.createElement('input');
-    input_s_no.setAttribute('type', 'hidden');
-    input_s_no.setAttribute('name', 's_no');
-    input_s_no.setAttribute('value', s_no);
-	var input_a_no = document.createElement('input');
-    input_a_no.setAttribute('type', 'hidden');
-    input_a_no.setAttribute('name', 'a_no');
-    input_a_no.setAttribute('value', a_no);
-    
-    frm.appendChild(input_s_no);
-    frm.appendChild(input_a_no);
-    frm.setAttribute('method', 'post');
-    frm.setAttribute('action', '<%=request.getContextPath() %>/sound/play');
-    document.body.appendChild(frm);
-	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
-	frm.target="SoundPlayer";
-    frm.submit();
-};
-
-//노래 좋아요 - ajax
-function soundLike(a_no,s_no){
-	console.log("좋아요");
-	$.ajax({
-		url:"<%=request.getContextPath() %>/sound/like",
-		type:"post",
-		data:{
-			a_no:a_no,
-			s_no:s_no
-			},
-		success: function(result){
-			if(result == "-2"){
-				alert("로그인 후 이용해주세요");
-				location.replace("<%=request.getContextPath() %>/member/login");
-			} else if(result == "-1"){
-				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
-			} else if(result == "0"){
-				alert("해당 곡을 좋아요를 취소했습니다.");
-			} else if(result == "1"){
-				alert("해당 곡을 좋아요를 실패 했습니다. 다시 시도해주세요.");
-			} else if(result == "2"){
-				alert("해당 곡을 좋아요 했습니다.");
-			}
-			
-		},
-		error:function(){
-			
-		}
-	}); //ajax 끝
-};
-
-// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
-function selectSoundDetail(a_no, s_no){
-	location.href = "<%=request.getContextPath() %>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
-};
-function selectArtistDetail(artist_no){
-	location.href = "<%=request.getContextPath() %>/sound/artistDetail?artist_no=" + artist_no;
-};
-function selectAlbumDetail(a_no){
-	location.href = "<%=request.getContextPath() %>/sound/albumDetail?a_no=" + a_no;
-};
+const root_path = '<%=request.getContextPath() %>';
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
 </script>
 </head>
 <body>

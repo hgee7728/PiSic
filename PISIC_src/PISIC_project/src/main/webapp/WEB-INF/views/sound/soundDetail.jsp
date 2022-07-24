@@ -5,6 +5,7 @@
 	href="<%=request.getContextPath()%>/resources/assets/css/reset.css">
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -152,6 +153,10 @@ table.album_table thead tr th:nth-child(2){
 </style>
 <script>
 const root_path = '<%=request.getContextPath() %>';
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
 $(function(){
 	var msg = '${msg}';
 	if(msg){
@@ -331,7 +336,10 @@ function soundLike(a_no,s_no){
 			s_no:s_no
 			},
 		success: function(result){
-			if(result == "-1"){
+			if(result == "-2"){
+				alert("로그인 후 이용해 주세요.");
+				location.href = root_path + "/member/login";
+			} else if(result == "-1"){
 				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 			} else if(result == "0"){
 				alert("해당 곡을 좋아요를 취소했습니다.");
@@ -680,15 +688,14 @@ function selectAlbumDetail(a_no){
 							<h3 class="card-title">스트리밍 리포트</h3>
 						</div>
 						<hr color="white">
-						<c:choose>
-							<c:when test="${empty loginSsInfo }">
+							<sec:authorize access="isAnonymous()">
 								<div class="card report_div">
 									<div class="card-body">
 									<h4 class="card-title">로그인 후 이용해 주세요</h4>
 									</div>
 								</div>
-							</c:when>
-							<c:when test="${not empty loginSsInfo }">
+							</sec:authorize>
+							<sec:authorize access="isAuthenticated()">
 								<div class="row">
 									<div class="card report_div">
 										<div class="card-body">
@@ -710,8 +717,7 @@ function selectAlbumDetail(a_no){
 										</div>
 									</div>
 								</div>
-							</c:when>
-						</c:choose>
+							</sec:authorize>
 					</div>
 					<div class="content_div0 content_div8">
 						<div>
@@ -750,7 +756,7 @@ function selectAlbumDetail(a_no){
 										<td>${recomment.s_r_content }</td>
 										<td><fmt:formatDate value="${recomment.s_r_date }" pattern="yyyy-MM-dd hh:mm"/></td>
 										<c:choose>
-											<c:when test="${loginSsInfo.m_id == recomment.m_id}">
+											<c:when test="${member.m_id == recomment.m_id}">
 											<td>
 												<form action="<%=request.getContextPath() %>/sound/deleteRecomment" method="post">
 												<!-- csrf 공격 방지 -->
