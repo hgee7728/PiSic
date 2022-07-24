@@ -69,6 +69,8 @@ const root_path = '<%=request.getContextPath() %>';
 
 let header = $("meta[name='_csrf_header']").attr('th:content');
 let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
 
 $(function(){
 	var msg = '${msg}';
@@ -149,6 +151,8 @@ $(function(){
 										</h3>
 										<div class="table-responsive">
 											<form name="sound_frm">
+											<!-- csrf 공격 방지 -->
+                      					<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 												<table class="table sound_list">
 													<thead>
 														<tr>
