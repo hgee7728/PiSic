@@ -7,6 +7,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>PISIC ADMIN</title>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
@@ -108,7 +110,12 @@ table#search_artist_table a{
 	cursor: pointer;
 }
 </style>
-
+<script>
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -184,8 +191,10 @@ table#search_artist_table a{
 									</div>
 
 
-									<button type="button" class="btn btn-primary mr-2" id="insert_btn">추가하기</button>
-									<button type="button" class="btn btn-dark" id="btn_cancle" onclick="history.back(-1);">취소</button>
+									<div style="text-align: center;">
+										<button type="button" class="btn btn-primary mr-2" id="insert_btn">추가하기</button>
+										<button type="button" class="btn btn-dark" id="btn_cancle" onclick="history.back(-1);">취소</button>
+									</div>
 								</form>
 							</div>
 						</div>
@@ -297,26 +306,27 @@ table#search_artist_table a{
 		
 		// 필수항목 입력했는지 체크
 	    	$("#insert_btn").on("click", function(){
+	    		$("div.form-group span").html("");
 	    		var checkFlag = false;
 	    		// 앨범명
 	    		if ($("input[name=a_name]").val() == '') {
-					$("#label_a_name").html('앨범이름 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_a_name").html('앨범이름* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
 					$("#label_a_name").children('span').css("color", "red");
 					$("input[name=a_name]").focus();
 					checkFlag = false;
 					return;
     			} 
-	    		/* // 아티스트명
+	    		// 아티스트명
 	    		if ($("input[name=artist_name]").val() == '') {
-					$("#label_artist_name").html('아티스트명 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_artist_name").html('아티스트명* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
 					$("#label_artist_name").children('span').css("color", "red");
 					$("input[name=artist_name]").focus();
 					checkFlag = false;
 					return;
-    			} */
+    			}
 	    		// 발매일
 		    	if ($("input[name=a_date]").val() == '') {
-					$("#label_a_date").html('발매일 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_a_date").html('발매일* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
 					$("#label_a_date").children('span').css("color", "red");
 					$("input[name=a_date]").focus();
 					checkFlag = false;
@@ -329,7 +339,7 @@ table#search_artist_table a{
     			}
 		    	// 발매사
 		    	if ($("input[name=a_publishing]").val() == '') {
-					$("#label_a_publishing").html('발매사 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_a_publishing").html('발매사* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
 					$("#label_a_publishing").children('span').css("color", "red");
 					$("input[name=a_publishing]").focus();
 					checkFlag = false;
@@ -337,7 +347,7 @@ table#search_artist_table a{
     			} 
 		    	// 기획사
 		    	if ($("input[name=a_agency]").val() == '') {
-					$("#label_a_agency").html('기획사 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_a_agency").html('기획사* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
 					$("#label_a_agency").children('span').css("color", "red");
 					$("input[name=a_agency]").focus();
 					checkFlag = false;
@@ -346,7 +356,7 @@ table#search_artist_table a{
 		    	// 앨범소개1
 		    	//var content_textarea = $("textarea[name=a_introduce]")
 		    	if ($("textarea#a_introduce1").val() == '') {
-					$("#label_a_introduce1").html('앨범 소개1 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_a_introduce1").html('앨범 소개1* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
 					$("#label_a_introduce1").children('span').css("color", "red");
 					$("textarea#a_introduce1").focus();
 					checkFlag = false;

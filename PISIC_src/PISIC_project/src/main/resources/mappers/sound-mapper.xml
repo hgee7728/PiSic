@@ -238,8 +238,8 @@ select * from (SELECT *
                  GROUP BY s_no, a_no
                      , TO_CHAR(p_date, 'yyyymmdd') order by p_date desc
                 )
-         WHERE s_no = 1
-           AND a_no = 10
+         WHERE s_no = #{s_no}
+           AND a_no = #{a_no}
         )
  WHERE rk1 = 1) where rownum = 1
 </select>

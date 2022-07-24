@@ -21,4 +21,5 @@ public interface AdminService {
 	public int deleteAlbum(List<Album> albumList);
 	public List<Sound> selectSoundList();
 	public List<Sound> selectSearchSoundList(String keyword);
+	public int insertSound(Sound sound, int[] singer_noArr, int[] writer_noArr, int[] composer_noArr);
 }

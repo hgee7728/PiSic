@@ -1,5 +1,6 @@
 package kh.spring.pisic.admin.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -77,6 +78,16 @@ public class AdminDao {
 	// 곡 검색
 	public List<Sound> selectSearchSoundList(String keyword) {
 		return session.selectList("Admin.selectSearchSoundList", keyword);
+	}
+	
+	// 곡 추가
+	public int insertSound(Sound sound, int[] singer_noArr, int[] writer_noArr, int[] composer_noArr) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("sound", sound);
+		map.put("singers", singer_noArr);
+		map.put("writers", writer_noArr);
+		map.put("composers", composer_noArr);
+		return session.insert("Admin.insertSound", map);
 	}
 
 	

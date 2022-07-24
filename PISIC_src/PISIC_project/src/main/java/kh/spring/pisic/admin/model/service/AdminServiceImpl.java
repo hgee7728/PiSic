@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kh.spring.pisic.admin.model.dao.AdminDao;
 import kh.spring.pisic.sound.domain.Album;
@@ -91,6 +92,12 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public List<Sound> selectSearchSoundList(String keyword) {
 		return dao.selectSearchSoundList(keyword);
+	}
+
+	// 곡 추가
+	@Override
+	public int insertSound(Sound sound, int[] singer_noArr, int[] writer_noArr, int[] composer_noArr) {
+		return dao.insertSound(sound, singer_noArr, writer_noArr, composer_noArr);
 	}
 
 }

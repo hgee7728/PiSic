@@ -214,4 +214,43 @@
 		like '%'||#{keyword}||'%'
 		order by a_no
 	</select>
+	
+	<!-- 곡 추가 -->
+	<insert id="insertSound" parameterType="hashmap">
+		insert all
+		into sound (s_no, a_no, s_name, s_lyrics1, s_lyrics2, s_path, g_no) values
+		( 
+		(select nvl(max(s_no),0)+1 from sound where a_no=#{sound.a_no} )
+		, #{sound.a_no}, #{sound.s_name}, #{sound.s_lyrics1}, #{sound.s_lyrics2}
+		, #{sound.s_path}
+		, #{sound.g_no}
+		)
+	
+		<foreach collection="singers" item="singers" index="index">
+			into singer values
+			( 
+			(select nvl(max(s_no),0)+1 from sound where a_no=#{sound.a_no} )
+			, #{sound.a_no}
+			, #{singers}
+			)
+		</foreach>
+		<foreach collection="writers" item="writers" index="index">
+			into SOUND_WRITER values
+			( 
+			(select nvl(max(s_no),0)+1 from sound where a_no=#{sound.a_no} )
+			, #{sound.a_no}
+			, #{writers}
+			)
+		</foreach>
+		<foreach collection="composers" item="composers" index="index">
+			into SOUND_COMPOSER values
+			( 
+			(select nvl(max(s_no),0)+1 from sound where a_no=#{sound.a_no} )
+			, #{sound.a_no}
+			, #{composers}
+			)
+		</foreach>
+
+	select * from dual
+	</insert>
 </mapper>

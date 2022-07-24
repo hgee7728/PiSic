@@ -7,6 +7,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>PISIC ADMIN</title>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
@@ -50,6 +52,13 @@
 .btn-fw {
 	border-color: black;
 }
+input[type=file]::file-selector-button{
+  padding: 6px 25px;
+  background-color:#8f5fe8;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
 </style>
 <style>
 #ImgProfilePre {
@@ -67,9 +76,14 @@
 	display: none;
 }
 
-/* modal 아티스트 검색*/
+/* modal 검색*/
+#search_album_modal.search_album_modal_overlay,
 #search_artist_modal.search_artist_modal_overlay,
-#search_artist_modal_plus.search_artist_modal_overlay_plus {
+#search_artist_modal_plus.search_artist_modal_overlay_plus,
+#search_writer_modal.search_writer_modal_overlay,
+#search_writer_modal_plus.search_writer_modal_overlay_plus,
+#search_composer_modal.search_composer_modal_overlay,
+#search_composer_modal_plus.search_composer_modal_overlay_plus {
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -85,8 +99,13 @@
 	z-index: 1000;
 	
 }
+#search_album_modal .search_album_modal_window,
 #search_artist_modal .search_artist_modal_window,
-#search_artist_modal_plus .search_artist_modal_window_plus {
+#search_artist_modal_plus .search_artist_modal_window_plus,
+#search_writer_modal .search_writer_modal_window,
+#search_writer_modal_plus .search_writer_modal_window_plus,
+#search_composer_modal .search_composer_modal_window,
+#search_composer_modal_plus .search_composer_modal_window_plus {
 	border-radius: 10px;
 	width: 600px;
 	height: 700px;
@@ -96,23 +115,44 @@
 	transform: translate(-50%, -50%);
 	overflow: auto;
 }
-.search_artist_modal_new{
+.search_album_modal_new,
+.search_artist_modal_new,
+.search_writer_modal_new,
+.search_composer_modal_new{
 	padding:30px !important;
 	display: flex;
 }
-.search_artist_modal_content p.modal_content {
+.search_album_modal_content p.modal_content,
+.search_artist_modal_content p.modal_content,
+.search_wrtier_modal_content p.modal_content,
+.search_composer_modal_content p.modal_content {
 	line-height: 40px !important;
 }
+.search_album_modal,
 .search_artist_modal,
-.search_artist_modal_plus{
+.search_artist_modal_plus,
+.search_wrtier_modal,
+.search_writer_modal_plus,
+.search_composer_modal,
+.search_composer_modal_plus{
 	overflow: auto !important;
 }
+table#search_album_table a,
 table#search_artist_table a,
-table#search_artist_table_plus a{
+table#search_artist_table_plus a,
+table#search_writer_table a,
+table#search_writer_table_plus a,
+table#search_composer_table a,
+table#search_composer_table_plus a{
 	cursor: pointer;
 }
 </style>
-
+<script>
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -129,8 +169,8 @@ table#search_artist_table_plus a{
 						<div class="card">
 							<div class="card-body">
 								
-								<form id="frm_sound" class="frm_sound" action="<%=request.getContextPath() %>/admin/insertsound" 
-									method="post">
+								<form id="frm_sound" class="frm_sound" action="<%=request.getContextPath() %>/admin/insertSound" 
+									method="post" enctype="multipart/form-data">
 								<!-- csrf 공격 방지 -->
                    				<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 								<h4 class="card-title">곡 정보 입력</h4>
@@ -140,72 +180,128 @@ table#search_artist_table_plus a{
 										<label for="a_no">노래 코드 : (자동 부여)</label> 
 									</div>
 									<div class="form-group">
-										<label for="sound_name" id="label_a_name">노래 이름*</label> 
-										<input type="text" class="form-control" placeholder="Name" name="a_name">
+										<label id="label_g_no" for="SelectGenre">장르 *</label>
+										<select class="form-control" id="SelectGenre" name="g_no">
+											<option value="1">가요 / 댄스</option>
+											<option value="2">가요 / 발라드</option>
+											<option value="3">가요 / 락</option>
+											<option value="4">가요 / 랩/힙합</option>
+											<option value="5">OST / 드라마</option>
+											<option value="6">가요 / R&B/소울</option>
+											<option value="7">POP / 팝</option>
+											<option value="8">가요 / 트로트</option>
+											<option value="9">POP / 랩/힙합</option>
+											<option value="10">POP / R&B/소울</option>
+											<option value="11">가요 / 인디</option>
+											<option value="12">POP / 일렉트로니카</option>
+											<option value="13">재즈 / 정통</option>
+											<option value="14">가요 / 블루스/포크</option>
+											<option value="15">가요 / 일렉트로니카</option>
+											<option value="16">가요 / 전체</option>
+											<option value="17">기타</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="s_name" id="label_s_name">노래 이름*</label> 
+										<input type="text" class="form-control" placeholder="Name" name="s_name">
 									</div>
 									<div class="form-group">
 										<label for="a_name" id="label_a_name">앨범명*</label> 
-										<input type="text" class="form-control" placeholder="검색하세요" name="a_name">
+										<input type="text" class="form-control" placeholder="검색하세요" name="a_name" readonly>
+										<input type="hidden" name="a_no" value="">
 										<button type="button" class="btn btn-info btn-fw" id="search_album_btn">검색</button>
 									</div>
 									<div class="form-group">
 										<img id="ImgProfilePre"
 												src="<%=request.getContextPath()%>/resources/assets/images/favicon.png" style="width:150px; height:150px;">
 									</div>
-									<div class="form-group artist_name">
-										<label for="artist_name" id="label_artist_name">가수명*</label>
-										<input type="text" class="form-control" placeholder="검색하세요" name="artist_name" readonly>
-										<input type="hidden" name="artist_no" value="">
+									<div class="form-group singer_name">
+										<label for="singer_name" id="label_singer_name">가수명*</label>
+										<input type="text" class="form-control" placeholder="검색하세요" name="singer_name" readonly>
+										<input type="hidden" name="singer_no" value="">
 										<button type="button" class="btn btn-info btn-fw search_aritst_btn" id="search_aritst_btn">검색</button>
 										<button type="button" class="btn btn-info btn-fw" id="artist_plus">추가</button>
 									</div>
 									<div class="form-group writer_name">
-										<label for="writer" id="label_wrtier">작사가*</label> 
-										<input type="text" class="form-control" placeholder="검색하세요" name="writer" readonly>
+										<label for="writer" id="label_writer_name">작사가*</label> 
+										<input type="text" class="form-control" placeholder="검색하세요" name="writer_name" readonly>
 										<input type="hidden" name="writer_no" value="">
 										<button type="button" class="btn btn-info btn-fw search_aritst_btn" id="search_writer_btn">검색</button>
+										<button type="button" class="btn btn-info btn-fw" id="writer_plus">추가</button>
+									</div>
+									<div class="form-group composer_name">
+										<label for="composer" id="label_composer_name">작곡가*</label> 
+										<input type="text" class="form-control" placeholder="검색하세요" name="composer_name" readonly>
+										<input type="hidden" name="composer_no" value="">
+										<button type="button" class="btn btn-info btn-fw search_aritst_btn" id="search_composer_btn">검색</button>
+										<button type="button" class="btn btn-info btn-fw" id="composer_plus">추가</button>
+									</div>
+									<div class="form-group lyrics">
+										<label for="s_lyrics1" id="label_s_lyrics1">가사 1*</label>
+										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" id="s_lyrics1" name="s_lyrics1"></textarea>
 									</div>
 									<div class="form-group">
-										<label for="composer" id="label_composer">작곡가*</label> 
-										<input type="text" class="form-control" placeholder="검색하세요" name="composer" readonly>
-										<input type="hidden" name="artist_no" value=""><input type="hidden" name="artist_no" value="">
-										<button type="button" class="btn btn-info btn-fw search_aritst_btn" id="search_writer_btn">검색</button>
-									</div>
-									<div class="form-group">
-										<label for="a_introduce1" id="label_a_introduce1">가사 1*</label>
-										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" id="a_introduce1" name="a_introduce1"></textarea>
-									</div>
-									<div class="form-group">
-										<label for="a_introduce2">가사 2</label>
-										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력)" id="a_introduce2" name="a_introduce2"></textarea>
+										<label for="s_lyrics2">가사 2</label>
+										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력)" id="s_lyrics2" name="s_lyrics2"></textarea>
 									</div>
 
 									<div class="form-group">
-										<label id="LabelProfile">앨범 Cover</label>
+										<label id="LabelProfile">음원 파일*</label>
 										<div class="input-group">
-											<img id="ImgProfilePre"
-												src="<%=request.getContextPath()%>/resources/assets/images/favicon.png">
-											<span class="input-group-append">
-												<button id="BtnProfile"
-													class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
-											</span>
+											<input type="file" id="input-file" name="upload_sound">
 										</div>
-										<input type="hidden" id="InputProfile" name="a_cover" value="https://ucarecdn.com/99bacc4f-62fb-471c-8a44-d8130450e4b1/">
-										<input type="hidden" id="InputProfileUC"
-											role="uploadcare-uploader"
-											data-public-key="183400fad159d76bdf53"
-											data-tabs="file gdrive gphotos" />
 									</div>
-
-
-									<button type="button" class="btn btn-primary mr-2" id="insert_btn">추가하기</button>
-									<button type="button" class="btn btn-dark" id="btn_cancle" onclick="history.back(-1);">취소</button>
+									<div style="text-align: center;">
+										<button type="button" class="btn btn-primary mr-2" id="insert_btn">추가하기</button>
+										<button type="button" class="btn btn-dark" id="btn_cancle" onclick="history.back(-1);">취소</button>
+									</div>
 								</form>
 							</div>
 						</div>
 						</div>
 				</div>
 				<jsp:include page="../_footer.jsp" />
+			</div>
+		</div>
+	</div>
+	<div id="search_album_modal" class="search_album_modal_overlay">
+		<div class="col-md-8 grid-margin stretch-card search_album_modal_window">
+			<div class="card search_album_modal">
+				<div class="card-body">
+					<div class="d-flex flex-row justify-content-between">
+						<h3 class="card-title mb-1">앨범 검색</h3>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="preview-list">
+								<div class="preview-item-content d-sm-flex flex-grow search_album_modal_content">
+									<div class="flex-grow search_album_modal_new">
+										<input type="text" class="form-control"
+										placeholder="앨범명으로 조회하기" name="keyword">
+										<div class="input-group-append">
+											<button class="btn btn-info btn-fw" type="button"
+												id="search_album_do">조회하기</button>
+										</div>
+									</div>
+								</div>
+								<div>
+									<table class="table" id="search_album_table">
+										<thead>
+											<tr>
+												<th>No</th>
+												<th></th>
+												<th>앨범명</th>
+												<th>아티스트명</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -291,6 +387,170 @@ table#search_artist_table_plus a{
 			</div>
 		</div>
 	</div>
+	<div id="search_writer_modal" class="search_writer_modal_overlay">
+		<div class="col-md-8 grid-margin stretch-card search_writer_modal_window">
+			<div class="card search_writer_modal">
+				<div class="card-body">
+					<div class="d-flex flex-row justify-content-between">
+						<h3 class="card-title mb-1">작사가 검색</h3>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="preview-list">
+								<div class="preview-item-content d-sm-flex flex-grow search_writer_modal_content">
+									<div class="flex-grow search_writer_modal_new">
+										<input type="text" class="form-control"
+										placeholder="아티스트명으로 조회하기" name="keyword">
+										<div class="input-group-append">
+											<button class="btn btn-info btn-fw" type="button"
+												id="search_writer_do">조회하기</button>
+										</div>
+									</div>
+								</div>
+								<div>
+									<table class="table" id="search_writer_table">
+										<thead>
+											<tr>
+												<th>No</th>
+												<th></th>
+												<th>아티스트명</th>
+												<th>소속사</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="search_writer_modal_plus" class="search_writer_modal_overlay_plus">
+		<div class="col-md-8 grid-margin stretch-card search_writer_modal_window_plus">
+			<div class="card search_writer_modal_plus">
+				<div class="card-body">
+					<div class="d-flex flex-row justify-content-between">
+						<h3 class="card-title mb-1">작사가 추가 검색</h3>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="preview-list">
+								<div class="preview-item-content d-sm-flex flex-grow search_writer_modal_content">
+									<div class="flex-grow search_writer_modal_new">
+										<input type="text" class="form-control"
+										placeholder="아티스트명으로 조회하기" name="keyword">
+										<div class="input-group-append">
+											<button class="btn btn-info btn-fw" type="button"
+												id="search_writer_do_plus">조회하기</button>
+										</div>
+									</div>
+								</div>
+								<div>
+									<table class="table" id="search_writer_table_plus">
+										<thead>
+											<tr>
+												<th>No</th>
+												<th></th>
+												<th>아티스트명</th>
+												<th>소속사</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="search_composer_modal" class="search_composer_modal_overlay">
+		<div class="col-md-8 grid-margin stretch-card search_composer_modal_window">
+			<div class="card search_composer_modal">
+				<div class="card-body">
+					<div class="d-flex flex-row justify-content-between">
+						<h3 class="card-title mb-1">작곡가 검색</h3>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="preview-list">
+								<div class="preview-item-content d-sm-flex flex-grow search_composer_modal_content">
+									<div class="flex-grow search_composer_modal_new">
+										<input type="text" class="form-control"
+										placeholder="아티스트명으로 조회하기" name="keyword">
+										<div class="input-group-append">
+											<button class="btn btn-info btn-fw" type="button"
+												id="search_composer_do">조회하기</button>
+										</div>
+									</div>
+								</div>
+								<div>
+									<table class="table" id="search_composer_table">
+										<thead>
+											<tr>
+												<th>No</th>
+												<th></th>
+												<th>아티스트명</th>
+												<th>소속사</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="search_composer_modal_plus" class="search_composer_modal_overlay_plus">
+		<div class="col-md-8 grid-margin stretch-card search_composer_modal_window_plus">
+			<div class="card search_composer_modal_plus">
+				<div class="card-body">
+					<div class="d-flex flex-row justify-content-between">
+						<h3 class="card-title mb-1">작곡가 추가 검색</h3>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="preview-list">
+								<div class="preview-item-content d-sm-flex flex-grow search_composer_modal_content">
+									<div class="flex-grow search_composer_modal_new">
+										<input type="text" class="form-control"
+										placeholder="아티스트명으로 조회하기" name="keyword">
+										<div class="input-group-append">
+											<button class="btn btn-info btn-fw" type="button"
+												id="search_composer_do_plus">조회하기</button>
+										</div>
+									</div>
+								</div>
+								<div>
+									<table class="table" id="search_composer_table_plus">
+										<thead>
+											<tr>
+												<th>No</th>
+												<th></th>
+												<th>아티스트명</th>
+												<th>소속사</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script>
 		
 		
@@ -301,90 +561,72 @@ table#search_artist_table_plus a{
 
 		
 		
-		var FlagDate = false;
 		
-		// 발매일 유효성
-		$("input[name=a_date]").on("input", function FxBirth(){
-			var regexDate = /^[0-9]{8}$/;
-			InputDate = $("input[name=a_date]").val();		
-			
-			if (!regexDate.test(InputDate)) {
-				$("#label_a_date").html('발매일* <span id="Span_a_date"><i class="mdi mdi-close"></i> 형식이 맞지 않습니다. ex)YYYYMMDD</span>');
-				FlagDate = false;
-				$("#Span_a_date").css("color", "red");
-			} else {
-				$("#label_a_date").html('발매일* <span id="Span_a_date"><i class="mdi mdi-check"></i></span>');
-				$("#Span_a_date").css("color", "green");
-				FlagDate = true;
-			}
-		})
 		
 		// 필수항목 입력했는지 체크
 	    	$("#insert_btn").on("click", function(){
+	    		$("div.form-group span").html("");
 	    		var checkFlag = false;
+	    		// 노래 이름
+	    		if ($("input[name=s_name]").val() == '') {
+					$("#label_s_name").html('노래 이름* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_s_name").children('span').css("color", "red");
+					$("input[name=s_name]").focus();
+					checkFlag = false;
+					return;
+    			}
 	    		// 앨범명
 	    		if ($("input[name=a_name]").val() == '') {
-					$("#label_a_name").html('앨범이름 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_a_name").html('앨범명* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
 					$("#label_a_name").children('span').css("color", "red");
 					$("input[name=a_name]").focus();
 					checkFlag = false;
 					return;
     			} 
-	    		/* // 아티스트명
-	    		if ($("input[name=artist_name]").val() == '') {
-					$("#label_artist_name").html('아티스트명 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-					$("#label_artist_name").children('span').css("color", "red");
-					$("input[name=artist_name]").focus();
+	    		// 가수명
+	    		if ($("input[name=singer_name]").val() == '') {
+					$("#label_singer_name").html('가수명* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_singer_name").children('span').css("color", "red");
+					$("input[name=singer_name]").focus();
 					checkFlag = false;
-					return;
-    			} */
-	    		// 발매일
-		    	if ($("input[name=a_date]").val() == '') {
-					$("#label_a_date").html('발매일 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-					$("#label_a_date").children('span').css("color", "red");
-					$("input[name=a_date]").focus();
-					checkFlag = false;
-					return;
-    			} 
-    			if(!FlagDate){
-    				$("input[name=a_date]").focus();
-    				checkFlag = false;
 					return;
     			}
-		    	// 발매사
-		    	if ($("input[name=a_publishing]").val() == '') {
-					$("#label_a_publishing").html('발매사 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-					$("#label_a_publishing").children('span').css("color", "red");
-					$("input[name=a_publishing]").focus();
+	    		// 작사가
+	    		if ($("input[name=writer_name]").val() == '') {
+					$("#label_writer_name").html('작사가* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_writer_name").children('span').css("color", "red");
+					$("input[name=writer_name]").focus();
 					checkFlag = false;
 					return;
-    			} 
-		    	// 기획사
-		    	if ($("input[name=a_agency]").val() == '') {
-					$("#label_a_agency").html('기획사 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-					$("#label_a_agency").children('span').css("color", "red");
-					$("input[name=a_agency]").focus();
+    			}
+	    		// 작곡가
+	    		if ($("input[name=composer_name]").val() == '') {
+					$("#label_composer_name").html('작곡가* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_composer_name").children('span').css("color", "red");
+					$("input[name=composer_name]").focus();
 					checkFlag = false;
 					return;
-    			} 
+    			}
 		    	// 앨범소개1
 		    	//var content_textarea = $("textarea[name=a_introduce]")
-		    	if ($("textarea#a_introduce1").val() == '') {
-					$("#label_a_introduce1").html('앨범 소개1 <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-					$("#label_a_introduce1").children('span').css("color", "red");
-					$("textarea#a_introduce1").focus();
+		    	if ($("textarea#s_lyrics1").val() == '') {
+					$("#label_s_lyrics1").html('가사1* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#label_s_lyrics1").children('span').css("color", "red");
+					$("textarea#s_lyrics1").focus();
 					checkFlag = false;
 					return;
     			} 
+		    	// 파일
+		    	if ($("#input-file").val() == '') {
+					$("#LabelProfile").html('음원파일* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#LabelProfile").children('span').css("color", "red");
+					checkFlag = false;
+					return;
+    			}
 		    	checkFlag = true;
 		    	if(checkFlag){
-		    		// controller에서 date type으로 받기 위한 파싱
-		    		var dateY = $("input[name=a_date]").val().substr(0,4);
-		    		var dateM = $("input[name=a_date]").val().substr(4,2);
-		    		var dateD = $("input[name=a_date]").val().substr(6);
-		    		var a_date = dateY + '-' + dateM + '-' + dateD;
-		    		$("input[name=a_date]").val(a_date);
-		    		var confm = confirm("입력한 정보로 앨범을 추가 하시겠습니까?");
+		    		
+		    		var confm = confirm("입력한 정보로 곡을 추가 하시겠습니까?");
 		        	if (confm == false) {
 		        		alert("취소하셨습니다.");
 		        	} else {
@@ -393,6 +635,10 @@ table#search_artist_table_plus a{
 		    	}
 	    	})
 	   
+	    // 앨범 검색
+	    $("#search_album_btn").click(function(){
+	    	$("#search_album_modal").show();
+	    });
 		
 	    /* 아티스트 검색 - modal */
 		$("#search_aritst_btn").click(function() {
@@ -403,7 +649,34 @@ table#search_artist_table_plus a{
 			console.log("추가검색");
 			$("#search_artist_modal_plus").show();
 		});
-	    
+		
+		 /* 작사가 검색 - modal */
+		$("#search_writer_btn").click(function() {
+			$("#search_writer_modal").show();
+		});
+		/* 작사가 추가 검색 - modal */
+		$("#writer_plus").click(function() {
+			console.log("추가검색");
+			$("#search_writer_modal_plus").show();
+		});
+		
+		 /* 작곡가 검색 - modal */
+		$("#search_composer_btn").click(function() {
+			$("#search_composer_modal").show();
+		});
+		/* 작사가 추가 검색 - modal */
+		$("#composer_plus").click(function() {
+			console.log("추가검색");
+			$("#search_composer_modal_plus").show();
+		});
+		
+		// 모달창 끄기 - 앨범 검색
+		search_album_modal.addEventListener("click", e => {
+			const evTarget = e.target
+			if (evTarget.classList.contains("search_album_modal_overlay")) {
+				$("#search_album_modal").hide();
+			}
+		});
 		
 	    // 모달창 끄기 - 아티스트 검색
 		search_artist_modal.addEventListener("click", e => {
@@ -412,13 +685,87 @@ table#search_artist_table_plus a{
 				$("#search_artist_modal").hide();
 			}
 		});
-		 // 모달창 끄기 - 아티스트 추가 검색
+		// 모달창 끄기 - 아티스트 추가 검색
 		search_artist_modal_plus.addEventListener("click", e => {
 			const evTarget = e.target
 			if (evTarget.classList.contains("search_artist_modal_overlay_plus")) {
 				$("#search_artist_modal_plus").hide();
 			}
 		});
+		
+		// 모달창 끄기 - 작사가 검색
+		search_writer_modal.addEventListener("click", e => {
+			const evTarget = e.target
+			if (evTarget.classList.contains("search_writer_modal_overlay")) {
+				$("#search_writer_modal").hide();
+			}
+		});
+		// 모달창 끄기 - 작사가 추가 검색
+		search_writer_modal_plus.addEventListener("click", e => {
+			const evTarget = e.target
+			if (evTarget.classList.contains("search_writer_modal_overlay_plus")) {
+				$("#search_writer_modal_plus").hide();
+			}
+		});
+		
+		// 모달창 끄기 - 작곡가 검색
+		search_composer_modal.addEventListener("click", e => {
+			const evTarget = e.target
+			if (evTarget.classList.contains("search_composer_modal_overlay")) {
+				$("#search_composer_modal").hide();
+			}
+		});
+		// 모달창 끄기 - 작곡가 추가 검색
+		search_composer_modal_plus.addEventListener("click", e => {
+			const evTarget = e.target
+			if (evTarget.classList.contains("search_composer_modal_overlay_plus")) {
+				$("#search_composer_modal_plus").hide();
+			}
+		});
+		
+		// 앨범 검색 - ajax
+		$("#search_album_do").click(function(){
+			
+			$.ajax({
+				url: "<%= request.getContextPath()%>/admin/album.do",
+				type: "get",
+				data : {
+					keyword: $("#search_album_modal input[name=keyword]").val()
+				},
+				dataType: "json",
+				success: function(result) {
+					// 테이블 초기화
+					$('#search_album_table > tbody').empty();
+					var html = "";
+					if(result.length>=1){
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+							html += '<tr onclick="album_submit('+resultData.a_no +',&#39;' + resultData.a_name +'&#39;'+',&#39;'+resultData.a_cover+'&#39;)">';
+							html += '<td>'+resultData.a_no+'</td>';
+							html += '<td>';
+							html += '<img src=" ' + resultData.a_cover +' " alt="image" />';
+							html += '</td>';
+							html += '<td>'+resultData.a_name+'</td>';
+							html += '<td>'+resultData.artist_name+'</td>';
+						}
+					} else {
+						html += '<tr>';
+						html += '<td colspan="4" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>	';
+						html += '</tr>';
+					}
+					
+					$("#search_album_table > tbody").append(html);
+				}
+			}); // ajax 끝
+		});
+		// 모달창 검색 결과에서 선택하기
+		function album_submit(a_no, a_name, a_cover){
+			console.log("클릭했니");
+			$("#search_album_modal").hide();
+			$("input[name=a_name]").val(a_name);
+			$("input[name=a_no]").val(a_no);
+			$("#ImgProfilePre").attr("src", a_cover);
+		}
 		
 		// 아티스트 검색 - ajax
 		$("#search_artist_do").click(function(){
@@ -427,7 +774,7 @@ table#search_artist_table_plus a{
 				url: "<%= request.getContextPath()%>/admin/artist.do",
 				type: "get",
 				data : {
-					keyword: $("input[name=keyword]").val()
+					keyword: $("#search_artist_modal input[name=keyword]").val()
 				},
 				success: function(result) {
 					// 테이블 초기화
@@ -464,11 +811,12 @@ table#search_artist_table_plus a{
 				}
 			}); // ajax 끝
 		});
+		// 모달창 검색 결과에서 선택하기
 		function artist_submit(artist_no, artist_name){
 			console.log("클릭했니");
 			$("#search_artist_modal").hide();
-			$("input[name=artist_name]").val(artist_name);
-			$("input[name=artist_no]").val(artist_no);
+			$("input[name=singer_name]").eq(0).val(artist_name);
+			$("input[name=singer_no]").eq(0).val(artist_no);
 		}
 		
 		// 아티스트 추가 검색 - ajax
@@ -515,19 +863,251 @@ table#search_artist_table_plus a{
 				}
 			}); // ajax 끝
 		});
+		// 모달창 검색 결과에서 선택하기
 		function artist_submit_plus(artist_no, artist_name){
 			var html = "";
 			html += '<div class="form-group">';
-			html += '<label for="artist_name">가수명</label>';
-			html += '<input type="text" class="form-control" name="artist_name" value="'+artist_name+'" readonly>';
-			html += '<input type="hidden" name="artist_no" value="'+artist_no+'">';
+			html += '<label for="singer_name">가수명</label>';
+			html += '<input type="text" class="form-control" name="singer_name" value="'+artist_name+'" readonly>';
+			html += '<input type="hidden" name="singer_no" value="'+artist_no+'">';
 			html += '<button type="button" class="btn btn-info btn-fw delete_aritst_btn">삭제</button>'
 			html += '</div>';
 			$("div.writer_name").before(html);
+			$("#search_artist_modal_plus").hide();
 		}
+		// 동적으로 생긴 삭제 버튼에 이벤트 걸기
 		$(document).on("click", ".delete_aritst_btn", function() {
 			$(this).closest("div.form-group").remove();
 		});
+		
+		// 작사가 검색 - ajax
+		$("#search_writer_do").click(function(){
+			
+			$.ajax({
+				url: "<%= request.getContextPath()%>/admin/artist.do",
+				type: "get",
+				data : {
+					keyword: $("#search_writer_modal input[name=keyword]").val()
+				},
+				success: function(result) {
+					// 테이블 초기화
+					$('#search_writer_table > tbody').empty();
+					var html = "";
+					if(result.length>=1){
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+							html += '<tr onclick="writer_submit('+resultData.artist_no +',&#39;' + resultData.artist_name +'&#39;)">';
+							html += '<td>'+resultData.artist_no+'</td>';
+							html += '<td>';
+							if(resultData.artist_profile != null){
+								html += '<img src=" ' + resultData.artist_profile +' " alt="image" />';
+							}
+							else if(resultData.artist_profile==null){
+								html += '<img src=" ' + "<%=request.getContextPath()%>/resources/assets/images/artist.png" +' " alt="image" />';
+							}
+							html += '</td>';
+							html += '<td>'+resultData.artist_name+'</td>';
+							if(resultData.artist_company != null){
+								html += '<td>'+resultData.artist_company+'</td>';
+							}
+							else if(resultData.artist_company==null){
+								html += '<td>(정보없음)</td>';
+							}
+						}
+					} else {
+						html += '<tr>';
+						html += '<td colspan="4" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>	';
+						html += '</tr>';
+					}
+					
+					$("#search_writer_table > tbody").append(html);
+				}
+			}); // ajax 끝
+		});
+		// 모달창 검색 결과에서 선택하기
+		function writer_submit(artist_no, artist_name){
+			console.log("클릭했니");
+			$("#search_writer_modal").hide();
+			$("input[name=writer_name]").eq(0).val(artist_name);
+			$("input[name=writer_no]").eq(0).val(artist_no);
+		}
+		
+		// 작사가 추가 검색 - ajax
+		$("#search_writer_do_plus").click(function(){
+			
+			$.ajax({
+				url: "<%= request.getContextPath()%>/admin/artist.do",
+				type: "get",
+				data : {
+					keyword: $("#search_writer_modal_plus input[name=keyword]").val()
+				},
+				success: function(result) {
+					// 테이블 초기화
+					$('#search_writer_table_plus > tbody').empty();
+					var html = "";
+					if(result.length>=1){
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+							html += '<tr onclick="writer_submit_plus('+resultData.artist_no +',&#39;' + resultData.artist_name +'&#39;)">';
+							html += '<td>'+resultData.artist_no+'</td>';
+							html += '<td>';
+							if(resultData.artist_profile != null){
+								html += '<img src=" ' + resultData.artist_profile +' " alt="image" />';
+							}
+							else if(resultData.artist_profile==null){
+								html += '<img src=" ' + "<%=request.getContextPath()%>/resources/assets/images/artist.png" +' " alt="image" />';
+							}
+							html += '</td>';
+							html += '<td>'+resultData.artist_name+'</td>';
+							if(resultData.artist_company != null){
+								html += '<td>'+resultData.artist_company+'</td>';
+							}
+							else if(resultData.artist_company==null){
+								html += '<td>(정보없음)</td>';
+							}
+						}
+					} else {
+						html += '<tr>';
+						html += '<td colspan="4" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>	';
+						html += '</tr>';
+					}
+					
+					$("#search_writer_table_plus > tbody").append(html);
+				}
+			}); // ajax 끝
+		});
+		// 모달창 검색 결과에서 선택하기
+		function writer_submit_plus(artist_no, artist_name){
+			var html = "";
+			html += '<div class="form-group">';
+			html += '<label for="writer_name">작사가</label>';
+			html += '<input type="text" class="form-control" name="writer_name" value="'+artist_name+'" readonly>';
+			html += '<input type="hidden" name="writer_no" value="'+artist_no+'">';
+			html += '<button type="button" class="btn btn-info btn-fw delete_aritst_btn">삭제</button>'
+			html += '</div>';
+			$("div.composer_name").before(html);
+			$("#search_writer_modal_plus").hide();
+		}
+		// 동적으로 생긴 삭제 버튼에 이벤트 걸기
+		$(document).on("click", ".delete_aritst_btn", function() {
+			$(this).closest("div.form-group").remove();
+		});
+		
+		
+		// 작곡가 검색 - ajax
+		$("#search_composer_do").click(function(){
+			
+			$.ajax({
+				url: "<%= request.getContextPath()%>/admin/artist.do",
+				type: "get",
+				data : {
+					keyword: $("#search_composer_modal input[name=keyword]").val()
+				},
+				success: function(result) {
+					// 테이블 초기화
+					$('#search_composer_table > tbody').empty();
+					var html = "";
+					if(result.length>=1){
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+							html += '<tr onclick="composer_submit('+resultData.artist_no +',&#39;' + resultData.artist_name +'&#39;)">';
+							html += '<td>'+resultData.artist_no+'</td>';
+							html += '<td>';
+							if(resultData.artist_profile != null){
+								html += '<img src=" ' + resultData.artist_profile +' " alt="image" />';
+							}
+							else if(resultData.artist_profile==null){
+								html += '<img src=" ' + "<%=request.getContextPath()%>/resources/assets/images/artist.png" +' " alt="image" />';
+							}
+							html += '</td>';
+							html += '<td>'+resultData.artist_name+'</td>';
+							if(resultData.artist_company != null){
+								html += '<td>'+resultData.artist_company+'</td>';
+							}
+							else if(resultData.artist_company==null){
+								html += '<td>(정보없음)</td>';
+							}
+						}
+					} else {
+						html += '<tr>';
+						html += '<td colspan="4" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>	';
+						html += '</tr>';
+					}
+					
+					$("#search_composer_table > tbody").append(html);
+				}
+			}); // ajax 끝
+		});
+		// 모달창 검색 결과에서 선택하기
+		function composer_submit(artist_no, artist_name){
+			console.log("클릭했니");
+			$("#search_composer_modal").hide();
+			$("input[name=composer_name]").eq(0).val(artist_name);
+			$("input[name=composer_no]").eq(0).val(artist_no);
+		}
+		
+		// 작곡가 추가 검색 - ajax
+		$("#search_composer_do_plus").click(function(){
+			
+			$.ajax({
+				url: "<%= request.getContextPath()%>/admin/artist.do",
+				type: "get",
+				data : {
+					keyword: $("#search_composer_modal_plus input[name=keyword]").val()
+				},
+				success: function(result) {
+					// 테이블 초기화
+					$('#search_composer_table_plus > tbody').empty();
+					var html = "";
+					if(result.length>=1){
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+							html += '<tr onclick="composer_submit_plus('+resultData.artist_no +',&#39;' + resultData.artist_name +'&#39;)">';
+							html += '<td>'+resultData.artist_no+'</td>';
+							html += '<td>';
+							if(resultData.artist_profile != null){
+								html += '<img src=" ' + resultData.artist_profile +' " alt="image" />';
+							}
+							else if(resultData.artist_profile==null){
+								html += '<img src=" ' + "<%=request.getContextPath()%>/resources/assets/images/artist.png" +' " alt="image" />';
+							}
+							html += '</td>';
+							html += '<td>'+resultData.artist_name+'</td>';
+							if(resultData.artist_company != null){
+								html += '<td>'+resultData.artist_company+'</td>';
+							}
+							else if(resultData.artist_company==null){
+								html += '<td>(정보없음)</td>';
+							}
+						}
+					} else {
+						html += '<tr>';
+						html += '<td colspan="4" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>	';
+						html += '</tr>';
+					}
+					
+					$("#search_composer_table_plus > tbody").append(html);
+				}
+			}); // ajax 끝
+		});
+		// 모달창 검색 결과에서 선택하기
+		function composer_submit_plus(artist_no, artist_name){
+			var html = "";
+			html += '<div class="form-group">';
+			html += '<label for="composer_name">작곡가</label>';
+			html += '<input type="text" class="form-control" name="composer_name" value="'+artist_name+'" readonly>';
+			html += '<input type="hidden" name="composer_no" value="'+artist_no+'">';
+			html += '<button type="button" class="btn btn-info btn-fw delete_aritst_btn">삭제</button>'
+			html += '</div>';
+			$("div.lyrics").before(html);
+			$("#search_composer_modal_plus").hide();
+		}
+		// 동적으로 생긴 삭제 버튼에 이벤트 걸기
+		$(document).on("click", ".delete_aritst_btn", function() {
+			$(this).closest("div.form-group").remove();
+		});
+		
+		
 	</script>
 	
 
