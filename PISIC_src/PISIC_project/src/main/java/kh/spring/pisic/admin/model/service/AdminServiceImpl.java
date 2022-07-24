@@ -100,4 +100,23 @@ public class AdminServiceImpl implements AdminService{
 		return dao.insertSound(sound, singer_noArr, writer_noArr, composer_noArr);
 	}
 
+	// 곡 수정하기 - 곡 조회
+	@Override
+	public Sound selectSound(Sound sound) {
+		return dao.selectSound(sound);
+	}
+
+	// 곡 수정
+	@Override
+	@Transactional
+	public int updateSound(Sound sound, int[] singer_noArr, int[] writer_noArr, int[] composer_noArr) {
+		dao.deleteSinger(sound);
+		dao.insertSinger(sound, singer_noArr);
+		dao.deleteWriter(sound);
+		dao.insertWriter(sound, writer_noArr);
+		dao.deleteComposer(sound);
+		dao.insertComposer(sound, composer_noArr);
+		return dao.updateSound(sound);
+	}
+
 }

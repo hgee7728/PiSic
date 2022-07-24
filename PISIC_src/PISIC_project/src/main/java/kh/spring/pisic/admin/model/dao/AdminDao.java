@@ -90,5 +90,52 @@ public class AdminDao {
 		return session.insert("Admin.insertSound", map);
 	}
 
+	// 곡 수정하기 - 곡 조회
+	public Sound selectSound(Sound sound) {
+		return session.selectOne("Admin.selectSound", sound);
+	}
 	
+	// 곡 수정하기 - 가수 삭제
+	public int deleteSinger(Sound sound) {
+		return session.delete("Admin.deleteSinger", sound);
+	}
+	
+	// 곡 수정하기 - 가수 삽입
+	public int insertSinger(Sound sound, int[] singer_noArr) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("sound", sound);
+		map.put("singers", singer_noArr);
+		return session.delete("Admin.insertSinger", map);
+	}
+	
+	// 곡 수정하기 - 작사가 삭제
+	public int deleteWriter(Sound sound) {
+		return session.delete("Admin.deleteWriter", sound);
+	}
+	
+	// 곡 수정하기 - 작사가 삽입
+	public int insertWriter(Sound sound, int[] writer_noArr) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("sound", sound);
+		map.put("writers", writer_noArr);
+		return session.delete("Admin.insertWriter", map);
+	}
+	
+	// 곡 수정하기 - 작곡가 삭제
+	public int deleteComposer(Sound sound) {
+		return session.delete("Admin.deleteComposer", sound);
+	}
+	
+	// 곡 수정하기 - 작곡가 삽입
+	public int insertComposer(Sound sound, int[] composer_noArr) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("sound", sound);
+		map.put("composers", composer_noArr);
+		return session.delete("Admin.insertComposer", map);
+	}
+	
+	// 앨범 정보 수정
+	public int updateSound(Sound sound) {
+		return session.update("Admin.updateSound", sound);
+	}
 }

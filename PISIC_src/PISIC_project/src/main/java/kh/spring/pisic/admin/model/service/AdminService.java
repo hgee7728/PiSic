@@ -22,4 +22,6 @@ public interface AdminService {
 	public List<Sound> selectSoundList();
 	public List<Sound> selectSearchSoundList(String keyword);
 	public int insertSound(Sound sound, int[] singer_noArr, int[] writer_noArr, int[] composer_noArr);
+	public Sound selectSound(Sound sound);
+	public int updateSound(Sound sound, int[] singer_noArr, int[] writer_noArr, int[] composer_noArr);
 }

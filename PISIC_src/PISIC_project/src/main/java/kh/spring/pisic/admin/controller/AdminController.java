@@ -200,7 +200,7 @@ public class AdminController {
 		return mv;
 	}
 
-	// 앨범 수정 페이지로 이동
+	// 앨범 수정
 	@PostMapping("/updateAlbum")
 	public ModelAndView updateAlbum(ModelAndView mv, Album album, RedirectAttributes rttr) {
 
@@ -348,7 +348,78 @@ public class AdminController {
 		
 		return mv;
 	}
+	// 곡 수정 페이지로 이동
+	@GetMapping("/updateSound")
+	public ModelAndView pageUpdateSound(ModelAndView mv, Sound sound) {
+
+		mv.addObject("sound", service.selectSound(sound));
+		mv.setViewName("admin/updateSound");
+		return mv;
+	}
+
+	// 곡 수정
+	@PostMapping("/updateSound")
+	public ModelAndView updateSound(ModelAndView mv, Sound sound
+			, @RequestParam(name="singer_no", required = false) int[] singer_noArr
+			, @RequestParam(name="writer_no", required = false) int[] writer_noArr
+			, @RequestParam(name="composer_no", required = false) int[] composer_noArr
+			, @RequestParam(name = "upload_sound", required = false) MultipartFile multiFile
+			, HttpServletRequest request
+			, RedirectAttributes rttr) {
+
+		// cloudinary 사용을 위해 등록(properties 파일 이용)
+		Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap("cloud_name", cloud_name, "api_key", api_key,
+				"api_secret", api_secret, "secure", true));
+		// 파일이 저장될 폴더 이름
+		String fileSavePath = "upload";
+		// 업로드 될 경로
+		String uploadPath = request.getSession().getServletContext().getRealPath(fileSavePath);
+		System.out.println("uploadPath: " + uploadPath);
+
+		// metadata안 폴더 만들기
+		File folder = new File(uploadPath);
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
+		String orgFileName = multiFile.getOriginalFilename(); // 전송되어오기전 client에서 파일이름
+		String type = multiFile.getContentType(); // 전송된 파일의 타입
+		System.out.println("오리지날 네임:" + orgFileName);
+		System.out.println("type: " + type);
+
+		// metadata 안에 파일 저장
+		try {
+			multiFile.transferTo(new File(uploadPath + "/" + orgFileName));
+		} catch (IllegalStateException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		// 저장된 파일 가지고 cloudinary에 저장
+		File newFile = new File(uploadPath + "/" + orgFileName);
+		@SuppressWarnings("rawtypes")
+		Map uploadResult = null;
+		try {
+			uploadResult = cloudinary.uploader().upload(newFile, ObjectUtils.asMap("public_id",
+					orgFileName.replace(".mp3", ""), "folder", "upload", "resource_type", "auto"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		
+		// cloudinary에 저장된 url
+		String url = (String) uploadResult.get("url");
+		System.out.println("url: " + url);
+		
+		sound.setS_path(url);
+		if (service.updateSound(sound, singer_noArr, writer_noArr, composer_noArr) < 1) { // 변경 실패
+			rttr.addFlashAttribute("msg", "곡 정보 변경에 실패했습니다.");
+		} else { // 변경 성공
+			rttr.addFlashAttribute("msg", "곡 정보를 변경했습니다.");
+		}
+		mv.setViewName("redirect:/admin/sound");
+		return mv;
+	}
 	
 		
 	@GetMapping("/test")

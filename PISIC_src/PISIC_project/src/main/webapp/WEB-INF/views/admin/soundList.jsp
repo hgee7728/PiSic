@@ -155,7 +155,7 @@ $(function(){
 						html += '			<input type="hidden" value='+resultData.a_no+' name="a_no">		';
 						html += '			</div>									';
 						html += '		</td>										';
-						html += '		<td> ' + i + ' </td>			';
+						html += '		<td> ' + (i+1) + ' </td>			';
 						html += '		<td>										';
 						html += '					<img src=" ' + resultData.a_cover +' " alt="image" />		';
 						html += '		</td>										';
@@ -163,7 +163,8 @@ $(function(){
 						html += '<td>';
 						for(var j = 0 ; j < resultData.singers.length ; j ++){
 							var resultData2 = resultData.singers[j]
-							html += resultData2.artist_name 
+							html += resultData2.artist_name ;
+							html += " ";
 						}
 						html += '</td>';
 						html += '		<td> '+ resultData.a_name + ' </td>	';
@@ -398,7 +399,7 @@ function updateSound(a_no, s_no){
 													<div class="select_btns">
 														<button type="button" 
 															class="btn btn-info btn-fw update_sound_btn"
-															onclick="location.href='<%=request.getContextPath() %>/admin/updatesound?a_no=${sound.a_no }'">
+															onclick="location.href='<%=request.getContextPath() %>/admin/updateSound?a_no=${sound.a_no }&s_no=${sound.s_no}'">
 															수정</button>
 													</div>
 												</td>
