@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +38,7 @@ import kh.spring.pisic.sound.domain.PlayInfo;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
 import kh.spring.pisic.sound.model.service.SoundService;
+import kh.spring.pisic.weather.util.Region;
 
 @Controller
 @RequestMapping("/sound")
@@ -235,13 +238,28 @@ public class SoundController {
 	public String insertPalyInfo(
 			PlayInfo playInfo
 			, Authentication auth
-			) {
+			, String currentLat
+			, String currentLon
+			) throws Throwable {
 		//TODO 로그인 여부
 		UserDetails ud = (UserDetails)auth.getPrincipal();
 		playInfo.setM_id(ud.getUsername());
 		
-		// TODO 위치 정보 담기
-//		playInfo.setArea_code(0);
+		// 위치 정보 담기
+		Region region = new Region();
+		
+		JSONObject area_name = null;
+		try {
+			area_name = region.lookUpAddress(currentLat, currentLon);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(area_name);
+		
+		
+		
+		
+
 		
 		
 		// TODO 날씨 정보 담기

@@ -89,6 +89,8 @@ const root_path = '<%=request.getContextPath() %>';
 
 let header = $("meta[name='_csrf_header']").attr('th:content');
 let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
 
 $(function(){
 	var msg = '${msg}';

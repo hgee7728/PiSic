@@ -253,7 +253,7 @@ select * from (SELECT *
 		, #{s_no}
 		, #{a_no}
 		, #{m_id}
-		, #{area_code}
+		, (select area_code from area where area_name=#{area_name})
 		, default
 		, #{sky}
 		, #{pty}

@@ -399,6 +399,7 @@ function goInsertPlayinfo(){
 </style>
 </head>
 <body>
+
 <div id="jp_container_N" class="jp-video jp-video-270p" role="application" aria-label="media player">
 	<div class="jp-type-playlist">
 		<div id="jquery_jplayer_N" class="jp-jplayer"></div>
@@ -454,6 +455,7 @@ function goInsertPlayinfo(){
 			<input type="hidden" name="id" id="sid" value="aaa">
 			<button type="button" id="btn">테스트버튼</button>
 			<button type="button" id="current_name">현재곡 뭐야</button>
+			
 </body>
 
 

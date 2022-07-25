@@ -44,15 +44,19 @@
 	white-space: nowrap;
 }
 </style>
+<script>
+
+
+</script>
 </head>
 <body>
 
-	<h1>
+	<h5>
 		위도 : <span id="latitude"></span>
-	</h1>
-	<h1>
+	</h5>
+	<h5>
 		경도 : <span id="longitude"></span>
-	</h1>
+	</h5>
 
 	<hr>
 
@@ -120,10 +124,10 @@
 					status) {
 				if (status === kakao.maps.services.Status.OK) {
 					var detailAddr = !!result[0].road_address ? '<div>도로명주소 : '
-							+ result[0].road_address.address_name + '</div>'
+							+ result[0].road_address.region_2depth_name + '</div>'
 							: '';
 					detailAddr += '<div>지번 주소 : '
-							+ result[0].address.address_name + '</div>';
+							+ result[0].address.region_2depth_name + '</div>';
 
 					var content = '<div class="bAddr">'
 							+ '<span class="title">법정동 주소정보</span>'
@@ -164,10 +168,12 @@
 				for (var i = 0; i < result.length; i++) {
 					// 행정동의 region_type 값은 'H' 이므로
 					if (result[i].region_type === 'H') {
-						infoDiv.innerHTML = result[i].address_name;
+						infoDiv.innerHTML = result[i].region_2depth_name;
 						break;
 					}
 				}
+				console.log(result[i].region_2depth_name);
+				var address2 = result[i].region_2depth_name;
 			}
 		}
 	</script>
