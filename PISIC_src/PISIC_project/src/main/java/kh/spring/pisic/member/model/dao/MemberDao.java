@@ -62,7 +62,7 @@ public class MemberDao {
 		return session.update("Member.updateMyInfo", member);
 	}
 	
-	public Member selectLoginMember(String username) {
-		return session.selectOne("Member.selectLoginMember", username);
+	public Member selectLoginMember(String m_id) {
+		return session.selectOne("Member.selectLoginMember", m_id);
 	}
 }

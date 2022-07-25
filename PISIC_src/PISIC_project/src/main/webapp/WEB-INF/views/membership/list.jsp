@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+	<meta name="_csrf" th:content="${_csrf.token}">
     <title>Corona Admin</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -24,8 +27,14 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
   </head>
   <body>
+    <sec:authentication property="principal.m_id" var="m_id"/>
+    <sec:authentication property="principal.m_name" var="m_name"/>
+    <sec:authentication property="principal.m_nickname" var="m_nickname"/>
+    <sec:authentication property="principal.m_email" var="m_email"/>
+    <sec:authentication property="principal.m_phone" var="m_phone"/>
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.html -->
       <jsp:include page="../_sidebar.jsp" />
@@ -69,7 +78,7 @@
                               </div>
                               <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                 <p class="text-muted">${membershipList.ms_price}</p>
-                                <p class="text-muted mb-0">${membershipList.ms_period}</p>
+                                <input type="button" class="InputPurchase btn btn-info btn-fw" value="구매">
                               </div>
                             </div>
                           </div>
@@ -165,6 +174,74 @@
             $("#icon-wrapper #icon:nth-child(5n+3)").html('<div class="preview-icon bg-info"><i class="mdi mdi-clock"></i></div>');
             $("#icon-wrapper #icon:nth-child(5n+4)").html('<div class="preview-icon bg-danger"><i class="mdi mdi-email-open"></i></div>');
             $("#icon-wrapper #icon:nth-child(5n+5)").html('<div class="preview-icon bg-warning"><i class="mdi mdi-chart-pie"></i></div>');
+            
+            var IMP = window.IMP;
+            var code = "imp39912594";
+            IMP.init(code);
+            
+            var mId = "${m_id}";
+            var mName = "${m_name}";
+            var mNickname = "${m_nickname}";
+            var mEmail = "${m_email}";
+            var mPhone = "${m_phone}";
+            var remPhone = mPhone.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
+            
+    		var header = $("meta[name='_csrf_header']").attr('th:content');
+    		var token = $("meta[name='_csrf']").attr('th:content');
+			console.log(header);
+			console.log(token);
+            
+            $(".InputPurchase").on("click", function(){
+    	    	var price = $(this).prev().text();
+    	    	var pname = $(this).parent().prev().children(".preview-subject").text();
+    	    	console.log(pname);
+    	    	console.log(price);
+    	    	
+    	    	IMP.request_pay({
+    	    		pg : 'html5_inicis',
+    	    		pay_method : 'card',
+    	    		merchant_uid: "merchant_" + new Date().getTime(),
+    	    		name : pname,
+    	    		amount : price,
+    	    		buyer_email : mEmail,
+    	    		buyer_name : mName,
+    	    		buyer_tel : remPhone
+    	    	}, function (rsp) { // callback
+    	    		// 결제 성공
+    	            if (rsp.success) {
+	    	            $.ajax({
+		    	            url: "<%=request.getContextPath()%>/membership/payments/complete",
+		    	            type: 'POST',
+	    					beforeSend: function(xhr){
+	    				        xhr.setRequestHeader(header, token);
+	    				    },
+		    	            dataType: 'json',
+		    	            data: {
+		    	            	imp_uid : rsp.imp_uid,
+		    	            	merchant_uid: rsp.merchant_uid,
+		    	        		m_id : mId
+	    	        		}
+	    	            }).done(function(data) {
+	    	            	if (everythings_fine) {
+	    	            		var msg = '결제가 완료되었습니다.';
+	    	            		msg += '\n고유ID : ' + rsp.imp_uid;
+	    	        			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+	    	        			msg += '\결제 금액 : ' + rsp.paid_amount;
+	    	        			msg += '카드 승인번호 : ' + rsp.apply_num;
+	    	        			alert(msg);
+	    	            	} else {
+	    	            		var msg = '결제가 제대로 되지 않았습니다.';
+	    	            		alert(msg);
+	    	            	}
+	    	            })
+    	            // 결제 실패  
+    	            } else {
+    	               var msg = '결제에 실패하였습니다.';
+    	               msg += '에러내용 : ' + rsp.error_msg;
+    	               alert(msg);
+    	            }
+    	        });
+        	})
     	});
     </script>
     <!-- container-scroller -->

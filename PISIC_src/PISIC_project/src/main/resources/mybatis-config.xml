@@ -15,11 +15,12 @@
 	<typeAlias type="kh.spring.pisic.sound.domain.AssociationAS" alias="AssociationAS"/>
 	<typeAlias type="kh.spring.pisic.mymusic.domain.MyMusic" alias="MyMusic"/>
 	<typeAlias type="kh.spring.pisic.sound.domain.PlayInfo" alias="PlayInfo"/>
- 	<typeAlias type="kh.spring.pisic.faq.domain.FaqBoard" alias="FaqBoard"/>
+ 	<typeAlias type="kh.spring.pisic.faq.domain.FaqBoard" alias="faqBoard"/>
  	<typeAlias type="kh.spring.pisic.pjboard.domain.PjBoard" alias="PjBoard"/>
  	<typeAlias type="kh.spring.pisic.qna.domain.QnaBoard" alias="QnaBoard"/>
  	<typeAlias type="kh.spring.pisic.sound.domain.SoundRecomment" alias="SoundRecomment"/>
  	<typeAlias type="kh.spring.pisic.membership.domain.Membership" alias="Membership"/>
+ 	<typeAlias type="kh.spring.pisic.springsecurity.domain.CustomUserDetails" alias="CustomUserDetails"/>
 </typeAliases>
 <mappers>
 	<mapper resource="mappers/member-mapper.xml"/>
@@ -33,5 +34,6 @@
 	<mapper resource="mappers/qnaBoard-mapper.xml"/>
 	<mapper resource="mappers/admin-mapper.xml"/>
 	<mapper resource="mappers/membership-mapper.xml"/>
+	<mapper resource="mappers/security-mapper.xml"/>
 </mappers>
 </configuration>

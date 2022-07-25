@@ -4,6 +4,7 @@ import java.util.List;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.sound.domain.Sound;
+import kh.spring.pisic.springsecurity.domain.CustomUserDetails;
 
 public interface MemberService {
 	
@@ -31,5 +32,15 @@ public interface MemberService {
 	
 	public int updateMyInfo(Member member);
 	
-	public Member selectLoginMember(String username);
+	public Member selectLoginMember(String m_id);
+	
+
+	public int updateFailureCount(String username);
+
+	public int selectFailureCount(String username);
+
+	public int updateDisabled(String username);
+
+	public int updateFailureCountReset(String username);
+
 }

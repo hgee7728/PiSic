@@ -83,6 +83,7 @@
                     <form id="insertForm" class="forms-sample" action="<%=request.getContextPath() %>/join" method="post">
                       <!-- csrf 공격 방지 -->
                       <input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+                      <input type="hidden" id="InputPlatform" name="m_platform" value="PISIC">
                       <div class="form-group">
                       	<label id="LabelId" for="InputId">아이디 *</label>
                       	<input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
@@ -191,7 +192,7 @@
                             <button id="BtnProfile" class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
                           </span>
                         </div>
-                        <input type="hidden" id="InputProfile" name="m_profile">
+                        <input type="hidden" id="InputProfile" name="m_profile" value="https://ucarecdn.com/e74efb19-1f51-4b3c-9ef5-5bb12c8d86ce/">
                         <input type="hidden" id="InputProfileUC" role="uploadcare-uploader" 
                             data-public-key="183400fad159d76bdf53" data-tabs="file gdrive gphotos"/>
                       </div>

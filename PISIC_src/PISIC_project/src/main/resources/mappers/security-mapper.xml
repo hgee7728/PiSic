@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Security">
+	<select id="selectCustomUserDetails" parameterType="string" resultType="CustomUserDetails">
+		<![CDATA[
+			SELECT *
+			FROM member
+			WHERE m_id = #{m_id}
+		]]>
+	</select>
+	<select id="selectFailureCount" parameterType="string" resultType="_int">
+		<![CDATA[
+			SELECT m_fail_cnt
+			FROM member
+			WHERE m_id = #{m_id}
+		]]>
+	</select>
+	<update id="updateFailureCount" parameterType="string">
+		<![CDATA[
+			UPDATE member
+			SET m_fail_cnt = m_fail_cnt + 1
+			WHERE m_id = #{m_id}
+		]]>
+	</update>
+	<update id="updateDisabled" parameterType="string">
+		<![CDATA[
+			UPDATE member
+			SET m_enabled = 0
+			WHERE m_id = #{m_id}
+		]]>
+	</update>
+	<update id="updateFailureCountReset" parameterType="string">
+		<![CDATA[
+			UPDATE member
+			SET m_fail_cnt = 0
+			WHERE m_id = #{m_id}
+		]]>
+	</update>
+</mapper>

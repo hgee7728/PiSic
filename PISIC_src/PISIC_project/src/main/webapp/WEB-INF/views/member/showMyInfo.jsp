@@ -64,7 +64,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">아이디</label>
                             <div class="col-sm-9">
-                              <input class="form-control file-upload-info" value="${loginSsInfo.m_id}" readonly>
+                              <input class="form-control file-upload-info" value="${member.m_id}" readonly>
                             </div>
                           </div>
                         </div>
@@ -72,7 +72,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">플랫폼</label>
                             <div class="col-sm-9">
-                              <input class="form-control file-upload-info" value="${loginSsInfo.m_platform}" readonly>
+                              <input class="form-control file-upload-info" value="${member.m_platform}" readonly>
                             </div>
                           </div>
                         </div>
@@ -82,7 +82,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">이름</label>
                             <div class="col-sm-9">
-                              <input class="form-control file-upload-info" value="${loginSsInfo.m_name}" readonly>
+                              <input class="form-control file-upload-info" value="${member.m_name}" readonly>
                             </div>
                           </div>
                         </div>
@@ -90,7 +90,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">닉네임</label>
                             <div class="col-sm-9">
-                              <input class="form-control file-upload-info" value="${loginSsInfo.m_nickname}" readonly>
+                              <input class="form-control file-upload-info" value="${member.m_nickname}" readonly>
                             </div>
                           </div>
                         </div>
@@ -100,7 +100,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">이메일</label>
                             <div class="col-sm-9">
-                              <input class="form-control file-upload-info" value="${loginSsInfo.m_email}" readonly>
+                              <input class="form-control file-upload-info" value="${member.m_email}" readonly>
                             </div>
                           </div>
                         </div>
@@ -108,7 +108,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">휴대전화</label>
                             <div class="col-sm-9">
-                              <input class="form-control file-upload-info" value="${loginSsInfo.m_phone}" readonly>
+                              <input class="form-control file-upload-info" value="${member.m_phone}" readonly>
                             </div>
                           </div>
                         </div>
@@ -118,7 +118,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">생년월일</label>
                             <div class="col-sm-9">
-                              <input class="form-control file-upload-info" value="${loginSsInfo.m_birth}" readonly>
+                              <input class="form-control file-upload-info" value="${member.m_birth}" readonly>
                             </div>
                           </div>
                         </div>
@@ -143,7 +143,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">주소</label>
                             <div class="col-sm-9">
-                              <input class="form-control file-upload-info" value="${loginSsInfo.m_address}" readonly>
+                              <input class="form-control file-upload-info" value="${member.m_address}" readonly>
                             </div>
                           </div>
                         </div>
@@ -151,7 +151,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">상세주소</label>
                             <div class="col-sm-9">
-                              <input class="form-control file-upload-info" value="${loginSsInfo.m_address_detail}" readonly>
+                              <input class="form-control file-upload-info" value="${member.m_address_detail}" readonly>
                             </div>
                           </div>
                         </div>
@@ -161,7 +161,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">가입일자</label>
                             <div class="col-sm-9">
-                              <input class="form-control file-upload-info" value="${loginSsInfo.m_date}" readonly>
+                              <input class="form-control file-upload-info" value="${member.m_date}" readonly>
                             </div>
                           </div>
                         </div>

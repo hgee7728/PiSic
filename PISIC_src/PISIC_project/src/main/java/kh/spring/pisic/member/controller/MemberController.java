@@ -17,6 +17,9 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -216,13 +219,25 @@ public class MemberController {
     }
 	
 	@GetMapping("/showMyInfo")
-	public String pageShowMyInfo() {
-		return "member/showMyInfo";
+	public ModelAndView pageShowMyInfo(
+			ModelAndView mv
+			, Authentication auth) {
+		// 현재 사용자 id
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		String uid = ud.getUsername();
+		
+		Member member = service.selectLoginMember(uid);
+		System.out.println("==========================================" + member);
+		
+		mv.addObject("member", member);
+		mv.setViewName("member/showMyInfo");
+		return mv;
 	}
 	
 	@GetMapping("/updateMyInfo")
 	public ModelAndView pageUpdateMyInfo(
 			ModelAndView mv) {
+		
 		mv.setViewName("member/updateMyInfo");
 		return mv;
 	}

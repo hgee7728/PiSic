@@ -221,6 +221,11 @@
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.11.0</version>
 		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.dataformat</groupId>
+		    <artifactId>jackson-dataformat-xml</artifactId>
+		    <version>2.11.0</version>
+		</dependency>
 		<dependency> 
 		    <groupId>org.codehaus.jackson</groupId> 
 		    <artifactId>jackson-mapper-asl</artifactId> 
@@ -265,17 +270,35 @@
 		    <version>1.32.2</version>
 		</dependency>
 		<dependency>
-	            <groupId>com.cloudinary</groupId>
-	            <artifactId>cloudinary-taglib</artifactId>
-	            <version>1.14.0</version>
-	        </dependency>
-	
-	        <!-- uploadcare -->
-	        <dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-taglib</artifactId>
+			<version>1.14.0</version>
+		</dependency>
+
+		<!-- uploadcare -->
+		<dependency>
 			<groupId>com.uploadcare</groupId>
 			<artifactId>uploadcare</artifactId>
 			<version>3.5.1</version>
 		</dependency>
+		
+		<!-- ScribeJava -->
+		<!-- scribejava-apis -->
+		<dependency>
+		    <groupId>com.github.scribejava</groupId>
+		    <artifactId>scribejava-apis</artifactId>
+		    <version>8.3.1</version>
+		    <scope>runtime</scope>
+		</dependency>
+		
+		<!-- scribejava-core -->
+		<dependency>
+		    <groupId>com.github.scribejava</groupId>
+		    <artifactId>scribejava-core</artifactId>
+		    <version>8.3.1</version>
+		</dependency>
+		
+		
 		
 	</dependencies>
     <build>

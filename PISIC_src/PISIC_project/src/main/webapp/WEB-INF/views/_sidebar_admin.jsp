@@ -22,29 +22,26 @@
           		<img class="img-xs rounded-circle " src="<%=request.getContextPath()%>/resources/assets/images/favicon.png" alt="">
           	</sec:authorize>
           	<sec:authorize access="isAuthenticated()">
-          		<sec:authentication property="principal.m_profile" var="m_profile"/>
-          		<img class="img-xs rounded-circle " src="${m_profile }" alt="">
+          		<img class="img-xs rounded-circle " src="${loginSsInfo.m_profile}" alt="">
           	</sec:authorize>
             <span class="count bg-success"></span>
           </div>
           <div class="profile-name">
 	        <sec:authorize access="isAuthenticated()">
-	        	<sec:authentication property="principal.m_nickname" var="m_nickname"/>
 	        	<h5 class="mb-0 font-weight-normal">
-	        		${m_nickname }
+	        	<sec:authentication property="principal.username"/>
 	        	</h5>
-	        	<sec:authorize access="hasRole('ROLE_MEMBER')">
-	        		<sec:authentication property="principal.m_membership_yn" var="m_membership_yn"/>
-	        		<c:if test="${m_membership_yn eq 'N'}">
-	        			<span>General Member</span>
+	        	<c:if test="${loginSsInfo.m_grade eq 1}">
+	        		<c:if test="${loginSsInfo.m_membership_yn eq 'N'}">
+	        			<span>General Membership</span>
 	        		</c:if>
-	        		<c:if test="${m_membership_yn eq 'Y'}">
+	        		<c:if test="${loginSsInfo.m_membership_yn eq 'Y'}">
 	        			<span>PISIC Membership</span>
 	        		</c:if>
-	        	</sec:authorize>
-	        	<sec:authorize access="hasRole('ROLE_ADMIN')">
+	        	</c:if>
+	        	<c:if test="${loginSsInfo.m_grade eq 0}">
             		<span>관리자</span>
-            	</sec:authorize>
+            	</c:if>
 	        </sec:authorize>
 	        <sec:authorize access="isAnonymous()">
 	        	<h5 class="mb-0 font-weight-normal">
@@ -123,11 +120,11 @@
     </li>
     <sec:authorize access="hasRole('ROLE_ADMIN')">
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">
+      <a class="nav-link" href="<%=request.getContextPath()%>/main">
         <span class="menu-icon">
           <i class="mdi mdi-account"></i>
         </span>
-        <span class="menu-title">ADMIN PAGE</span>
+        <span class="menu-title">USER PAGE</span>
       </a>
     </li>
     </sec:authorize>
@@ -135,109 +132,67 @@
       <span class="nav-link">MENU</span>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/main">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">
         <span class="menu-icon">
           <i class="mdi mdi-speedometer"></i>
         </span>
-        <span class="menu-title">MAIN</span>
+        <span class="menu-title">회원 관리</span>
       </a>
-    </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/chart/chartMain">
-        <span class="menu-icon">
-          <i class="mdi mdi-chart-bar"></i>
-        </span>
-        <span class="menu-title">PISIC CHART</span>
-      </a>
-    </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/pymusic/pymusicMain">
-        <span class="menu-icon">
-          <i class="mdi mdi-table-large"></i>
-        </span>
-        <span class="menu-title">PICK YOUR MUSIC</span>
-      </a>
-    </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/pjlounge/pjlounge_list">
-        <span class="menu-icon">
-          <i class="mdi mdi-chart-bar"></i>
-        </span>
-        <span class="menu-title">PJ LOUNGE</span>
-      </a>
-    </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-        <span class="menu-icon">
-          <i class="mdi mdi-laptop"></i>
-        </span>
-        <span class="menu-title">MY MUSIC</span>
-        <i class="menu-arrow"></i>
-      </a>
-      <div class="collapse" id="ui-basic">
-      	<sec:authorize access="isAnonymous()">
-      		<ul class="nav flex-column sub-menu">
-      			<li class="nav-item"><p class="text-muted mb-0">로그인 후 이용해주세요.</p></li>
-      		</ul>
-       </sec:authorize>
-       <sec:authorize access="isAuthenticated()">
-      		<ul class="nav flex-column sub-menu">
-		        <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/playlist">내 플레이 리스트</a></li>
-		        <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/artistLikeList">좋아하는 아티스트</a></li>
-		        <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundLikeList">좋아하는 노래</a></li>
-		        <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundRecentList">최근 들은 노래</a></li>
-		        <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundOftenList">많이 들은 노래</a></li>
-		    </ul>
-      </sec:authorize>
-     </div>
-    </li>
-    <li class="nav-item nav-category">
-      <span class="nav-link"></span>
-    </li>
-    <li class="nav-item nav-category">
-      <span class="nav-link"></span>
-    </li>
-    <li class="nav-item nav-category">
-      <span class="nav-link"></span>
     </li>
     <li class="nav-item menu-items">
       <a class="nav-link" data-toggle="collapse" href="#membership" aria-expanded="false" aria-controls="membership">
         <span class="menu-icon">
-          <i class="mdi mdi-square-inc-cash"></i>
+          <i class="mdi mdi-chart-bar"></i>
         </span>
-        <span class="menu-title">PISIC MEMBERSHIP</span>
+        <span class="menu-title">이용권 관리</span>
         <i class="menu-arrow"></i>
       </a>
       <div class="collapse" id="membership">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/membership/list">이용권 구매</a></li>
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/membership/cancel">이용권 해지</a></li>
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/membership/history">결제내역</a></li>
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">이용권 관리</a></li>
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">이용권 해지</a></li>
         </ul>
       </div>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/member/showMyInfo">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">
+        <span class="menu-icon">
+          <i class="mdi mdi-table-large"></i>
+        </span>
+        <span class="menu-title">신고글 관리</span>
+      </a>
+    </li>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/artist">
+        <span class="menu-icon">
+          <i class="mdi mdi-chart-bar"></i>
+        </span>
+        <span class="menu-title">아티스트 관리</span>
+      </a>
+    </li>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">
+        <span class="menu-icon">
+          <i class="mdi mdi-square-inc-cash"></i>
+        </span>
+        <span class="menu-title">앨범 관리</span>
+      </a>
+    </li>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">
+        <span class="menu-icon">
+          <i class="mdi mdi-square-inc-cash"></i>
+        </span>
+        <span class="menu-title">음원 관리</span>
+      </a>
+    </li>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">
         <span class="menu-icon">
           <i class="mdi mdi-account"></i>
         </span>
-        <span class="menu-title">MY PAGE</span>
+        <span class="menu-title">고객센터 관리</span>
       </a>
-    </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-        <span class="menu-icon">
-          <i class="mdi mdi-security"></i>
-        </span>
-        <span class="menu-title">CUSTOMER SERVICE</span>
-        <i class="menu-arrow"></i>
-      </a>
-      <div class="collapse" id="auth">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/faq/faqList">자주묻는 질문</a></li>
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/qna/qnaList">1:1 문의</a></li>
-        </ul>
-      </div>
     </li>
   </ul>
 </nav>

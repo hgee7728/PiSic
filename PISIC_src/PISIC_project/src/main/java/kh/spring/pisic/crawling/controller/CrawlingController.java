@@ -20,7 +20,6 @@ import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.AssociationAS;
 import kh.spring.pisic.sound.domain.Sound;
-import kh.spring.pisic.common.PisicUtil;
 
 @Controller
 @RequestMapping("/crawling")

@@ -1,4 +1,4 @@
-package kh.spring.pisic.member.domain;
+package kh.spring.pisic.springsecurity.domain;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -8,9 +8,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 @Component
-public class Member {
+public class CustomUserDetails implements UserDetails  {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private String m_id;
 	private String m_platform;
@@ -33,13 +36,40 @@ public class Member {
 	private boolean m_enabled;
 
 	@Override
-	public String toString() {
-		return "Member [m_id=" + m_id + ", m_platform=" + m_platform + ", m_platform_id=" + m_platform_id
-				+ ", m_password=" + m_password + ", m_name=" + m_name + ", m_nickname=" + m_nickname + ", m_phone="
-				+ m_phone + ", m_address=" + m_address + ", m_address_detail=" + m_address_detail + ", m_date=" + m_date
-				+ ", m_birth=" + m_birth + ", m_gender=" + m_gender + ", m_profile=" + m_profile + ", m_delete_yn="
-				+ m_delete_yn + ", m_email=" + m_email + ", m_membership_yn=" + m_membership_yn + ", m_grade=" + m_grade
-				+ "]";
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
+        auth.add(new SimpleGrantedAuthority(m_grade));
+		return auth;
+	}
+	
+	@Override
+	public String getPassword() {
+		return m_password;
+	}
+	
+	@Override
+	public String getUsername() {
+		return m_id;
+	}
+	
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+	
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+	
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+	
+	@Override
+	public boolean isEnabled() {
+		return m_enabled;
 	}
 
 	public String getM_id() {
@@ -177,7 +207,7 @@ public class Member {
 	public void setM_grade(String m_grade) {
 		this.m_grade = m_grade;
 	}
-
+	
 	public int getM_fail_cnt() {
 		return m_fail_cnt;
 	}
@@ -186,11 +216,12 @@ public class Member {
 		this.m_fail_cnt = m_fail_cnt;
 	}
 
-	public boolean isM_enabled() {
+	public boolean getM_enabled() {
 		return m_enabled;
 	}
 
 	public void setM_enabled(boolean m_enabled) {
 		this.m_enabled = m_enabled;
 	}
+
 }

@@ -64,6 +64,8 @@
             </div>
           </div>
           <form action="<%=request.getContextPath() %>/login" method="post" id="listForm">
+          	<!-- csrf 공격 방지 -->
+            <input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
           	<input type="hidden" id="formId" name="m_id">
           	<input type="hidden" id="formPassword" name="m_password">
           </form>
@@ -77,6 +79,7 @@
       <!-- page-body-wrapper ends -->
     </div>
     <script type="text/javascript">
+    $(function() {
 	    $(".memberbtn").on("click", function(){
 			var id = $(this).nextAll(".first").attr("id");
 			var pw = $(this).nextAll(".second").attr("id");
@@ -97,6 +100,7 @@
 	    	console.log(pw);
 	    	$("#listForm").submit();
 		});
+    });
     </script>
     <!-- container-scroller -->
     <!-- plugins:js -->

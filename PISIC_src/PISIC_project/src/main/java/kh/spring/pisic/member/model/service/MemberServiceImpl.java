@@ -7,12 +7,16 @@ import org.springframework.stereotype.Service;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.member.model.dao.MemberDao;
+import kh.spring.pisic.springsecurity.model.dao.CustomUserDetailsDao;
 
 @Service
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberDao dao;
+	
+	@Autowired
+	private CustomUserDetailsDao cudDao;
 	
 	@Override
 	public int insertMember(Member member) {
@@ -75,8 +79,30 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Member selectLoginMember(String username) {
-		return dao.selectLoginMember(username);
+	public Member selectLoginMember(String m_id) {
+		return dao.selectLoginMember(m_id);
 	}
+
+	
+	@Override
+	public int updateFailureCount(String username) {
+		return cudDao.updateFailureCount(username);
+	}
+
+	@Override
+	public int selectFailureCount(String username) {
+		return cudDao.selectFailureCount(username);
+	}
+
+	@Override
+	public int updateDisabled(String username) {
+		return cudDao.updateDisabled(username);
+	}
+
+	@Override
+	public int updateFailureCountReset(String username) {
+		return cudDao.updateFailureCountReset(username);
+	}
+
 
 }

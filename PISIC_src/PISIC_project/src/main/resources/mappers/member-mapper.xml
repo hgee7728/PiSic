@@ -7,7 +7,7 @@
 		(#{m_id}, #{m_platform}, #{m_platform_id}, #{m_password}, #{m_name}, 
 		#{m_nickname}, #{m_phone}, #{m_address}, #{m_address_detail}, default, 
 		#{m_birth}, #{m_gender}, #{m_profile}, default, #{m_email}, 
-		default, default)
+		default, default, default, default)
 	</insert>
 	<select id="loginCheck" parameterType="Member" resultType="Member">
 		SELECT *
@@ -17,7 +17,7 @@
 	<select id="selectLoginMember" parameterType="string" resultType="Member">
 		SELECT *
 		FROM member
-		WHERE m_id = #{username}
+		WHERE m_id = #{m_id}
 	</select>
 	<select id="idCheck" parameterType="string" resultType="_int">
 		SELECT count(*)
