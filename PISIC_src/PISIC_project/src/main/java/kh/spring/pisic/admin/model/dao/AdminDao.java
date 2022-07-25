@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
+import kh.spring.pisic.sound.domain.Criteria;
 import kh.spring.pisic.sound.domain.Sound;
 
 @Repository
@@ -16,8 +17,14 @@ public class AdminDao {
 	@Autowired
 	private SqlSession session;
 	
-	public List<Artist> selectArtistList() {
-		return session.selectList("Admin.selectArtistList");
+	// 아티스트 총 명수
+	public int totalCntArtist() {
+		return session.selectOne("Admin.totalCntArtist");
+	}
+	
+	// 아티스트 목록 조회
+	public List<Artist> selectArtistList(Criteria cri) {
+		return session.selectList("Admin.selectArtistList", cri);
 	}
 	
 	public Artist selectArtist(String artist_no) {
@@ -40,9 +47,14 @@ public class AdminDao {
 		return session.delete("Admin.deleteArtist", aritstList);
 	}
 	
+	// 앨범 총 갯수
+	public int totalCntAlbum() {
+		return session.selectOne("Admin.totalCntAlbum");
+	}
+	
 	// 앨범 목록 조회
-	public List<Album> selectAlbumList() {
-		return session.selectList("Admin.selectAlbumList");
+	public List<Album> selectAlbumList(Criteria cri) {
+		return session.selectList("Admin.selectAlbumList", cri);
 	}
 	
 	// 앨범 검색
@@ -70,9 +82,14 @@ public class AdminDao {
 		return session.delete("Admin.deleteAlbum", albumList);
 	}
 	
+	// 총 곡 갯수
+	public int totalCntSound() {
+		return session.selectOne("Admin.totalCntSound");
+	}
+	
 	// 곡 목록 조회
-	public List<Sound> selectSoundList() {
-		return session.selectList("Admin.selectSoundList");
+	public List<Sound> selectSoundList(Criteria cri) {
+		return session.selectList("Admin.selectSoundList", cri);
 	}
 	
 	// 곡 검색

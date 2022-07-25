@@ -60,6 +60,27 @@ table.sound_list  tr>td:nth-child(5), table.sound_list  tr>td:nth-child(6),
 table.sound_list  tr>td:nth-child(4){
 	width:20px !important;
 }
+.pageInfo_wrap{
+	text-align: center;
+}
+.pageInfo{
+    list-style : none;
+    display: inline-block;
+   	margin: 50px 0 0 100px;      
+}
+.pageInfo li{
+    float: left;
+    font-size: 20px;
+    margin-left: 18px;
+    padding: 7px;
+    font-weight: 500;
+ }
+.pageInfo a:link {color:white; text-decoration: none;}
+.pageInfo a:visited {color:white; text-decoration: none;}
+.pageInfo a:hover {color:white; text-decoration: underline;}
+.here{
+      background-color: #8f5fe8;
+  }
 </style>
 <script>
 const root_path = '<%=request.getContextPath() %>';
@@ -67,50 +88,7 @@ let header = $("meta[name='_csrf_header']").attr('th:content');
 let token = $("meta[name='_csrf']").attr('th:content');
 let csrf_parameterName = '${_csrf.parameterName }';
 let csrf_token = '${_csrf.token }';
-<%-- var page = 1;
-$(function(){
-	// 스크롤 페이징 처리
-	getList(page);
-    page++;
-})
-$(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
-     if($(window).scrollTop() >= $(document).height() - $(window).height()){
-          getList(page);
-           page++;   
-     } 
-});
-function getList(page){
-	    $.ajax({
-	        type : 'POST',  
-	        dataType : 'json', 
-	        data : {"page" : page},
-	        url : "<%=request.getContextPath()%>/admin/getSoundList";
-	        success : function(returnData) {
-	            var data = returnData.rows;
-	            var html = "";
-	            if (page==1){ //페이지가 1일경우에만 id가 list인 html을 비운다.
-	                  $("#sound_list tbody").html(""); 
-	            }
-	            if (returnData.startNum<=returnData.totCnt){
-	                if(data.length>0){
-	                // for문을 돌면서 행을 그린다.
-	                }else{
-	                //데이터가 없을경우
-	                }
-	            }
-	            html = html.replace(/%20/gi, " ");
-	            if (page==1){  //페이지가 1이 아닐경우 데이터를 붙힌다.
-	                $("#sound_list tbody").html(html); 
-	            }else{
-	                $("#sound_list tbody").append(html);
-	            }
-	       },error:function(e){
-	           if(e.status==300){
-	               alert("데이터를 가져오는데 실패하였습니다.");
-	           };
-	       }
-	    }); 
-	} --%>
+
 
 $(function(){
 	var msg = '${msg}';
@@ -173,14 +151,14 @@ $(function(){
 						html += '		<td>										';
 						html += '		<div class="select_btns">					';
 						html += '			<button type="button"					';
-						html += '			class="btn btn-info btn-fw update_sound_btn" onclick="javasctipt:updateSound('+resultData.a_no+','+resultData.s_no+')">';
+						html += '			class="btn btn-info btn-md update_sound_btn" onclick="javasctipt:updateSound('+resultData.a_no+','+resultData.s_no+')">';
 						html += '			수정</button>								';
 						html += '		</div>										';
 						html += '		</td>										';
 						html += '		<td>										';
 						html += '			<div class="select_btns">				';
 						html += '			<button type="button"					';
-						html += '			class="btn btn-info btn-fw delete_sound_btn">삭제</button>';
+						html += '			class="btn btn-info btn-md delete_sound_btn">삭제</button>';
 						html += '<input type="hidden" value='+resultData.a_no+' name="delete_one_a_no">';
 						html += '<input type="hidden" value='+resultData.s_no+' name="delete_one_s_no">';
 						html += '			</div>									';
@@ -194,6 +172,7 @@ $(function(){
 					html += '		<td colspan="10" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>			';
 					html += '	</tr>											';
 				}
+				$(".pageInfo_wrap").html("");
 				$("table.sound_list tbody").append(html);
 			}
 		})
@@ -389,7 +368,16 @@ function updateSound(a_no, s_no){
 														<input type="hidden" value="${sound.a_no }" name="a_no">
 													</div>
 												</td>
-												<td>${index.count }</td>
+												<td>
+													<c:choose>
+														<c:when test="${paging.cri.pageNum == 1}">
+															${index.count }
+														</c:when>
+														<c:otherwise>
+														${paging.cri.pageNum*10+index.count}
+														</c:otherwise>
+													</c:choose>
+												</td>
 												<td>
 													<img src="${sound.a_cover}" alt="image" />
 												</td>
@@ -407,7 +395,7 @@ function updateSound(a_no, s_no){
 
 													<div class="select_btns">
 														<button type="button" 
-															class="btn btn-info btn-fw update_sound_btn"
+															class="btn btn-info update_sound_btn btn-md"
 															onclick="location.href='<%=request.getContextPath() %>/admin/updateSound?a_no=${sound.a_no }&s_no=${sound.s_no}'">
 															수정</button>
 													</div>
@@ -415,7 +403,7 @@ function updateSound(a_no, s_no){
 												<td>
 													<div class="select_btns">
 														<button type="button"
-															class="btn btn-info btn-fw delete_sound_btn">삭제</button>
+															class="btn btn-info delete_sound_btn btn-md">삭제</button>
 														<input type="hidden" value="${sound.a_no}" name="delete_one_a_no">
 														<input type="hidden" value="${sound.s_no}" name="delete_one_s_no">
 													</div>
@@ -425,6 +413,23 @@ function updateSound(a_no, s_no){
 									</tbody>
 								</table>
 							</div>
+							<div class="pageInfo_wrap" >
+						        <div class="pageInfo_area">
+						        	<ul id="pageInfo" class="pageInfo">
+							        <c:if test="${paging.prev}">
+					                    <li class="pageInfo_btn previous"><a href="<%=request.getContextPath()%>/admin/sound?pageNum=${paging.startPage-1}">Previous</a></li>
+					                </c:if>
+						 			
+						 			<c:forEach var="num" begin="${paging.startPage}" end="${paging.endPage}">
+					                    <li class='pageInfo_btn ${paging.cri.pageNum == num ? "here":"" }'><a href="<%=request.getContextPath()%>/admin/sound?pageNum=${num}">${num}</a></li>
+					                </c:forEach>
+					                
+					                <c:if test="${paging.next}">
+					                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/admin/sound?pageNum=${paging.endPage + 1 }">Next</a></li>
+					                </c:if>  
+					                </ul>
+						        </div>
+						    </div>
 						</form>
 					</div>
 				</div>

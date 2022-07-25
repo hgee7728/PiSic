@@ -53,14 +53,42 @@ div.search_album {
 
 table.album_list  tr>td:nth-child(5), table.album_list  tr>td:nth-child(6),
 	table.album_list  tr>td:nth-child(7), table.album_list  tr>td:nth-child(8),
-	table.album_list  tr>td:nth-child(9) {
+	table.album_list  tr>td:nth-child(9),
+	table.album_list  tr>td:nth-child(10) {
 	text-align: center;
 }
 table.album_list  tr>td:nth-child(4){
 	width:20px !important;
 }
+
+.pageInfo_wrap{
+	text-align: center;
+}
+.pageInfo{
+    list-style : none;
+    display: inline-block;
+   	margin: 50px 0 0 100px;      
+}
+.pageInfo li{
+    float: left;
+    font-size: 20px;
+    margin-left: 18px;
+    padding: 7px;
+    font-weight: 500;
+ }
+.pageInfo a:link {color:white; text-decoration: none;}
+.pageInfo a:visited {color:white; text-decoration: none;}
+.pageInfo a:hover {color:white; text-decoration: underline;}
+.here{
+      background-color: #8f5fe8;
+  }
 </style>
 <script>
+const root_path = '<%=request.getContextPath() %>';
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
 $(function(){
 	var msg = '${msg}';
 	if(msg){
@@ -78,6 +106,7 @@ $(function(){
     	}
     })
     
+    // 앨범 검색
 	$("#search_album").click(function(){
 		$.ajax({
 			type: 'GET',
@@ -118,14 +147,14 @@ $(function(){
 						html += '		<td>										';
 						html += '		<div class="select_btns">					';
 						html += '			<button type="button"					';
-						html += '			class="btn btn-info btn-fw update_album">';
+						html += '			class="btn btn-info btn-md update_album">';
 						html += '			수정</button>								';
 						html += '		</div>										';
 						html += '		</td>										';
 						html += '		<td>										';
 						html += '			<div class="select_btns">				';
 						html += '			<button type="button"					';
-						html += '			class="btn btn-info btn-fw delete_album">삭제</button>										';
+						html += '			class="btn btn-info btn-md delete_album">삭제</button>										';
 						html += '			</div>									';
 						html += '		</td>										';
 						html += '	</tr>											';
@@ -137,6 +166,7 @@ $(function(){
 					html += '		<td colspan="10" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>			';
 					html += '	</tr>											';
 				}
+				$(".pageInfo_wrap").html("");
 				$("table.album_list tbody").append(html);
 			}
 		})
@@ -146,9 +176,7 @@ $(function(){
 	$("#insert_album").click(function(){
 		location.href="<%=request.getContextPath()%>/admin/insertAlbum";
 	});
-	
-	
-	
+
 	// 한개 삭제 버튼
 	$(".delete_album_btn").click(function(){
 		var confm = confirm("해당 앨범을 삭제 하시겠습니까?");
@@ -170,6 +198,7 @@ $(function(){
     					alert("앨범 삭제가 실패했습니다. 다시 시도해주세요");
     				} else {
     					alert("앨범이 삭제 되었습니다.");
+    					location.reload();
     				}
     			},
     			error:function(error){
@@ -303,7 +332,7 @@ $(function(){
 
 													<div class="select_btns">
 														<button type="button" 
-															class="btn btn-info btn-fw update_album_btn"
+															class="btn btn-info update_album_btn btn-md"
 															onclick="location.href='<%=request.getContextPath() %>/admin/updateAlbum?a_no=${album.a_no }'">
 															수정</button>
 													</div>
@@ -311,7 +340,7 @@ $(function(){
 												<td>
 													<div class="select_btns">
 														<button type="button"
-															class="btn btn-info btn-fw delete_album_btn">삭제</button>
+															class="btn btn-info delete_album_btn btn-md">삭제</button>
 														<input type="hidden" value="${album.a_no}" name="delete_one_a_no">
 													</div>
 												</td>
@@ -320,7 +349,28 @@ $(function(){
 									</tbody>
 								</table>
 							</div>
+							<div class="pageInfo_wrap" >
+						        <div class="pageInfo_area">
+						        	<ul id="pageInfo" class="pageInfo">
+							        <c:if test="${paging.prev}">
+					                    <li class="pageInfo_btn previous"><a href="<%=request.getContextPath()%>/admin/album?pageNum=${paging.startPage-1}">Previous</a></li>
+					                </c:if>
+						 			
+						 			<c:forEach var="num" begin="${paging.startPage}" end="${paging.endPage}">
+					                    <li class='pageInfo_btn ${paging.cri.pageNum == num ? "here":"" }'><a href="<%=request.getContextPath()%>/admin/album?pageNum=${num}">${num}</a></li>
+					                </c:forEach>
+					                
+					                <c:if test="${paging.next}">
+					                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/admin/album?pageNum=${paging.endPage + 1 }">Next</a></li>
+					                </c:if>  
+					                </ul>
+						        </div>
+						    </div>
 						</form>
+						<form id="movePage" method="get">
+							<input type="hidden" name="pageNum" value="${paging.cri.pageNum }">
+	        				<input type="hidden" name="amount" value="${paging.cri.amount }">
+        				</form>
 					</div>
 				</div>
 				<jsp:include page="../_footer.jsp" />

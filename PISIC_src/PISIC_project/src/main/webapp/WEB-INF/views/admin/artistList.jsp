@@ -62,6 +62,27 @@ table.artist_list  tr>td:nth-child(6),
 table.artist_list  tr>td:nth-child(7){
 	width: 12%;
 }
+.pageInfo_wrap{
+	text-align: center;
+}
+.pageInfo{
+    list-style : none;
+    display: inline-block;
+   	margin: 50px 0 0 100px;      
+}
+.pageInfo li{
+    float: left;
+    font-size: 20px;
+    margin-left: 18px;
+    padding: 7px;
+    font-weight: 500;
+ }
+.pageInfo a:link {color:white; text-decoration: none;}
+.pageInfo a:visited {color:white; text-decoration: none;}
+.pageInfo a:hover {color:white; text-decoration: underline;}
+.here{
+      background-color: #8f5fe8;
+  }
 </style>
 <script>
 function updateArtist(artist_no){
@@ -152,20 +173,21 @@ $(function(){
 						html += '		<td>										';
 						html += '		<div class="select_btns">					';
 						html += '			<button type="button" "								';
-						html += '			class="btn btn-info btn-fw select_artist_update" onclick="javasctipt:updateArtist('+resultData.artist_no+')">				';
+						html += '			class="btn btn-info btn-md select_artist_update" onclick="javasctipt:updateArtist('+resultData.artist_no+')">				';
 						html += '			수정</button>								';
 						html += '		</div>										';
 						html += '		</td>										';
 						html += '		<td>										';
 						html += '			<div class="select_btns">				';
 						html += '			<button type="button" 									';
-						html += '			class="btn btn-info btn-fw select_artist_delete")">삭제</button>										';
+						html += '			class="btn btn-info btn-md select_artist_delete")">삭제</button>										';
 						html += '			</div>									';
 						html += '		</td>										';
 						html += '	</tr>											';
 							
 					}
 					console.log(html);
+					$(".pageInfo_wrap").html("");
 					$("table.artist_list tbody").append(html);				 
 				}
 			}
@@ -370,7 +392,7 @@ $(function(){
 
 													<div class="select_btns">
 														<button type="button"
-															class="btn btn-info btn-fw update select_artist_update"
+															class="btn btn-info btn-md update select_artist_update"
 															onclick="location.href='<%=request.getContextPath() %>/admin/editArtist?artist_no=${artist.artist_no }'">
 															수정</button>
 													</div>
@@ -378,7 +400,7 @@ $(function(){
 												<td>
 													<div class="select_btns">
 														<button type="button"
-															class="btn btn-info btn-fw delete select_artist_delete">
+															class="btn btn-info btn-md delete select_artist_delete">
 															삭제</button>
 														<input type="hidden" value="${artist.artist_no}" name="delete_one_artist_no">
 													</div>
@@ -388,6 +410,23 @@ $(function(){
 									</tbody>
 								</table>
 							</div>
+							<div class="pageInfo_wrap" >
+						        <div class="pageInfo_area">
+						        	<ul id="pageInfo" class="pageInfo">
+							        <c:if test="${paging.prev}">
+					                    <li class="pageInfo_btn previous"><a href="<%=request.getContextPath()%>/admin/artist?pageNum=${paging.startPage-1}">Previous</a></li>
+					                </c:if>
+						 			
+						 			<c:forEach var="num" begin="${paging.startPage}" end="${paging.endPage}">
+					                    <li class='pageInfo_btn ${paging.cri.pageNum == num ? "here":"" }'><a href="<%=request.getContextPath()%>/admin/artist?pageNum=${num}">${num}</a></li>
+					                </c:forEach>
+					                
+					                <c:if test="${paging.next}">
+					                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/admin/artist?pageNum=${paging.endPage + 1 }">Next</a></li>
+					                </c:if>  
+					                </ul>
+						        </div>
+						    </div>
 						</form>
 					</div>
 				</div>

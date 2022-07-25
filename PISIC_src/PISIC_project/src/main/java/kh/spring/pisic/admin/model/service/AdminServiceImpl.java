@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kh.spring.pisic.admin.model.dao.AdminDao;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
+import kh.spring.pisic.sound.domain.Criteria;
 import kh.spring.pisic.sound.domain.Sound;
 
 @Service
@@ -16,9 +17,16 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	private AdminDao dao;
 	
+	// 아티스트 총 명수
 	@Override
-	public List<Artist> selectArtistList() {
-		return dao.selectArtistList();
+	public int totalCntArtist() {
+		return dao.totalCntArtist();
+	}
+	
+	// 아티스트 목록 조회
+	@Override
+	public List<Artist> selectArtistList(Criteria cri) {
+		return dao.selectArtistList(cri);
 	}
 
 	@Override
@@ -46,10 +54,16 @@ public class AdminServiceImpl implements AdminService{
 		return dao.deleteArtist(aritstList);
 	}
 	
+	// 앨범 총 갯수
+	@Override
+	public int totalCntAlbum() {
+		return dao.totalCntAlbum();
+	}
+	
 	// 앨범 목록 조회
 	@Override
-	public List<Album> selectAlbumList() {
-		return dao.selectAlbumList();
+	public List<Album> selectAlbumList(Criteria cri) {
+		return dao.selectAlbumList(cri);
 	}
 
 	// 앨범 검색
@@ -82,10 +96,16 @@ public class AdminServiceImpl implements AdminService{
 		return dao.deleteAlbum(albumList);
 	}
 
+	// 총 곡 갯수
+	@Override
+	public int totalCntSound() {
+		return dao.totalCntSound();
+	}
+	
 	// 곡 목록 조회
 	@Override
-	public List<Sound> selectSoundList() {
-		return dao.selectSoundList();
+	public List<Sound> selectSoundList(Criteria cri) {
+		return dao.selectSoundList(cri);
 	}
 
 	// 곡 검색
@@ -124,5 +144,14 @@ public class AdminServiceImpl implements AdminService{
 	public int deleteSound(List<Sound> soundList) {
 		return dao.deleteSound(soundList);
 	}
+
+
+
+
+	
+
+
+
+	
 
 }

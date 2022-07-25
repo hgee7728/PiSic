@@ -30,6 +30,8 @@ import kh.spring.pisic.admin.model.service.AdminService;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
+import kh.spring.pisic.sound.domain.Criteria;
+import kh.spring.pisic.sound.domain.Paging;
 import kh.spring.pisic.sound.domain.Sound;
 
 @Controller
@@ -39,11 +41,13 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 	
-	
+ 
 	/*아티스트 관리자 페이지*/
 	@GetMapping("/artist")
-	public ModelAndView SearchArtistPage(ModelAndView mv) { 
-		mv.addObject("aristList",  service.selectArtistList());
+	public ModelAndView SearchArtistPage(ModelAndView mv, Criteria cri) {
+		Paging paging = new Paging(cri, service.totalCntArtist());
+        mv.addObject("paging", paging);
+		mv.addObject("aristList",  service.selectArtistList(cri));
 		mv.setViewName("admin/artistList");
 		return mv; 
 	}
@@ -155,12 +159,15 @@ public class AdminController {
 
 	// 앨범 목록 조회
 	@GetMapping("/album")
-	public ModelAndView pageAlbumList(ModelAndView mv) {
-
-		mv.addObject("albumList", service.selectAlbumList());
+	public ModelAndView pageAlbumList(ModelAndView mv, Criteria cri) {
+		Paging paging = new Paging(cri, service.totalCntAlbum());
+		System.out.println("이전 : " + paging.isNext());
+        mv.addObject("paging", paging);
+		mv.addObject("albumList", service.selectAlbumList(cri));
 		mv.setViewName("admin/albumList");
 		return mv;
 	}
+	
 
 	// 앨범 검색
 	@GetMapping("/album.do")
@@ -233,21 +240,16 @@ public class AdminController {
 			return "1";
 		}
 	}
-	
+
 	// 곡 목록 조회
 	@GetMapping("/sound")
-	public ModelAndView pageSoundList(ModelAndView mv) {
-
-		mv.addObject("soundList", service.selectSoundList());
+	public ModelAndView pageSoundList(ModelAndView mv, Criteria cri) {
+		Paging paging = new Paging(cri, service.totalCntSound());
+        mv.addObject("paging", paging);
+		mv.addObject("soundList", service.selectSoundList(cri));
 		mv.setViewName("admin/soundList");
 		return mv;
 	}
-	
-//	@RequestMapping(value="/getSoundList", produces="text/plain;charset=UTF-8")
-//	@ResponseBody
-//	public String getSoundList() {
-//		return "";
-//	}
 
 	// 곡 검색
 	@GetMapping("/sound.do")

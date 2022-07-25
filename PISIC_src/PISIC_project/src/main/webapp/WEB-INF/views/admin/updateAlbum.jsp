@@ -8,6 +8,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>PISIC ADMIN</title>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
@@ -105,11 +107,17 @@
 .search_artist_modal{
 	overflow: auto !important;
 }
-table#search_artist_table a{
+table#search_artist_table tbody tr{
 	cursor: pointer;
 }
 </style>
-
+<script>
+const root_path = '<%=request.getContextPath() %>';
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -128,7 +136,8 @@ table#search_artist_table a{
 								
 								<form id="frm_album" class="frm_album" action="<%=request.getContextPath() %>/admin/updateAlbum" 
 									method="post">
-									
+								<!-- csrf 공격 방지 -->
+                 				<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 								<h4 class="card-title">앨범 정보 입력</h4>
 								<br>
 								
@@ -185,9 +194,10 @@ table#search_artist_table a{
 											data-tabs="file gdrive gphotos" />
 									</div>
 
-
+								<div style="text-align: center;">
 									<button type="button" class="btn btn-primary mr-2" id="update_btn">변경하기</button>
 									<button type="button" class="btn btn-dark" id="btn_cancle" onclick="history.back(-1);">취소</button>
+								</div>
 								</form>
 							</div>
 						</div>
@@ -278,7 +288,7 @@ table#search_artist_table a{
 				});
 		
 		
-		var FlagDate = false;
+		var FlagDate = true;
 		
 		// 발매일 유효성
 		$("input[name=a_date]").on("input", function FxBirth(){
@@ -298,6 +308,7 @@ table#search_artist_table a{
 		
 		// 필수항목 입력했는지 체크
 	    	$("#update_btn").on("click", function(){
+	    		$("div.form-group label span").html("");
 	    		var checkFlag = false;
 	    		// 앨범명
 	    		if ($("input[name=a_name]").val() == '') {
@@ -399,6 +410,7 @@ table#search_artist_table a{
 				data : {
 					keyword: $("input[name=keyword]").val()
 				},
+				dataType:"json",
 				success: function(result) {
 					// 테이블 초기화
 					$('#search_artist_table > tbody').empty();
@@ -407,7 +419,7 @@ table#search_artist_table a{
 						for(var i = 0; i < result.length; i++){
 							var resultData = result[i];
 							// TODO
-							html += '<tr onclick="artist_submit('+resultData.artist_no +',' + resultData.artist_name +')">';
+							html += '<tr onclick="artist_submit('+resultData.artist_no +',&#39;' + resultData.artist_name +'&#39;)">';
 							html += '<td>'+resultData.artist_no+'</td>';
 							html += '<td>';
 							if(resultData.artist_profile != null){

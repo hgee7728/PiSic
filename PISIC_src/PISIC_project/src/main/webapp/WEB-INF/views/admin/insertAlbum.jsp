@@ -106,7 +106,7 @@
 .search_artist_modal{
 	overflow: auto !important;
 }
-table#search_artist_table a{
+table#search_artist_table tbody tr{
 	cursor: pointer;
 }
 </style>
@@ -306,7 +306,7 @@ let csrf_token = '${_csrf.token }';
 		
 		// 필수항목 입력했는지 체크
 	    	$("#insert_btn").on("click", function(){
-	    		$("div.form-group span").html("");
+	    		$("div.form-group label span").html("");
 	    		var checkFlag = false;
 	    		// 앨범명
 	    		if ($("input[name=a_name]").val() == '') {
@@ -409,6 +409,7 @@ let csrf_token = '${_csrf.token }';
 				data : {
 					keyword: $("input[name=keyword]").val()
 				},
+				dataType:"json",
 				success: function(result) {
 					// 테이블 초기화
 					$('#search_artist_table > tbody').empty();

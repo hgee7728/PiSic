@@ -137,13 +137,13 @@ input[type=file]::file-selector-button{
 .search_composer_modal_plus{
 	overflow: auto !important;
 }
-table#search_album_table a,
-table#search_artist_table a,
-table#search_artist_table_plus a,
-table#search_writer_table a,
-table#search_writer_table_plus a,
-table#search_composer_table a,
-table#search_composer_table_plus a{
+table#search_album_table tbody tr,
+table#search_artist_table tbody tr,
+table#search_artist_table_plus tbody tr,
+table#search_writer_table tbody tr,
+table#search_writer_table_plus tbody tr,
+table#search_composer_table tbody tr,
+table#search_composer_table_plus tbody tr{
 	cursor: pointer;
 }
 </style>
@@ -565,7 +565,7 @@ let csrf_token = '${_csrf.token }';
 		
 		// 필수항목 입력했는지 체크
 	    	$("#insert_btn").on("click", function(){
-	    		$("div.form-group span").html("");
+	    		$("div.form-group label span").html("");
 	    		var checkFlag = false;
 	    		// 노래 이름
 	    		if ($("input[name=s_name]").val() == '') {
@@ -776,7 +776,9 @@ let csrf_token = '${_csrf.token }';
 				data : {
 					keyword: $("#search_artist_modal input[name=keyword]").val()
 				},
+				dataType:"json",
 				success: function(result) {
+					console.log("result : " + result);
 					// 테이블 초기화
 					$('#search_artist_table > tbody').empty();
 					var html = "";
@@ -828,6 +830,7 @@ let csrf_token = '${_csrf.token }';
 				data : {
 					keyword: $("#search_artist_modal_plus input[name=keyword]").val()
 				},
+				dataType:"json",
 				success: function(result) {
 					// 테이블 초기화
 					$('#search_artist_table_plus > tbody').empty();
@@ -889,6 +892,7 @@ let csrf_token = '${_csrf.token }';
 				data : {
 					keyword: $("#search_writer_modal input[name=keyword]").val()
 				},
+				dataType:"json",
 				success: function(result) {
 					// 테이블 초기화
 					$('#search_writer_table > tbody').empty();
@@ -941,6 +945,7 @@ let csrf_token = '${_csrf.token }';
 				data : {
 					keyword: $("#search_writer_modal_plus input[name=keyword]").val()
 				},
+				dataType:"json",
 				success: function(result) {
 					// 테이블 초기화
 					$('#search_writer_table_plus > tbody').empty();
@@ -1003,6 +1008,7 @@ let csrf_token = '${_csrf.token }';
 				data : {
 					keyword: $("#search_composer_modal input[name=keyword]").val()
 				},
+				dataType:"json",
 				success: function(result) {
 					// 테이블 초기화
 					$('#search_composer_table > tbody').empty();
@@ -1055,6 +1061,7 @@ let csrf_token = '${_csrf.token }';
 				data : {
 					keyword: $("#search_composer_modal_plus input[name=keyword]").val()
 				},
+				dataType:"json",
 				success: function(result) {
 					// 테이블 초기화
 					$('#search_composer_table_plus > tbody').empty();
