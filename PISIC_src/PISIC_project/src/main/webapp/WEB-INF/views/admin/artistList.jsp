@@ -114,6 +114,7 @@ $(function(){
 			data : {
 				keyword: $("input[name=keyword]").val()
 			},
+			dataType : "json",
 			success : function(result){
 				//테이블 초기화
 				$('#artist_list > tbody').empty();

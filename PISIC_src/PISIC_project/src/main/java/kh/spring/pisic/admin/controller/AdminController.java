@@ -55,10 +55,8 @@ public class AdminController {
 	/*아티스트 검색*/
 	@GetMapping("/artist.do")
 	@ResponseBody
-	public List<Artist> SearchArtistAjax(ModelAndView mv, @RequestParam("keyword") String keyword) { 
-		Artist artist = new Artist();
-		artist.setKeyword(keyword);
-		return service.selectArtistAjax(keyword); 
+	public String SearchArtistAjax(ModelAndView mv, @RequestParam("keyword") String keyword) { 
+		return new Gson().toJson(service.selectArtistAjax(keyword));
 	}
 	
 	/*아티스트 수정 페이지로 이동*/
