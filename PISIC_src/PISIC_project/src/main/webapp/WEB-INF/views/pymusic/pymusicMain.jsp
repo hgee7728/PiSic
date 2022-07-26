@@ -40,6 +40,58 @@
 	font-size: 30px;
 	text-align: center;
 }
+
+div.row>div>div{
+	background-color: #000000;
+}
+
+div.ro1>div:nth-child(1)>div,
+div.ro1>div:nth-child(5)>div {
+	background-color: #000000;
+	border-color: #fc424a;
+}
+
+div.ro1>div:nth-child(2)>div,
+div.ro1>div:nth-child(6)>div {
+	border-color: #ffab00;
+}
+
+div.ro1>div:nth-child(3)>div,
+div.ro1>div:nth-child(7)>div {
+	border-color: #00d25b;
+}
+
+div.ro1>div:nth-child(4)>div,
+div.ro1>div:nth-child(8)>div {
+	border-color: #007bff;
+}
+
+
+
+div.ro2>div:nth-child(1)>div,
+div.ro2>div:nth-child(6)>div {
+	border-color: #fc424a;
+}
+
+div.ro2>div:nth-child(2)>div,
+div.ro2>div:nth-child(7)>div {
+	border-color: #ffab00;
+}
+
+div.ro2>div:nth-child(3)>div,
+div.ro2>div:nth-child(8)>div {
+	border-color: #00d25b;
+}
+
+div.ro2>div:nth-child(4)>div,
+div.ro2>div:nth-child(9)>div {
+	border-color: #007bff;
+}
+
+div.ro2>div:nth-child(5)>div,
+div.ro2>div:nth-child(10)>div {
+	border-color: #8f5fe8;
+}
 </style>
 </head>
 <body>
@@ -57,7 +109,7 @@
 					<h2 class=" card-title">PICK YOUR MUSIC</h2>
 					<br>
 					<h3>장르별</h3>
-					<div class="row ">
+					<div class="row ro1">
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
@@ -125,12 +177,12 @@
 					</div>
 					<br> <br>
 					<h3>날씨별</h3>
-					<div class="row ">
+					<div class="row ro2">
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">맑음</button>
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">맑음</button>
 								</div>
 							</div>
 						</div>
@@ -138,7 +190,8 @@
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">구름 많음</button>
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">구름
+										많음</button>
 								</div>
 							</div>
 						</div>
@@ -146,7 +199,7 @@
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">흐림</button>
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">흐림</button>
 								</div>
 							</div>
 						</div>
@@ -154,7 +207,7 @@
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">비</button>
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">비</button>
 								</div>
 							</div>
 						</div>
@@ -162,7 +215,7 @@
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">눈</button>
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">눈</button>
 								</div>
 							</div>
 						</div>
@@ -170,7 +223,7 @@
 					</div>
 					<br> <br>
 					<h3>성별/연령대별</h3>
-					<div class="row ">
+					<div class="row ro2">
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
@@ -265,12 +318,13 @@
 					</div>
 					<br> <br>
 					<h3>시간대별</h3>
-					<div class="row ">
+					<div class="row ro2">
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">새벽 MIX</button>
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">새벽
+										MIX</button>
 								</div>
 							</div>
 						</div>
@@ -278,7 +332,8 @@
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">아침 MIX</button>
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">아침
+										MIX</button>
 								</div>
 							</div>
 						</div>
@@ -286,7 +341,8 @@
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">오후 MIX</button>
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">오후
+										MIX</button>
 								</div>
 							</div>
 						</div>
@@ -294,7 +350,8 @@
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">밤 MIX</button>
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">밤
+										MIX</button>
 								</div>
 							</div>
 						</div>

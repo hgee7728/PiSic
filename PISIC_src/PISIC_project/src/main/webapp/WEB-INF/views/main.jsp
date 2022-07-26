@@ -212,6 +212,10 @@ table.sound_list  tr > td:nth-child(7){
 table.sound_list a {
 	color:#6c7293;
 }
+a {
+  text-decoration: none;
+  color: white;
+}
 </style>
 <script>
 const root_path = '<%=request.getContextPath() %>';
@@ -423,7 +427,7 @@ let csrf_token = '${_csrf.token }';
 					</div>
 				</div>
 				<div class="popup-foot">
-					<span class="pop-btn confirm" id="confirm">이용권 구매 바로가기</span> <span
+					<span class="pop-btn confirm" id="confirm"><a href="<%=request.getContextPath()%>/membership/list">이용권 구매 바로가기</a></span> <span
 						class="pop-btn close" id="close"><i class="mdi mdi-close"></i></span>
 				</div>
 				<div class="popup-footer">

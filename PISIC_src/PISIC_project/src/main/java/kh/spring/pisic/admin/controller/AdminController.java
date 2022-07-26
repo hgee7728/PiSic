@@ -62,7 +62,7 @@ public class AdminController {
 	}
 	
 	/*아티스트 수정 페이지로 이동*/
-	@GetMapping("/editArtist")
+	@GetMapping("/updateArtist")
 	public ModelAndView EditArtistPage(ModelAndView mv
 			, @RequestParam(name = "artist_no", defaultValue = "0") String artist_no) {
 		int artist_no_new = 0;
@@ -73,11 +73,11 @@ public class AdminController {
 		}
 		mv.addObject("artistInfo",  service.selectArtist(artist_no));
 		mv.addObject("artist_no", artist_no_new);
-		mv.setViewName("admin/editArtist");
+		mv.setViewName("admin/updateArtist");
 		return mv; 
 	}
 	
-	@PostMapping("/editArtist")
+	@PostMapping("/updateArtist")
 	public ModelAndView EditArtist(ModelAndView mv
 			, Artist artist
 			, HttpServletRequest req
@@ -97,7 +97,7 @@ public class AdminController {
 	}
 	
 	/*아티스트 추가 페이지로 이동*/
-	@GetMapping("/addArtist")
+	@GetMapping("/insertArtist")
 	public ModelAndView AddArtistPage(ModelAndView mv
 			, @RequestParam(name = "artist_no", defaultValue = "0") String artist_noStr) {
 		int artist_no = 0;
@@ -108,13 +108,13 @@ public class AdminController {
 		}
 		
 		mv.addObject("artist_no", artist_no);
-		mv.setViewName("admin/addArtist");
+		mv.setViewName("admin/insertArtist");
 		
 		return mv;
 	}
 	
 	/*아티스트 추가하기*/
-	@PostMapping("/addArtist")
+	@PostMapping("/insertArtist")
 	public ModelAndView AddArtist(ModelAndView mv
 			, Artist artist
 			, HttpServletRequest req

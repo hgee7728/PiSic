@@ -86,7 +86,7 @@ table.artist_list  tr>td:nth-child(7){
 </style>
 <script>
 function updateArtist(artist_no){
-	location.href = "<%=request.getContextPath()%>/admin/editArtist?artist_no="+artist_no;
+	location.href = "<%=request.getContextPath()%>/admin/updateArtist?artist_no="+artist_no;
 };
 
 
@@ -307,7 +307,7 @@ $(function(){
 						<div class="select_btns">
 							<button type="button" id="add-artist"
 								class="btn btn-info btn-fw"
-								onclick="location.href='<%=request.getContextPath()%>/admin/addArtist'">아티스트
+								onclick="location.href='<%=request.getContextPath()%>/admin/insertArtist'">아티스트
 								추가</button>
 							<button type="button" id="select_all_delete"
 								class="btn btn-info btn-fw">선택 삭제</button>
@@ -393,7 +393,7 @@ $(function(){
 													<div class="select_btns">
 														<button type="button"
 															class="btn btn-info btn-md update select_artist_update"
-															onclick="location.href='<%=request.getContextPath() %>/admin/editArtist?artist_no=${artist.artist_no }'">
+															onclick="location.href='<%=request.getContextPath() %>/admin/updateArtist?artist_no=${artist.artist_no }'">
 															수정</button>
 													</div>
 												</td>

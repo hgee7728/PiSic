@@ -83,7 +83,7 @@
 						<div class="card">
 							<div class="card-body">
 								
-								<form id="addArtistForm" class="addArtistForm" action="<%=request.getContextPath() %>/admin/addArtist" 
+								<form id="addArtistForm" class="addArtistForm" action="<%=request.getContextPath() %>/admin/insertArtist" 
 									method="post">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 								<h4 class="card-title">아티스트 정보 입력</h4>

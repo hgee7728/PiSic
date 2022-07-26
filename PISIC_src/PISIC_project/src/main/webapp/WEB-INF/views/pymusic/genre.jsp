@@ -94,8 +94,9 @@ $(function(){
 				<div class="content-wrapper">
 
 					<h2 class=" card-title">
-						Pick Your Genre &nbsp;&nbsp;${serverTime};
+						Pick Your Genre &nbsp;&nbsp;
 					</h2>
+					<h4>${serverTime}</h4>
 					<br>
 					<p>장르별 전체 재생 수 기준 랭킹 조회</p>
 					<div class="content_div3">

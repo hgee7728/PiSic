@@ -94,8 +94,9 @@ $(function(){
 				<div class="content-wrapper">
 
 					<h2 class=" card-title">
-						Pick Your Area &nbsp;&nbsp;${serverTime}
+						Pick Your Area &nbsp;&nbsp;
 					</h2>
+					<h4>${serverTime}</h4>
 					<br>
 					<p>지역별 전체 재생 수 기준 랭킹 조회</p>
 					<div class="content_div3">
