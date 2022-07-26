@@ -263,23 +263,31 @@ public class MyMusicController {
 		String resultAjax = "";
 		
 		// 좋아요 여부 확인
-		UserDetails ud = (UserDetails)auth.getPrincipal();
-		artist.setM_id(ud.getUsername());
-		if(service.checkArtistLike(artist) > 0) { // 좋아요가 되어있는 경우
-			int result = service.deleteArtistLike(artist);
-			if(result < 1) { // 좋아요 취소 실패
-				resultAjax = "-1";
-			} else { // 좋아요 취소 성공
-				resultAjax = "0";
+		if(auth != null) {
+			UserDetails ud = (UserDetails)auth.getPrincipal();
+			Member member = memberService.selectLoginMember(ud.getUsername());
+			artist.setM_id(ud.getUsername());
+			
+			if(service.checkArtistLike(artist) > 0) { // 좋아요가 되어있는 경우
+				int result = service.deleteArtistLike(artist);
+				if(result < 1) { // 좋아요 취소 실패
+					resultAjax = "-1";
+				} else { // 좋아요 취소 성공
+					resultAjax = "0";
+				}
+			} else { // 좋아요가 안되어있는 경우
+				int result = service.insertArtistLike(artist);
+				if(result < 1) { // 좋아요 실패
+					resultAjax = "1";
+				} else { // 좋아요 성공
+					resultAjax = "2";
+				}
 			}
-		} else { // 좋아요가 안되어있는 경우
-			int result = service.insertArtistLike(artist);
-			if(result < 1) { // 좋아요 실패
-				resultAjax = "1";
-			} else { // 좋아요 성공
-				resultAjax = "2";
-			}
+		} else {
+			resultAjax = "-2";
 		}
+		
+		
 		return resultAjax;
 	}
 	

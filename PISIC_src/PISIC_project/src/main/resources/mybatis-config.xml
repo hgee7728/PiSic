@@ -35,5 +35,6 @@
 	<mapper resource="mappers/admin-mapper.xml"/>
 	<mapper resource="mappers/membership-mapper.xml"/>
 	<mapper resource="mappers/security-mapper.xml"/>
+	<mapper resource="mappers/search-mapper.xml"/>
 </mappers>
 </configuration>

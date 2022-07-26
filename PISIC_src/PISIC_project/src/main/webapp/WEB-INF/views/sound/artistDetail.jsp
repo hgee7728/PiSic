@@ -8,6 +8,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>Artist Detail</title>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
@@ -79,7 +81,39 @@ $(function(){
 
         }
     }
+    
 });
+function artistLike(artist_no){
+	$.ajax({
+		url:"<%=request.getContextPath() %>/mymusic/artistLike",
+		type:"post",
+		data:{
+			artist_no:artist_no
+			},
+		beforeSend: function(xhr){
+	        xhr.setRequestHeader(header, token);
+	    },
+		success: function(result){
+			if(result == "-2"){
+				alert("로그인 후 이용해주세요");
+			} else if(result == "-1"){
+				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
+			} else if(result == "0"){
+				alert("해당 아티스트를 좋아요를 취소했습니다.");
+				location.reload();
+			} else if(result == "1"){
+				alert("해당 아티스트 좋아요를 실패 했습니다. 다시 시도해주세요.");
+			} else if(result == "2"){
+				alert("해당 아티스트를 좋아요 했습니다.");
+				location.reload();
+			}
+			
+		},
+		error:function(){
+			
+		}
+	}); //ajax 끝
+};
 </script>
 <style>
 .content_div1 {
@@ -427,6 +461,8 @@ table.sound_list a {
 						<hr color="white">
 						<div class="table-responsive">
 							<form name="sound_frm">
+							<!-- csrf 공격 방지 -->
+                   			<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 								<table class="table sound_list">
 									<thead>
 										<tr>

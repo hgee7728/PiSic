@@ -122,7 +122,7 @@ $(function(){
 
 					<br>
 					<div>
-						<h3 class="card-title">곡 검색 결과</h3>
+						<h3 class="card-title">곡 검색 결과(${searchSoundCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">
@@ -192,7 +192,7 @@ $(function(){
 						<c:if test="${not empty soundList}">
 						<div class=" grid-margin stretch-card">
 							<a
-								href="<%=request.getContextPath()%>/sound/searchDetail?type=sound">
+								href='<%=request.getContextPath()%>/search/searchDetail?type=sound&keyword=${keyword}'>
 								<button class="btn_more">
 									<i class="mdi mdi-chevron-right"></i>
 								</button>
@@ -201,7 +201,7 @@ $(function(){
 						</c:if>
 					</div>
 					<div>
-						<h3 class="card-title">앨범 검색 결과</h3>
+						<h3 class="card-title">앨범 검색 결과(${searchAlbumCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">
@@ -257,7 +257,7 @@ $(function(){
 						<c:if test="${not empty albumList}">
 						<div class=" grid-margin stretch-card">
 							<a
-								href="<%=request.getContextPath()%>/sound/searchDetail?type=album">
+								href='<%=request.getContextPath()%>/search/searchDetail?type=album&keyword=${keyword}'>
 								<button class="btn_more">
 									<i class="mdi mdi-chevron-right"></i>
 								</button>
@@ -266,7 +266,7 @@ $(function(){
 						</c:if>
 					</div>
 					<div>
-						<h3 class="card-title">아티스트 검색 결과</h3>
+						<h3 class="card-title">아티스트 검색 결과(${searchArtistCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">
@@ -298,7 +298,16 @@ $(function(){
 															<tr>
 
 																<td>${status.count }</td>
-																<td><img src="${artist.artist_profile }" alt="image" /></td>
+																<td>
+																	<c:choose>
+																		<c:when test="${empty artist.artist_profile}">
+																			<img src="<%=request.getContextPath() %>/resources/assets/images/artist.png" />
+																		</c:when>
+																		<c:otherwise>
+																			<img src="${artist.artist_profile }" alt="image" />
+																		</c:otherwise>
+																	</c:choose>
+																</td>
 																<td><a
 																	href="javascript:selectArtistDetail('${artist.artist_no}')">${artist.artist_name}</a>
 																</td>
@@ -318,7 +327,7 @@ $(function(){
 						<c:if test="${not empty artistList}">
 						<div class=" grid-margin stretch-card">
 							<a
-								href="<%=request.getContextPath()%>/sound/searchDetail?type=artist">
+								href='<%=request.getContextPath()%>/search/searchDetail?type=artist&keyword=${keyword}'>
 								<button class="btn_more">
 									<i class="mdi mdi-chevron-right"></i>
 								</button>
@@ -327,7 +336,7 @@ $(function(){
 						</c:if>
 					</div>
 					<div>
-						<h3 class="card-title">게시판 검색 결과</h3>
+						<h3 class="card-title">게시판 검색 결과(${searchBoardCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">
@@ -378,7 +387,7 @@ $(function(){
 						<c:if test="${not empty boardList}">
 						<div class=" grid-margin stretch-card">
 							<a
-								href="<%=request.getContextPath()%>/sound/searchDetail?type=board">
+								href='<%=request.getContextPath()%>/search/searchDetail?type=board&keyword=${keyword}'>
 								<button class="btn_more">
 									<i class="mdi mdi-chevron-right"></i>
 								</button>

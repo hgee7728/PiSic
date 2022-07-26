@@ -215,7 +215,6 @@ function soundLike(a_no,s_no){
 		success: function(result){
 			if(result == "-2"){
 				alert("로그인 후 이용해 주세요.");
-				location.href = root_path + "/member/login";
 			} else if(result == "-1"){
 				alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 			} else if(result == "0"){
@@ -238,7 +237,7 @@ function soundLike(a_no,s_no){
 
 //로그인 페이지로
 function goLogin(){
-	location.href="<%=request.getContextPath() %>/member/login"
+	<%-- location.href="<%=request.getContextPath() %>/member/login" --%>
 };
 // 제목, 아티스트, 앨범 클릭시 상세조회 페이지
 function selectSoundDetail(a_no, s_no){

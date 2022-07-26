@@ -132,7 +132,7 @@ $(function(){
 		</form>
     </sec:authorize>
     <li class="nav-item w-100">
-      <form id="search_frm" class="nav-link mt-2 mt-md-0 d-lg-flex search" action="<%=request.getContextPath()%>/sound/search" method="get">
+      <form id="search_frm" class="nav-link mt-2 mt-md-0 d-lg-flex search" action="<%=request.getContextPath()%>/search/searchKeyword" method="get">
         <input type="text" class="form-control" placeholder="Search Sound" name="keyword">
         <button type="button" id="search_btn" class="btn btn-outline-light btn-sm">Search</button>
       </form>

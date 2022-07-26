@@ -150,29 +150,6 @@ public class SoundServiceImpl implements SoundService{
 		return resultSoundList;
 	}
 	
-	// 곡 검색
-	@Override
-	public List<Sound> selectSearchSound(String keyword, int limit) {
-		return dao.selectSearchSound(keyword, limit);
-	}
-	
-	// 앨범 검색
-	@Override
-	public List<Album> selectSearchAlbum(String keyword, int limit) {
-		return dao.selectSearchAlbum(keyword, limit);
-	}
-	
-	// 아티스트 검색
-	@Override
-	public List<Artist> selectSearchArtist(String keyword, int limit) {
-		return dao.selectSearchArtist(keyword, limit);
-	}
-	
-	// 플리 게시판 검색 
-	@Override
-	public List<PjBoard> selectSearchBoard(String keyword, int limit) {
-		return dao.selectSearchBoard(keyword, limit);
-	}
 	
 	
 	

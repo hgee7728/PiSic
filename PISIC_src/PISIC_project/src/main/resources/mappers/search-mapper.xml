@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Search">
+
+<resultMap type="Sound" id="soundSearchMap">
+	<result column="s_no" property="s_no"/>
+	<result column="a_no" property="a_no"/>
+	<result column="s_name" property="s_name"/>
+	<result column="s_lyrics1" property="s_lyrics1"/>
+	<result column="s_lyrics2" property="s_lyrics2"/>
+	<result column="s_age_yn" property="s_age_yn"/>
+	<result column="s_path" property="s_path"/>
+	<result column="g_no" property="g_no"/>
+	<result column="cnt_like" property="cnt_like"/>
+	<result column="a_cover" property="a_cover"/>
+	<result column="a_name" property="a_name"/>
+	<result column="g_name" property="g_name"/>
+	<collection column="{a_no=a_no, s_no=s_no}" property="singers" select="soundSingerList"></collection>
+</resultMap>
+
+
+
+<!-- 곡 검색 - 요약 -->
+<select id="selectSearchSound" resultMap="soundSearchMap">
+	select t1.* FROM 
+		(select DISTINCT sound.a_no, album.a_name, album.a_cover
+		, sound.s_no, sound.s_name
+		from album album
+		join sound sound on album.a_no = sound.a_no
+		join singer singer on singer.a_no = sound.a_no and sound.s_no = sound.s_no
+		join artist artist on singer.artist_no = artist.artist_no
+		where
+		sound.s_name
+		like '%'||#{keyword}||'%'
+		or
+		artist.artist_name
+		like '%'||#{keyword}||'%'
+		order by a_no) t1 
+	<![CDATA[
+	where rownum <= 3
+	]]>
+</select>
+
+<!-- 곡 - 가수 -->
+<select id="soundSingerList" parameterType="map" resultType="Singer">
+	select artist.artist_name, artist.artist_no
+	from sound sound
+	join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no
+	join artist artist on singer.artist_no = artist.artist_no 
+	where sound.a_no=#{a_no} and sound.s_no=#{s_no}
+</select>
+
+<!-- 앨범 검색 - 요약 -->
+<select id="selectSearchAlbum" resultType="Album">
+	select t1.* FROM 
+		(select DISTINCT a_no, a_name, a_cover, a_date, a_publishing, a_agency
+		, artist.artist_name, artist.artist_no
+		from album album
+		join artist artist on album.artist_no = artist.artist_no
+		where
+		album.a_name
+		like '%'||#{keyword}||'%'
+		or
+		artist.artist_name
+		like '%'||#{keyword}||'%'
+		or
+		a_publishing
+		like '%'||#{keyword}||'%'
+		or
+		a_agency
+		like '%'||#{keyword}||'%'
+		order by a_no) t1 
+	<![CDATA[
+	where rownum <= 3
+	]]>
+</select>
+
+<!-- 아티스트 검색 - 요약 -->
+<select id="selectSearchArtist" resultType="Artist">
+	select t1.* from 
+		(select artist_no, artist_name, artist_nation,
+		artist_company, artist_type,
+		artist_group, artist_member,
+		artist_profile, artist_info1,
+		artist_info2
+		from artist
+		where artist_name
+		like '%'||#{keyword}||'%') t1
+	<![CDATA[
+	where rownum <= 3
+	]]>
+</select>
+
+<!-- 플리 게시판 검색 - 요약 -->
+<select id="selectSearchBoard" resultType="PjBoard">
+	select t1.* from 
+		(select DISTINCT b_no, b_title, b_content,
+		b_writer, b_date, playlist.l_image
+		from board board
+		join playlist playlist on board.l_no = playlist.l_no
+		where b_title
+		like '%'||#{keyword}||'%'
+		or
+		b_content
+		like '%'||#{keyword}||'%'
+		) t1
+	<![CDATA[
+	where rownum <= 3
+	]]>
+</select>
+
+<!-- 곡 검색 - 전체 -->
+<select id="selectSearchSoundAll" parameterType="hashmap" resultMap="soundSearchMap">
+	select t2.* from 
+		(select rownum rnum, t1.* FROM 
+			(select DISTINCT sound.a_no, album.a_name, album.a_cover
+			, sound.s_no, sound.s_name
+			from album album
+			join sound sound on album.a_no = sound.a_no
+			join singer singer on singer.a_no = sound.a_no and sound.s_no = sound.s_no
+			join artist artist on singer.artist_no = artist.artist_no
+			where
+			(sound.s_name
+			like '%'||#{keyword}||'%'
+			or
+			artist.artist_name
+			like '%'||#{keyword}||'%')
+			order by a_no) t1 ) t2
+	<![CDATA[
+	where rnum between (#{cri.pageNum} -1) * #{cri.amount} and #{cri.pageNum} * #{cri.amount}
+	]]>
+</select>
+
+<!-- 곡 검색 - 전체 갯수 -->
+<select id="totalCntSearchSound" resultType="int">
+select count(*) FROM 
+		(select DISTINCT sound.a_no, album.a_name, album.a_cover
+		, sound.s_no, sound.s_name
+		from album album
+		join sound sound on album.a_no = sound.a_no
+		join singer singer on singer.a_no = sound.a_no and sound.s_no = sound.s_no
+		join artist artist on singer.artist_no = artist.artist_no
+		where
+		(sound.s_name
+		like '%'||#{keyword}||'%'
+		or
+		artist.artist_name
+		like '%'||#{keyword}||'%'))
+</select>
+
+<!-- 앨범 검색 - 전체 -->
+<select id="selectSearchAlbumAll" parameterType="hashmap" resultType="Album">
+	select t2.* from 
+		(select rownum rnum, t1.* FROM 
+			(select DISTINCT a_no, a_name, a_cover, a_date, a_publishing, a_agency
+			, artist.artist_name, artist.artist_no
+			from album album
+			join artist artist on album.artist_no = artist.artist_no
+			where
+			(album.a_name
+			like '%'||#{keyword}||'%'
+			or
+			artist.artist_name
+			like '%'||#{keyword}||'%'
+			or
+			a_publishing
+			like '%'||#{keyword}||'%'
+			or
+			a_agency
+			like '%'||#{keyword}||'%')
+			order by a_no) t1 ) t2
+		<![CDATA[
+	where rnum between (#{cri.pageNum} -1) * #{cri.amount} and #{cri.pageNum} * #{cri.amount}
+		]]>
+</select>
+
+<!-- 앨범 검색 - 전체 갯수 -->
+<select id="totalCntSearchAlbum" resultType="int">
+select count(*) FROM 
+		(select DISTINCT a_no, a_name, a_cover, a_date, a_publishing, a_agency
+		, artist.artist_name, artist.artist_no
+		from album album
+		join artist artist on album.artist_no = artist.artist_no
+		where
+		(album.a_name
+		like '%'||#{keyword}||'%'
+		or
+		artist.artist_name
+		like '%'||#{keyword}||'%'
+		or
+		a_publishing
+		like '%'||#{keyword}||'%'
+		or
+		a_agency
+		like '%'||#{keyword}||'%'))
+</select>
+
+<!-- 아티스트 검색 - 전체 -->
+<select id="selectSearchArtistAll" parameterType="hashmap" resultType="Artist">
+	select t2.* from 
+		(select rownum rnum, t1.* from 
+			(select artist_no, artist_name, artist_nation,
+			artist_company, artist_type,
+			artist_group, artist_member,
+			artist_profile, artist_info1,
+			artist_info2
+			from artist
+			where artist_name
+			like '%'||#{keyword}||'%'
+			) t1) t2
+	<![CDATA[
+	where rnum between (#{cri.pageNum} -1) * #{cri.amount} and #{cri.pageNum} * #{cri.amount}
+	]]>
+</select>
+
+<!-- 아티스트 검색 - 전체 갯수 -->
+<select id="totalCntSearchArtist" resultType="int">
+select count(*) from 
+		(select artist_no, artist_name, artist_nation,
+		artist_company, artist_type,
+		artist_group, artist_member,
+		artist_profile, artist_info1,
+		artist_info2
+		from artist
+		where artist_name
+		like '%'||#{keyword}||'%')
+</select>
+
+<!-- 플리 게시판 검색 - 전체 -->
+<select id="selectSearchBoardAll" parameterType="hashmap" resultType="PjBoard">
+	select t2.* from 
+	(select rownum rnum, t1.* from 
+		(select DISTINCT b_no, b_title, b_content,
+		b_writer, b_date, playlist.l_image
+		from board board
+		join playlist playlist on board.l_no = playlist.l_no
+		where 
+		(b_title
+		like '%'||#{keyword}||'%'
+		or
+		b_content
+		like '%'||#{keyword}||'%')
+		) t1) t2
+	<![CDATA[
+	where rnum between (#{cri.pageNum} -1) * #{cri.amount} and #{cri.pageNum} * #{cri.amount}
+	]]>
+</select>
+
+<!-- 플리 게시판 검색 - 전체 갯수 -->
+<select id="totalCntSearchBoard" resultType="int">
+select count(*) from 
+		(select DISTINCT b_no, b_title, b_content,
+		b_writer, b_date, playlist.l_image
+		from board board
+		join playlist playlist on board.l_no = playlist.l_no
+		where 
+		(b_title
+		like '%'||#{keyword}||'%'
+		or
+		b_content
+		like '%'||#{keyword}||'%'))
+</select>
+</mapper>

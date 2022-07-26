@@ -147,37 +147,6 @@ public class SoundDao {
 		return session.selectOne("Sound.checkAnoSno", sound);
 	}
 	
-	// 곡 검색
-	public List<Sound> selectSearchSound(String keyword, int limit) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("keyword", keyword);
-		map.put("limit", limit);
-		return session.selectList("Sound.selectSearchSound", map);
-	}
-	
-	// 앨범 검색
-	public List<Album> selectSearchAlbum(String keyword, int limit) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("keyword", keyword);
-		map.put("limit", limit);
-		return session.selectList("Sound.selectSearchAlbum", map);
-	}
-	
-	// 아티스트 검색
-	public List<Artist> selectSearchArtist(String keyword, int limit) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("keyword", keyword);
-		map.put("limit", limit);
-		return session.selectList("Sound.selectSearchArtist", map);
-	}
-	
-	// 플리 게시판 검색
-	public List<PjBoard> selectSearchBoard(String keyword, int limit) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("keyword", keyword);
-		map.put("limit", limit);
-		return session.selectList("Sound.selectSearchBoard", map);
-	}
 	
 	
 	

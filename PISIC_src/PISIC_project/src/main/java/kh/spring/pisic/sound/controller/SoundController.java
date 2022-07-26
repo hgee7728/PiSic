@@ -34,6 +34,8 @@ import com.google.gson.Gson;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.member.model.service.MemberService;
+import kh.spring.pisic.sound.domain.Criteria;
+import kh.spring.pisic.sound.domain.Paging;
 import kh.spring.pisic.sound.domain.PlayInfo;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
@@ -272,19 +274,6 @@ public class SoundController {
 //			return "0";
 //		}
 		return "1";
-	}
-	
-	@GetMapping("/search")
-	public ModelAndView searchResultPage(ModelAndView mv, @RequestParam(name="keyword", defaultValue = "") String keyword) {
-		
-		
-		mv.addObject("soundList", service.selectSearchSound(keyword, 3));
-		mv.addObject("albumList", service.selectSearchAlbum(keyword, 3));
-		mv.addObject("artistList", service.selectSearchArtist(keyword, 3));
-		mv.addObject("boardList", service.selectSearchBoard(keyword, 3));
-		mv.addObject("keyword", keyword);
-		mv.setViewName("sound/searchPage");
-		return mv;
 	}
 	
 	

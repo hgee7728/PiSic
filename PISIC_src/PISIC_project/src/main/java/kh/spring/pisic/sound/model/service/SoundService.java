@@ -33,9 +33,6 @@ public interface SoundService {
 	public PlayInfo selectBestChart(Sound sound);
 	public int insertPalyInfo(PlayInfo playInfo);
 	public List<Sound> checkAnoSno(List<Sound> soundList);
-	public List<Sound> selectSearchSound(String keyword, int limit);
-	public List<Album> selectSearchAlbum(String keyword, int limit);
-	public List<Artist> selectSearchArtist(String keyword, int limit);
-	public List<PjBoard> selectSearchBoard(String keyword, int limit);
+	
 	
 }
