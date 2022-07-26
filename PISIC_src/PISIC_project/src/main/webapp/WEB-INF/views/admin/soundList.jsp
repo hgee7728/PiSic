@@ -107,75 +107,79 @@ $(function(){
     
     // 곡 검색
 	$("#search_sound").click(function(){
-		$.ajax({
-			type: 'GET',
-			url : "<%=request.getContextPath()%>/admin/sound.do",
-			data : {
-				keyword: $("input[name=keyword]").val()
-			},
-			dataType:"json",
-			success : function(result){
-				console.log(result);
-				//테이블 초기화
-				$('#sound_list > tbody').empty();
-				if(result.length>=1){
-					
-					var html = "";
-					for(var i = 0; i < result.length; i++){
-						var resultData = result[i];
-						console.log(resultData.a_date);
-						html += '	<tr>   																				';
-						html += '		<td>																			';
-						html += '			<div class="form-check form-check-muted m-0">								';
-						html += '			<label class="form-check-label"> <input										';
-						html += '							type="checkbox" class="form-check-input sound_checkbox"		';
-						html += '							name="s_no" value='+resultData.s_no+'>			';
-						html += '			<i class="input-helper"></i>  			';
-						html += '			</label>								';
-						html += '			<input type="hidden" value='+resultData.a_no+' name="a_no">		';
-						html += '			</div>									';
-						html += '		</td>										';
-						html += '		<td> ' + (i+1) + ' </td>			';
-						html += '		<td>										';
-						html += '					<img src=" ' + resultData.a_cover +' " alt="image" />		';
-						html += '		</td>										';
-						html += '		<td> '+ resultData.s_name + ' </td>			';
-						html += '<td>';
-						for(var j = 0 ; j < resultData.singers.length ; j ++){
-							var resultData2 = resultData.singers[j]
-							html += resultData2.artist_name ;
-						}
-						html += '</td>';
-						html += '		<td> '+ resultData.a_name + ' </td>	';
-						html += '<td><a href="javascript:playOne('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-play list_icon"></i></a></td>';
-						html += '		<td>										';
-						html += '		<div class="select_btns">					';
-						html += '			<button type="button"					';
-						html += '			class="btn btn-info btn-md update_sound_btn" onclick="javasctipt:updateSound('+resultData.a_no+','+resultData.s_no+')">';
-						html += '			수정</button>								';
-						html += '		</div>										';
-						html += '		</td>										';
-						html += '		<td>										';
-						html += '			<div class="select_btns">				';
-						html += '			<button type="button"					';
-						html += '			class="btn btn-info btn-md delete_sound_btn">삭제</button>';
-						html += '<input type="hidden" value='+resultData.a_no+' name="delete_one_a_no">';
-						html += '<input type="hidden" value='+resultData.s_no+' name="delete_one_s_no">';
-						html += '			</div>									';
-						html += '		</td>										';
+		if($("input[name=keyword]").val()==""){
+			alert("검색어를 입력해주세요");
+		} else {
+			$.ajax({
+				type: 'GET',
+				url : "<%=request.getContextPath()%>/admin/sound.do",
+				data : {
+					keyword: $("input[name=keyword]").val()
+				},
+				dataType:"json",
+				success : function(result){
+					console.log(result);
+					//테이블 초기화
+					$('#sound_list > tbody').empty();
+					if(result.length>=1){
+						
+						var html = "";
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+							console.log(resultData.a_date);
+							html += '	<tr>   																				';
+							html += '		<td>																			';
+							html += '			<div class="form-check form-check-muted m-0">								';
+							html += '			<label class="form-check-label"> <input										';
+							html += '							type="checkbox" class="form-check-input sound_checkbox"		';
+							html += '							name="s_no" value='+resultData.s_no+'>			';
+							html += '			<i class="input-helper"></i>  			';
+							html += '			</label>								';
+							html += '			<input type="hidden" value='+resultData.a_no+' name="a_no">		';
+							html += '			</div>									';
+							html += '		</td>										';
+							html += '		<td> ' + (i+1) + ' </td>			';
+							html += '		<td>										';
+							html += '					<img src=" ' + resultData.a_cover +' " alt="image" />		';
+							html += '		</td>										';
+							html += '		<td> '+ resultData.s_name + ' </td>			';
+							html += '<td>';
+							for(var j = 0 ; j < resultData.singers.length ; j ++){
+								var resultData2 = resultData.singers[j]
+								html += resultData2.artist_name ;
+							}
+							html += '</td>';
+							html += '		<td> '+ resultData.a_name + ' </td>	';
+							html += '<td><a href="javascript:playOne('+resultData.a_no+','+resultData.s_no+')"><i class="mdi mdi-play list_icon"></i></a></td>';
+							html += '		<td>										';
+							html += '		<div class="select_btns">					';
+							html += '			<button type="button"					';
+							html += '			class="btn btn-info btn-md update_sound_btn" onclick="javasctipt:updateSound('+resultData.a_no+','+resultData.s_no+')">';
+							html += '			수정</button>								';
+							html += '		</div>										';
+							html += '		</td>										';
+							html += '		<td>										';
+							html += '			<div class="select_btns">				';
+							html += '			<button type="button"					';
+							html += '			class="btn btn-info btn-md delete_sound_btn">삭제</button>';
+							html += '<input type="hidden" value='+resultData.a_no+' name="delete_one_a_no">';
+							html += '<input type="hidden" value='+resultData.s_no+' name="delete_one_s_no">';
+							html += '			</div>									';
+							html += '		</td>										';
+							html += '	</tr>											';
+								
+						} 
+								 
+					} else {
+						html += '	<tr>   											';
+						html += '		<td colspan="10" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>			';
 						html += '	</tr>											';
-							
-					} 
-							 
-				} else {
-					html += '	<tr>   											';
-					html += '		<td colspan="10" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>			';
-					html += '	</tr>											';
+					}
+					$(".pageInfo_wrap").html("");
+					$("table.sound_list tbody").append(html);
 				}
-				$(".pageInfo_wrap").html("");
-				$("table.sound_list tbody").append(html);
-			}
-		})
+			})
+		}
 	});
 	
 	// 앨범 추가 버튼

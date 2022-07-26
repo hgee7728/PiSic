@@ -35,6 +35,22 @@
 	<collection column="{a_no=a_no, s_no=s_no}" property="sound_composers" select="soundComposerList"></collection>
 </resultMap>
 
+<resultMap type="Sound" id="soundSearchMap">
+	<result column="s_no" property="s_no"/>
+	<result column="a_no" property="a_no"/>
+	<result column="s_name" property="s_name"/>
+	<result column="s_lyrics1" property="s_lyrics1"/>
+	<result column="s_lyrics2" property="s_lyrics2"/>
+	<result column="s_age_yn" property="s_age_yn"/>
+	<result column="s_path" property="s_path"/>
+	<result column="g_no" property="g_no"/>
+	<result column="cnt_like" property="cnt_like"/>
+	<result column="a_cover" property="a_cover"/>
+	<result column="a_name" property="a_name"/>
+	<result column="g_name" property="g_name"/>
+	<collection column="{a_no=a_no, s_no=s_no}" property="singers" select="soundSingerList"></collection>
+</resultMap>
+
 <!-- 앨범상세조회 - 앨범정보 -->
 <select id="selectAlbum" resultMap="AlbumResultMap">
 	select album.a_no, album.a_name, album.a_cover, album.a_date, 
@@ -270,4 +286,91 @@ select * from (SELECT *
     where artist.artist_name = #{artist_name} and sound.s_name=#{s_name}
 </select>
 
+<!-- 곡 검색 -->
+<select id="selectSearchSound" parameterType="hashmap" resultMap="soundSearchMap">
+	
+	select t1.* FROM (select DISTINCT sound.a_no, album.a_name, album.a_cover
+	, sound.s_no, sound.s_name
+	from album album
+	join sound sound on album.a_no = sound.a_no
+	join singer singer on singer.a_no = sound.a_no and sound.s_no = sound.s_no
+	join artist artist on singer.artist_no = artist.artist_no
+	where
+	sound.s_name
+	like '%'||#{keyword}||'%'
+	or
+	artist.artist_name
+	like '%'||#{keyword}||'%'
+	order by a_no) t1 
+	<if test="limit != 0">
+		<![CDATA[
+		where rownum <= #{limit}
+		]]>
+	</if>
+</select>
+
+<!-- 앨범 검색 -->
+<select id="selectSearchAlbum" parameterType="hashmap" resultType="Album">
+	select t1.* FROM 
+	(select DISTINCT a_no, a_name, a_cover, a_date, a_publishing, a_agency
+	, artist.artist_name, artist.artist_no
+	from album album
+	join artist artist on album.artist_no = artist.artist_no
+	where
+	album.a_name
+	like '%'||#{keyword}||'%'
+	or
+	artist.artist_name
+	like '%'||#{keyword}||'%'
+	or
+	a_publishing
+	like '%'||#{keyword}||'%'
+	or
+	a_agency
+	like '%'||#{keyword}||'%'
+	order by a_no) t1 
+	<if test="limit != 0">
+		<![CDATA[
+		where rownum <= #{limit}
+		]]>
+	</if>
+</select>
+
+<!-- 아티스트 검색 -->
+<select id="selectSearchArtist" parameterType="hashmap" resultType="Artist">
+	select t1.* from 
+		(select artist_no, artist_name, artist_nation,
+		artist_company, artist_type,
+		artist_group, artist_member,
+		artist_profile, artist_info1,
+		artist_info2
+		from artist
+		where artist_name
+		like '%'||#{keyword}||'%') t1
+	<if test="limit != 0">
+		<![CDATA[
+		where rownum <= #{limit}
+		]]>
+	</if>
+</select>
+
+<!-- 플리 게시판 검색 -->
+<select id="selectSearchBoard" parameterType="hashmap" resultType="PjBoard">
+	select t1.* from 
+		(select DISTINCT b_no, b_title, b_content,
+		b_writer, b_date, playlist.l_image
+		from board board
+		join playlist playlist on board.l_no = playlist.l_no
+		where b_title
+		like '%'||#{keyword}||'%'
+		or
+		b_content
+		like '%'||#{keyword}||'%'
+		) t1
+	<if test="limit != 0">
+		<![CDATA[
+		where rownum <= #{limit}
+		]]>
+	</if>
+</select>
 </mapper>

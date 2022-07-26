@@ -274,7 +274,18 @@ public class SoundController {
 		return "1";
 	}
 	
-	
+	@GetMapping("/search")
+	public ModelAndView searchResultPage(ModelAndView mv, @RequestParam(name="keyword", defaultValue = "") String keyword) {
+		
+		
+		mv.addObject("soundList", service.selectSearchSound(keyword, 3));
+		mv.addObject("albumList", service.selectSearchAlbum(keyword, 3));
+		mv.addObject("artistList", service.selectSearchArtist(keyword, 3));
+		mv.addObject("boardList", service.selectSearchBoard(keyword, 3));
+		mv.addObject("keyword", keyword);
+		mv.setViewName("sound/searchPage");
+		return mv;
+	}
 	
 	
 	

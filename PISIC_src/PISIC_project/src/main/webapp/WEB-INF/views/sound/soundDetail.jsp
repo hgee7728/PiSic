@@ -525,7 +525,8 @@ function selectAlbumDetail(a_no){
 											</tr>
 											<tr>
 												<td>발매일 :</td>
-												<td>${album.a_date}</td>
+												<fmt:formatDate var="format_a_date" value="${album.a_date}" pattern="yyyy-MM-dd"/>
+												<td>${format_a_date}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -563,7 +564,8 @@ function selectAlbumDetail(a_no){
 													</tr>
 													<tr>
 														<td>발매일 :</td>
-														<td>${album.a_date}</td>
+														<fmt:formatDate var="format_a_date" value="${album.a_date}" pattern="yyyy-MM-dd"/>
+														<td>${format_a_date}</td>
 													</tr>
 												</tbody>
 											</table>

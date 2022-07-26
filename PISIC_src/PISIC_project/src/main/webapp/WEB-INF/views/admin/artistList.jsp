@@ -108,91 +108,97 @@ $(function(){
 
 
 	$("#search-artist").click(function(){
-		$.ajax({
-			type: 'GET',
-			url : "<%=request.getContextPath()%>/admin/artist.do",
-			data : {
-				keyword: $("input[name=keyword]").val()
-			},
-			dataType : "json",
-			success : function(result){
-				//테이블 초기화
-				$('#artist_list > tbody').empty();
-				if(result.length>=1){
-					
-					var html = "";
-					for(var i = 0; i < result.length; i++){
-						var resultData = result[i];
+		
+		if($("input[name=keyword]").val()==""){
+			alert("검색어를 입력해주세요");
+		} else {
+			$.ajax({
+				type: 'GET',
+				url : "<%=request.getContextPath()%>/admin/artist.do",
+				data : {
+					keyword: $("input[name=keyword]").val()
+				},
+				dataType: "json",
+				success : function(result){
+					//테이블 초기화
+					$('#artist_list > tbody').empty();
+					if(result.length>=1){
+						var html = "";
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+								
+							html += '	<tr>   																				';
+							html += '		<td>																			';
+							html += '			<div class="form-check form-check-muted m-0">								';
+							html += '			<label class="form-check-label"> <input										';
+							html += '							type="checkbox" class="form-check-input sound_checkbox"		';
+							html += '							value="${artist.artist_no }" name="RowCheck" >			';
+							html += '			<i class="input-helper"></i>  			';
+							html += '			</label>								';
+							html += '			</div>									';
+							html += '		</td>										';
+							html += '		<td> ' + resultData.artist_no + ' </td>				';
+							html += '		<td>										';
+	
+							if(resultData.artist_profile!=null){
 							
-						html += '	<tr>   																				';
-						html += '		<td>																			';
-						html += '			<div class="form-check form-check-muted m-0">								';
-						html += '			<label class="form-check-label"> <input										';
-						html += '							type="checkbox" class="form-check-input sound_checkbox"		';
-						html += '							value="${artist.artist_no }" name="RowCheck" >			';
-						html += '			<i class="input-helper"></i>  			';
-						html += '			</label>								';
-						html += '			</div>									';
-						html += '		</td>										';
-						html += '		<td> ' + resultData.artist_no + ' </td>				';
-						html += '		<td>										';
-
-						if(resultData.artist_profile!=null){
-						
-						html += '					<img src=" ' + resultData.artist_profile +' " alt="image" />		';
-						
-						}
-						else if(resultData.artist_profile==null){
-						
-						html += '					<img src=" ' + "<%=request.getContextPath()%>/resources/assets/images/artist.png" +' " alt="image" />			';
-						
-						}
-						
-						html += '		</td>										';
-						html += '		<td> '+ resultData.artist_name + ' </td>				';
-						
-						if(resultData.artist_nation!=null){
-						html += '		<td> '+ resultData.artist_nation + ' </td>			';
-						}
-						else if(resultData.artist_nation==null){
-						html += '		<td>(정보없음)</td>			';	
-						}
-						
-						if(resultData.artist_company!=null){
-						html += '		<td> '+ resultData.artist_company + ' </td>			';
-						}
-						else if(resultData.artist_company==null){
-						html += '		<td>(정보없음)</td>			';	
-						}
-					
-						if(resultData.artist_type!=null){
-						html += '		<td> '+ resultData.artist_type + ' </td>			';
-						}
-						else if(resultData.artist_type==null){
-						html += '		<td>(정보없음)</td>			';	
-						}
-						html += '		<td>										';
-						html += '		<div class="select_btns">					';
-						html += '			<button type="button" "								';
-						html += '			class="btn btn-info btn-md select_artist_update" onclick="javasctipt:updateArtist('+resultData.artist_no+')">				';
-						html += '			수정</button>								';
-						html += '		</div>										';
-						html += '		</td>										';
-						html += '		<td>										';
-						html += '			<div class="select_btns">				';
-						html += '			<button type="button" 									';
-						html += '			class="btn btn-info btn-md select_artist_delete")">삭제</button>										';
-						html += '			</div>									';
-						html += '		</td>										';
-						html += '	</tr>											';
+							html += '					<img src=" ' + resultData.artist_profile +' " alt="image" />		';
 							
+							}
+							else if(resultData.artist_profile==null){
+							
+							html += '					<img src=" ' + "<%=request.getContextPath()%>/resources/assets/images/artist.png" +' " alt="image" />			';
+							
+							}
+							
+							html += '		</td>										';
+							html += '		<td> '+ resultData.artist_name + ' </td>				';
+							
+							if(resultData.artist_nation!=null){
+							html += '		<td> '+ resultData.artist_nation + ' </td>			';
+							}
+							else if(resultData.artist_nation==null){
+							html += '		<td>(정보없음)</td>			';	
+							}
+							
+							if(resultData.artist_company!=null){
+							html += '		<td> '+ resultData.artist_company + ' </td>			';
+							}
+							else if(resultData.artist_company==null){
+							html += '		<td>(정보없음)</td>			';	
+							}
+						
+							if(resultData.artist_type!=null){
+							html += '		<td> '+ resultData.artist_type + ' </td>			';
+							}
+							else if(resultData.artist_type==null){
+							html += '		<td>(정보없음)</td>			';	
+							}
+							html += '		<td>										';
+							html += '		<div class="select_btns">					';
+							html += '			<button type="button" "								';
+							html += '			class="btn btn-info btn-md select_artist_update" onclick="javasctipt:updateArtist('+resultData.artist_no+')">				';
+							html += '			수정</button>								';
+							html += '		</div>										';
+							html += '		</td>										';
+							html += '		<td>										';
+							html += '			<div class="select_btns">				';
+							html += '			<button type="button" 									';
+							html += '			class="btn btn-info btn-md select_artist_delete")">삭제</button>										';
+							html += '			</div>									';
+							html += '		</td>										';
+							html += '	</tr>											';
+								
+						}
+						console.log(html);
+						$(".pageInfo_wrap").html("");
+						$("table.artist_list tbody").append(html);				 
 					}
-					console.log(html);
-					$(".pageInfo_wrap").html("");
-					$("table.artist_list tbody").append(html);				 
 				}
-			}
-		})
+			})
+		}
+		
+		
 	});
 	
 	//한개 삭제 버튼

@@ -108,68 +108,70 @@ $(function(){
     
     // 앨범 검색
 	$("#search_album").click(function(){
-		$.ajax({
-			type: 'GET',
-			url : "<%=request.getContextPath()%>/admin/album.do",
-			data : {
-				keyword: $("input[name=keyword]").val()
-			},
-			dataType:"json",
-			success : function(result){
-				console.log(result);
-				//테이블 초기화
-				$('#album_list > tbody').empty();
-				if(result.length>=1){
-					
-					var html = "";
-					for(var i = 0; i < result.length; i++){
-						var resultData = result[i];
-						console.log(resultData.a_date);
-						html += '	<tr>   																				';
-						html += '		<td>																			';
-						html += '			<div class="form-check form-check-muted m-0">								';
-						html += '			<label class="form-check-label"> <input										';
-						html += '							type="checkbox" class="form-check-input sound_checkbox"		';
-						html += '							name="a_no" value='+resultData.a_no+'>			';
-						html += '			<i class="input-helper"></i>  			';
-						html += '			</label>								';
-						html += '			</div>									';
-						html += '		</td>										';
-						html += '		<td> ' + resultData.a_no + ' </td>			';
-						html += '		<td>										';
-						html += '					<img src=" ' + resultData.a_cover +' " alt="image" />		';
-						html += '		</td>										';
-						html += '		<td> '+ resultData.a_name + ' </td>			';
-						html += '		<td> '+ resultData.artist_name + ' </td>	';
-						html += '		<td> '+ resultData.a_publishing + ' </td>	';
-						html += '		<td> '+ resultData.a_agency + ' </td>		';				
-						html += '		<td> '+ resultData.a_date + ' </td>			';				
-						html += '		<td>										';
-						html += '		<div class="select_btns">					';
-						html += '			<button type="button"					';
-						html += '			class="btn btn-info btn-md update_album">';
-						html += '			수정</button>								';
-						html += '		</div>										';
-						html += '		</td>										';
-						html += '		<td>										';
-						html += '			<div class="select_btns">				';
-						html += '			<button type="button"					';
-						html += '			class="btn btn-info btn-md delete_album">삭제</button>										';
-						html += '			</div>									';
-						html += '		</td>										';
+		if($("input[name=keyword]").val()==""){
+			alert("검색어를 입력해주세요");
+		} else {
+			$.ajax({
+				type: 'GET',
+				url : "<%=request.getContextPath()%>/admin/album.do",
+				data : {
+					keyword: $("input[name=keyword]").val()
+				},
+				dataType:"json",
+				success : function(result){
+					console.log(result);
+					//테이블 초기화
+					$('#album_list > tbody').empty();
+					if(result.length>=1){
+						
+						var html = "";
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+							console.log(resultData.a_date);
+							html += '	<tr>   																				';
+							html += '		<td>																			';
+							html += '			<div class="form-check form-check-muted m-0">								';
+							html += '			<label class="form-check-label"> <input										';
+							html += '							type="checkbox" class="form-check-input sound_checkbox"		';
+							html += '							name="a_no" value='+resultData.a_no+'>			';
+							html += '			<i class="input-helper"></i>  			';
+							html += '			</label>								';
+							html += '			</div>									';
+							html += '		</td>										';
+							html += '		<td> ' + resultData.a_no + ' </td>			';
+							html += '		<td>										';
+							html += '					<img src=" ' + resultData.a_cover +' " alt="image" />		';
+							html += '		</td>										';
+							html += '		<td> '+ resultData.a_name + ' </td>			';
+							html += '		<td> '+ resultData.artist_name + ' </td>	';
+							html += '		<td> '+ resultData.a_publishing + ' </td>	';
+							html += '		<td>										';
+							html += '		<div class="select_btns">					';
+							html += '			<button type="button"					';
+							html += '			class="btn btn-info btn-md update_album">';
+							html += '			수정</button>								';
+							html += '		</div>										';
+							html += '		</td>										';
+							html += '		<td>										';
+							html += '			<div class="select_btns">				';
+							html += '			<button type="button"					';
+							html += '			class="btn btn-info btn-md delete_album">삭제</button>										';
+							html += '			</div>									';
+							html += '		</td>										';
+							html += '	</tr>											';
+								
+						} 
+								 
+					} else {
+						html += '	<tr>   											';
+						html += '		<td colspan="10" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>			';
 						html += '	</tr>											';
-							
-					} 
-							 
-				} else {
-					html += '	<tr>   											';
-					html += '		<td colspan="10" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>			';
-					html += '	</tr>											';
+					}
+					$(".pageInfo_wrap").html("");
+					$("table.album_list tbody").append(html);
 				}
-				$(".pageInfo_wrap").html("");
-				$("table.album_list tbody").append(html);
-			}
-		})
+			})
+		}
 	});
 	
 	// 앨범 추가 버튼
@@ -301,8 +303,6 @@ $(function(){
 											<td>앨범명</td>
 											<td>아티스트명</td>
 											<td>발매사</td>
-											<td>기획사</td>
-											<td>발매일</td>
 											<td>수정</td>
 											<td>삭제</td>
 										</tr>
@@ -326,8 +326,6 @@ $(function(){
 												<td>${album.a_name}</td>
 												<td>${album.artist_name}</td>
 												<td>${album.a_publishing}</td>
-												<td>${album.a_agency}</td>
-												<td><fmt:formatDate value="${album.a_date}" pattern="yyyy-MM-dd"/></td>
 												<td>
 
 													<div class="select_btns">
