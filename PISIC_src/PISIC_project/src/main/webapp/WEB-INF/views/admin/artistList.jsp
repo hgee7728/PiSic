@@ -109,14 +109,14 @@ $(function(){
 
 	$("#search-artist").click(function(){
 		
-		if($("input[name=keyword]").val()==""){
+		if($("div.content_div0 input[name=keyword]").val()==""){
 			alert("검색어를 입력해주세요");
 		} else {
 			$.ajax({
 				type: 'GET',
 				url : "<%=request.getContextPath()%>/admin/artist.do",
 				data : {
-					keyword: $("input[name=keyword]").val()
+					keyword: $("div.content_div0 input[name=keyword]").val()
 				},
 				dataType: "json",
 				success : function(result){
@@ -184,8 +184,9 @@ $(function(){
 							html += '		<td>										';
 							html += '			<div class="select_btns">				';
 							html += '			<button type="button" 									';
-							html += '			class="btn btn-info btn-md select_artist_delete")">삭제</button>										';
-							html += '			</div>									';
+							html += '			class="btn btn-info btn-md delete select_artist_delete">삭제</button>								';
+							html += '			<input type="hidden" value="${artist.artist_no}" name="delete_one_artist_no">									';
+							html += '		</div>										';
 							html += '		</td>										';
 							html += '	</tr>											';
 								
