@@ -194,7 +194,7 @@ $(function(){
     // 재생
     $("#play").click(function(){
     	// Post 방식으로 새창 열기
-    	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
+    	window.open('', 'SoundPlayer', 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no');
     	sound_frm.action="<%=request.getContextPath() %>/sound/play";
     	sound_frm.target="SoundPlayer";
     	sound_frm.method="post";

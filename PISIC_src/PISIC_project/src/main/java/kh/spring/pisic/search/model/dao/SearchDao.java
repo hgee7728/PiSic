@@ -39,7 +39,7 @@ public class SearchDao {
 		return session.selectList("Search.selectSearchBoard", keyword);
 	}
 	
-	// 곡 검색 - 전체
+	// 곡 검색 - 전체 - 페이징
 	public List<Sound> selectSearchSoundAll(String keyword, Criteria cri) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("keyword", keyword);
@@ -52,7 +52,7 @@ public class SearchDao {
 		return session.selectOne("Search.totalCntSearchSound", keyword);
 	}
 
-	// 앨범 검색 - 전체
+	// 앨범 검색 - 전체 - 페이징
 	public List<Album> selectSearchAlbumAll(String keyword, Criteria cri) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("keyword", keyword);
@@ -65,7 +65,7 @@ public class SearchDao {
 		return session.selectOne("Search.totalCntSearchAlbum", keyword);
 	}
 
-	// 아티스트 검색 - 전체
+	// 아티스트 검색 - 전체 - 페이징
 	public List<Artist> selectSearchArtistAll(String keyword, Criteria cri) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("keyword", keyword);
@@ -78,7 +78,7 @@ public class SearchDao {
 		return session.selectOne("Search.totalCntSearchArtist", keyword);
 	}
 
-	// 플리 게시판 검색 - 전체
+	// 플리 게시판 검색 - 전체 - 페이징
 	public List<PjBoard> selectSearchBoardAll(String keyword, Criteria cri) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("keyword", keyword);
@@ -89,5 +89,10 @@ public class SearchDao {
 	// 플리 게시판 검색 - 전체 갯수
 	public int totalCntSearchBoard(String keyword) {
 		return session.selectOne("Search.totalCntSearchBoard", keyword);
+	}
+	
+	// 플레이 리스트 만들기 - 곡 검색
+	public List<Sound> selectSearchSoundPlaylist(String keyword) {
+		return session.selectList("Search.selectSearchSoundPlaylist", keyword);
 	}
 }

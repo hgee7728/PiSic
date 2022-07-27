@@ -4,7 +4,22 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<style>
+input[name=keyword]{
+	height:30px;
+}
+</style>
+<script>
+$(function(){
+	$("#search_btn").click(function(){
+		if($("input[name=keyword]").val()==""){
+			alert("검색어를 입력해주세요");
+		} else {
+			search_frm.submit();
+		}
+	});
+});
+</script>
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
     <a class="sidebar-brand brand-logo" href="<%=request.getContextPath()%>/main"><img src="<%=request.getContextPath()%>/resources/assets/images/PISIC-logo.png" alt="logo" /></a>
@@ -114,8 +129,9 @@
 		</form>
     </sec:authorize>
     <li class="nav-item w-100">
-      <form class="nav-link mt-2 mt-md-0 d-lg-flex search">
-        <input type="text" class="form-control" placeholder="Search products">
+      <form id="search_frm" class="nav-link mt-2 mt-md-0 d-lg-flex search" action="<%=request.getContextPath()%>/search/searchKeyword" method="get">
+        <input type="text" class="form-control" placeholder="Search Sound" name="keyword">
+        <button type="button" id="search_btn" class="btn btn-outline-light btn-sm">Search</button>
       </form>
     </li>
     <sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -179,7 +195,7 @@
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/sound">
         <span class="menu-icon">
           <i class="mdi mdi-square-inc-cash"></i>
         </span>

@@ -22,5 +22,6 @@ public interface SearchService {
 	public int totalCntSearchArtist(String keyword);
 	public List<PjBoard> selectSearchBoardAll(String keyword, Criteria cri);
 	public int totalCntSearchBoard(String keyword);
+	public List<Sound> selectSearchSoundPlaylist(String keyword);
 	
 }

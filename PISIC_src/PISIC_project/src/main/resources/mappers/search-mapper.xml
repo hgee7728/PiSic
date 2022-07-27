@@ -233,7 +233,7 @@ select count(*) from
 		(select DISTINCT b_no, b_title, b_content,
 		b_writer, b_date, playlist.l_image
 		from board board
-		join playlist playlist on board.l_no = playlist.l_no
+		join playlist playlist on board.l_no = playlist.l_no and board.m_id = playlist.m_id
 		where 
 		(b_title
 		like '%'||#{keyword}||'%'
@@ -260,4 +260,23 @@ select count(*) from
 		b_content
 		like '%'||#{keyword}||'%'))
 </select>
+
+<!-- 플레이 리스트 만들기 - 곡 검색 -->
+<select id="selectSearchSoundPlaylist" resultMap="soundSearchMap">
+	select DISTINCT sound.a_no, album.a_cover
+			, sound.s_no, sound.s_name
+			from album album
+			join sound sound on album.a_no = sound.a_no
+			join singer singer on singer.a_no = sound.a_no and sound.s_no = sound.s_no
+			join artist artist on singer.artist_no = artist.artist_no
+			where
+			(sound.s_name
+			like '%'||#{keyword}||'%'
+			or
+			artist.artist_name
+			like '%'||#{keyword}||'%')
+			order by a_no
+</select>
+
+
 </mapper>

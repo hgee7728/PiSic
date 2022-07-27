@@ -17,7 +17,7 @@ $(function(){
 		} else {
 			
 	    	// Post 방식으로 새창 열기
-	    	window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
+	    	window.open('', 'SoundPlayer', 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no');
 	    	sound_frm.action= root_path + "/sound/play";
 	    	sound_frm.target="SoundPlayer";
 	    	sound_frm.method="post";
@@ -76,7 +76,7 @@ $(function(){
 	    frm.setAttribute('method', 'post');
 	    frm.setAttribute('action', root_path + '/sound/play');
 	    document.body.appendChild(frm);
-		windowObj = window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
+		windowObj = window.open('', 'SoundPlayer', 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no');
 		frm.target="SoundPlayer";
 	    frm.submit();
 	};

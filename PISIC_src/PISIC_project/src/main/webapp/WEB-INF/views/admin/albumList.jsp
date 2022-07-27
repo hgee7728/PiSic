@@ -252,7 +252,7 @@ $(function(){
 </head>
 <body>
 	<div class="container-scroller">
-		<jsp:include page="../_sidebar.jsp" />
+		<jsp:include page="../_sidebar_admin.jsp" />
 		<div class="container-fluid page-body-wrapper">
 			<jsp:include page="../_navbar.jsp" />
 			<div class="main-panel">

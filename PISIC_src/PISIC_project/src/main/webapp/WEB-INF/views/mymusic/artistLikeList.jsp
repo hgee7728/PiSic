@@ -126,7 +126,12 @@ function artistLike(artist_no){
 								<div class="artist_div">
 									<div class="main_img_div">
 										<a href="javascript:selectArtistDetail('${ArtistList.artist_no }')">
-											<img id="main_img" src="${ArtistList.artist_profile }" width="200" height="200">
+											<c:if test="${empty ArtistList.artist_profile }">
+												<img id="main_img" src="<%=request.getContextPath() %>/resources/assets/images/artist.png" width="200" height="200">
+											</c:if>
+											<c:if test="${not empty ArtistList.artist_profile }">
+												<img id="main_img" src="${ArtistList.artist_profile }" width="200" height="200">
+											</c:if>
 										</a>
 									</div>
 									<div class="content_info">

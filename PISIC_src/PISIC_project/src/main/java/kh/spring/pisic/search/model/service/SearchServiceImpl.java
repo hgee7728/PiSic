@@ -42,7 +42,7 @@ public class SearchServiceImpl implements SearchService{
 		return dao.selectSearchBoard(keyword);
 	}
 
-	// 곡 검색 - 전체
+	// 곡 검색 - 전체 - 페이징
 	@Override
 	public List<Sound> selectSearchSoundAll(String keyword, Criteria cri) {
 		return dao.selectSearchSoundAll(keyword, cri);
@@ -54,7 +54,7 @@ public class SearchServiceImpl implements SearchService{
 		return dao.totalCntSearchSound(keyword);
 	}
 
-	// 앨범 검색 - 전체
+	// 앨범 검색 - 전체 - 페이징
 	@Override
 	public List<Album> selectSearchAlbumAll(String keyword, Criteria cri) {
 		return dao.selectSearchAlbumAll(keyword, cri);
@@ -66,7 +66,7 @@ public class SearchServiceImpl implements SearchService{
 		return dao.totalCntSearchAlbum(keyword);
 	}
 	
-	// 아티스트 검색 - 전체
+	// 아티스트 검색 - 전체 - 페이징
 	@Override
 	public List<Artist> selectSearchArtistAll(String keyword, Criteria cri) {
 		return dao.selectSearchArtistAll(keyword, cri);
@@ -78,7 +78,7 @@ public class SearchServiceImpl implements SearchService{
 		return dao.totalCntSearchArtist(keyword);
 	}
 	
-	// 플리 게시판 검색 - 전체
+	// 플리 게시판 검색 - 전체 - 페이징
 	@Override
 	public List<PjBoard> selectSearchBoardAll(String keyword, Criteria cri) {
 		return dao.selectSearchBoardAll(keyword, cri);
@@ -88,5 +88,11 @@ public class SearchServiceImpl implements SearchService{
 	@Override
 	public int totalCntSearchBoard(String keyword) {
 		return dao.totalCntSearchBoard(keyword);
+	}
+
+	// 플레이 리스트 만들기 - 곡 검색
+	@Override
+	public List<Sound> selectSearchSoundPlaylist(String keyword) {
+		return dao.selectSearchSoundPlaylist(keyword);
 	}
 }

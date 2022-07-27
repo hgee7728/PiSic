@@ -217,7 +217,7 @@ $(document).ready(function(){
 	
 	// 동적으로 생성된 x 버튼에 기능 추가 - 현재 플레이 리스트 table에서 삭제
 	$(document).on("click", ".jp-playlist-item-remove", function() {
-		alert("x 누른 곡 인덱스 : "+$(this).closest('li').index());
+		//alert("x 누른 곡 인덱스 : "+$(this).closest('li').index());
 		console.log("누른곳 인덱스 0: " + $(this).closest('div.jp-playlist').index());
 		console.log("누른곳 인덱스 1: " + $(this).closest('li').index());
 		if($(this).closest('li').hasClass("jp-playlist-current") == true){
@@ -451,11 +451,6 @@ function goInsertPlayinfo(){
 		</div>
 	</div>
 </div>
-			
-			<input type="hidden" name="id" id="sid" value="aaa">
-			<button type="button" id="btn">테스트버튼</button>
-			<button type="button" id="current_name">현재곡 뭐야</button>
-			
 </body>
 
 

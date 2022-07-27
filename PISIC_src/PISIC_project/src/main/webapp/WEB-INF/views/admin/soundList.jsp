@@ -264,7 +264,8 @@ $(function(){
     		}); // ajax 끝
     	}
 	});
-	
+	// 미니 버튼들 a태그 색상 바꾸기
+	$("i.mdi").parent('a').css('color','#8f5fe8');
 }); // $(function(){}) 끝
 
 //한곡 재생 - post방식으로 a태그 이용해서 이동
@@ -293,7 +294,7 @@ function playOne(a_no,s_no){
     frm.setAttribute('method', 'post');
     frm.setAttribute('action', root_path + '/sound/play');
     document.body.appendChild(frm);
-	windowObj = window.open('', 'SoundPlayer', 'top=10, left=10, width=450, height=600, status=no, menubar=no, toolbar=no, resizable=no');
+	windowObj = window.open('', 'SoundPlayer', 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no');
 	frm.target="SoundPlayer";
     frm.submit();
 };
@@ -305,7 +306,7 @@ function updateSound(a_no, s_no){
 </head>
 <body>
 	<div class="container-scroller">
-		<jsp:include page="../_sidebar.jsp" />
+		<jsp:include page="../_sidebar_admin.jsp" />
 		<div class="container-fluid page-body-wrapper">
 			<jsp:include page="../_navbar.jsp" />
 			<div class="main-panel">

@@ -5,7 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
 
 import kh.spring.pisic.search.model.service.SearchService;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -36,7 +39,7 @@ public class SearchController {
 		return mv;
 	}
 	
-	// 검색 상세조회
+	// 검색 상세조회 - 페이징
 	@GetMapping("/searchDetail")
 	public ModelAndView searchDetailPage(ModelAndView mv
 			, @RequestParam(name="type", required = false) String type
@@ -72,4 +75,17 @@ public class SearchController {
 		mv.setViewName("search/searchAll");
 		return mv;
 	}
+	
+	// 플레이 리스트 만들기 - 곡 검색
+	@GetMapping("/searchSound")
+	@ResponseBody
+	public String searchSound(@RequestParam(name="keyword", required = false) String keyword) {
+		
+		return new Gson().toJson(service.selectSearchSoundPlaylist(keyword));
+	}
+	
+	
+	
+	
+	
 }
