@@ -1,6 +1,6 @@
 package kh.spring.pisic.pymusic.model.service;
 
-import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class PymusicServiceImpl implements PymusicService{
 	}
 	
 	@Override
-	public List<Sound> selectPyWeather(String weather) {
+	public List<Sound> selectPyWeather(HashMap<String, Object> weather) {
 		return dao.selectPyWeather(weather);
 	}
 	
@@ -39,4 +39,5 @@ public class PymusicServiceImpl implements PymusicService{
 	public List<Sound> selectPyTime(String p_date) {
 		return dao.selectPyTime(p_date);
 	}
+
 }

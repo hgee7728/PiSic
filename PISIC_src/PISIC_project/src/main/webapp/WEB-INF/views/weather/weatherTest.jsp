@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>PISIC CHART DETAIL</title>
+<title>PISIC YOUR MUSIC : WEATHER</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <!-- plugins:css -->
 <link rel="stylesheet"
@@ -37,8 +37,7 @@
 .content-wrapper a {
 	color: #6c7293;
 }
-</style>
-<style>
+
 table.sound_list  tr>td:nth-child(1), table.sound_list  tr>td:nth-child(2),
 	table.sound_list  tr>td:nth-child(3), table.sound_list  tr>td:nth-child(7),
 	table.sound_list  tr>td:nth-child(8), table.sound_list  tr>td:nth-child(9)
@@ -86,10 +85,11 @@ $(function(){
 				<div class="content-wrapper">
 
 					<h2 class=" card-title">
-						Pick Your Genre &nbsp;&nbsp;${serverTime};
+						Pick Your Weather &nbsp;&nbsp;${serverTime }
 					</h2>
 					<br>
-					<p>장르별 전체 재생 수 기준 랭킹 조회</p>
+					<p>날씨별 전체 재생 수 기준 랭킹 조회</p>
+					<p>${playinfo.tmp }</p>
 					<div class="content_div3">
 						<div class="select_btns">
 							<button type="button" id="select_play" class="btn btn-info btn-fw">선택재생</button>
@@ -99,10 +99,8 @@ $(function(){
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-										<c:set var="genre" value="${pyGenre[1].g_name}"></c:set>
-										
-										<h3 class="card-title">${genre } TOP 10</h3>
-										
+										<c:set var="area" value="${pyArea[1].area_name }"	/>
+										<h3 class="card-title">${weather } TOP 10</h3>
 										<div class="table-responsive">
 											<form name="sound_frm">
 												<table class="table sound_list">
@@ -127,7 +125,26 @@ $(function(){
 														</tr>
 													</thead>
 													<tbody>
-														<c:forEach items="${pyGenre}" var="sounds">
+													<div class="weather_box"
+													style="display: inline-block; width: 500px; text-align: center; margin-top: 100px; margin-left: 500px; margin-right: 0;">
+															<h1>날씨 날씨??</h1>
+															<h3>
+																원하는 동네의 날씨 골라주세요 <br> ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ
+															</h3>
+															<select name="city">
+																<option value="서울시">서울시</option>
+															</select> <select name="gu">
+																<option value="관악구">관악구</option>
+																<option value="동작구">동작구</option>
+																<option value="강남구">강남구</option>
+																<option value="강서구">강서구</option>
+																<option value="종로구">종로구</option>
+																<option value="광진구">광진구</option>
+															</select>
+														
+															<button type="button" class="btn search">날씨 찾기 얍</button>
+														</div>
+														<c:forEach items="${pyArea}" var="sounds">
 															<tr>
 																<td>
 																	<div class="form-check form-check-muted m-0">
@@ -185,7 +202,30 @@ $(function(){
 		<!-- page-body-wrapper ends -->
 	</div>
 	<!-- container-scroller -->
-	
+			<script>
+		$(".btn.search").on("click", lookup);
+
+		function lookup(idx, item) {
+			console.log(idx);
+			console.log(item);
+			var a = $("select[name=city]").val();
+			var b = $("select[name=gu]").val();
+
+			a = a + "/" + b;
+			console.log(a);
+			$.ajax({
+				url : "${pageContext.request.contextPath}/weather/" + a,
+				type : "post",
+				sucess : function(result) {
+					console.log(result);
+				},
+				error : function(errorcode) {
+					console.log(errorcode);
+				}
+			});
+
+		}
+	</script>
 
 	<!-- plugins:js -->
 	<script

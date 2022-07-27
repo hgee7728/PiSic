@@ -25,6 +25,7 @@
 	href="<%=request.getContextPath()%>/resources/assets/css/style.css">
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 .grid-5 {
 	flex: 0 0 20%;
@@ -39,58 +40,6 @@
 	width: 100%;
 	font-size: 30px;
 	text-align: center;
-}
-
-div.row>div>div{
-	background-color: #000000;
-}
-
-div.ro1>div:nth-child(1)>div,
-div.ro1>div:nth-child(5)>div {
-	background-color: #000000;
-	border-color: #fc424a;
-}
-
-div.ro1>div:nth-child(2)>div,
-div.ro1>div:nth-child(6)>div {
-	border-color: #ffab00;
-}
-
-div.ro1>div:nth-child(3)>div,
-div.ro1>div:nth-child(7)>div {
-	border-color: #00d25b;
-}
-
-div.ro1>div:nth-child(4)>div,
-div.ro1>div:nth-child(8)>div {
-	border-color: #007bff;
-}
-
-
-
-div.ro2>div:nth-child(1)>div,
-div.ro2>div:nth-child(6)>div {
-	border-color: #fc424a;
-}
-
-div.ro2>div:nth-child(2)>div,
-div.ro2>div:nth-child(7)>div {
-	border-color: #ffab00;
-}
-
-div.ro2>div:nth-child(3)>div,
-div.ro2>div:nth-child(8)>div {
-	border-color: #00d25b;
-}
-
-div.ro2>div:nth-child(4)>div,
-div.ro2>div:nth-child(9)>div {
-	border-color: #007bff;
-}
-
-div.ro2>div:nth-child(5)>div,
-div.ro2>div:nth-child(10)>div {
-	border-color: #8f5fe8;
 }
 </style>
 </head>
@@ -109,7 +58,7 @@ div.ro2>div:nth-child(10)>div {
 					<h2 class=" card-title">PICK YOUR MUSIC</h2>
 					<br>
 					<h3>장르별</h3>
-					<div class="row ro1">
+					<div class="row ">
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
@@ -146,7 +95,7 @@ div.ro2>div:nth-child(10)>div {
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=6'">R&amp;B/소울</button>
+										onclick="location.href='<%=request.getContextPath()%>/pymusic/genre?g_no=8'">R&amp;B/소울</button>
 								</div>
 							</div>
 						</div>
@@ -177,45 +126,74 @@ div.ro2>div:nth-child(10)>div {
 					</div>
 					<br> <br>
 					<h3>날씨별</h3>
-					<div class="row ro2">
+					
+<script>
+let latitude ="";
+let longitude ="";
+function goPyWeather(thisElem){
+	var sky = $(thisElem).data("sky");
+	var pty = $(thisElem).data("pty");
+	sky = (sky)? sky : "";
+	pty = (pty)? pty : ""; 
+	location.href='<%=request.getContextPath()%>/pymusic/weather?sky='+sky+'&pty='+pty+'&currentLat='+latitude+'&currentLon='+longitude;
+}
+$(document).ready(function() {
+	if ("geolocation" in navigator) { /* geolocation 사용 가능 */
+		navigator.geolocation.getCurrentPosition(
+			function(data) {
+				latitude = data.coords.latitude;
+				longitude = data.coords.longitude;
+			}, function(error) {
+				alert(error);
+			}, {
+				enableHighAccuracy : true,
+				timeout : Infinity,
+				maximumAge : 0
+			}
+		);
+	} else { /* geolocation 사용 불가능 */
+		alert('geolocation 사용 불가능');
+	}
+});
+</script>
+					<div class="row ">
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre"
-										onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">맑음</button>
+									<button class="btn btn_genre" data-sky="맑음"
+									onclick="goPyWeather(this);">맑음</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre"
-										onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">구름
-										많음</button>
+									<button class="btn btn_genre" data-sky="구름 많음"
+									onclick="goPyWeather(this);">구름 많음</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre"
-										onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">흐림</button>
+									<button class="btn btn_genre" data-sky="흐림"
+									onclick="goPyWeather(this);">흐림</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre"
-										onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">비</button>
+									<button class="btn btn_genre" data-pty="1"
+									onclick="goPyWeather(this);'">비</button>
 								</div>
 							</div>
 						</div>
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
-									<button class="btn btn_genre"
-										onclick="location.href='<%=request.getContextPath()%>/pymusic/weather?'">눈</button>
+									<button class="btn btn_genre" data-pty="3"
+									onclick="goPyWeather(this);">눈</button>
 								</div>
 							</div>
 						</div>
@@ -223,7 +201,7 @@ div.ro2>div:nth-child(10)>div {
 					</div>
 					<br> <br>
 					<h3>성별/연령대별</h3>
-					<div class="row ro2">
+					<div class="row ">
 						<div class="grid-5 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
@@ -318,13 +296,12 @@ div.ro2>div:nth-child(10)>div {
 					</div>
 					<br> <br>
 					<h3>시간대별</h3>
-					<div class="row ro2">
+					<div class="row ">
 						<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-										onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">새벽
-										MIX</button>
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">새벽 MIX</button>
 								</div>
 							</div>
 						</div>
@@ -332,8 +309,7 @@ div.ro2>div:nth-child(10)>div {
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-										onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">아침
-										MIX</button>
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">아침 MIX</button>
 								</div>
 							</div>
 						</div>
@@ -341,8 +317,7 @@ div.ro2>div:nth-child(10)>div {
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-										onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">오후
-										MIX</button>
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">오후 MIX</button>
 								</div>
 							</div>
 						</div>
@@ -350,8 +325,7 @@ div.ro2>div:nth-child(10)>div {
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-										onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">밤
-										MIX</button>
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">밤 MIX</button>
 								</div>
 							</div>
 						</div>

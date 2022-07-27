@@ -13,6 +13,167 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class Region {
+	// 입력한 위도 경도로 주소 찾는 메서드(카카오 api 사용)
+    public JSONObject lookUpAddress(
+           String currentLat, String currentLon
+          ) throws Exception {
+    	System.out.println("여기여기여기");
+       try {
+//예시 지역
+//          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=127.423084873712&y=37.0789561558879";  // 경기 안성시 죽산면 죽산리 343-1
+//          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=127.0284288&y=37.4931456";  // 서초동
+//          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=126.891779471155&y=37.4768763179226";  // 가산동
+          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x="+currentLon+"&y="+currentLat;
+          
+          String jsonString = new String();
+          String line;
+          
+          URL Url = new URL(url);
+          
+          HttpsURLConnection conn = (HttpsURLConnection) Url.openConnection();
+          String auth = "KakaoAK " + "47376b419ee56700e9a580b50b27b1bc";
+          conn.setRequestMethod("GET");
+          conn.setRequestProperty("X-Requested-With", "curl");
+          conn.setRequestProperty("Authorization", auth);
+          
+          BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+          while ((line = br.readLine()) != null) {
+             jsonString += line;
+          }
+          JSONParser paser = new JSONParser();
+          
+          JSONObject J = (JSONObject) paser.parse(jsonString);
+          JSONObject meta = (JSONObject) J.get("meta");
+          
+          JSONArray data = (JSONArray) J.get("documents");
+          long size = (Long) meta.get("total_count");
+          
+          System.out.println("size:: "+size);
+          System.out.println("data: "+data.toJSONString());
+//          data: [{"address":{"mountain_yn":"N","region_3depth_name":"서초동","main_address_no":"1337","sub_address_no":"17","address_name":"서울 서초구 서초동 1337-17","region_2depth_name":"서초구","region_1depth_name":"서울","zip_code":""},"road_address":null}]
+//          data: [{"address":{"mountain_yn":"N","region_3depth_name":"가산동","main_address_no":"144", "sub_address_no":"3", "address_name":"서울 금천구 가산동 144-3",  "region_2depth_name":"금천구","region_1depth_name":"서울","zip_code":""},"road_address":{"road_name":"가산로","main_building_no":"129","building_name":"가산동주민센터","region_3depth_name":"","underground_yn":"N","sub_building_no":"","address_name":"서울특별시 금천구 가산로 129","region_2depth_name":"금천구","zone_no":"08516","region_1depth_name":"서울"}}]
+          
+			if (size > 0) {
+				JSONObject jsonX = (JSONObject) data.get(0);
+				JSONObject jsonAddress = (JSONObject) jsonX.get("address");
+				JSONObject jsonRoadAddress = (JSONObject) jsonX.get("road_address");
+				System.out.println("jsonAddress: "+jsonAddress);
+				System.out.println("jsonRoadAddress: "+jsonRoadAddress);
+				
+				return jsonAddress;
+			}
+       } catch(Exception e) {
+          e.printStackTrace();
+       }
+       return null;
+    }
+	// 입력한 위도 경도로 주소 찾는 메서드(카카오 api 사용)
+    public JSONObject lookUpHCode(
+           String currentLat, String currentLon
+          ) throws Exception {
+    	System.out.println("여기여기여기");
+       try {
+//예시 지역
+//          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=127.423084873712&y=37.0789561558879";  // 경기 안성시 죽산면 죽산리 343-1
+//          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=127.0284288&y=37.4931456";  // 서초동
+//          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=126.891779471155&y=37.4768763179226";  // 가산동
+          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x="+currentLon+"&y="+currentLat;
+          
+          String jsonString = new String();
+          String line;
+          
+          URL Url = new URL(url);
+          
+          HttpsURLConnection conn = (HttpsURLConnection) Url.openConnection();
+          String auth = "KakaoAK " + "47376b419ee56700e9a580b50b27b1bc";
+          conn.setRequestMethod("GET");
+          conn.setRequestProperty("X-Requested-With", "curl");
+          conn.setRequestProperty("Authorization", auth);
+          
+          BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+          while ((line = br.readLine()) != null) {
+             jsonString += line;
+          }
+          JSONParser paser = new JSONParser();
+          
+          JSONObject J = (JSONObject) paser.parse(jsonString);
+          JSONObject meta = (JSONObject) J.get("meta");
+          
+          JSONArray data = (JSONArray) J.get("documents");
+          long size = (Long) meta.get("total_count");
+          
+          System.out.println("size:: "+size);
+          System.out.println("data: "+data.toJSONString());
+//          data: [{"address":{"mountain_yn":"N","region_3depth_name":"서초동","main_address_no":"1337","sub_address_no":"17","address_name":"서울 서초구 서초동 1337-17","region_2depth_name":"서초구","region_1depth_name":"서울","zip_code":""},"road_address":null}]
+//          data: [{"address":{"mountain_yn":"N","region_3depth_name":"가산동","main_address_no":"144", "sub_address_no":"3", "address_name":"서울 금천구 가산동 144-3",  "region_2depth_name":"금천구","region_1depth_name":"서울","zip_code":""},"road_address":{"road_name":"가산로","main_building_no":"129","building_name":"가산동주민센터","region_3depth_name":"","underground_yn":"N","sub_building_no":"","address_name":"서울특별시 금천구 가산로 129","region_2depth_name":"금천구","zone_no":"08516","region_1depth_name":"서울"}}]
+          
+			if (size > 0) {
+				JSONObject jsonX = (JSONObject) data.get(0);
+				JSONObject jsonAddress = (JSONObject) jsonX.get("address");
+				JSONObject jsonRoadAddress = (JSONObject) jsonX.get("road_address");
+				System.out.println("jsonAddress: "+jsonAddress);
+				System.out.println("jsonRoadAddress: "+jsonRoadAddress);
+				
+				// 입력한 지역의 행정 코드(h_code) 찾는 메서드(카카오 api 사용)
+				String hcode = lookUpHCode(jsonAddress.get("address_name").toString());
+				
+				// 행정 코드(h_code)
+				return getGridXY(hcode);
+			}
+       } catch(Exception e) {
+          e.printStackTrace();
+       }
+       return null;
+    }
+ // 입력한 지역의 행정 코드(h_code) 찾는 메서드(카카오 api 사용)
+ 		public String lookUpHCode(String address
+ 				) throws Exception {
+ 			try {
+ 				address = URLEncoder.encode(address, "UTF-8");
+ 				System.out.println("address:"+address); 
+ 				String url = "https://dapi.kakao.com/v2/local/search/address.json?query=" + address;
+ 				
+ 				String jsonString = new String();
+ 				String line;
+ 				
+ 				URL Url = new URL(url);
+ 				
+ 				HttpsURLConnection conn = (HttpsURLConnection) Url.openConnection();
+ 				String auth = "KakaoAK " + "47376b419ee56700e9a580b50b27b1bc";
+ 				conn.setRequestMethod("GET");
+ 				conn.setRequestProperty("X-Requested-With", "curl");
+ 				conn.setRequestProperty("Authorization", auth);
+ 				
+ 				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+ 				while ((line = br.readLine()) != null) {
+ 					jsonString += line;
+ 				}
+ 				JSONParser paser = new JSONParser();
+ 				
+ 				JSONObject J = (JSONObject) paser.parse(jsonString);
+ 				JSONObject meta = (JSONObject) J.get("meta");
+ 				
+ 				JSONArray data = (JSONArray) J.get("documents");
+ 				long size = (Long) meta.get("total_count");
+ 				
+ 				System.out.println("size:: "+size);
+ 				System.out.println("data: "+data.toJSONString());
+// 				data: [{"address":{"mountain_yn":"N","h_code":"1154551000","region_3depth_name":"가산동","main_address_no":"","x":"126.891779471155","sub_address_no":"","y":"37.4768763179226","address_name":"서울 금천구 가산동","region_2depth_name":"금천구","region_3depth_h_name":"가산동","region_1depth_name":"서울","b_code":"1154510100"},"address_type":"REGION","x":"126.891779471155","y":"37.4768763179226","address_name":"서울 금천구 가산동","road_address":null}]
+ 				
+ 				
+ 				if (size > 0) {
+ 					JSONObject jsonX = (JSONObject) data.get(0);
+ 					JSONObject jsonAddress = (JSONObject) jsonX.get("address");
+ 					System.out.println("jsonAddress: "+jsonAddress);
+ 					
+ 					return jsonAddress.get("h_code").toString();
+ 				}
+ 			} catch(Exception e) {
+ 				e.printStackTrace();
+ 			}
+ 			return null;
+ 		}
+ 		
 	// 입력한 지역의 행정 코드 찾는 메서드(카카오 api 사용)
 	public JSONObject lookUpRegion(String city, String gu) throws Exception {
 		String address = city + " " + gu + " " ;
@@ -91,58 +252,5 @@ public class Region {
 		}
 		return null;
 	}
-    // 입력한 위도 경도로 주소 찾는 메서드(카카오 api 사용)
-    public JSONObject lookUpAddress(
-           String currentLat, String currentLon
-          ) throws Exception {
-
-       try {
-//예시 지역
-//          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=127.423084873712&y=37.0789561558879";  // 경기 안성시 죽산면 죽산리 343-1
-//          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=127.0284288&y=37.4931456";  // 서초동
-//          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=126.891779471155&y=37.4768763179226";  // 가산동
-          String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x="+currentLon+"&y="+currentLat;
-          
-          String jsonString = new String();
-          String line;
-          
-          URL Url = new URL(url);
-          
-          HttpsURLConnection conn = (HttpsURLConnection) Url.openConnection();
-          String auth = "KakaoAK " + "47376b419ee56700e9a580b50b27b1bc";
-          conn.setRequestMethod("GET");
-          conn.setRequestProperty("X-Requested-With", "curl");
-          conn.setRequestProperty("Authorization", auth);
-          
-          BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-          while ((line = br.readLine()) != null) {
-             jsonString += line;
-          }
-          JSONParser paser = new JSONParser();
-          
-          JSONObject J = (JSONObject) paser.parse(jsonString);
-          JSONObject meta = (JSONObject) J.get("meta");
-          
-          JSONArray data = (JSONArray) J.get("documents");
-          long size = (Long) meta.get("total_count");
-          
-          System.out.println("size:: "+size);
-          System.out.println("data: "+data.toJSONString());
-//          data: [{"address":{"mountain_yn":"N","region_3depth_name":"가산동","main_address_no":"144","sub_address_no":"3","address_name":"서울 금천구 가산동 144-3","region_2depth_name":"금천구","region_1depth_name":"서울","zip_code":""},"road_address":{"road_name":"가산로","main_building_no":"129","building_name":"가산동주민센터","region_3depth_name":"","underground_yn":"N","sub_building_no":"","address_name":"서울특별시 금천구 가산로 129","region_2depth_name":"금천구","zone_no":"08516","region_1depth_name":"서울"}}]
-
-          
-          if (size > 0) {
-             JSONObject jsonX = (JSONObject) data.get(0);
-             JSONObject jsonAddress = (JSONObject) jsonX.get("region_2depth_name");
-             System.out.println("jsonAddress: "+jsonAddress);
-             
-             
-             // 행정구
-             return jsonAddress;
-          }
-       } catch(Exception e) {
-          e.printStackTrace();
-       }
-       return null;
-    }
+    
 }

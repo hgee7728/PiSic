@@ -16,8 +16,14 @@ import org.json.simple.parser.ParseException;
 
 public class WeatherData {
 	// api
-		public JSONObject getWeatherData(String serviceKey, String cburl, JSONObject location) throws IOException, ParseException {
+		public JSONObject getWeatherData(JSONObject location) throws IOException, ParseException {
 			System.out.println("getWeatherData_location: "+location);
+			
+			// 기상청 api key(decode)
+			String serviceKey = "Kx86P06VAlCh3CsbExLf3Z165u1S9HOiXlOoGh0/+3+BIsa+VwF4r8ss8NbG5wkaQkx4GjlbMu5h0SsB0xPiiA==";
+			// 기상청 단기예보 api url
+			String cburl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
+			
 			
 			String numOfRows = "11";	// 페이지 당 출력 행 수
 			String dataType = "json";	// 요청할 데이터 타입

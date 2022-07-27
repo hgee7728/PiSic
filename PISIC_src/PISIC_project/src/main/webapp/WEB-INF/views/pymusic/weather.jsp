@@ -83,13 +83,13 @@ $(function(){
 			<!-- partial -->
 			<div class="main-panel">
 				<div class="content-wrapper">
-
-					<h2 class=" card-title">
-						Pick Your Weather &nbsp;&nbsp;${serverTime}
-					</h2>
-					<br>
+						<h2 class=" card-title">
+							Pick Your Weather &nbsp;&nbsp;
+						</h2>
+						<h4>[   ${serverTime}  ]</h4>
+						<br>
 					<p>날씨별 전체 재생 수 기준 랭킹 조회</p>
-					<p>${playinfo.tmp }</p>
+					<p>${weather.tmp }</p>
 					<div class="content_div3">
 						<div class="select_btns">
 							<button type="button" id="select_play" class="btn btn-info btn-fw">선택재생</button>
@@ -99,8 +99,8 @@ $(function(){
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-										<c:set var="area" value="${pyArea[1].area_name }"	/>
-										<h3 class="card-title">${weather } TOP 10</h3>
+										<c:set var="weather" value="${pyWeather.sky }"	/>
+										<h3 class="card-title">${tmp } TOP 10</h3>
 										<div class="table-responsive">
 											<form name="sound_frm">
 												<table class="table sound_list">
@@ -125,7 +125,7 @@ $(function(){
 														</tr>
 													</thead>
 													<tbody>
-													<div class="weather_box"
+										<!--			<div class="weather_box"
 															style="display: inline-block; width: 500px; text-align: center; margin-top: 100px; margin-left: 500px; margin-right: 0;">
 															<h1>날씨 날씨??</h1>
 															<h3>
@@ -143,8 +143,8 @@ $(function(){
 															</select>
 														
 															<button type="button" class="btn search">날씨 찾기 얍</button>
-														</div>
-														<c:forEach items="${pyArea}" var="sounds">
+														</div>  -->
+														<c:forEach items="${pyWeather }" var="sounds">
 															<tr>
 																<td>
 																	<div class="form-check form-check-muted m-0">

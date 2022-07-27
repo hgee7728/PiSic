@@ -100,8 +100,10 @@ $(function(){
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-										<c:set var="area" value="${pyArea[1].area_name }"	/>
-										<h3 class="card-title">${area } TOP 10</h3>
+										<h3 class="card-title">
+									
+										TOP 10</h3>
+										
 										<div class="table-responsive">
 											<form name="sound_frm">
 												<table class="table sound_list">
@@ -126,7 +128,7 @@ $(function(){
 														</tr>
 													</thead>
 													<tbody>
-														<c:forEach items="${pyArea}" var="sounds">
+														<c:forEach items="${PyTime }" var="sounds">
 															<tr>
 																<td>
 																	<div class="form-check form-check-muted m-0">

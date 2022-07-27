@@ -33,10 +33,6 @@ public class WeatherController {
 				@PathVariable(name ="city") String city, 
 				@PathVariable(name ="gu") String gu
 				) {
-			// 기상청 api key(decode)
-			String serviceKey = "Kx86P06VAlCh3CsbExLf3Z165u1S9HOiXlOoGh0/+3+BIsa+VwF4r8ss8NbG5wkaQkx4GjlbMu5h0SsB0xPiiA==";
-			// 기상청 단기예보 api url
-			String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
 			// 입력한 지역의 경도, 위도 -> 행정구역코드 -> 격자 좌표 구할 클래스
 			Region region = new Region();
 			// 기상청 api를 통해 오늘의 날씨를 가져오는 클래스
@@ -44,7 +40,7 @@ public class WeatherController {
 			// 결과를 model을 통해 view에 전달
 			JSONObject jobj = null;
 			try {
-				jobj = wd.getWeatherData(serviceKey, url, region.lookUpRegion(city, gu));
+				jobj = wd.getWeatherData(region.lookUpRegion(city, gu));
 			} catch (Exception e) {
 				e.printStackTrace();
 				
