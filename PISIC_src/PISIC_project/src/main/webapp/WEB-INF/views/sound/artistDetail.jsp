@@ -92,7 +92,7 @@ function artistLike(artist_no){
 			},
 		beforeSend: function(xhr){
 	        xhr.setRequestHeader(header, token);
-	    },
+	    	},
 		success: function(result){
 			if(result == "-2"){
 				alert("로그인 후 이용해주세요");

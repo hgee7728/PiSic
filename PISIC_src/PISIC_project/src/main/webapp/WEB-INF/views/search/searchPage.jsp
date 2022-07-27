@@ -122,7 +122,7 @@ $(function(){
 
 					<br>
 					<div>
-						<h3 class="card-title">곡 검색 결과(${searchSoundCnt })</h3>
+						<h3 class="card-title">곡 검색 결과 (${searchSoundCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">
@@ -201,7 +201,7 @@ $(function(){
 						</c:if>
 					</div>
 					<div>
-						<h3 class="card-title">앨범 검색 결과(${searchAlbumCnt })</h3>
+						<h3 class="card-title">앨범 검색 결과 (${searchAlbumCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">
@@ -266,7 +266,7 @@ $(function(){
 						</c:if>
 					</div>
 					<div>
-						<h3 class="card-title">아티스트 검색 결과(${searchArtistCnt })</h3>
+						<h3 class="card-title">아티스트 검색 결과 (${searchArtistCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">
@@ -336,7 +336,7 @@ $(function(){
 						</c:if>
 					</div>
 					<div>
-						<h3 class="card-title">게시판 검색 결과(${searchBoardCnt })</h3>
+						<h3 class="card-title">게시판 검색 결과 (${searchBoardCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">

@@ -153,8 +153,9 @@ public class MyMusicServiceImpl implements MyMusicService{
 	@Override
 	@Transactional
 	public int deleteSoundPlaylist0(Sound sound) {
-		dao.deleteSoundPlaylist0(sound);
-		return dao.updateSoundOrder(sound);
+		int result = dao.deleteSoundPlaylist0(sound);
+		dao.updateSoundOrder(sound); 
+		return result;
 	}
 
 	// 셔플 기능 작동하면 현재 플레이 리스트 순서 맞추기

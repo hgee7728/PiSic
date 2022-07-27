@@ -144,7 +144,7 @@ $(function(){
 					<br>
 					<c:if test="${not empty soundList}">
 					<div>
-						<h3 class="card-title">곡 검색 결과</h3>
+						<h3 class="card-title">곡 검색 결과 (${searchSoundCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">
@@ -169,48 +169,41 @@ $(function(){
 														</tr>
 													</thead>
 													<tbody>
-													<c:if test="${empty soundList}">
-														<tr>
-															<td colspan="8">검색 결과가 없습니다.</td>
-														</tr>
-													</c:if>
-														<c:if test="${not empty soundList}">
-															<c:forEach items="${soundList}" var="sounds" varStatus="index">
-																<tr>
-																	<td>
-																		<c:choose>
-																			<c:when test="${paging.cri.pageNum == 1}">
-																				${index.count }
-																			</c:when>
-																			<c:otherwise>
-																			${paging.cri.pageNum*10+index.count}
-																			</c:otherwise>
-																		</c:choose>
-																	</td>
-																	<td><img src="${sounds.a_cover }" alt="image" /></td>
-																	<td><a
-																		href="javascript:selectSoundDetail('${sounds.a_no }','${sounds.s_no}')">${sounds.s_name}</a></td>
-																	<td><c:forEach items="${ sounds.singers}"
-																			var="singer">
-																			<a
-																				href="javascript:selectArtistDetail('${singer.artist_no}')">${singer.artist_name}</a>&nbsp;
-																	</c:forEach></td>
-																	<td><a
-																		href="javascript:selectAlbumDetail('${sounds.a_no }')">${sounds.a_name }</a></td>
-																	<td><a
-																		href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i
-																			class="mdi mdi-play list_icon"></i></a></td>
-																	<td><a
-																		href="javascript:soundLike('${sounds.a_no }','${sounds.s_no}')"><i
-																			class="mdi mdi-heart list_icon like_after"></i></a> <!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
-																	</td>
-																	<td><a
-																		href="javascript:playlistInsert('${sounds.a_no }','${sounds.s_no}')"><i
-																			class="mdi mdi-plus-box list_icon"></i></a> <!-- <i class="mdi mdi-minus-box list_icon"></i> -->
-																	</td>
-																</tr>
-															</c:forEach>
-														</c:if>
+														<c:forEach items="${soundList}" var="sounds" varStatus="index">
+															<tr>
+																<td>
+																	<c:choose>
+																		<c:when test="${paging.cri.pageNum == 1}">
+																			${index.count }
+																		</c:when>
+																		<c:otherwise>
+																		${paging.cri.pageNum*10+index.count}
+																		</c:otherwise>
+																	</c:choose>
+																</td>
+																<td><img src="${sounds.a_cover }" alt="image" /></td>
+																<td><a
+																	href="javascript:selectSoundDetail('${sounds.a_no }','${sounds.s_no}')">${sounds.s_name}</a></td>
+																<td><c:forEach items="${ sounds.singers}"
+																		var="singer">
+																		<a
+																			href="javascript:selectArtistDetail('${singer.artist_no}')">${singer.artist_name}</a>&nbsp;
+																</c:forEach></td>
+																<td><a
+																	href="javascript:selectAlbumDetail('${sounds.a_no }')">${sounds.a_name }</a></td>
+																<td><a
+																	href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i
+																		class="mdi mdi-play list_icon"></i></a></td>
+																<td><a
+																	href="javascript:soundLike('${sounds.a_no }','${sounds.s_no}')"><i
+																		class="mdi mdi-heart list_icon like_after"></i></a> <!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+																</td>
+																<td><a
+																	href="javascript:playlistInsert('${sounds.a_no }','${sounds.s_no}')"><i
+																		class="mdi mdi-plus-box list_icon"></i></a> <!-- <i class="mdi mdi-minus-box list_icon"></i> -->
+																</td>
+															</tr>
+														</c:forEach>
 													</tbody>
 												</table>
 											</form>
@@ -241,7 +234,7 @@ $(function(){
 					</c:if>
 					<c:if test="${not empty albumList}">
 					<div>
-						<h3 class="card-title">앨범 검색 결과</h3>
+						<h3 class="card-title">앨범 검색 결과 (${searchAlbumCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">
@@ -264,37 +257,30 @@ $(function(){
 													</tr>
 												</thead>
 												<tbody>
-												<c:if test="${empty albumList}">
-													<tr>
-														<td colspan="7">검색 결과가 없습니다.</td>
-													</tr>
-												</c:if>
-													<c:if test="${not empty albumList}">
-														<c:forEach items="${albumList}" var="album" varStatus="index">
-															<tr>
-																<td>
-																	<c:choose>
-																		<c:when test="${paging.cri.pageNum == 1}">
-																			${index.count }
-																		</c:when>
-																		<c:otherwise>
-																		${paging.cri.pageNum*10+index.count}
-																		</c:otherwise>
-																	</c:choose>
-																</td>
-																<td><img src="${album.a_cover }" alt="image" /></td>
-																<td><a
-																	href="javascript:selectAlbumDetail('${album.a_no }')">${album.a_name }</a></td>
-																<td><a
-																	href="javascript:selectArtistDetail('${album.artist_no}')">${album.artist_name}</a>
-																</td>
-																<td>${album.a_publishing}</td>
-																<td>${album.a_agency}</td>
-																<fmt:formatDate var="format_a_date" value="${album.a_date}" pattern="yyyy-MM-dd"/>
-																<td>${format_a_date}</td>
-															</tr>
-														</c:forEach>
-													</c:if>
+													<c:forEach items="${albumList}" var="album" varStatus="index">
+														<tr>
+															<td>
+																<c:choose>
+																	<c:when test="${paging.cri.pageNum == 1}">
+																		${index.count }
+																	</c:when>
+																	<c:otherwise>
+																	${paging.cri.pageNum*10+index.count}
+																	</c:otherwise>
+																</c:choose>
+															</td>
+															<td><img src="${album.a_cover }" alt="image" /></td>
+															<td><a
+																href="javascript:selectAlbumDetail('${album.a_no }')">${album.a_name }</a></td>
+															<td><a
+																href="javascript:selectArtistDetail('${album.artist_no}')">${album.artist_name}</a>
+															</td>
+															<td>${album.a_publishing}</td>
+															<td>${album.a_agency}</td>
+															<fmt:formatDate var="format_a_date" value="${album.a_date}" pattern="yyyy-MM-dd"/>
+															<td>${format_a_date}</td>
+														</tr>
+													</c:forEach>
 												</tbody>
 											</table>
 										</div>
@@ -324,7 +310,7 @@ $(function(){
 					</c:if>
 					<c:if test="${not empty artistList}">
 					<div>
-						<h3 class="card-title">아티스트 검색 결과</h3>
+						<h3 class="card-title">아티스트 검색 결과 (${searchArtistCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">
@@ -346,43 +332,36 @@ $(function(){
 													</tr>
 												</thead>
 												<tbody>
-												<c:if test="${empty artistList}">
-													<tr>
-														<td colspan="6">검색 결과가 없습니다.</td>
-													</tr>
-												</c:if>
-													<c:if test="${not empty artistList}">
-														<c:forEach items="${artistList}" var="artist" varStatus="index">
-															<tr>
-																<td>
-																	<c:choose>
-																		<c:when test="${paging.cri.pageNum == 1}">
-																			${index.count }
-																		</c:when>
-																		<c:otherwise>
-																		${paging.cri.pageNum*10+index.count}
-																		</c:otherwise>
-																	</c:choose>
-																</td>
-																<td>
-																	<c:choose>
-																		<c:when test="${empty artist.artist_profile}">
-																			<img src="<%=request.getContextPath() %>/resources/assets/images/artist.png" />
-																		</c:when>
-																		<c:otherwise>
-																			<img src="${artist.artist_profile }" alt="image" />
-																		</c:otherwise>
-																	</c:choose>
-																</td>
-																<td><a
-																	href="javascript:selectArtistDetail('${artist.artist_no}')">${artist.artist_name}</a>
-																</td>
-																<td>${artist.artist_nation}</td>
-																<td>${artist.artist_company}</td>
-																<td>${artist.artist_type}</td>
-															</tr>
-														</c:forEach>
-													</c:if>
+													<c:forEach items="${artistList}" var="artist" varStatus="index">
+														<tr>
+															<td>
+																<c:choose>
+																	<c:when test="${paging.cri.pageNum == 1}">
+																		${index.count }
+																	</c:when>
+																	<c:otherwise>
+																	${paging.cri.pageNum*10+index.count}
+																	</c:otherwise>
+																</c:choose>
+															</td>
+															<td>
+																<c:choose>
+																	<c:when test="${empty artist.artist_profile}">
+																		<img src="<%=request.getContextPath() %>/resources/assets/images/artist.png" />
+																	</c:when>
+																	<c:otherwise>
+																		<img src="${artist.artist_profile }" alt="image" />
+																	</c:otherwise>
+																</c:choose>
+															</td>
+															<td><a
+																href="javascript:selectArtistDetail('${artist.artist_no}')">${artist.artist_name}</a>
+															</td>
+															<td>${artist.artist_nation}</td>
+															<td>${artist.artist_company}</td>
+															<td>${artist.artist_type}</td>
+														</tr>
+													</c:forEach>
 												</tbody>
 											</table>
 										</div>
@@ -412,7 +391,7 @@ $(function(){
 					</c:if>
 					<c:if test="${not empty boardList}">
 					<div>
-						<h3 class="card-title">게시판 검색 결과</h3>
+						<h3 class="card-title">게시판 검색 결과 (${searchBoardCnt })</h3>
 					</div>
 					<hr color="white">
 					<div class=" content_div3" style="display: flex;">
@@ -433,34 +412,27 @@ $(function(){
 													</tr>
 												</thead>
 												<tbody>
-												<c:if test="${empty boardList}">
-													<tr>
-														<td colspan="6">검색 결과가 없습니다.</td>
-													</tr>
-												</c:if>
-													<c:if test="${not empty boardList}">
-														<c:forEach items="${boardList}" var="board" varStatus="index">
-															<tr>
-																<td>
-																	<c:choose>
-																		<c:when test="${paging.cri.pageNum == 1}">
-																			${index.count }
-																		</c:when>
-																		<c:otherwise>
-																		${paging.cri.pageNum*10+index.count}
-																		</c:otherwise>
-																	</c:choose>
-																</td>
-																<td><img src="${board.l_image }" alt="image" /></td>
-																<td><a
-																	href="javascript:selectBoardDetail('${board.b_no}')">${board.b_title}</a>
-																</td>
-																<td>${board.b_writer}</td>
-																<fmt:formatDate var="format_b_date" value="${board.b_date}" pattern="yyyy-MM-dd"/>
-																<td>${format_b_date}</td>
-															</tr>
-														</c:forEach>
-													</c:if>
+													<c:forEach items="${boardList}" var="board" varStatus="index">
+														<tr>
+															<td>
+																<c:choose>
+																	<c:when test="${paging.cri.pageNum == 1}">
+																		${index.count }
+																	</c:when>
+																	<c:otherwise>
+																	${paging.cri.pageNum*10+index.count}
+																	</c:otherwise>
+																</c:choose>
+															</td>
+															<td><img src="${board.l_image }" alt="image" /></td>
+															<td><a
+																href="javascript:selectBoardDetail('${board.b_no}')">${board.b_title}</a>
+															</td>
+															<td>${board.b_writer}</td>
+															<fmt:formatDate var="format_b_date" value="${board.b_date}" pattern="yyyy-MM-dd"/>
+															<td>${format_b_date}</td>
+														</tr>
+													</c:forEach>
 												</tbody>
 											</table>
 										</div>

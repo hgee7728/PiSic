@@ -48,21 +48,25 @@ public class SearchController {
 			Paging paging = new Paging(cri, service.totalCntSearchSound(keyword));
 	        mv.addObject("paging", paging);
 			mv.addObject("soundList", service.selectSearchSoundAll(keyword, cri));
+			mv.addObject("searchSoundCnt", service.totalCntSearchSound(keyword));
 		}
 		if(type.equals("album")) {
 			Paging paging = new Paging(cri, service.totalCntSearchAlbum(keyword));
 	        mv.addObject("paging", paging);
 			mv.addObject("albumList", service.selectSearchAlbumAll(keyword, cri));
+			mv.addObject("searchAlbumCnt", service.totalCntSearchAlbum(keyword));
 		}
 		if(type.equals("artist")) {
 			Paging paging = new Paging(cri, service.totalCntSearchArtist(keyword));
 	        mv.addObject("paging", paging);
 			mv.addObject("artistList", service.selectSearchArtistAll(keyword, cri));
+			mv.addObject("searchArtistCnt", service.totalCntSearchArtist(keyword));
 		}
 		if(type.equals("board")) {
 			Paging paging = new Paging(cri, service.totalCntSearchBoard(keyword));
 	        mv.addObject("paging", paging);
 			mv.addObject("boardList", service.selectSearchBoardAll(keyword, cri));
+			mv.addObject("searchBoardCnt", service.totalCntSearchBoard(keyword));
 		}
 		mv.addObject("keyword", keyword);
 		mv.setViewName("search/searchAll");
