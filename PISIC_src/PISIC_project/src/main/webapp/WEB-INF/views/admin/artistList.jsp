@@ -187,6 +187,9 @@ $(function(){
 							html += '			class="btn btn-info btn-md delete select_artist_delete">삭제</button>								';
 							html += '			<input type="hidden" value="${artist.artist_no}" name="delete_one_artist_no">									';
 							html += '		</div>										';
+							html += '			class="btn btn-info btn-md select_artist_delete")">삭제</button>										';
+							html += '<input type="hidden" value="' + resultData.artist_no + '" name="delete_one_artist_no">'
+							html += '			</div>									';
 							html += '		</td>										';
 							html += '	</tr>											';
 								

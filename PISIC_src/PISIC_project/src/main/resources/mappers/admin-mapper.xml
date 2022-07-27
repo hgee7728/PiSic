@@ -117,12 +117,12 @@
 	<select id="selectAlbumList" resultType="Album">
 		<![CDATA[
 		select rnum, a_no, a_name, a_cover, a_date, a_publishing, a_agency, artist_name 
-		from
-		(select rownum rnum, a_no, a_name, a_cover, a_date, a_publishing, a_agency
-		,artist.artist_name
-		from album album
-		join artist artist using(artist_no) where rownum <= #{pageNum} * #{amount}
-		order by a_no) 
+			from
+			(select rownum rnum, a_no, a_name, a_cover, a_date, a_publishing, a_agency
+			,artist.artist_name
+			from album album
+			join artist artist using(artist_no) where rownum <= #{pageNum} * #{amount}
+			order by a_no) 
 		where rnum > (#{pageNum} -1) * #{amount}
 		]]>
 	</select>
@@ -130,30 +130,29 @@
 	<!-- 앨범 검색 -->
 	<select id="selectSearchAlbumList" parameterType="string"
 		resultType="Album">
-		select a_no, a_name, a_cover, a_date, a_publishing, a_agency
-		,artist.artist_name
-		from album album
-		join artist artist using(artist_no) 
-		where artist.artist_name
-		like '%'||#{keyword}||'%'
-		or
-		album.a_name
-		like '%'||#{keyword}||'%'
-		order by a_no
+		select a_no, a_name, a_cover, a_date, a_publishing, a_agency, artist.artist_name
+			from album album
+			join artist artist using(artist_no) 
+			where artist.artist_name
+			like '%'||#{keyword}||'%'
+			or
+			album.a_name
+			like '%'||#{keyword}||'%'
+			order by a_no
 	</select>
 	
 	<!-- 앨범 추가 -->
 	<insert id="insertAlbum" parameterType="Album">
 		insert into album
-		(a_no, a_name, a_cover, a_date, a_publishing,
-		a_agency, a_introduce1, a_introduce2, artist_no
-		) 
+			(a_no, a_name, a_cover, a_date, a_publishing,
+			a_agency, a_introduce1, a_introduce2, artist_no
+			) 
 		values 
-		(
-		(select nvl(max(a_no),0)+1 from album)
-		,#{a_name }, #{a_cover }, #{a_date}
-		, #{a_publishing }, #{a_agency }, #{a_introduce1 },
-		#{a_introduce2 }, #{artist_no })
+			(
+			(select nvl(max(a_no),0)+1 from album)
+			,#{a_name }, #{a_cover }, #{a_date}
+			, #{a_publishing }, #{a_agency }, #{a_introduce1 },
+			#{a_introduce2 }, #{artist_no })
 	</insert>
 	
 	<!-- 앨범 조회 -->
@@ -162,8 +161,7 @@
 		a_agency, a_introduce1, a_introduce2, artist.artist_no, artist.artist_name
 		from album album
 		join artist artist on album.artist_no = artist.artist_no
-		where
-		a_no=#{a_no}
+		where a_no=#{a_no}
 	</select>
 	
 	<!-- 앨범 수정 -->
@@ -229,7 +227,7 @@
 	<!-- 곡 검색 -->
 	<select id="selectSearchSoundList" parameterType="string"
 		resultMap="soundResultMap">
-		select DISTINCT sound.a_no, album.a_name, album.a_cover
+		select sound.a_no, album.a_name, album.a_cover
 		, sound.s_no, sound.s_name
 		from album album
 		join sound sound on album.a_no = sound.a_no
@@ -240,6 +238,7 @@
 		or
 		sound.s_name
 		like '%'||#{keyword}||'%'
+		group by sound.a_no, album.a_name, album.a_cover, sound.s_no, sound.s_name
 		order by a_no
 	</select>
 	

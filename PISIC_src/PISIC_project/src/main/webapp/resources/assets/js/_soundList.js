@@ -122,6 +122,7 @@ $(function(){
 				} else if(result == "1"){
 					alert("해당 곡을 담았습니다.");
 					$("#playlist_insert_modal").hide();
+					location.reload();
 				}
 			},
 			error:function(){

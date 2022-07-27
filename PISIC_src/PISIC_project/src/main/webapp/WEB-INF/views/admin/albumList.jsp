@@ -108,14 +108,14 @@ $(function(){
     
     // 앨범 검색
 	$("#search_album").click(function(){
-		if($("input[name=keyword]").val()==""){
+		if($("div.content_div0 input[name=keyword]").val()==""){
 			alert("검색어를 입력해주세요");
 		} else {
 			$.ajax({
 				type: 'GET',
 				url : "<%=request.getContextPath()%>/admin/album.do",
 				data : {
-					keyword: $("input[name=keyword]").val()
+					keyword: $("div.content_div0 input[name=keyword]").val()
 				},
 				dataType:"json",
 				success : function(result){
@@ -148,7 +148,7 @@ $(function(){
 							html += '		<td>										';
 							html += '		<div class="select_btns">					';
 							html += '			<button type="button"					';
-							html += '			class="btn btn-info btn-md update_album">';
+							html += '			class="btn btn-info btn-md update_album" onclick="javasctipt:updateAlbum('+resultData.a_no+')"> ';
 							html += '			수정</button>								';
 							html += '		</div>										';
 							html += '		</td>										';
@@ -156,6 +156,7 @@ $(function(){
 							html += '			<div class="select_btns">				';
 							html += '			<button type="button"					';
 							html += '			class="btn btn-info btn-md delete_album">삭제</button>										';
+							html += '<input type="hidden" value='+resultData.a_no+' name="delete_one_a_no">';
 							html += '			</div>									';
 							html += '		</td>										';
 							html += '	</tr>											';
@@ -248,6 +249,10 @@ $(function(){
 	});
 	
 }); // $(function(){}) 끝
+// 앨범 수정
+function updateAlbum(a_no){
+	location.href = "<%=request.getContextPath()%>/admin/updateAlbum?a_no=" + a_no;
+}
 </script>
 </head>
 <body>
@@ -331,7 +336,7 @@ $(function(){
 													<div class="select_btns">
 														<button type="button" 
 															class="btn btn-info update_album_btn btn-md"
-															onclick="location.href='<%=request.getContextPath() %>/admin/updateAlbum?a_no=${album.a_no }'">
+															onclick="javasctipt:updateAlbum('+${album.a_no}+')">
 															수정</button>
 													</div>
 												</td>

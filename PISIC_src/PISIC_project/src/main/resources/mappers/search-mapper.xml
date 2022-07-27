@@ -97,7 +97,7 @@
 		(select DISTINCT b_no, b_title, b_content,
 		b_writer, b_date, playlist.l_image
 		from board board
-		join playlist playlist on board.l_no = playlist.l_no
+		join playlist playlist on board.l_no = playlist.l_no and board.m_id = playlist.m_id
 		where b_title
 		like '%'||#{keyword}||'%'
 		or

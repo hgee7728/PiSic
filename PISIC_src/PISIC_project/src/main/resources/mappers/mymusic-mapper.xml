@@ -157,17 +157,20 @@
 
 <!-- 최근 들은 곡 --><!-- TODO 날짜 수정해야돼, -->
 <select id="selectSoundRecent" resultMap="soundResultMap">
-	select DISTINCT sound.s_no, sound.a_no, sound.s_name, sound.s_path
+	select sound.s_no, sound.a_no, sound.s_name, sound.s_path
 	, album.a_cover, album.a_name
 	from sound sound
 	join playinfo pinfo on sound.s_no = pinfo.s_no and sound.a_no = pinfo.a_no
 	join album album on sound.a_no = album.a_no
 	where pinfo.m_id = #{m_id} and pinfo.p_date BETWEEN sysdate-100 and sysdate
+	group by sound.s_no, sound.a_no, sound.s_name, sound.s_path
+	, album.a_cover, album.a_name
 </select>
 
 <!-- 자주 들은 곡 -->
 <select id="selectSoundOften" resultMap="soundResultMap">
-	select rownum chart, t1.*, sound.s_name, sound.s_path, album.a_cover, album.a_name 
+	select rownum chart, t1.s_no, t1.a_no, t1.cnt
+		, sound.s_name, sound.s_path, album.a_cover, album.a_name 
 		from (select s_no, a_no, count(*) cnt
        			from playinfo group by m_id, a_no, s_no having m_id=#{m_id} order by cnt desc) t1 
 		        join sound sound on t1.a_no = sound.a_no and t1.s_no = sound.s_no
@@ -231,16 +234,9 @@
 
 <!-- 좋아하는 노래 목록 -->
 <select id="selectSoundLikeList" resultMap="soundResultMap">
-	select sound.s_name, sound.a_no, sound.s_no, sound.s_path, sound.s_path
-	, album.a_cover, album.a_name, like_cnt.cnt_like
-	from sound_like sl
-	join sound sound
-	on sl.s_no = sound.s_no and sl.a_no = sound.a_no
-	join album album on album.a_no = sound.a_no
-	join (select count(*) cnt_like ,s_no,a_no from sound_like group by
-	s_no,a_no) like_cnt
-	on like_cnt.a_no = sound.a_no and like_cnt.s_no = sound.s_no
-	where m_id = #{m_id} 
+	select s_name, a_no, s_no, s_path, a_cover, a_name, cnt_like
+	from view_like_sound_list
+	where m_id = #{m_id}
 	order by like_date desc
 </select>
 

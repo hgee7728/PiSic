@@ -127,17 +127,11 @@
 
 <!-- 곡 상세조회 - 관련 플레이리스트게시판 -->
 <select id="selectRelPlaylistBoard" parameterType="Sound" resultType="PjBoard">
-	select DISTINCT board.b_no, board.b_title, board.b_writer
-	, 
-	board.b_date
-	<!-- trunc(board.b_date,'DD') b_date -->
-	, pl.l_image
-	from sound sound 
-	join playlist_content pc on sound.s_no = pc.s_no and sound.a_no = pc.a_no
-	join playlist pl on pc.l_no = pl.l_no and pc.m_id = pl.m_id
-	join board board on board.l_no = pl.l_no and board.m_id = pl.m_id
-	where sound.s_no=#{s_no} and sound.a_no=#{a_no}
-	order by b_no
+	select b_no, b_title, b_writer, b_date, l_image
+		from view_sound_rel_board
+		where s_no=#{s_no} and a_no=#{a_no}
+		group by b_no, b_title, b_writer, b_date, l_image
+		order by b_no desc
 </select>
 
 <!-- 곡 상세조회 - 내가 처음 들은 날 -->
