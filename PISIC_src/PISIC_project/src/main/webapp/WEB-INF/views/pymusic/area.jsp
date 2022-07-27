@@ -9,7 +9,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <meta name="_csrf" th:content="${_csrf.token}">
-<title>PISIC CHART DETAIL</title>
+<title>PISIC PYMUSIC</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <!-- plugins:css -->
 <link rel="stylesheet"
@@ -112,6 +112,8 @@ $(function(){
 										<h3 class="card-title">${area } TOP 10</h3>
 										<div class="table-responsive">
 											<form name="sound_frm">
+											<!-- csrf 공격 방지 -->
+	                      					<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 												<table class="table sound_list">
 													<thead>
 														<tr>

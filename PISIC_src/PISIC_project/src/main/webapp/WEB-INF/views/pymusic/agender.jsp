@@ -10,7 +10,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <meta name="_csrf" th:content="${_csrf.token}">
-<title>pymusic agender</title>
+<title>PISIC PYMUSIC</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <!-- plugins:css -->
 <link rel="stylesheet"
@@ -104,6 +104,7 @@ $(function(){
 					<h2 class=" card-title">
 						Pick Your Age &amp; Gender &nbsp;&nbsp;
 					</h2>
+					
 					<h4>${serverTime}</h4>
 					<br>
 					<p>성별 + 연령대별 전체 재생 수 기준 랭킹 조회</p>
@@ -154,6 +155,8 @@ $(function(){
 										
 										<div class="table-responsive">
 											<form name="sound_frm">
+											<!-- csrf 공격 방지 -->
+	                      					<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 												<table class="table sound_list">
 													<thead>
 														<tr>
