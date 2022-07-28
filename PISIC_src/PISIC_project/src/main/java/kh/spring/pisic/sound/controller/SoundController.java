@@ -1,41 +1,28 @@
 package kh.spring.pisic.sound.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.google.gson.Gson;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.member.model.service.MemberService;
-import kh.spring.pisic.sound.domain.Criteria;
-import kh.spring.pisic.sound.domain.Paging;
 import kh.spring.pisic.sound.domain.PlayInfo;
 import kh.spring.pisic.sound.domain.Sound;
 import kh.spring.pisic.sound.domain.SoundRecomment;
@@ -67,8 +54,8 @@ public class SoundController {
 		// 들고 온 데이터 domain형태로 list 시키기
 		for (int i = 0; i < s_noArr.length; i++) {
 			Sound sound = new Sound();
-			System.out.println(a_noArr[i]);
-			System.out.println(s_noArr[i]);
+			System.out.println("a_no : " + a_noArr[i]);
+			System.out.println("s_no : " + s_noArr[i]);
 			sound.setA_no(a_noArr[i]);
 			sound.setS_no(s_noArr[i]);
 			sound.setM_id(ud.getUsername());

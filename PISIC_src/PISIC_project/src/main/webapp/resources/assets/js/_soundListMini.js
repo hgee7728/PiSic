@@ -15,7 +15,12 @@ $(function(){
     	if($('input[name=s_no]:checked').length == '0'){
 			alert("곡을 선택하세요.");
 		} else {
-			
+			$("input[name=s_no]").each(function(){
+				if(!(this.checked)){
+					console.log("히든 지우기");
+					$(this).parent().next("input[name=a_no]").remove();
+				} 
+			});
 	    	// Post 방식으로 새창 열기
 	    	window.open('', 'SoundPlayer', 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no');
 	    	sound_frm.action= root_path + "/sound/play";
