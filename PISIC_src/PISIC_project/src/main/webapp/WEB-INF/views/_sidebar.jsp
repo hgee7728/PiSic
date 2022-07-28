@@ -120,7 +120,7 @@ $(function(){
     </sec:authorize>
     <sec:authorize access="isAuthenticated()">
 	    <form action="${pageContext.request.contextPath}/logout" method="POST" id="frmLogout">
-			<li class="nav-item menu-items">
+		    <li class="nav-item menu-items">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />				
 		      <a class="nav-link" href="javascript:;" onclick="document.getElementById('frmLogout').submit();">
 		        <span class="menu-icon">
@@ -182,6 +182,7 @@ $(function(){
         <span class="menu-title">PJ LOUNGE</span>
       </a>
     </li>
+    <sec:authorize access="isAnonymous()">
     <li class="nav-item menu-items">
       <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
         <span class="menu-icon">
@@ -191,22 +192,32 @@ $(function(){
         <i class="menu-arrow"></i>
       </a>
       <div class="collapse" id="ui-basic">
-      	<sec:authorize access="isAnonymous()">
-      		<ul class="nav flex-column sub-menu">
-      			<li class="nav-item"><p class="text-muted mb-0">로그인 후 이용해주세요.</p></li>
-      		</ul>
-       </sec:authorize>
-       <sec:authorize access="isAuthenticated()">
-      		<ul class="nav flex-column sub-menu">
-		        <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/playlist">내 플레이 리스트</a></li>
-		        <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/artistLikeList">좋아하는 아티스트</a></li>
-		        <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundLikeList">좋아하는 노래</a></li>
-		        <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundRecentList">최근 들은 노래</a></li>
-		        <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundOftenList">많이 들은 노래</a></li>
-		    </ul>
-      </sec:authorize>
-     </div>
+      	<ul class="nav flex-column sub-menu">
+      		<li class="nav-item"><p class="text-muted mb-0">로그인 후 이용해주세요.</p></li>
+      	</ul>
+      </div>
     </li>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+    <li class="nav-item menu-items">
+      <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <span class="menu-icon">
+          <i class="mdi mdi-laptop"></i>
+        </span>
+        <span class="menu-title">MY MUSIC</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="ui-basic">
+      	<ul class="nav flex-column sub-menu">
+		    <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/playlist">내 플레이 리스트</a></li>
+		    <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/artistLikeList">좋아하는 아티스트</a></li>
+		    <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundLikeList">좋아하는 노래</a></li>
+		    <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundRecentList">최근 들은 노래</a></li>
+		    <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/soundOftenList">많이 들은 노래</a></li>
+	   </ul>
+	 </div>
+    </li>
+    </sec:authorize>
     <li class="nav-item nav-category">
       <span class="nav-link"></span>
     </li>

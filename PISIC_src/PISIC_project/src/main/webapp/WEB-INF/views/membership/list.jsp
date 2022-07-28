@@ -28,6 +28,22 @@
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+  	<style>
+  		h3 {
+  			font-size: xx-large;
+  		}
+  		.text-success {
+  			font-size: xx-large;
+  			color: #8f5fe8 !important;
+  			margin-left: auto;
+  		}
+  		.btn-info:not(.btn-light):not(.btn-secondary) {
+		    margin-top: 30px;
+		}
+		#pMs_No {
+			display: hidden;
+		}
+  	</style>
   </head>
   <body>
     <sec:authentication property="principal.m_id" var="m_id"/>
@@ -54,109 +70,30 @@
                 </ol>
               </nav>
             </div>
-          	<div class="card">
+            <c:forEach items="${membershipList}" var="membershipList">
+            <!-- 1행 시작 -->
+            <div class="row">
+              <div class="col-xl-12 grid-margin stretch-card">
+                <div class="card">
                   <div class="card-body">
-                    <div class="d-flex flex-row justify-content-between">
-                      <h4 class="card-title mb-1">Membership</h4>
-                      <p class="text-muted mb-1">price</p>
-                    </div>
                     <div class="row">
-                      <div class="col-12">
-                        <div class="preview-list">
-                        <c:forEach items="${membershipList}" var="membershipList">
-                          <!-- 1행 시작 -->
-                          <div id="icon-wrapper" class="preview-item border-bottom">
-                            <div id="icon" class="preview-thumbnail">
-                              <div class="preview-icon bg-primary">
-                                <i class="mdi mdi-file-document"></i>
-                              </div>
-                            </div>
-                            <div class="preview-item-content d-sm-flex flex-grow">
-                              <div class="flex-grow">
-                                <h6 class="preview-subject">${membershipList.ms_name}</h6>
-                                <p class="text-muted mb-0">${membershipList.ms_no}</p>
-                              </div>
-                              <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                <p class="text-muted">${membershipList.ms_price}</p>
-                                <input type="button" class="InputPurchase btn btn-info btn-fw" value="구매">
-                              </div>
-                            </div>
-                          </div>
-                          <!-- 1행 끝 -->
-                        </c:forEach>
-                          <div class="preview-item border-bottom">
-                            <div class="preview-thumbnail">
-                              <div class="preview-icon bg-success">
-                                <i class="mdi mdi-cloud-download"></i>
-                              </div>
-                            </div>
-                            <div class="preview-item-content d-sm-flex flex-grow">
-                              <div class="flex-grow">
-                                <h6 class="preview-subject">Wordpress Development</h6>
-                                <p class="text-muted mb-0">Upload new design</p>
-                              </div>
-                              <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                <p class="text-muted">1 hour ago</p>
-                                <p class="text-muted mb-0">23 tasks, 5 issues </p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="preview-item border-bottom">
-                            <div class="preview-thumbnail">
-                              <div class="preview-icon bg-info">
-                                <i class="mdi mdi-clock"></i>
-                              </div>
-                            </div>
-                            <div class="preview-item-content d-sm-flex flex-grow">
-                              <div class="flex-grow">
-                                <h6 class="preview-subject">Project meeting</h6>
-                                <p class="text-muted mb-0">New project discussion</p>
-                              </div>
-                              <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                <p class="text-muted">35 minutes ago</p>
-                                <p class="text-muted mb-0">15 tasks, 2 issues</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="preview-item border-bottom">
-                            <div class="preview-thumbnail">
-                              <div class="preview-icon bg-danger">
-                                <i class="mdi mdi-email-open"></i>
-                              </div>
-                            </div>
-                            <div class="preview-item-content d-sm-flex flex-grow">
-                              <div class="flex-grow">
-                                <h6 class="preview-subject">Broadcast Mail</h6>
-                                <p class="text-muted mb-0">Sent release details to team</p>
-                              </div>
-                              <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                <p class="text-muted">55 minutes ago</p>
-                                <p class="text-muted mb-0">35 tasks, 7 issues </p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="preview-item">
-                            <div class="preview-thumbnail">
-                              <div class="preview-icon bg-warning">
-                                <i class="mdi mdi-chart-pie"></i>
-                              </div>
-                            </div>
-                            <div class="preview-item-content d-sm-flex flex-grow">
-                              <div class="flex-grow">
-                                <h6 class="preview-subject">UI Design</h6>
-                                <p class="text-muted mb-0">New application planning</p>
-                              </div>
-                              <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                <p class="text-muted">50 minutes ago</p>
-                                <p class="text-muted mb-0">27 tasks, 4 issues </p>
-                              </div>
-                            </div>
-                          </div>
+                      <div class="col-9">
+                        <div class="d-flex align-items-center align-self-start">
+                          <h3 id="h3Price" class="mb-0">${membershipList.ms_name}</h3>
+                          <p id="pPname" class="text-success ml-2 mb-0 font-weight-medium">${membershipList.ms_price}</p>
                         </div>
                       </div>
+                      <div class="col-3">
+                          <input type="button" class="InputPurchase btn btn-info btn-lg btn-block" value="구매">
+                      </div>
                     </div>
+                    <h6 class="text-muted font-weight-normal">무제한 듣기 ${membershipList.ms_no}</h6>
                   </div>
                 </div>
+              </div>
+            </div>
+            <!-- 1행 끝 -->
+            </c:forEach>
           </div>
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
@@ -169,12 +106,6 @@
     </div>
     <script>
     	$(document).ready(function(){
-    		$("#icon-wrapper #icon:nth-child(5n+1)").html('<div class="preview-icon bg-primary"><i class="mdi mdi-file-document"></i></div>');
-            $("#icon-wrapper #icon:nth-child(5n+2)").html('<div class="preview-icon bg-success"><i class="mdi mdi-cloud-download"></i></div>');
-            $("#icon-wrapper #icon:nth-child(5n+3)").html('<div class="preview-icon bg-info"><i class="mdi mdi-clock"></i></div>');
-            $("#icon-wrapper #icon:nth-child(5n+4)").html('<div class="preview-icon bg-danger"><i class="mdi mdi-email-open"></i></div>');
-            $("#icon-wrapper #icon:nth-child(5n+5)").html('<div class="preview-icon bg-warning"><i class="mdi mdi-chart-pie"></i></div>');
-            
             var IMP = window.IMP;
             var code = "imp39912594";
             IMP.init(code);
@@ -192,8 +123,8 @@
 			console.log(token);
             
             $(".InputPurchase").on("click", function(){
-    	    	var price = $(this).prev().text();
-    	    	var pname = $(this).parent().prev().children(".preview-subject").text();
+    	    	var price = $(this).parent().prev().find("#pPname").text();
+    	    	var pname = $(this).parent().prev().find("#h3Price").text();
     	    	console.log(pname);
     	    	console.log(price);
     	    	

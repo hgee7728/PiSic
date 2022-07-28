@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kh.spring.pisic.admin.model.dao.AdminDao;
+import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.membership.domain.Membership;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -145,13 +147,19 @@ public class AdminServiceImpl implements AdminService{
 		return dao.deleteSound(soundList);
 	}
 
+	@Override
+	public List<Member> selectMemberList() {
+		return dao.selectMemberList();
+	}
 
+	@Override
+	public List<Member> selectAdminList() {
+		return dao.selectAdminList();
+	}
 
-
-	
-
-
-
-	
+	@Override
+	public List<Membership> selectMembershipList() {
+		return dao.selectMembershipList();
+	}
 
 }

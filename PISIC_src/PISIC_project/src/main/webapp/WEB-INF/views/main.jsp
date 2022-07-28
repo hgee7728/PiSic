@@ -445,12 +445,18 @@ let csrf_token = '${_csrf.token }';
 		var $btnLayerPopupClose = document.querySelector('.close');
 		var $btnLayerPopupTodayHide = document.querySelector('.close-cookie');
 		var $btnReload = document.querySelector('.btn_reload');
-
+		var $btnMembership = document.querySelector('.confirm');
+		
 		//최초 레이어팝업 노출 (todayCookie라는 이름의 쿠키가 존재하지 않으면 레이어 노출)
 		if (!$.cookie('todayCookie')) {
 			layerPopupShow();
 		}
-
+		
+		//레이어팝업 이용권 구매 바로가기 클릭
+		$btnMembership.addEventListener('click', function() {
+			location.href = '<%=request.getContextPath()%>/membership/list';
+		});
+		
 		//레이어팝업 닫기 버튼 클릭
 		$btnLayerPopupClose.addEventListener('click', function() {
 			layerPopupHide(0);

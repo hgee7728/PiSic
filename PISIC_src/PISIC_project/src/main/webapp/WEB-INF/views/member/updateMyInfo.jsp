@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Corona Admin</title>
+    <title>정보 수정</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/vendors/css/vendor.bundle.base.css">
@@ -79,41 +80,40 @@
                     <form id="updateForm" class="forms-sample" action="<%=request.getContextPath() %>/member/updateMyInfo" method="post">
                       <div class="form-group">
                       	<label id="LabelId" for="InputId">아이디</label>
-                      	<input type="text" class="form-control file-upload-info" id="InputId" placeholder="ID" name="m_id" value="${loginSsInfo.m_id}" readonly required>
-                      </div>
-                      <div class="form-group">
-                        <label id="LabelPassword1" for="InputPassword1">비밀번호</label>
-                        <input type="password" class="form-control" id="InputPassword1" placeholder="Password" value="${loginSsInfo.m_password}" name="m_password" required>
-                      </div>
-                      <div class="form-group">
-                        <label id="LabelPassword2" for="InputPassword2">비밀번호 확인</label>
-                        <input type="password" class="form-control" id="InputPassword2" placeholder="Re Password" required>
+                      	<sec:authentication property="principal.m_id" var="m_id"/>
+                      	<input type="text" class="form-control file-upload-info" id="InputId" placeholder="ID" name="m_id" value="${m_id}" readonly required>
                       </div>
                       <div class="form-group">
                         <label id="LabelName" for="InputName">이름</label>
-                        <input type="text" class="form-control" id="InputName" placeholder="Name" name="m_name" value="${loginSsInfo.m_name}" required>
+                        <sec:authentication property="principal.m_name" var="m_name"/>
+                        <input type="text" class="form-control" id="InputName" placeholder="Name" name="m_name" value="${m_name}" required>
                       </div>
                       <div class="form-group">
                         <label id="LabelNickname" for="InputNickname">닉네임</label>
-                        <input type="text" class="form-control" id="InputNickname" placeholder="Nickname" name="m_nickname" value="${loginSsInfo.m_nickname}" required>
+                        <sec:authentication property="principal.m_nickname" var="m_nickname"/>
+                        <input type="text" class="form-control" id="InputNickname" placeholder="Nickname" name="m_nickname" value="${m_nickname}" required>
                       </div>
                       <div class="form-group">
                         <label id="LabelEmail" for="InputEmail">이메일</label>
-                        <input type="email" class="form-control" id="InputEmail" placeholder="Email" name="m_email" value="${loginSsInfo.m_email}" required>
+                        <sec:authentication property="principal.m_email" var="m_email"/>
+                        <input type="email" class="form-control" id="InputEmail" placeholder="Email" name="m_email" value="${m_email}" required>
                       </div>
                       <div class="form-group">
                         <label id="LabelPhone" for="InputPhone">휴대전화</label>
-                        <input type="text" class="form-control" id="InputPhone" placeholder="Phone" name="m_phone" value="${loginSsInfo.m_phone}" required>               
+                        <sec:authentication property="principal.m_phone" var="m_phone"/>
+                        <input type="text" class="form-control" id="InputPhone" placeholder="Phone" name="m_phone" value="${m_phone}" required>               
                       </div>
                       <div class="form-group">
                         <label id="LabelBirth" for="InputBirth">생년월일</label>
-                        <input type="text" class="form-control file-upload-info" id="InputBirth" placeholder="Date of Birth" name="m_birth" value="${loginSsInfo.m_birth}" readonly required>
+                        <sec:authentication property="principal.m_birth" var="m_birth"/>
+                        <input type="text" class="form-control file-upload-info" id="InputBirth" placeholder="Date of Birth" name="m_birth" value="${m_birth}" readonly required>
                       </div>
                       <div class="form-group">
                         <label id="LabelGender" for="SelectGender">성별</label>
+                        <sec:authentication property="principal.m_gender" var="m_gender"/>
                         <select class="form-control" id="SelectGender" name="m_gender">
                         <c:choose>
-                        	<c:when test="${loginSsInfo.m_gender eq 'M'}">
+                        	<c:when test="${m_gender eq 'M'}">
                         		<option value="M" selected>남성</option>
                           		<option value="F">여성</option>
                         	</c:when>
@@ -127,8 +127,9 @@
                       </div>
                       <div class="form-group">
                         <label id="LabelAddress" for="InputAddress">주소</label>
+                        <sec:authentication property="principal.m_address" var="m_address"/>
                         <div class="input-group">
-	                        <input type="text" class="form-control" id="InputAddress" placeholder="Address" name="m_address" value="${loginSsInfo.m_address}" readonly required>  
+	                        <input type="text" class="form-control" id="InputAddress" placeholder="Address" name="m_address" value="${m_address}" readonly required>  
 	                        <div class="input-group-append">
 	                          <button id="BtnAddress" class="btn btn-inverse-secondary btn-fw" type="button" onclick="daumPost()">주소찾기</button>
 	                        </div>
@@ -136,7 +137,8 @@
                       </div>
                       <div class="form-group">
                         <label id="LabelAddressDetail" for="InputAddressDetail">상세주소</label>
-	                    <input type="text" class="form-control" id="InputAddressDetail" placeholder="AddressDetail" name="m_address_detail" value="${loginSsInfo.m_address_detail}" required>
+                        <sec:authentication property="principal.m_address_detail" var="m_address_detail"/>
+	                    <input type="text" class="form-control" id="InputAddressDetail" placeholder="AddressDetail" name="m_address_detail" value="${m_address_detail}" required>
                       </div>
 		      		  <!-- kakao 우편번호 서비스 -->
                       <script>
@@ -188,8 +190,9 @@
                       </script>
                       <div class="form-group">
                         <label id="LabelProfile">프로필사진</label>
+                        <sec:authentication property="principal.m_profile" var="m_profile"/>
                         <div class="input-group">
-                          <img id="ImgProfilePre" src="${loginSsInfo.m_profile}">
+                          <img id="ImgProfilePre" src="${m_profile}">
                           <span class="input-group-append">
                             <button id="BtnProfile" class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
                           </span>
@@ -217,8 +220,6 @@
     <!-- 회원가입 from -->
     <script>
     	$(document).ready(function(){
-    		var InputPw1 = null;
-    		var InputPw2 = null;
     		var InputName = null;
     		var InputNickname = null;
     		var InputEmail = null;
@@ -227,62 +228,21 @@
     		var InputAddressDetail = null;
     		var InputProfile = null;
 
-    		var InfoPw = '${loginSsInfo.m_password}';
-    		var InfoName = '${loginSsInfo.m_name}';
-    		var InfoNickname = '${loginSsInfo.m_nickname}';
-    		var InfoEmail = '${loginSsInfo.m_email}';
-    		var InfoPhone = '${loginSsInfo.m_phone}';
-    		var InfoGender = '${loginSsInfo.m_gender}';
-    		var InfoAddress = '${loginSsInfo.m_address}';
-    		var InfoAddressDetail = '${loginSsInfo.m_address_detail}';
+    		var InfoName = '${m_name}';
+    		var InfoNickname = '${m_nickname}';
+    		var InfoEmail = '${m_email}';
+    		var InfoPhone = '${m_phone}';
+    		var InfoGender = '${m_gender}';
+    		var InfoAddress = '${m_address}';
+    		var InfoAddressDetail = '${m_address_detail}';
     		
     		var FlagId = false;
-    		var FlagPw1 = false;
-    		var FlagPw2 = false;
     		var FlagName = false;
     		var FlagNickname = false;
     		var FlagEmail = false;
     		var FlagPhone = false;
     		var FlagGender = false;
     		var FlagAddressDetail = false;
-    		
-    		// 비밀번호
-    		$("#InputPassword1").on("input", function FxPassword1(){
-    			var regexPw = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
-    			InputPw1 = $("#InputPassword1").val();
-    			
-    			if (!regexPw.test(InputPw1)) {
-    				if (InputPw1 == '') {
-    					$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-    				} else {
-    					$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-close"></i> 8 ~ 20자의 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>');
-    				}
-    				FlagPw1 = false;
-    				$("#SpanPassword1").css("color", "red");
-    			} else {
-    				$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-check"></i></span>');
-    				$("#SpanPassword1").css("color", "green");
-    				FlagPw1 = true;
-    			}
-    			console.log(FlagPw1);
-    		})
-    		
-    		// 비밀번호 확인
-    		$("#InputPassword2").on("input", function FxPassword2(){
-    			InputPw1 = $("#InputPassword1").val();
-    			InputPw2 = $("#InputPassword2").val();
-    			
-    			if (InputPw1 != InputPw2) {
-    				$("#LabelPassword2").html('비밀번호 확인 <span id="SpanPassword2"><i class="mdi mdi-close"></i> 비밀번호가 일치하지 않습니다.</span>');
-    				$("#SpanPassword2").css("color", "red");
-    				FlagPw2 = false;
-    			} else {
-    				$("#LabelPassword2").html('비밀번호 확인 <span id="SpanPassword2"><i class="mdi mdi-check"></i></span>');
-    				$("#SpanPassword2").css("color", "green");
-    				FlagPw2 = true;
-    			}
-    			console.log(FlagPw2);
-    		})
     		
     		// 이름
     		$("#InputName").on("input", function FxName(){
@@ -495,8 +455,6 @@
 	    	
 	    	// Flag 확인
 	    	$("#BtnProfile").on("click", function(){
-	    		console.log(FlagPw1);
-	    		console.log(FlagPw2);
 	    		console.log(FlagName);
 	    		console.log(FlagNickname);
 	    		console.log(FlagEmail);
@@ -507,11 +465,7 @@
 	    	
 	    	// Submit 유효성 검사
 	    	$("#InputSubmit").on("click", function(){
-		    	if (FlagPw1 == false) {
-		    		$("#InputPassword1").focus();
-		    	} else if (FlagPw1 == false) {
-		    		$("#InputPassword2").focus();
-		    	} else if (FlagName == false) {
+				if (FlagName == false) {
 		    		$("#InputName").focus();
 		    	} else if (FlagNickname == false) {
 		    		$("#InputNickname").focus();

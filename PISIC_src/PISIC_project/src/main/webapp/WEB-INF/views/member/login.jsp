@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -48,6 +50,9 @@
   		margin-top: 0.75rem;
   		margin-bottom: 0.75rem;
   	}
+  	#SpanErrormsg {
+  		color: red;
+  	}
   	@media (min-width: 768px) {
   		.col-md-6 {
 			max-width: 70%;
@@ -79,7 +84,10 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">로그인</h4>
-                    <p class="card-description">로그인</p>
+                    <label class="card-description">로그인</label>
+                    <c:if test="${not empty errormsg_name}">
+                    	<span id="SpanErrormsg"><i class="mdi mdi-close"></i>${errormsg_name}</span>
+                    </c:if>
                     <div class="preview-item border-bottom">
                     	<!-- 
                     	<ul>
@@ -120,7 +128,7 @@
                       <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
                       <div class="form-group">
                         <label for="InputId">아이디</label>
-                        <input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" required>
+                        <input type="text" class="form-control" id="InputId" placeholder="ID" name="m_id" value="${m_id}" required>
                       </div>
                       <div class="form-group">
                         <label for="InputPassword">비밀번호</label>

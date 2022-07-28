@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 
 import kh.spring.pisic.admin.model.service.AdminService;
 import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.membership.domain.Membership;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -41,7 +42,7 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 	
- 
+	
 	/*아티스트 관리자 페이지*/
 	@GetMapping("/artist")
 	public ModelAndView SearchArtistPage(ModelAndView mv, Criteria cri) {
@@ -445,10 +446,37 @@ public class AdminController {
 			return "1";
 		}
 	}
+	
+	@GetMapping("/member")
+	public ModelAndView pageMemberList(
+			ModelAndView mv
+			, Member member) {
+		
+		// 회원 목록 List
+		mv.addObject("memberList", service.selectMemberList());
+		// 관리자 목록 List
+		mv.addObject("adminList", service.selectAdminList());
+		
+		mv.setViewName("admin/memberList");
+		return mv;
+	}
+	
+	@GetMapping("/membership")
+	public ModelAndView pageMembershipList(
+			ModelAndView mv
+			, Membership membership) {
+		
+		// 이용권 목록 List
+		mv.addObject("membershipList", service.selectMembershipList());
+		
+		mv.setViewName("admin/membershipList");
+		return mv;
+	}
 		
 	@GetMapping("/test")
 	public String TestPage() {
 		return "pymusic/test";
 	}
+	
 
 }

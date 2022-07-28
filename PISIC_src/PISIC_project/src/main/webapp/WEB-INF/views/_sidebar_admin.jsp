@@ -37,26 +37,29 @@ $(function(){
           		<img class="img-xs rounded-circle " src="<%=request.getContextPath()%>/resources/assets/images/favicon.png" alt="">
           	</sec:authorize>
           	<sec:authorize access="isAuthenticated()">
-          		<img class="img-xs rounded-circle " src="${loginSsInfo.m_profile}" alt="">
+          		<sec:authentication property="principal.m_profile" var="m_profile"/>
+          		<img class="img-xs rounded-circle " src="${m_profile }" alt="">
           	</sec:authorize>
             <span class="count bg-success"></span>
           </div>
           <div class="profile-name">
 	        <sec:authorize access="isAuthenticated()">
+	        	<sec:authentication property="principal.m_nickname" var="m_nickname"/>
 	        	<h5 class="mb-0 font-weight-normal">
-	        	<sec:authentication property="principal.username"/>
+	        		${m_nickname }
 	        	</h5>
-	        	<c:if test="${loginSsInfo.m_grade eq 1}">
-	        		<c:if test="${loginSsInfo.m_membership_yn eq 'N'}">
-	        			<span>General Membership</span>
+	        	<sec:authorize access="hasRole('ROLE_MEMBER')">
+	        		<sec:authentication property="principal.m_membership_yn" var="m_membership_yn"/>
+	        		<c:if test="${m_membership_yn eq 'N'}">
+	        			<span>General Member</span>
 	        		</c:if>
-	        		<c:if test="${loginSsInfo.m_membership_yn eq 'Y'}">
+	        		<c:if test="${m_membership_yn eq 'Y'}">
 	        			<span>PISIC Membership</span>
 	        		</c:if>
-	        	</c:if>
-	        	<c:if test="${loginSsInfo.m_grade eq 0}">
+	        	</sec:authorize>
+	        	<sec:authorize access="hasRole('ROLE_ADMIN')">
             		<span>관리자</span>
-            	</c:if>
+            	</sec:authorize>
 	        </sec:authorize>
 	        <sec:authorize access="isAnonymous()">
 	        	<h5 class="mb-0 font-weight-normal">
@@ -148,7 +151,7 @@ $(function(){
       <span class="nav-link">MENU</span>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/member">
         <span class="menu-icon">
           <i class="mdi mdi-speedometer"></i>
         </span>
@@ -165,8 +168,8 @@ $(function(){
       </a>
       <div class="collapse" id="membership">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">이용권 관리</a></li>
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">이용권 해지</a></li>
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/admin/membership">이용권 관리</a></li>
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/admin/cancelMembership">이용권 해지</a></li>
         </ul>
       </div>
     </li>

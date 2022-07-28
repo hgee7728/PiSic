@@ -22,6 +22,39 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
+  <style>
+  	.col-md-6.grid-margin.stretch-card {
+  		max-width: 600px;
+  	}
+  	.stretch-card {
+  		margin: 0 auto;
+  	}
+  	.btn.btn-info.btn-fw {
+  		margin: 0 auto;
+    	display: block;
+  	}
+  	.btn.btn-inverse-secondary.btn-fw {
+  		flex: 0 0 33.33333%;
+  		min-width: 120px !important;
+  		max-width: 120px !important;
+  		margin: 0 auto;
+  	}
+  	.row {
+  		margin-top: 0.75rem;
+  	}
+  	.preview-item {
+  		margin-top: 0.75rem;
+  		margin-bottom: 0.75rem;
+  	}
+  	#SpanErrormsg {
+  		color: red;
+  	}
+  	@media (min-width: 768px) {
+  		.col-md-6 {
+			max-width: 70%;
+		}
+  	}
+  </style> 
   </head>
   <body>
     <div class="container-scroller">
@@ -34,11 +67,39 @@
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
-            
-            
-            
-            
-            
+          	<div class="page-header">
+              <h2 class="card-title">이용권 해지</h2>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">이용권</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">이용권 해지</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="preview-item border-bottom">
+					
+                    </div>
+                    <form class="forms-sample" action="<%=request.getContextPath() %>/login" method="post">
+                      <!-- csrf 공격 방지 -->
+                      <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+                      <div class="form-group">
+                        <label for="InputId">아이디</label>
+                      </div>
+                      <div class="form-group">
+                        <label for="InputPassword">비밀번호</label>
+                      </div>
+                      <div class="form-check form-check-flat form-check-info">
+                        <label class="form-check-label">
+                        </label>
+                      </div>
+                      <button type="submit" class="btn btn-info btn-fw">해지 신청</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
           </div>
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->

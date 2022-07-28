@@ -94,6 +94,7 @@ public class AuthLoginFailureHandler implements AuthenticationFailureHandler {
 		
 		System.out.println("로그인 실패");
 		System.out.println(errormsg);
+		System.out.println(defaultFailureUrl);
 		request.getRequestDispatcher(defaultFailureUrl).forward(request, response);
 	}
 	

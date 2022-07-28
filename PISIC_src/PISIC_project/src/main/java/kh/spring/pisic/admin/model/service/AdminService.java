@@ -2,6 +2,8 @@ package kh.spring.pisic.admin.model.service;
 
 import java.util.List;
 
+import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.membership.domain.Membership;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -29,4 +31,7 @@ public interface AdminService {
 	public Sound selectSound(Sound sound);
 	public int updateSound(Sound sound, int[] singer_noArr, int[] writer_noArr, int[] composer_noArr);
 	public int deleteSound(List<Sound> soundList);
+	public List<Member> selectMemberList();
+	public List<Member> selectAdminList();
+	public List<Membership> selectMembershipList();
 }

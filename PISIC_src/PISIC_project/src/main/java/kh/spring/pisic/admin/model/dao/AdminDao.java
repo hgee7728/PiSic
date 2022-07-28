@@ -7,6 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.membership.domain.Membership;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -158,5 +160,20 @@ public class AdminDao {
 	// 곡 삭제
 	public int deleteSound(List<Sound> soundList) {
 		return session.delete("Admin.deleteSound", soundList);
+	}
+	
+	// 회원 목록 조회
+	public List<Member> selectMemberList() {
+		return session.selectList("Admin.selectMemberList");
+	}
+	
+	// 회원 목록 조회
+	public List<Member> selectAdminList() {
+		return session.selectList("Admin.selectAdminList");
+	}
+	
+	// 이용권 목록 조회
+	public List<Membership> selectMembershipList() {
+		return session.selectList("Admin.selectMembershipList");
 	}
 }
