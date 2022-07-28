@@ -493,7 +493,7 @@ table.sound_list a {
 														<label class="form-check-label"> <input
 															type="checkbox" class="form-check-input sound_checkbox"
 															value="${sounds.s_no }" name="s_no">
-														</label> <input type="hidden" value="${sounds.a_no }" name="a_no">
+														</label> 
 														<input type="hidden" value="${sounds.a_no }" name="a_no">
 													</div>
 												</td>

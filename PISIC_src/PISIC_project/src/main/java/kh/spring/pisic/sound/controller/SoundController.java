@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 
@@ -44,31 +45,39 @@ public class SoundController {
 			, @RequestParam(name="a_no", required = false) int[] a_noArr
 			, @RequestParam(name="s_no", required = false) int[] s_noArr
 			, Authentication auth
+			, RedirectAttributes rttr
 			) {
 		System.out.println("음악 재생!!");
-		UserDetails ud = (UserDetails)auth.getPrincipal();
-		Member member = memberService.selectLoginMember(ud.getUsername());
-		
-		List<Sound> soundList = new ArrayList<Sound>();
+		if(auth == null) {
+			rttr.addFlashAttribute("msg", "로그인 후 이용해주세요.");
+			mv.setViewName("member/login");
+			return mv;
+		} else {
+			UserDetails ud = (UserDetails)auth.getPrincipal();
+			Member member = memberService.selectLoginMember(ud.getUsername());
+			
+			List<Sound> soundList = new ArrayList<Sound>();
 
-		// 들고 온 데이터 domain형태로 list 시키기
-		for (int i = 0; i < s_noArr.length; i++) {
-			Sound sound = new Sound();
-			System.out.println("a_no : " + a_noArr[i]);
-			System.out.println("s_no : " + s_noArr[i]);
-			sound.setA_no(a_noArr[i]);
-			sound.setS_no(s_noArr[i]);
-			sound.setM_id(ud.getUsername());
-			soundList.add(sound);
+			// 들고 온 데이터 domain형태로 list 시키기
+			for (int i = 0; i < s_noArr.length; i++) {
+				Sound sound = new Sound();
+				System.out.println("a_no : " + a_noArr[i]);
+				System.out.println("s_no : " + s_noArr[i]);
+				sound.setA_no(a_noArr[i]);
+				sound.setS_no(s_noArr[i]);
+				sound.setM_id(ud.getUsername());
+				soundList.add(sound);
+			}
+			System.out.println("[[[soundList]]] : " + soundList);
+			
+			//System.out.println("Gson : " + new Gson().toJson(service.selectSoundList(soundList, member)));
+
+			// list<domain> 형태 JSON형태로 바꿔 보내기
+			mv.addObject("soundList", new Gson().toJson(service.selectSoundList(soundList, member)));
+			mv.setViewName("sound/soundPlayer");
+			return mv;
 		}
-		System.out.println("[[[soundList]]] : " + soundList);
 		
-		//System.out.println("Gson : " + new Gson().toJson(service.selectSoundList(soundList, member)));
-
-		// list<domain> 형태 JSON형태로 바꿔 보내기
-		mv.addObject("soundList", new Gson().toJson(service.selectSoundList(soundList, member)));
-		mv.setViewName("sound/soundPlayer");
-		return mv;
 
 	}
 
@@ -189,16 +198,22 @@ public class SoundController {
 	@PostMapping(value = "/insertRecomment", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String insertRecomment(SoundRecomment soundRecomment, Authentication auth) {
-		UserDetails ud = (UserDetails)auth.getPrincipal();
-		Member member = memberService.selectLoginMember(ud.getUsername());
+		
 		String resultAjax = "";
-		// 댓글 등록
-		int result = service.insertSoundRecomment(member, soundRecomment);
-		if(result < 1) { // 댓글 등록 실패
-			resultAjax = "0"; 
-		} else { // 댓글 등록 성공
-			resultAjax = "1";
+		if(auth == null) {
+			resultAjax = "-1";
+		} else {
+			UserDetails ud = (UserDetails)auth.getPrincipal();
+			Member member = memberService.selectLoginMember(ud.getUsername());
+			// 댓글 등록
+			int result = service.insertSoundRecomment(member, soundRecomment);
+			if(result < 1) { // 댓글 등록 실패
+				resultAjax = "0"; 
+			} else { // 댓글 등록 성공
+				resultAjax = "1";
+			}
 		}
+		
 		
 		return resultAjax;
 	}

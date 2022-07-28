@@ -131,6 +131,17 @@ $(function(){
     		$('input:checkbox').prop('checked',false);
     	}
     })
+    $(".sound_checkbox").click(function() {
+		var total = $(".sound_checkbox").length;
+		var checked = $(".sound_checkbox:checked").length;
+		console.log("total : " + total);
+		console.log("checked : " + checked);
+		if(total != checked) {
+			$("#check_all").prop("checked", false);
+		} else {
+			$("#check_all").prop("checked", true); 
+		}
+	});
     
     // 선택 재생
     $("#select_play").click(function(){
@@ -238,7 +249,7 @@ function soundLike(a_no,s_no){
 
 //로그인 페이지로
 function goLogin(){
-	<%-- location.href="<%=request.getContextPath() %>/member/login" --%>
+	location.href="<%=request.getContextPath() %>/login"
 };
 // 제목, 아티스트, 앨범 클릭시 상세조회 페이지
 function selectSoundDetail(a_no, s_no){

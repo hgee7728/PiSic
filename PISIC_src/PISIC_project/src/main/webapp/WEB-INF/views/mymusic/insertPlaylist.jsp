@@ -202,34 +202,40 @@ UPLOADCARE_LOCALE = "ko"
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/soundRecent",
 				type: "post",
+				dataType: 'json',
 				beforeSend: function(xhr){
 			        xhr.setRequestHeader(header, token);
 			    },
-				dataType: 'json',
 				success: function(result) {
 					$(".left_title").text("최근 들은 곡");
 					console.log(result);
 					var html = "";
-					for(var i = 0; i < result.length; i++){
-						var resultData = result[i];
-						html += '<tr>';
-						html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
-						html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
-						html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
-						html += '<td>'+(i+1)+'</td>';
-						html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
-						html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
-						html += '<td>';
-							for(var j = 0 ; j < resultData.singers.length ; j ++){
-								var resultData2 = resultData.singers[j]
-								html += '<input type="hidden" name="artist_no" value="'+resultData2.artist_no+'">';
-								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
-							}
-						html += '</td>';
-						html += '<td><a href="javascript:soundPlus('+(i+1)+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
-						html += '</tr>';
+					if(result.length > 0){
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+							html += '<tr>';
+							html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
+							html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
+							html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
+							html += '<td>'+(i+1)+'</td>';
+							html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
+							html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
+							html += '<td>';
+								for(var j = 0 ; j < resultData.singers.length ; j ++){
+									var resultData2 = resultData.singers[j]
+									html += '<input type="hidden" name="artist_no" value="'+resultData2.artist_no+'">';
+									html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
+								}
+							html += '</td>';
+							html += '<td><a href="javascript:soundPlus('+(i+1)+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+							html += '</tr>';
+							
 						
-					
+						}
+					} else {
+						html += '	<tr>   											';
+						html += '		<td colspan="6" style="text-align:center;"> <h6 class="card-title">최근 들은 곡이 없습니다. </h6> </td>			';
+						html += '	</tr>											';
 					}
 					console.log(html);
 					$("table.left_sound_list tbody").children().remove();
@@ -245,34 +251,40 @@ UPLOADCARE_LOCALE = "ko"
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/soundOften",
 				type: "post",
-				dataType: 'json',
 				beforeSend: function(xhr){
 			        xhr.setRequestHeader(header, token);
 			    },
+				dataType: 'json',
 				success: function(result) {
 					$(".left_title").text("자주 들은 곡");
 					console.log(result);
 					var html = "";
-					for(var i = 0; i < result.length; i++){
-						var resultData = result[i];
-						html += '<tr>';
-						html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
-						html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
-						html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
-						html += '<td>'+(i+1)+'</td>';
-						html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
-						html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
-						html += '<td>';
-							for(var j = 0 ; j < resultData.singers.length ; j ++){
-								var resultData2 = resultData.singers[j]
-								html += '<input type="hidden" name="artist_no" value="'+resultData2.artist_no+'">';
-								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
-							}
-						html += '</td>';
-						html += '<td><a href="javascript:soundPlus('+(i+1)+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
-						html += '</tr>';
+					if(result.length > 0){
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+							html += '<tr>';
+							html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
+							html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
+							html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
+							html += '<td>'+(i+1)+'</td>';
+							html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
+							html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
+							html += '<td>';
+								for(var j = 0 ; j < resultData.singers.length ; j ++){
+									var resultData2 = resultData.singers[j]
+									html += '<input type="hidden" name="artist_no" value="'+resultData2.artist_no+'">';
+									html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
+								}
+							html += '</td>';
+							html += '<td><a href="javascript:soundPlus('+(i+1)+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+							html += '</tr>';
+							
 						
-					
+						}
+					} else {
+						html += '	<tr>   											';
+						html += '		<td colspan="6" style="text-align:center;"> <h6 class="card-title">자주 들은 곡이 없습니다. </h6> </td>			';
+						html += '	</tr>											';
 					}
 					console.log(html);
 					$("table.left_sound_list tbody").children().remove();
@@ -288,35 +300,42 @@ UPLOADCARE_LOCALE = "ko"
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/soundLike",
 				type: "post",
-				dataType: 'json',
 				beforeSend: function(xhr){
 			        xhr.setRequestHeader(header, token);
 			    },
+				dataType: 'json',
 				success: function(result) {
 					$(".left_title").text("좋아요 곡");
 					console.log(result);
 					var html = "";
-					for(var i = 0; i < result.length; i++){
-						var resultData = result[i];
-						html += '<tr>';
-						html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
-						html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
-						html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
-						html += '<td>'+(i+1)+'</td>';
-						html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
-						html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
-						html += '<td>';
-							for(var j = 0 ; j < resultData.singers.length ; j ++){
-								var resultData2 = resultData.singers[j]
-								html += '<input type="hidden" name="artist_no" value="'+resultData2.artist_no+'">';
-								html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
-							}
-						html += '</td>';
-						html += '<td><a href="javascript:soundPlus('+(i+1)+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
-						html += '</tr>';
+					if(result.length > 0){
+						for(var i = 0; i < result.length; i++){
+							var resultData = result[i];
+							html += '<tr>';
+							html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
+							html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
+							html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
+							html += '<td>'+(i+1)+'</td>';
+							html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
+							html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
+							html += '<td>';
+								for(var j = 0 ; j < resultData.singers.length ; j ++){
+									var resultData2 = resultData.singers[j]
+									html += '<input type="hidden" name="artist_no" value="'+resultData2.artist_no+'">';
+									html += '<a href="javascript:selectArtistDetail('+resultData2.artist_no+')">'+resultData2.artist_name+'</a>&nbsp;';
+								}
+							html += '</td>';
+							html += '<td><a href="javascript:soundPlus('+(i+1)+')"><i class="mdi mdi-arrow-right-bold list_icon"></i></a></td>';
+							html += '</tr>';
+							
 						
-					
+						}
+					} else {
+						html += '	<tr>   											';
+						html += '		<td colspan="6" style="text-align:center;"> <h6 class="card-title">좋아요 한 곡이 없습니다. </h6> </td>			';
+						html += '	</tr>											';
 					}
+					
 					console.log(html);
 					$("table.left_sound_list tbody").children().remove();
 					$("table.left_sound_list tbody").append(html);
@@ -334,6 +353,17 @@ UPLOADCARE_LOCALE = "ko"
 	    		$('table.left_sound_list input:checkbox').prop('checked',false);
 	    	}
 	    })
+	    $(document).on("click", "table.left_sound_list .sound_checkbox1", function() {
+			var total = $("table.left_sound_list .sound_checkbox1").length;
+			var checked = $("table.left_sound_list .sound_checkbox1:checked").length;
+			console.log("total : " + total);
+			console.log("checked : " + checked);
+			if(total != checked) {
+				$("#check_all1").prop("checked", false);
+			} else {
+				$("#check_all1").prop("checked", true); 
+			}
+		});
 	    // 체크박스 전체선택 - 오른쪽 테이블
 	    $("#check_all2").click(function(){
 	    	if($('#check_all2').is(':checked')){
@@ -342,6 +372,17 @@ UPLOADCARE_LOCALE = "ko"
 	    		$('table.right_sound_list input:checkbox').prop('checked',false);
 	    	}
 	    })
+	    $(document).on("click", "table.right_sound_list .sound_checkbox1", function() {
+			var total = $("table.right_sound_list .sound_checkbox1").length;
+			var checked = $("table.right_sound_list .sound_checkbox1:checked").length;
+			console.log("total : " + total);
+			console.log("checked : " + checked);
+			if(total != checked) {
+				$("#check_all2").prop("checked", false);
+			} else {
+				$("#check_all2").prop("checked", true); 
+			}
+		});
 	    
 	    // 선택 옮기기
 	    $("#select_sound_plus").click(function(){

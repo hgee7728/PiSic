@@ -59,6 +59,12 @@
 		}
   	}
   </style> 
+  <script>
+  var msg = '${msg}';
+  if(msg){
+	  alert(msg);
+  }
+  </script>
   </head>
   <body>
     <div class="container-scroller">

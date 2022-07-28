@@ -43,9 +43,12 @@ public class MyMusicController {
 	@PostMapping(value = "/playlist.ax", produces = "text/plain;charset=UTF-8")
 	public String selectPlaylistName(Authentication auth) {
 		System.out.println("플레이 리스트 목록 ajax 들어옴");
-		
-		UserDetails ud = (UserDetails)auth.getPrincipal();
-		return new Gson().toJson(service.selectPlaylist(ud.getUsername()));
+		if(auth == null) {
+			return "0";
+		} else {
+			UserDetails ud = (UserDetails)auth.getPrincipal();
+			return new Gson().toJson(service.selectPlaylist(ud.getUsername()));
+		}
 	}
 
 	// 플레이 리스트에 노래 담기

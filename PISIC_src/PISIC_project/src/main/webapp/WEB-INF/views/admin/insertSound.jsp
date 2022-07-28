@@ -250,6 +250,7 @@ let csrf_token = '${_csrf.token }';
 										<div class="input-group">
 											<input type="file" id="input-file" name="upload_sound">
 										</div>
+										<p class="text-muted mb-0">&nbsp;mp3 파일만 가능합니다.</p>
 									</div>
 									<div style="text-align: center;">
 										<button type="button" class="btn btn-primary mr-2" id="insert_btn">추가하기</button>
@@ -616,13 +617,23 @@ let csrf_token = '${_csrf.token }';
 					checkFlag = false;
 					return;
     			} 
-		    	// 파일
+		    	// 파일 첨부 유효성
 		    	if ($("#input-file").val() == '') {
 					$("#LabelProfile").html('음원파일* <span><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
 					$("#LabelProfile").children('span').css("color", "red");
 					checkFlag = false;
 					return;
     			}
+		    	var File = $('#input-file').val();
+				var fileForm = /(.*?)\.(mp3|MP3)$/;
+				
+				if(File != "" && File != null) {
+				    if(!File.match(fileForm)) {
+				    	alert("mp3 파일만 업로드 가능");
+				    	checkFlag = false;
+				        return;
+				    } 
+				}
 		    	checkFlag = true;
 		    	if(checkFlag){
 		    		

@@ -103,7 +103,18 @@ $(function(){
     	} else {
     		$('input:checkbox').prop('checked',false);
     	}
-    })
+    });
+    $("input:checkbox").click(function() {
+		var total = $(".sound_checkbox").length;
+		var checked = $(".sound_checkbox:checked").length;
+		console.log("total : " + total);
+		console.log("checked : " + checked);
+		if(total != checked) {
+			$("#check_all").prop("checked", false);
+		} else {
+			$("#check_all").prop("checked", true); 
+		}
+	});
     
     // 곡 검색
 	$("#search_sound").click(function(){

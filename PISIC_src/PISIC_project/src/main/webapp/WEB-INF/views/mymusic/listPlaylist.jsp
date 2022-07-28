@@ -174,7 +174,7 @@ function updatePlaylist(l_no){
 							<div class="playlist_div">
 								<input type="checkbox" name="l_no" value="${playlist.l_no }">
 								<div class="main_img_div">
-									<label><img id="main_img" src="${playlist.l_image }" width="200" height="200"></label>
+									<a href="javascript:selectPlaylistDetail('${playlist.l_no }')"><img id="main_img" src="${playlist.l_image }" width="200" height="200"></a>
 								</div>
 								<div class="content_info">
 									<div class="card-body">

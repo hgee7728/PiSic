@@ -177,7 +177,7 @@ $(function(){
 																			${index.count }
 																		</c:when>
 																		<c:otherwise>
-																		${paging.cri.pageNum*10+index.count}
+																		${(paging.cri.pageNum-1)*10+index.count}
 																		</c:otherwise>
 																	</c:choose>
 																</td>
@@ -265,7 +265,7 @@ $(function(){
 																		${index.count }
 																	</c:when>
 																	<c:otherwise>
-																	${paging.cri.pageNum*10+index.count}
+																	${(paging.cri.pageNum-1)*10+index.count}
 																	</c:otherwise>
 																</c:choose>
 															</td>
@@ -340,7 +340,7 @@ $(function(){
 																		${index.count }
 																	</c:when>
 																	<c:otherwise>
-																	${paging.cri.pageNum*10+index.count}
+																	${(paging.cri.pageNum-1)*10+index.count}
 																	</c:otherwise>
 																</c:choose>
 															</td>
@@ -420,7 +420,7 @@ $(function(){
 																		${index.count }
 																	</c:when>
 																	<c:otherwise>
-																	${paging.cri.pageNum*10+index.count}
+																	${(paging.cri.pageNum-1)*10+index.count}
 																	</c:otherwise>
 																</c:choose>
 															</td>

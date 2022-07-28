@@ -214,24 +214,26 @@ $(function(){
 		    },
 			dataType: 'json',
 			success: function(result) {
-				var html = "";
-				for(var i = 0; i < result.length; i++){
-					var resultData = result[i];
-					html += '<div class="preview-item border-bottom">';
-					html += '<div class="preview-thumbnail">';
-					html += '<img src='+resultData.l_image+' class="modal_content">';
-					html += '</div>';
-					html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
-					html += '<div class="flex-grow">';
-					html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistInsertDo('+a_no +','+ s_no +','+ resultData.l_no +')">'+resultData.l_name+'</a></p></div>';
-					if(resultData.l_private_yn == 'Y'){
-						html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
-					} else {
-						html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
+				if(result != "0"){
+					var html = "";
+					for(var i = 0; i < result.length; i++){
+						var resultData = result[i];
+						html += '<div class="preview-item border-bottom">';
+						html += '<div class="preview-thumbnail">';
+						html += '<img src='+resultData.l_image+' class="modal_content">';
+						html += '</div>';
+						html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
+						html += '<div class="flex-grow">';
+						html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistInsertDo('+a_no +','+ s_no +','+ resultData.l_no +')">'+resultData.l_name+'</a></p></div>';
+						if(resultData.l_private_yn == 'Y'){
+							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
+						} else {
+							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
+						}
 					}
+					$(".playlist_insert_modal_content").eq(0).nextAll().remove();
+					$(".preview-list").append(html);
 				}
-				$(".playlist_insert_modal_content").eq(0).nextAll().remove();
-				$(".preview-list").append(html);
 			},
 		}); // ajax 끝
 	});
@@ -268,7 +270,9 @@ $(function(){
 				s_no: $("input[name=s_no]").val()
 				},
 			success: function(result){
-				if(result == "0"){
+				if(result == "-1"){
+					alert("로그인 후 이용해 주세요");
+				} else if(result == "0"){
 					alert("댓글 등록에 실패했습니다. 다시 시도해주세요.");
 				} else if(result == "1"){
 					alert("댓글을 등록하였습니다.");
@@ -319,7 +323,7 @@ $(function(){
 
 // 로그인 페이지로
 function goLogin(){
-	<%-- location.href="<%=request.getContextPath() %>/member/login" --%>
+	location.href="<%=request.getContextPath() %>/login" 
 }
 
 //노래 좋아요 - ajax
@@ -373,8 +377,10 @@ function playlistInsertDo(a_no, s_no, l_no){
 		success: function(result) {
 			if(result == "0"){
 				alert("곡 담기에 실패 했습니다. 다시 시도해주세요.");
+				$("#playlist_insert_modal").hide();
 			} else if(result == "1"){
 				alert("해당 곡을 담았습니다.");
+				$("#playlist_insert_modal").hide();
 			}
 		},
 		error:function(){
@@ -427,11 +433,17 @@ function selectAlbumDetail(a_no){
 								<table class="table intro_table">
 									<thead>
 										<tr>
-											<th colspan="2">${sound.s_name}</th>
-											<th>${sound.g_name}</th>
+											<th colspan="3"><h5 class="card-title">${sound.s_name}</h5></th>
+											
 										</tr>
 									</thead>
 									<tbody>
+										<tr>
+											<td>장르 :</td>
+											<td colspan="2">
+												${sound.g_name}
+											</td>
+										</tr>
 										<tr>
 											<td>가수명 :</td>
 											<td colspan="2">

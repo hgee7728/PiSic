@@ -278,9 +278,11 @@ let csrf_token = '${_csrf.token }';
 									<div class="form-group change_sound" style="display: none">
 										<label id="LabelProfile">음원 파일*</label>
 										<div class="input-group">
-											<input type="file" id="input-file" name="upload_sound">
+											<input type="file" id="input-file" name="upload_sound" accept="mp3">
 											<button type="button" class="btn btn-primary mr-2" id="sound_change_cancel">취소</button>
+											<input type="hidden" name="sound_yn" value="N">
 										</div>
+										<p class="text-muted mb-0">&nbsp;mp3 파일만 가능합니다.</p>
 									</div>
 									<div style="text-align: center;">
 										<button type="button" class="btn btn-primary mr-2" id="update_btn">변경하기</button>
@@ -649,6 +651,7 @@ let csrf_token = '${_csrf.token }';
 					checkFlag = false;
 					return;
     			} 
+		    	// 파일 첨부 유효성
 		    	if($("div.change_sound").css("display") != "none"){
 		    		console.log("파일 변경할거야");
 		    		// 파일
@@ -659,7 +662,16 @@ let csrf_token = '${_csrf.token }';
 						return;
 	    			}
 		    	}
-		    	
+		    	var File = $('#input-file').val();
+				var fileForm = /(.*?)\.(mp3|MP3)$/;
+				
+				if(File != "" && File != null) {
+				    if(!File.match(fileForm)) {
+				    	alert("mp3 파일만 업로드 가능");
+				    	checkFlag = false;
+				        return;
+				    } 
+				}
 		    	checkFlag = true;
 		    	if(checkFlag){
 		    		
@@ -1154,11 +1166,13 @@ let csrf_token = '${_csrf.token }';
 		$("#sound_change_btn").click(function(){
 			$("div.change_sound").show();
 			$("div.change_sound_btn").hide();
+			$("input[name=sound_yn]").val("Y");
 		});
 		// 음원 변경 취소 버튼
 		$("#sound_change_cancel").click(function(){
 			$("div.change_sound").hide();
 			$("div.change_sound_btn").show();
+			$("input[name=sound_yn]").val("N");
 		});
 		
 	</script>

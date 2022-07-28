@@ -292,11 +292,11 @@ let csrf_token = '${_csrf.token }';
 		
 		// 발매일 유효성
 		$("input[name=a_date]").on("input", function FxBirth(){
-			var regexDate = /^[0-9]{8}$/;
+			var regexDate = /^([12][0-9][0-9][0-9])(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$/;
 			InputDate = $("input[name=a_date]").val();		
 			
 			if (!regexDate.test(InputDate)) {
-				$("#label_a_date").html('발매일* <span id="Span_a_date"><i class="mdi mdi-close"></i> 형식이 맞지 않습니다. ex)YYYYMMDD</span>');
+				$("#label_a_date").html('발매일* <span id="Span_a_date"><i class="mdi mdi-close"></i>날짜 형식이 맞지 않습니다. ex)YYYYMMDD</span>');
 				FlagDate = false;
 				$("#Span_a_date").css("color", "red");
 			} else {

@@ -114,14 +114,17 @@ function artistLike(artist_no){
 							<p class="text-muted mb-0">*내가 좋아요를 누른 아티스트입니다.</p>
 						</div>
 						<div class="content_div">
-						<div class="row">
+						
 						<c:choose>
 							<c:when test="${empty ArtistList}">
-								<div class="artist_div">
-									<h4 class="card-title">좋아하는 아티스트가 없어요</h4>
+								<div class="card">
+									<div class="artist_div card-body" style="text-align: center;">
+										<h4 class="card-title">좋아하는 아티스트가 없어요</h4>
+									</div>
 								</div>
 							</c:when>
 							<c:otherwise>
+							<div class="row">
 								<c:forEach items="${ArtistList }" var="ArtistList">
 								<div class="artist_div">
 									<div class="main_img_div">
@@ -166,10 +169,11 @@ function artistLike(artist_no){
 									</div>
 								</div>
 								</c:forEach>
+								</div>
 							</c:otherwise>
 						</c:choose>
 							
-							</div>
+							
 						</div>
 				</div>
 				<!-- content-wrapper ends -->

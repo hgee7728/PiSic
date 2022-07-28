@@ -9,6 +9,18 @@ $(function(){
     		$('input:checkbox').prop('checked',false);
     	}
     })
+	$(".sound_checkbox").click(function() {
+		var total = $(".sound_checkbox").length;
+		var checked = $(".sound_checkbox:checked").length;
+		console.log("total : " + total);
+		console.log("checked : " + checked);
+		if(total != checked) {
+			$("#check_all").prop("checked", false);
+		} else {
+			$("#check_all").prop("checked", true); 
+		}
+	});
+
 
     // 선택 재생
     $("#select_play").click(function(){
@@ -45,24 +57,26 @@ $(function(){
     				        xhr.setRequestHeader(header, token);
     				    },
 				success: function(result) {
-					var html = "";
-					for(var i = 0; i < result.length; i++){
-						var vo = result[i];
-						html += '<div class="preview-item border-bottom">';
-						html += '<div class="preview-thumbnail">';
-						html += '<img src='+vo.l_image+' class="modal_content">';
-						html += '</div>';
-						html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
-						html += '<div class="flex-grow">';
-						html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistSelectInsertDo('+vo.l_no+')">'+vo.l_name+'</a></p></div>';
-						if(vo.l_private_yn == 'Y'){
-							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
-						} else {
-							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
+					if(result != "0"){
+						var html = "";
+						for(var i = 0; i < result.length; i++){
+							var vo = result[i];
+							html += '<div class="preview-item border-bottom">';
+							html += '<div class="preview-thumbnail">';
+							html += '<img src='+vo.l_image+' class="modal_content">';
+							html += '</div>';
+							html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
+							html += '<div class="flex-grow">';
+							html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistSelectInsertDo('+vo.l_no+')">'+vo.l_name+'</a></p></div>';
+							if(vo.l_private_yn == 'Y'){
+								html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
+							} else {
+								html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
+							}
 						}
+						$(".playlist_insert_modal_content").eq(0).nextAll().remove();
+						$(".preview-list").append(html);
 					}
-					$(".playlist_insert_modal_content").eq(0).nextAll().remove();
-					$(".preview-list").append(html);
 				},
 			}); // ajax 끝
 		}
@@ -124,6 +138,7 @@ $(function(){
 			success: function(result) {
 				if(result == "0"){
 					alert("곡 담기에 실패 했습니다. 다시 시도해주세요.");
+					$("#playlist_insert_modal").hide();
 				} else if(result == "1"){
 					alert("해당 곡을 담았습니다.");
 					$("#playlist_insert_modal").hide();
@@ -200,7 +215,7 @@ $(function(){
 	
 	//로그인 페이지로
 	function goLogin(){
-		location.href= root_path + "/member/login"
+		location.href= root_path + "/login"
 	};
 	// 제목, 아티스트, 앨범 클릭시 상세조회 페이지
 	function selectSoundDetail(a_no, s_no){
@@ -291,25 +306,27 @@ $(function(){
     				        xhr.setRequestHeader(header, token);
     				    },
 			success: function(result) {
-				var html = "";
-				for(var i = 0; i < result.length; i++){
-					var resultData = result[i];
-					html += '<div class="preview-item border-bottom">';
-					html += '<div class="preview-thumbnail">';
-					html += '<img src='+resultData.l_image+' class="modal_content">';
-					html += '</div>';
-					html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
-					html += '<div class="flex-grow">';
-					html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistInsertDo('+a_no +','+ s_no +','+ resultData.l_no +')">'+resultData.l_name+'</a></p></div>';
-					if(resultData.l_private_yn == 'Y'){
-						html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
-					} else {
-						html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
+				if(result != "0"){
+					var html = "";
+					for(var i = 0; i < result.length; i++){
+						var resultData = result[i];
+						html += '<div class="preview-item border-bottom">';
+						html += '<div class="preview-thumbnail">';
+						html += '<img src='+resultData.l_image+' class="modal_content">';
+						html += '</div>';
+						html += '<div class="preview-item-content d-sm-flex flex-grow playlist_insert_modal_content">';
+						html += '<div class="flex-grow">';
+						html +=	'<p class="text-muted mb-0 modal_content"><a href="javascript:playlistInsertDo('+a_no +','+ s_no +','+ resultData.l_no +')">'+resultData.l_name+'</a></p></div>';
+						if(resultData.l_private_yn == 'Y'){
+							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">공개</p></div></div></div>';
+						} else {
+							html += '<div class="mr-auto text-sm-right pt-2 pt-sm-0"><p class="text-muted modal_content">비공개</p></div></div></div>';
+						}
 					}
+					$(".playlist_insert_modal_new h5").children("a#newPlaylist").attr('href','javascript:newPlaylistOne('+a_no +','+ s_no +')');
+					$(".playlist_insert_modal_content").eq(0).nextAll().remove();
+					$(".preview-list").append(html);
 				}
-				$(".playlist_insert_modal_new h5").children("a#newPlaylist").attr('href','javascript:newPlaylistOne('+a_no +','+ s_no +')');
-				$(".playlist_insert_modal_content").eq(0).nextAll().remove();
-				$(".preview-list").append(html);
 			},
 		}); // ajax 끝
 	}
