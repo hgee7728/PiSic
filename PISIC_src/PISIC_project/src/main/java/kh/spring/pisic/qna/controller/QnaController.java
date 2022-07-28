@@ -39,6 +39,9 @@ public class QnaController {
 		mv.setViewName("qna/qnaList");
 		return mv;
 	}
+	
+	
+	
 //	문의글은 아무나 보지 못하도록 post
 	@PostMapping("/qnaRead")
 	public ModelAndView selectQnaBoard(ModelAndView mv
@@ -53,7 +56,6 @@ public class QnaController {
 		return mv;
 	}
 	
-	//0713시작
 
 	@GetMapping("/qnaWrite")
 	public ModelAndView pageInsertQna(ModelAndView mv
@@ -160,4 +162,7 @@ public class QnaController {
 			}
 			return msg;
 		}
+		
+		
+		
 }

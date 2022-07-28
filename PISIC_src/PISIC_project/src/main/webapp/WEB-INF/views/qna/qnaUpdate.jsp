@@ -5,9 +5,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
@@ -36,6 +39,13 @@
 		max-width: 100%;
 	}
 }
+input[type="text"],
+input[type="password"] {
+  height: auto;  /* 높이 초기화 */
+  line-height: normal;  /* line-height 초기화 */
+  padding: .8em .5em;  /* 여백 설정 */
+}
+출처: https://webdir.tistory.com/429 [WEBDIR:티스토리]
 </style>
 </head>
 <body>
@@ -90,24 +100,15 @@
 									</div>
 									<div>
 										내용:<input type="text" name="qna_content"
-											value="${qnaBoard.board_content }">
+											value="${qnaBoard.qna_content }">
 									</div>
-									<!-- 
-						1. org-O - x
-						2. org-O - *
-						3. org-O - O
-						4. org-x - x
-						5. org-x - *		
-						-->
+
 									<button type="reset">기존값으로 초기화</button>
 									<button type="submit">수정</button>
 								</form>
 							</div>
 						</c:otherwise>
 					</c:choose>
-
-
-
 				</div>
 
 				<!-- content-wrapper ends -->

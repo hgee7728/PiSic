@@ -4,9 +4,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
@@ -139,7 +142,9 @@ display: none;
 									</c:forEach>
 
 										<td>
-											<form id="frm${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">									
+											<form id="frm${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">		
+												 <!-- csrf 공격 방지 -->
+                     						 	<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
 											    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
 											    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
 											</form>

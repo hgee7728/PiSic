@@ -13,7 +13,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<title>1:1 문의 글쓰기 페이지</title>
+<title>FAQ 질문관리</title>
 
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -70,15 +70,11 @@
 	font-weight: bold;
 }
 
-.form-control {
-	
-}
-
 .stretch-card>.card {
 	width: 100%;
 	min-width: 100%;
 }
-.btn_qna {
+.btn_faq {
 	position: relative;
 	margin:30px auto;
 	float: right;
@@ -102,9 +98,9 @@ textarea{
 			<jsp:include page="../_navbar.jsp" />
 			<div class="main-panel">
 				<div class="content-wrapper">
-					<h2 class=" card-title">고객센터</h2>
+					<h2 class=" card-title">FAQ 관리자 질문관리</h2>
 					<br>
-					<h3 class=" card-title">1:1 문의하기</h3>
+					<h3 class=" card-title">자주묻는 질문 작성 및 삭제</h3>
 
 							<div class="col-lg-12 grid-margin stretch-card">
 								<div class="card">
@@ -125,7 +121,7 @@ textarea{
 												<label  for="qna_content">내용</label>            
 												<textarea  class="form-control" id="qna_content" name="qna_content" placeholder="1:1문의할 내용을 입력해주세요."  maxlength="2048" style="height: 400px; width: 1000px;"></textarea>
 											</div>
-										<div class="btn_qna">
+										<div class="btn_faq">
 											<button type="submit" class="btn btn-info btn-fw">등록하기</button>
 											<button type="button" class="btn btn-info btn-fw"  onclick="location.href='<%=request.getContextPath()%>/qna/qnaList'">목록으로</button>
 										</div>

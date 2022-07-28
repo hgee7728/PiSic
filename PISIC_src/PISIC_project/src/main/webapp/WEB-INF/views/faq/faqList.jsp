@@ -96,7 +96,6 @@
 															<td>No.</td>
 															<td>제목</td>
 															<td>최종 수정일</td>
-															<td>조회수</td>
 														</tr>
 
 													</thead>
@@ -107,7 +106,6 @@
 																<td>${faqBoard.faq_title }</td>
 																<td><fmt:formatDate pattern="yyyy-MM-dd"
 																		value="${faqBoard.faq_date }" /></td>
-																<td><c:out value="${faqBoard.faq_cnt }" /></td>
 															</tr>
 															<tr class="contents">
 																<td></td>

@@ -5,9 +5,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
@@ -35,7 +38,29 @@
 	.col-md-6 {
 	max-width: 100%;
 	}
+/*시작*/
+.input_wrap{
+	padding: 5px 20px;
+}
+label{
+    display: block;
+    margin: 10px 0;
+    font-size: 20px;	
+}
+input{
+	padding: 5px;
+    font-size: 17px;
+}
+textarea{
+	width: 800px;
+    height: 200px;
+    font-size: 15px;
+    padding: 10px;
+}
+
+
 </style>
+
 </head>
 <body>
 	<div class="container-scroller">
@@ -66,13 +91,15 @@
 						<c:otherwise>
 							<div>
 									<c:if test="${qnaBoard.m_id eq loginSsInfo.m_id }">
-										<form id="frmNum">
+										<form id="frmNum" >
+										 <!-- csrf 공격 방지 -->
+                     						<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
 											<input type="hidden" name="qna_no" value="${qnaBoard.qna_no }">
-											<button type="button" class="btn btn-info btn-fw">수정</button>
-											<button type="button" class="btn btn-info btn-fw">삭제</button>
+											<button type="button" id="qna_update" class="btn btn-info btn-fw">수정</button>
+											<button type="button" id="qna_delete" class="btn btn-info btn-fw">삭제</button>
 										</form>
 										<script>
-											$(".btn.update").click(function(){
+											$("#qna_update").click(function(){
 												if($(this).hasClass("update")){
 													frmNum.action="<%=request.getContextPath()%>/qna/qnaUpdate";
 												}else {
@@ -82,7 +109,7 @@
 												frmNum.submit();
 											});
 											
-											$(".btn.delete").click(function(){
+											$("#qna_delete").click(function(){
 												$.ajax({
 													url:"<%=request.getContextPath()%>/qna/delete",
 													type:"post",
@@ -95,13 +122,39 @@
 														location.href="<%=request.getContextPath() %>/qna/qnaList";
 													},
 													error:function(error){
-														
 													}
 												});
 											});
 										</script>
 											</c:if>
-										<table border="1">
+										<div class="input_wrap">
+											<label>게시판 번호</label>
+											<input name="qna_no" readonly="readonly" value='<c:out value="${qnaBoard.qna_no}"/>' >
+										</div>
+										<div class="input_wrap">
+											<label>비밀글 여부</label>
+											<input name="qna_secret" readonly="readonly" value="${qnaBoard.qna_secret}"/>' >
+										</div>	
+										<div class="input_wrap">
+											<label>게시판 제목</label>
+											<input name="title" readonly="readonly" value='<c:out value="${qnaBoard.qna_title}"/>' >
+										</div>
+										<div class="input_wrap">
+											<label>게시판 내용</label>
+											<textarea rows="3" name="content" readonly="readonly"><c:out value="${qnaBoard.qna_content}"/></textarea>
+										</div>
+										<div class="input_wrap">
+											<label>게시판 작성자</label>
+											<input name="writer" readonly="readonly" value='<c:out value="${qnaBoard.m_id}"/>' >
+										</div>
+										<div class="input_wrap">
+											<label>게시판 등록일</label>
+											<input name="regdater" readonly="readonly" value="${qnaBoard.qna_date}"/>' >
+										</div>
+	
+										
+
+							<!--		<table border="1">
 											<tr>
 												<td>level</td>	
 												<td>ref</td>	
@@ -132,21 +185,21 @@
 											<% pageContext.setAttribute("newLineChar", "\n"); %>
 											내용:${fn:replace(qnaBoard.qna_content, newLineChar, "<br/>")}
 										</div>
-										
+										  -->	
 										
 								<div class="btnSet">
 									<!-- 관리자인 경우 수정 삭제 가능 -->
-									<core:if test="${login_info.admin eq 'Y' }">
+									<!--<core:if test="${login_info.admin eq 'Y' }">
 										<a class="btn btn-info btn-fw" href="qnaUpdate?id=${member.m_id }">수정</a>
 										<a class="btn btn-info btn-fw" onclick="if(confirm('정말 삭제하시겠습니까?')) { href='qnaDelete?id=${member.m_id }' }">삭제</a>
-									</core:if>
+									</core:if>-->
 									<!-- 로그인이 된 경우 답글 쓰기 가능 -->
 									<core:if test="${!empty login_info }">
 										<a class="btn btn-info btn-fw" href="<%=request.getContextPath()%>/qna/qnaWrite?refnum=${qnaBoard.qna_no }">답글 쓰기</a>
 									</core:if>
 								</div>
 								
-									</div>
+						</div>
 									<hr>
 									<!-- 관리자만 보이게하기  
 								  	<div>답글작성</div>
