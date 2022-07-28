@@ -132,7 +132,7 @@ $(function(){
 							html += '			<div class="form-check form-check-muted m-0">								';
 							html += '			<label class="form-check-label"> <input										';
 							html += '							type="checkbox" class="form-check-input sound_checkbox"		';
-							html += '							value="${artist.artist_no }" name="RowCheck" >			';
+							html += '							value="'+resultData.artist_no+'" name="artist_no" >			';
 							html += '			<i class="input-helper"></i>  			';
 							html += '			</label>								';
 							html += '			</div>									';
@@ -185,11 +185,8 @@ $(function(){
 							html += '			<div class="select_btns">				';
 							html += '			<button type="button" 									';
 							html += '			class="btn btn-info btn-md delete select_artist_delete">삭제</button>								';
-							html += '			<input type="hidden" value="${artist.artist_no}" name="delete_one_artist_no">									';
+							html += '			<input type="hidden" value="'+resultData.artist_no+'" name="delete_one_artist_no">									';
 							html += '		</div>										';
-							html += '			class="btn btn-info btn-md select_artist_delete")">삭제</button>										';
-							html += '<input type="hidden" value="' + resultData.artist_no + '" name="delete_one_artist_no">'
-							html += '			</div>									';
 							html += '		</td>										';
 							html += '	</tr>											';
 								
@@ -206,7 +203,8 @@ $(function(){
 	});
 	
 	//한개 삭제 버튼
-	$(".select_artist_delete").click(function(){
+	$(document).on("click", ".select_artist_delete", function() {
+		console.log($(this).next("input[name=delete_one_artist_no]").val()+"---------------------------------");
 		var confm = confirm("해당 아티스트를 삭제 하시겠습니까?");
 		var header = $("meta[name='_csrf_header']").attr('th:content');
 		var token = $("meta[name='_csrf']").attr('th:content');

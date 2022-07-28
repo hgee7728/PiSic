@@ -126,7 +126,7 @@
 											class="form-control" id="artistTypeSelect" name="artist_type">
 
 											<c:choose>
-												<c:when test="${artistInfo.artist_type eq 그룹'}">
+												<c:when test="${artistInfo.artist_type eq '그룹'}">
 													<option value="그룹" selected>그룹</option>
 													<option value="솔로">솔로</option>
 												</c:when>
