@@ -90,7 +90,7 @@ public class AuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
 		}
 		
 		// 관리자 페이지 URL
-		String adminURL = "http://localhost:8091/PISIC/admin/album";
+		String adminURL = "http://localhost:8091/PISIC/admin/member";
 				
 		// 사용자 권한
 		String authStr = authentication.getAuthorities().toString();

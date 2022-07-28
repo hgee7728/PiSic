@@ -70,6 +70,7 @@
                     <h4 class="card-title">아이디 찾기</h4>
                     <p class="card-description">아이디 찾기</p>
                     <form class="forms-sample" action="<%=request.getContextPath() %>/member/findId" method="post">
+                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                       <div class="form-group">
                         <label id="LabelName" for="InputName">이름 *</label>
                         <input type="text" class="form-control" id="InputName" placeholder="Name" name="m_name" required>

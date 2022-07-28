@@ -284,7 +284,7 @@
     				FlagNickname = true;
     			} else {
     				$.ajax({
-    					url: "<%=request.getContextPath()%>/member/nicknameCheck.ax",
+    					url: "<%=request.getContextPath()%>/nicknameCheck.ax",
     					data: {
     					    m_nickname: InputNickname
     					},
@@ -328,7 +328,7 @@
     				FlagEmail = true;
     			} else {
     				$.ajax({
-    					url: "<%=request.getContextPath()%>/member/emailCheck.ax",
+    					url: "<%=request.getContextPath()%>/emailCheck.ax",
     					data: {
     					    m_email: InputEmail
     					},
@@ -371,7 +371,7 @@
     				FlagPhone = true;
     			} else {
     				$.ajax({
-    					url: "<%=request.getContextPath()%>/member/phoneCheck.ax",
+    					url: "<%=request.getContextPath()%>/phoneCheck.ax",
     					data: {
     					    m_phone: InputPhone
     					},

@@ -667,7 +667,7 @@ let csrf_token = '${_csrf.token }';
 		        	if (confm == false) {
 		        		alert("취소하셨습니다.");
 		        	} else {
-		        		//$("#frm_sound").submit();
+		        		$("#frm_sound").submit();
 		        	}
 		    	}
 	    	})
