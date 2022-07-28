@@ -116,14 +116,16 @@
 	<!-- 앨범 리스트 조회 -->
 	<select id="selectAlbumList" resultType="Album">
 		<![CDATA[
-		select rnum, a_no, a_name, a_cover, a_date, a_publishing, a_agency, artist_name 
+		select t2.a_no, t2.a_name, t2.a_cover, t2.a_date, t2.a_publishing, t2.a_agency, t2.artist_name from
+        (select rownum rnum, a_no, a_name, a_cover, a_date, a_publishing, a_agency, artist_name 
 			from
-			(select rownum rnum, a_no, a_name, a_cover, a_date, a_publishing, a_agency
+			(select  a_no, a_name, a_cover, a_date, a_publishing, a_agency
 			,artist.artist_name
 			from album album
-			join artist artist using(artist_no) where rownum <= #{pageNum} * #{amount}
-			order by a_no) 
-		where rnum > (#{pageNum} -1) * #{amount}
+			join artist artist using(artist_no)
+			order by a_no) t1
+            ) t2
+		where rnum between (#{pageNum} -1) * #{amount} and #{pageNum} * #{amount}
 		]]>
 	</select>
 	

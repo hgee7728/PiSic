@@ -155,7 +155,7 @@ $(function(){
 							html += '		<td>										';
 							html += '			<div class="select_btns">				';
 							html += '			<button type="button"					';
-							html += '			class="btn btn-info btn-md delete_album">삭제</button>										';
+							html += '			class="btn btn-info btn-md delete_album_btn">삭제</button>										';
 							html += '<input type="hidden" value='+resultData.a_no+' name="delete_one_a_no">';
 							html += '			</div>									';
 							html += '		</td>										';
@@ -181,7 +181,7 @@ $(function(){
 	});
 
 	// 한개 삭제 버튼
-	$(".delete_album_btn").click(function(){
+	$(document).on("click", ".delete_album_btn", function() {
 		var confm = confirm("해당 앨범을 삭제 하시겠습니까?");
     	if (confm == false) {
     		alert("취소하셨습니다.");

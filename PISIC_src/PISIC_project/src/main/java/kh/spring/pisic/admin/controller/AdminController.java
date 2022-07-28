@@ -160,7 +160,6 @@ public class AdminController {
 	@GetMapping("/album")
 	public ModelAndView pageAlbumList(ModelAndView mv, Criteria cri) {
 		Paging paging = new Paging(cri, service.totalCntAlbum());
-		System.out.println("이전 : " + paging.isNext());
         mv.addObject("paging", paging);
 		mv.addObject("albumList", service.selectAlbumList(cri));
 		mv.setViewName("admin/albumList");

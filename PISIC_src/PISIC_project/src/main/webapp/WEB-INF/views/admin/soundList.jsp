@@ -177,6 +177,8 @@ $(function(){
 					}
 					$(".pageInfo_wrap").html("");
 					$("table.sound_list tbody").append(html);
+					// 미니 버튼들 a태그 색상 바꾸기
+					$("i.mdi").parent('a').css('color','#8f5fe8');
 				}
 			})
 		}

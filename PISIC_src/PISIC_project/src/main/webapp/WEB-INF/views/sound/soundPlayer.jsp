@@ -356,10 +356,12 @@ function goInsertPlayinfo(){
 	    },
 		data:{
 			a_no: $('div#soundData'+$("li.jp-playlist-current").index()+'').children("input[name=a_no]").val(),
-			s_no: $('div#soundData'+$("li.jp-playlist-current").index()+'').children("input[name=s_no]").val(),
+			s_no: $('div#soundData'+$("li.jp-playlist-current").index()+'').children("input[name=s_no]").val()
 		},
 		success: function(result) {
-			
+			if(result=="1"){
+				alert("성공");
+			}
 				
 			
 		

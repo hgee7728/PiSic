@@ -243,7 +243,7 @@
 <!-- 좋아하는 노래 목록 총 갯수 -->
 <select id="selectSoundLikeTotalCnt" resultType="int">
 	select count(*) from sound_like
-	group by m_id having m_id = #{m_id}
+	where m_id = #{m_id}
 </select>
 
 <!-- 촤근 들은 노래 목록 총 갯수 --><!-- TODO 날짜 변경해야돼 -->
