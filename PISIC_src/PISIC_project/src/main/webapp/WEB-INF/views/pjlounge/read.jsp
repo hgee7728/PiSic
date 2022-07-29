@@ -79,6 +79,44 @@ table.intro_table a {
 	line-height: 30px;
 	margin:0;
 } 
+.recomment_div {
+	margin: 0px 15px;
+}
+.recomment_div textarea{
+	width : 100%;
+}
+.recomment_div textarea, .recomment_div button{
+	vertical-align: middle;
+}
+.recomment_content_div {
+	padding: 15px 15px;
+}
+.board_recomment_table img{
+	width: 30px;
+    height: 30px;
+    border-radius: 100%;
+}
+table.board_recomment_table td{
+	white-space: normal !important;
+}
+table.board_recomment_table  tr:nth-child(1),
+table.board_recomment_table  tr td:nth-child(2){
+	text-align:center;
+}
+table.board_recomment_table  tr > td:nth-child(1){
+	width: 5%;
+}
+table.board_recomment_table  tr > td:nth-child(2){
+	width: 15%;
+}
+table.board_recomment_table  tr > td:nth-child(3){
+	width: 50%;
+}
+table.board_recomment_table  tr > td:nth-child(4),
+table.board_recomment_table  tr > td:nth-child(5){
+	width: 10%;
+	text-align:center;
+}
 </style>
 <script>
 const root_path = '<%=request.getContextPath() %>';
@@ -87,7 +125,69 @@ $(function(){
 	if(msg){
 		alert(msg);
 	}
-    
+	// 댓글 등록
+	$("#insert_recomment").click(function(){
+		console.log("댓글 등록 클릭");
+		$.ajax({
+			url:"<%=request.getContextPath() %>/pjlounge/insertRecomment",
+			type:"post",
+			beforeSend: function(xhr){
+		        xhr.setRequestHeader(header, token);
+		    },
+			data:{
+				r_content: $("textarea[name=recomment_content]").val(),
+				b_no: $("input[name=b_no]").val()
+				},
+			success: function(result){
+				if(result == "-1"){
+					alert("로그인 후 이용해 주세요");
+				} else if(result == "0"){
+					alert("댓글 등록에 실패했습니다. 다시 시도해주세요.");
+				} else if(result == "1"){
+					alert("댓글을 등록하였습니다.");
+					location.reload();
+				} 
+			},
+			error:function(){
+				
+			}
+		}); //ajax 끝
+		
+	});
+	
+	// 댓글 100자 제한
+	$('#recomment_content').on('keyup', function() {
+        $('.recomment_cnt').html("("+$(this).val().length+" / 100)");
+ 
+        if($(this).val().length > 100) {
+            $(this).val($(this).val().substring(0, 100));
+            $('.recomment_cnt').html("(100 / 100)");
+        }
+    });
+	
+	// 댓글 삭제
+	$(".btn.delete").click(function(){
+		$.ajax({
+			url:"<%=request.getContextPath() %>/pjlounge/deleteRecomment",
+			type:"post",
+			beforeSend: function(xhr){
+		        xhr.setRequestHeader(header, token);
+		    },
+			data:{r_no: $("input[name=r_no]").val()},
+			success:function(result){
+				console.log(result);
+				if(result == "0"){
+					alert("댓글 삭제를 실패했습니다. 다시 시도해주세요.");
+				} else if(result == "1"){
+					alert("댓글을 삭제하였습니다.");
+					location.reload();
+				} 
+			},
+			error:function(error){
+				
+			}
+		}); // ajax 끝
+	});
     
 });
 
@@ -130,6 +230,17 @@ function boardLike(b_no){
 	}); //ajax 끝
 	
 }
+//제목, 아티스트, 앨범 클릭시 상세조회 페이지
+function selectSoundDetail(a_no, s_no){
+	location.href = "<%=request.getContextPath() %>/sound/soundDetail?a_no=" + a_no + "&s_no=" + s_no;
+};
+function selectArtistDetail(artist_no){
+	location.href = "<%=request.getContextPath() %>/sound/artistDetail?artist_no=" + artist_no;
+};
+function selectAlbumDetail(a_no){
+	location.href = "<%=request.getContextPath() %>/sound/albumDetail?a_no=" + a_no;
+};
+
 </script>
 </head>
 <body>
@@ -155,14 +266,19 @@ function boardLike(b_no){
 						</div>
 						<div class="content_info  card">
 							<div class="card-body">
+							<input type="hidden" value="${board.b_no}" name="b_no">
 								<table class="table intro_table">
 									<thead>
+										<tr>
+											<td>글번호 :</td>
+											<td>${board.b_no}</td>
+										</tr>
+									</thead>
+									<tbody>
 										<tr>
 											<td>제목 :</td>
 											<td>${board.b_title}</td>
 										</tr>
-									</thead>
-									<tbody>
 										<tr>
 											<td>작성자 :</td>
 											<td>${board.b_writer}</td>
@@ -277,8 +393,64 @@ function boardLike(b_no){
 							</div>
 						</div>
 					</div>
-					<div class="content_div4">
-					
+					<div class="content_div0 content_div8">
+						<div>
+							<h3 class="card-title">댓글</h3>
+						</div>
+						<hr color="white">
+						<div class="recomment_div">
+							<textarea id="recomment_content" name="recomment_content" rows="5" cols="100" required placeholder="댓글 내용을 입력해주세요."></textarea>
+							<div style="float:right;">
+								<div class="recomment_cnt">(1/100)</div>
+							</div>
+							<div style="clear: both; float: right;">
+								<button type="button" id="insert_recomment" class="btn btn-info btn-fw">댓글 등록</button>
+							</div>
+						</div>
+						<div class="row recomment_content_div" style="clear: both;">
+							<table class="table table-striped board_recomment_table">
+								<tr>
+									<th></th>
+									<th>작성자</th>
+									<th>내용</th>
+									<th>작성일</th>
+									<th></th>
+								</tr>
+								<c:if test="${empty board.recomments }">
+									<tr>
+										<td colspan="5" style="text-align: center;"><p class="text-muted mb-0">등록된 댓글이 없습니다.</p></td>
+									</tr>
+								</c:if>
+								<c:if test="${not empty board.recomments }">
+									<c:forEach items="${board.recomments }" var="recomment">
+										<tr>
+											<c:choose>
+												<c:when test="${recomment.m_profile != null }">
+													<td><img src="${recomment.m_profile }"></td>
+												</c:when>
+												<c:otherwise>
+													<td><img src="<%=request.getContextPath() %>/resources\assets\images\profile.png"></td>
+												</c:otherwise>
+											</c:choose>
+											<td>${recomment.r_writer }</td>
+											<td>${recomment.r_content }</td>
+											<td><fmt:formatDate value="${recomment.r_date }" pattern="yyyy-MM-dd hh:mm"/></td>
+											<c:choose>
+												<c:when test="${member.m_id == recomment.m_id}">
+												<td>
+													<input type="hidden" name="r_no" value="${recomment.r_no}">
+													<button class="btn delete" type="button">삭제</button>
+												</td>
+												</c:when>
+												<c:otherwise>
+													<td></td>
+												</c:otherwise>
+											</c:choose>
+										</tr>
+									</c:forEach>
+								</c:if>
+							</table>
+						</div>
 					</div>
 
 				</div>

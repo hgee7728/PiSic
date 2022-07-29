@@ -4,6 +4,7 @@ import java.util.List;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.pjboard.domain.PjBoard;
+import kh.spring.pisic.pjboard.domain.PjBoardRecomment;
 import kh.spring.pisic.sound.domain.Criteria;
 
 
@@ -16,5 +17,7 @@ public interface PjBoardService {
 	public int checkLike(Member member, PjBoard board);
 	public int insertLike(Member member, PjBoard board);
 	public int deleteLike(Member member, PjBoard board);
+	public int insertPjBoardRecomment(Member member, PjBoardRecomment pjBoardRecomment);
+	public int deletePjBoardRecomment(Member member, PjBoardRecomment pjBoardRecomment);
 
 }

@@ -12,6 +12,7 @@
 	<result column="l_no" property="l_no"/>
 	<result column="l_image" property="l_image"/>
 	<collection column="{b_no=b_no}" property="sounds" select="selectBoardSound"></collection>
+	<collection column="{b_no=b_no}" property="recomments" select="selectBoardRecommentList"></collection>
 </resultMap>
 
 <resultMap type="Sound" id="soundSearchMap">
@@ -66,7 +67,7 @@
 </select>
 
 <!-- 글 상세조회 - 수록곡 -->
-<select id="selectBoardSound" parameterType="map" resultMap="soundSearchMap">
+<select id="selectBoardSound" resultMap="soundSearchMap">
 	select sound.s_no, sound.a_no, sound.s_name, 
 	album.artist_no, album.a_name, album.a_cover
 	from board b
@@ -86,6 +87,30 @@
 	join artist artist on singer.artist_no = artist.artist_no 
 	where sound.a_no=#{a_no} and sound.s_no=#{s_no}
 </select>
+
+<!-- 게시글 상세조회 - 댓글 목록 -->
+<select id="selectBoardRecommentList" resultType="PjBoardRecomment">
+	select r_no, r_content, r_writer, r_date, b_no
+	, member.m_id, member.m_profile
+	from recomment r
+	join member member on r.m_id = member.m_id
+	where b_no = #{b_no}
+</select>
+
+<!-- 게시글 상세조회 - 댓글쓰기 -->
+<select id="insertPjBoardRecomment" parameterType="hashmap">
+	insert into recomment 
+	values 
+	( (select nvl(max(r_no),0)+1 from recomment)
+	, #{pjBoardRecomment.r_content} , #{member.m_nickname}
+	, sysdate, #{pjBoardRecomment.b_no}, #{member.m_id})
+</select>
+
+<!-- 게시글 상세조회 - 댓글 삭제 -->
+<delete id="deletePjBoardRecomment" parameterType="hashmap">
+	delete from recomment 
+	where m_id=#{member.m_id} and r_no=#{pjBoardRecomment.r_no}
+</delete>
 
 <!-- 게시글 좋아요 -->
 <insert id="insertLike" parameterType="hashmap">

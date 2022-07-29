@@ -41,24 +41,15 @@
 	overflow: auto;
 }
 
-div.search_album {
+div.search_board {
 	width: 600px;
+	float: right;
 }
 
 .btn-search {
 	background-color: #8f5fe8;
 	border-color: #8f5fe8;
 	width: 100px;
-}
-
-table.album_list  tr>td:nth-child(5), table.album_list  tr>td:nth-child(6),
-	table.album_list  tr>td:nth-child(7), table.album_list  tr>td:nth-child(8),
-	table.album_list  tr>td:nth-child(9),
-	table.album_list  tr>td:nth-child(10) {
-	text-align: center;
-}
-table.album_list  tr>td:nth-child(4){
-	width:20px !important;
 }
 
 .pageInfo_wrap{
@@ -191,9 +182,9 @@ $(function(){
 		}
 	});
 	
-	// 앨범 추가 버튼
-	$("#insert_album").click(function(){
-		location.href="<%=request.getContextPath()%>/admin/insertAlbum";
+	// 글쓰기 버튼
+	$("#insert_board").click(function(){
+		location.href="<%=request.getContextPath()%>/pjlounge/write";
 	});
 
 	// 한개 삭제 버튼
@@ -279,15 +270,15 @@ function selectBoardDetail(b_no){
 			<div class="main-panel">
 				<div class="content-wrapper">
 					<div class="title_div">
-						<h2 class="card-title">Album Admin Page</h2>
+						<h2 class="card-title">Pj Lounge</h2>
 					</div>
 					<br>
 					<div class="content_div0 content_div4">
-						<div class="form-group search_album">
+						<div class="form-group search_board">
 							<form name="search-form" autocomplete="off">
 								<div class="input-group">
 									<input type="text" class="form-control"
-										placeholder="앨범명 혹은 아티스트명으로 조회하기" aria-label="Recipient's username"
+										placeholder="글제목 혹은 글내용으로 조회하기" aria-label="Recipient's username"
 										aria-describedby="basic-addon2" name="keyword">
 									<div class="input-group-append">
 										<button class="btn btn-sm btn-search" type="button"
@@ -301,11 +292,10 @@ function selectBoardDetail(b_no){
 					<!-- csrf 공격 방지 -->
                     <input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 						<div class="select_btns">
-							<button type="button" id="insert_album"
-								class="btn btn-info btn-fw" >앨범
-								추가</button>
-							<button type="button" id="select_delete"
-								class="btn btn-info btn-fw">선택 삭제</button>
+							<button type="button" id="insert_board"
+								class="btn btn-info btn-fw" >글쓰기</button>
+							<button type="button" id="select_my_board"
+								class="btn btn-info btn-fw">내가 쓴 글 보기</button>
 						</div>
 						<br>
 						
@@ -319,7 +309,7 @@ function selectBoardDetail(b_no){
 								</div>
 								<div class="content_info">
 									<div class="card-body">
-										<table class="table album_table">
+										<table class="table board_table">
 											<thead>
 												<tr>
 													<th>제목 :</th>

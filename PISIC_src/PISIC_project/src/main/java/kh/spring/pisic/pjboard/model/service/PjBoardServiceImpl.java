@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.pjboard.domain.PjBoard;
+import kh.spring.pisic.pjboard.domain.PjBoardRecomment;
 import kh.spring.pisic.pjboard.model.dao.PjBoardDao;
 import kh.spring.pisic.sound.domain.Criteria;
 
@@ -57,6 +58,18 @@ public class PjBoardServiceImpl implements PjBoardService{
 	@Override
 	public int deleteLike(Member member, PjBoard board) {
 		return dao.deleteLike(member, board);
+	}
+
+	// 게시글 댓글 쓰기- ajax
+	@Override
+	public int insertPjBoardRecomment(Member member, PjBoardRecomment pjBoardRecomment) {
+		return dao.insertPjBoardRecomment(member, pjBoardRecomment);
+	}
+
+	// 게시글 댓글 삭제 - ajax
+	@Override
+	public int deletePjBoardRecomment(Member member, PjBoardRecomment pjBoardRecomment) {
+		return dao.deletePjBoardRecomment(member, pjBoardRecomment);
 	}
 
 	

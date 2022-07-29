@@ -129,7 +129,8 @@ table.intro_table tr > td:nth-child(1){
 table.sound_recomment_table td{
 	white-space: normal !important;
 }
-table.sound_recomment_table  tr:nth-child(1){
+table.sound_recomment_table  tr:nth-child(1),
+table.sound_recomment_table  tr td:nth-child(2){
 	text-align:center;
 }
 table.sound_recomment_table  tr > td:nth-child(1){
@@ -756,36 +757,43 @@ function selectAlbumDetail(a_no){
 									<th>작성일</th>
 									<th></th>
 								</tr>
-								<c:forEach items="${sound.soundRecomment }" var="recomment">
+								<c:if test="${empty sound.soundRecomment }">
 									<tr>
-										<c:choose>
-											<c:when test="${recomment.m_profile != null }">
-												<td><img src="${recomment.m_profile }"></td>
-											</c:when>
-											<c:otherwise>
-												<td><img src="<%=request.getContextPath() %>/resources\assets\images\profile.png"></td>
-											</c:otherwise>
-										</c:choose>
-										<td>${recomment.s_r_writer }</td>
-										<td>${recomment.s_r_content }</td>
-										<td><fmt:formatDate value="${recomment.s_r_date }" pattern="yyyy-MM-dd hh:mm"/></td>
-										<c:choose>
-											<c:when test="${member.m_id == recomment.m_id}">
-											<td>
-												<form action="<%=request.getContextPath() %>/sound/deleteRecomment" method="post">
-												<!-- csrf 공격 방지 -->
-                      							<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-													<input type="hidden" name="s_r_no" value="${recomment.s_r_no}">
-													<button class="btn delete" type="button">삭제</button>
-												</form>
-											</td>
-											</c:when>
-											<c:otherwise>
-												<td></td>
-											</c:otherwise>
-										</c:choose>
+										<td colspan="5" style="text-align: center;"><p class="text-muted mb-0">등록된 댓글이 없습니다.</p></td>
 									</tr>
-								</c:forEach>
+								</c:if>
+								<c:if test="${not empty sound.soundRecomment }">
+									<c:forEach items="${sound.soundRecomment }" var="recomment">
+										<tr>
+											<c:choose>
+												<c:when test="${recomment.m_profile != null }">
+													<td><img src="${recomment.m_profile }"></td>
+												</c:when>
+												<c:otherwise>
+													<td><img src="<%=request.getContextPath() %>/resources\assets\images\profile.png"></td>
+												</c:otherwise>
+											</c:choose>
+											<td>${recomment.s_r_writer }</td>
+											<td>${recomment.s_r_content }</td>
+											<td><fmt:formatDate value="${recomment.s_r_date }" pattern="yyyy-MM-dd hh:mm"/></td>
+											<c:choose>
+												<c:when test="${member.m_id == recomment.m_id}">
+												<td>
+													<form action="<%=request.getContextPath() %>/sound/deleteRecomment" method="post">
+													<!-- csrf 공격 방지 -->
+	                      							<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+														<input type="hidden" name="s_r_no" value="${recomment.s_r_no}">
+														<button class="btn delete" type="button">삭제</button>
+													</form>
+												</td>
+												</c:when>
+												<c:otherwise>
+													<td></td>
+												</c:otherwise>
+											</c:choose>
+										</tr>
+									</c:forEach>
+								</c:if>
 							</table>
 						</div>
 					</div>

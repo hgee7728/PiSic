@@ -16,9 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.member.model.service.MemberService;
 import kh.spring.pisic.pjboard.domain.PjBoard;
+import kh.spring.pisic.pjboard.domain.PjBoardRecomment;
 import kh.spring.pisic.pjboard.model.service.PjBoardService;
 import kh.spring.pisic.sound.domain.Criteria;
 import kh.spring.pisic.sound.domain.Paging;
+import kh.spring.pisic.sound.domain.SoundRecomment;
 
 @Controller
 @RequestMapping("/pjlounge")
@@ -40,35 +42,35 @@ public class PjBoardController {
 		Paging paging = new Paging(cri, service.totalCntBoard());
         mv.addObject("paging", paging);
 		mv.addObject("boardList", service.selectBoardList(cri));
-		mv.setViewName("pjlounge/pjlounge_list");
+		mv.setViewName("pjlounge/list");
 		return mv;
 	}
 	
 	@GetMapping("/read")
 	public ModelAndView readPjList(
 			ModelAndView mv
-			, PjBoard board) {
+			, PjBoard board
+			, Authentication auth) {
 		
 		// 조회수 증가
 		service.updateCnt(board.getB_no());
 		
 		// 상세 페이지 불러오기
+		if(auth != null) {
+			UserDetails ud = (UserDetails)auth.getPrincipal();
+			Member member = memberService.selectLoginMember(ud.getUsername());
+			mv.addObject("member", member);
+		}
 		mv.addObject("board", service.selectBoard(board.getB_no()));
-		mv.setViewName("pjlounge/pjlounge_read");
+		mv.setViewName("pjlounge/read");
 		return mv;
 	}
 	
-	@GetMapping("/pjlounge_write")
+	@GetMapping("/write")
 	public ModelAndView pageInsertPj(ModelAndView mv
-			, @RequestParam(name="b_no", defaultValue = "0") String refnumStr
 			)  throws Throwable {
-		int b_no = 0;
-		try {
-			b_no = Integer.parseInt(refnumStr);
-		}catch (Exception e) {
-		}
-		mv.addObject("b_no", b_no);
-		mv.setViewName("pjlounge/pjlounge_write");
+		
+		mv.setViewName("pjlounge/write");
 		return mv;
 	}
 	
@@ -101,6 +103,48 @@ public class PjBoardController {
 		} else {
 			resultAjax = "-2";
 		}
+		return resultAjax;
+	}
+	
+	// 게시글 댓글 등록 - ajax
+	@PostMapping(value = "/insertRecomment", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String insertRecomment(PjBoardRecomment pjBoardRecomment, Authentication auth) {
+		
+		String resultAjax = "";
+		if(auth == null) {
+			resultAjax = "-1";
+		} else {
+			UserDetails ud = (UserDetails)auth.getPrincipal();
+			Member member = memberService.selectLoginMember(ud.getUsername());
+			// 댓글 등록
+			int result = service.insertPjBoardRecomment(member, pjBoardRecomment);
+			if(result < 1) { // 댓글 등록 실패
+				resultAjax = "0"; 
+			} else { // 댓글 등록 성공
+				resultAjax = "1";
+			}
+		}
+		
+		
+		return resultAjax;
+	}
+	
+	// 게시글 댓글 삭제 - ajax
+	@PostMapping(value = "/deleteRecomment", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String deleteRecomment(PjBoardRecomment pjBoardRecomment, Authentication auth) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		Member member = memberService.selectLoginMember(ud.getUsername());
+		String resultAjax = "";
+		// 댓글 삭제
+		int result = service.deletePjBoardRecomment(member, pjBoardRecomment);
+		if(result < 1) { // 댓글 삭제 실패
+			resultAjax = "0"; 
+		} else { // 댓글 삭제 성공
+			resultAjax = "1";
+		}
+		
 		return resultAjax;
 	}
 }

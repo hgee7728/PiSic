@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.pjboard.domain.PjBoard;
+import kh.spring.pisic.pjboard.domain.PjBoardRecomment;
 import kh.spring.pisic.sound.domain.Criteria;
 
 
@@ -60,6 +61,22 @@ public class PjBoardDao {
 		map.put("member", member);
 		map.put("board", board);
 		return session.delete("PBoard.deleteLike", map);
+	}
+	
+	// 게시글 댓글 쓰기
+	public int insertPjBoardRecomment(Member member, PjBoardRecomment pjBoardRecomment) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("member", member);
+		map.put("pjBoardRecomment", pjBoardRecomment);
+		return session.insert("PBoard.insertPjBoardRecomment", map);
+	}
+	
+	// 게시글 댓글 삭제 - ajax
+	public int deletePjBoardRecomment(Member member, PjBoardRecomment pjBoardRecomment) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("member", member);
+		map.put("pjBoardRecomment", pjBoardRecomment);
+		return session.delete("PBoard.deletePjBoardRecomment", map);
 	}
 	
 

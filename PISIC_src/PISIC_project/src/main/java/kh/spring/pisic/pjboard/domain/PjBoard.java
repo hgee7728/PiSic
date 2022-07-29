@@ -26,13 +26,14 @@ public class PjBoard {
 	private String l_image;	
 	private List<Sound> sounds;
 	private int cnt_like;
+	private List<PjBoardRecomment> recomments;
 	
 	
 	@Override
 	public String toString() {
 		return "PjBoard [b_no=" + b_no + ", b_title=" + b_title + ", b_content=" + b_content + ", b_writer=" + b_writer
 				+ ", b_cnt=" + b_cnt + ", m_id=" + m_id + ", b_date=" + b_date + ", l_no=" + l_no + ", l_image="
-				+ l_image + ", sounds=" + sounds + ", cnt_like=" + cnt_like + "]";
+				+ l_image + ", sounds=" + sounds + ", cnt_like=" + cnt_like + ", recomments=" + recomments + "]";
 	}
 	public int getB_no() {
 		return b_no;
@@ -99,6 +100,12 @@ public class PjBoard {
 	}
 	public void setCnt_like(int cnt_like) {
 		this.cnt_like = cnt_like;
+	}
+	public List<PjBoardRecomment> getRecomments() {
+		return recomments;
+	}
+	public void setRecomments(List<PjBoardRecomment> recomments) {
+		this.recomments = recomments;
 	}
 	
 	
