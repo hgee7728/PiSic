@@ -14,6 +14,7 @@ public interface MyMusicService {
 	public int deletePlaylist(List<MyMusic> mymusicList);
 	public int updatePlaylist(MyMusic mymusic, List<Sound> soundList);
 	public List<Sound> selectPlaylistSound(MyMusic mymusic);
+	public int totalCntPlaylistSound(MyMusic mymusic);
 	public List<Sound> selectSoundRecent(String m_id);
 	public List<Sound> selectSoundOften(String m_id);
 	public List<Sound> selectSoundLike(String m_id);

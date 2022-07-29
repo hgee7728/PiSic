@@ -95,4 +95,16 @@ public class SearchServiceImpl implements SearchService{
 	public List<Sound> selectSearchSoundPlaylist(String keyword) {
 		return dao.selectSearchSoundPlaylist(keyword);
 	}
+
+	// pjBoard 검색 - 검색된 총 갯수
+	@Override
+	public int totalCntSearchBoardWithType(String keyword, int type) {
+		return dao.totalCntSearchBoardWithType(keyword, type);
+	}
+
+	// pjBoard 검색 - 페이징
+	@Override
+	public List<PjBoard> selectSearchBoardWithType(String keyword, Criteria cri, int type) {
+		return dao.selectSearchBoardWithType(keyword, cri, type);
+	}
 }

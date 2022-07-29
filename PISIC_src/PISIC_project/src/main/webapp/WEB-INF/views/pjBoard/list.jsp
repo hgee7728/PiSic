@@ -67,7 +67,9 @@ div.search_board {
     padding: 7px;
     font-weight: 500;
  }
-
+.board_table a{
+	color: #6c7293;
+}
 .pageInfo a:link {color:white; text-decoration: none;}
 .pageInfo a:visited {color:white; text-decoration: none;}
 .pageInfo a:hover {color:white; text-decoration: underline;}
@@ -77,6 +79,11 @@ div.search_board {
   
 .board_div{
 	padding-left: 50px;
+}
+
+#search_type{
+	height:30px;
+	margin: 0px 10px 0px 150px;
 }
 </style>
 <script>
@@ -90,174 +97,31 @@ $(function(){
 	if(msg){
 		alert(msg);
 	}
-	var header = $("meta[name='_csrf_header']").attr('th:content');
-	var token = $("meta[name='_csrf']").attr('th:content');
-	
-	// 체크박스 전체선택
-    $("#check_all").click(function(){
-    	if($('#check_all').is(':checked')){
-    		$('input:checkbox').prop('checked',true);
-    	} else {
-    		$('input:checkbox').prop('checked',false);
-    	}
-    })
-    $("input:checkbox").click(function() {
-		var total = $(".sound_checkbox").length;
-		var checked = $(".sound_checkbox:checked").length;
-		console.log("total : " + total);
-		console.log("checked : " + checked);
-		if(total != checked) {
-			$("#check_all").prop("checked", false);
-		} else {
-			$("#check_all").prop("checked", true); 
-		}
-	});
     
-    // 앨범 검색
-	$("#search_album").click(function(){
-		if($("div.content_div0 input[name=keyword]").val()==""){
+    // 게시글 검색
+	$("#search_board").click(function(){
+		if($("div.search_board input[name=keyword]").val()==""){
 			alert("검색어를 입력해주세요");
 		} else {
-			$.ajax({
-				type: 'GET',
-				url : "<%=request.getContextPath()%>/admin/album.do",
-				data : {
-					keyword: $("div.content_div0 input[name=keyword]").val()
-				},
-				dataType:"json",
-				success : function(result){
-					console.log(result);
-					//테이블 초기화
-					$('#album_list > tbody').empty();
-					if(result.length>=1){
-						
-						var html = "";
-						for(var i = 0; i < result.length; i++){
-							var resultData = result[i];
-							console.log(resultData.a_date);
-							html += '	<tr>   																				';
-							html += '		<td>																			';
-							html += '			<div class="form-check form-check-muted m-0">								';
-							html += '			<label class="form-check-label"> <input										';
-							html += '							type="checkbox" class="form-check-input sound_checkbox"		';
-							html += '							name="a_no" value='+resultData.a_no+'>			';
-							html += '			<i class="input-helper"></i>  			';
-							html += '			</label>								';
-							html += '			</div>									';
-							html += '		</td>										';
-							html += '		<td> ' + resultData.a_no + ' </td>			';
-							html += '		<td>										';
-							html += '					<img src=" ' + resultData.a_cover +' " alt="image" />		';
-							html += '		</td>										';
-							html += '		<td> '+ resultData.a_name + ' </td>			';
-							html += '		<td> '+ resultData.artist_name + ' </td>	';
-							html += '		<td> '+ resultData.a_publishing + ' </td>	';
-							html += '		<td>										';
-							html += '		<div class="select_btns">					';
-							html += '			<button type="button"					';
-							html += '			class="btn btn-info btn-md update_album" onclick="javasctipt:updateAlbum('+resultData.a_no+')"> ';
-							html += '			수정</button>								';
-							html += '		</div>										';
-							html += '		</td>										';
-							html += '		<td>										';
-							html += '			<div class="select_btns">				';
-							html += '			<button type="button"					';
-							html += '			class="btn btn-info btn-md delete_album_btn">삭제</button>										';
-							html += '<input type="hidden" value='+resultData.a_no+' name="delete_one_a_no">';
-							html += '			</div>									';
-							html += '		</td>										';
-							html += '	</tr>											';
-								
-						} 
-								 
-					} else {
-						html += '	<tr>   											';
-						html += '		<td colspan="10" style="text-align:center;"> <h4 class="card-title">검색 결과가 없습니다. </h4> </td>			';
-						html += '	</tr>											';
-					}
-					$(".pageInfo_wrap").html("");
-					$("table.album_list tbody").append(html);
-				}
-			})
+			$("#search_board_frm").submit();
 		}
 	});
 	
 	// 글쓰기 버튼
 	$("#insert_board").click(function(){
-		location.href="<%=request.getContextPath()%>/pjlounge/write";
-	});
-
-	// 한개 삭제 버튼
-	$(document).on("click", ".delete_album_btn", function() {
-		var confm = confirm("해당 앨범을 삭제 하시겠습니까?");
-    	if (confm == false) {
-    		alert("취소하셨습니다.");
-    	} else {
-    		$.ajax({
-    			url:"<%=request.getContextPath()%>/admin/deleteAlbum",
-    			type:"post",
-    			beforeSend: function(xhr){
-			        xhr.setRequestHeader(header, token);
-			    },
-    			data:{
-    				a_no: $(this).next("input[name=delete_one_a_no]").val()
-    				},
-    			success:function(result){
-    				console.log(result);
-    				if(result == "0"){
-    					alert("앨범 삭제가 실패했습니다. 다시 시도해주세요");
-    				} else {
-    					alert("앨범이 삭제 되었습니다.");
-    					location.reload();
-    				}
-    			},
-    			error:function(error){
-    				
-    			}
-    		}); // ajax 끝
-    	}
+		location.href="<%=request.getContextPath()%>/pjBoard/write";
 	});
 	
-	// 선택 삭제
-	$("#select_delete").click(function(){
-		var confm = confirm("선택된 앨범을 삭제 하시겠습니까?");
-    	if (confm == false) {
-    		alert("취소하셨습니다.");
-    	} else {
-    		var a_noArray = [];
-    		$('input[name=a_no]:checked').each(function(){ //체크된 리스트 저장
-    			a_noArray.push($(this).val());
-    	    });
-    		console.log("a_noArray : " + a_noArray);
-    		$.ajax({
-    			url:"<%=request.getContextPath()%>/admin/deleteAlbum",
-    			type:"post",
-    			traditional:true,
-    			beforeSend: function(xhr){
-			        xhr.setRequestHeader(header, token);
-			    },
-    			data:{
-    				a_no: a_noArray
-    				},
-    			success:function(result){
-    				console.log(result);
-    				if(result == "0"){
-    					alert("앨범 삭제가 실패했습니다. 다시 시도해주세요");
-    				} else {
-    					alert("앨범이 삭제 되었습니다.");
-    					location.reload();
-    				}
-    			},
-    			error:function(error){
-    				
-    			}
-    		}); // ajax 끝
-    	}
+	// 내가 쓴 글 보기
+	$("#select_my_board").click(function(){
+		location.href = "<%=request.getContextPath()%>/search/searchBoard?type=4"
 	});
+	
 	
 }); // $(function(){}) 끝
+
 function selectBoardDetail(b_no){
-	location.href = "<%=request.getContextPath()%>/pjlounge/read?b_no=" + b_no;
+	location.href = "<%=request.getContextPath()%>/pjBoard/read?b_no=" + b_no;
 	
 }
 </script>
@@ -270,19 +134,24 @@ function selectBoardDetail(b_no){
 			<div class="main-panel">
 				<div class="content-wrapper">
 					<div class="title_div">
-						<h2 class="card-title">Pj Lounge</h2>
+						<h2 class="card-title">PJ Lounge</h2>
 					</div>
 					<br>
 					<div class="content_div0 content_div4">
 						<div class="form-group search_board">
-							<form name="search-form" autocomplete="off">
+							<form name="search_board_frm" id="search_board_frm" action="<%=request.getContextPath()%>/search/searchBoard">
 								<div class="input-group">
+										<select class="form-control" id="search_type" name="type">
+											<option value="1">제목</option>
+											<option value="2">작성자</option>
+											<option value="3">제목+소개글</option>
+										</select>
 									<input type="text" class="form-control"
-										placeholder="글제목 혹은 글내용으로 조회하기" aria-label="Recipient's username"
+										placeholder="검색어" aria-label="Recipient's username"
 										aria-describedby="basic-addon2" name="keyword">
 									<div class="input-group-append">
 										<button class="btn btn-sm btn-search" type="button"
-											id="search_album">조회하기</button>
+											id="search_board">조회하기</button>
 									</div>
 								</div>
 							</form>
@@ -327,6 +196,10 @@ function selectBoardDetail(b_no){
 													<fmt:formatDate var="format_b_date" value="${board.b_date}" pattern="yyyy-MM-dd"/>
 													<td>${format_b_date}</td>
 												</tr>
+												<tr>
+													<td>조회수 :</td>
+													<td>${board.b_cnt}</td>
+												</tr>
 											</tbody>
 										</table>
 									</div>
@@ -339,15 +212,15 @@ function selectBoardDetail(b_no){
 						        <div class="pageInfo_area">
 						        	<ul id="pageInfo" class="pageInfo">
 							        <c:if test="${paging.prev}">
-					                    <li class="pageInfo_btn previous"><a href="<%=request.getContextPath()%>/pjlounge/list?pageNum=${paging.startPage-1}">Previous</a></li>
+					                    <li class="pageInfo_btn previous"><a href="<%=request.getContextPath()%>/pjBoard/list?pageNum=${paging.startPage-1}">Previous</a></li>
 					                </c:if>
 						 			
 						 			<c:forEach var="num" begin="${paging.startPage}" end="${paging.endPage}">
-					                    <li class='pageInfo_btn ${paging.cri.pageNum == num ? "here":"" }'><a href="<%=request.getContextPath()%>/pjlounge/list?pageNum=${num}">${num}</a></li>
+					                    <li class='pageInfo_btn ${paging.cri.pageNum == num ? "here":"" }'><a href="<%=request.getContextPath()%>/pjBoard/list?pageNum=${num}">${num}</a></li>
 					                </c:forEach>
 					                
 					                <c:if test="${paging.next}">
-					                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/pjlounge/list?pageNum=${paging.endPage + 1 }">Next</a></li>
+					                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/pjBoard/list?pageNum=${paging.endPage + 1 }">Next</a></li>
 					                </c:if>  
 					                </ul>
 						        </div>

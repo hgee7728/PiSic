@@ -175,7 +175,7 @@ $(function(){
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/pjlounge/list">
+      <a class="nav-link" href="<%=request.getContextPath()%>/pjBoard/list">
         <span class="menu-icon">
           <i class="mdi mdi-chart-bar"></i>
         </span>

@@ -1,15 +1,20 @@
 package kh.spring.pisic.search.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 
+import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.member.model.service.MemberService;
 import kh.spring.pisic.search.model.service.SearchService;
 import kh.spring.pisic.sound.domain.Criteria;
 import kh.spring.pisic.sound.domain.Paging;
@@ -20,6 +25,8 @@ public class SearchController {
 	
 	@Autowired
 	private SearchService service;
+	@Autowired
+	private MemberService memberService;
 	
 	// 통합 검색 - 요약
 	@GetMapping("/searchKeyword")
@@ -84,7 +91,39 @@ public class SearchController {
 		return new Gson().toJson(service.selectSearchSoundPlaylist(keyword));
 	}
 	
-	
+	// pjBoard 검색
+	@GetMapping("/searchBoard")
+	public ModelAndView searchBoard(
+			ModelAndView mv
+			, Criteria cri
+			, @RequestParam(name="keyword", required = false) String keyword
+			, @RequestParam(name="type", required = false) int type
+			, Authentication auth
+			, RedirectAttributes rttr
+			) {
+		
+		if(auth == null) {
+			rttr.addFlashAttribute("msg", "로그인 후 이용해 주세요");
+			mv.setViewName("redirect:/pjBoard/list");
+		} else {
+			if(type == 4) {
+				UserDetails ud = (UserDetails)auth.getPrincipal();
+				Member member = memberService.selectLoginMember(ud.getUsername());
+				keyword = member.getM_nickname();
+				type = 2;
+			}
+			Paging paging = new Paging(cri, service.totalCntSearchBoardWithType(keyword, type));
+	        mv.addObject("paging", paging);
+			mv.addObject("boardList", service.selectSearchBoardWithType(keyword, cri, type));
+			mv.addObject("searchBoardCnt", service.totalCntSearchBoardWithType(keyword, type));
+			mv.addObject("keyword", keyword);
+			mv.addObject("type", type);
+			mv.setViewName("pjBoard/searchList");
+			
+		}
+		
+		return mv;
+	}
 	
 	
 	

@@ -40,26 +40,26 @@ public class PjBoardDao {
 	}
 	
 	// 글 좋아요 확인
-	public int checkLike(Member member, PjBoard board) {
+	public int checkLike(Member member, PjBoard pjBoard) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("member", member);
-		map.put("board", board);
+		map.put("board", pjBoard);
 		return session.selectOne("PBoard.checkLike", map);
 	}
 	
 	// 글 좋아요 - ajax
-	public int insertLike(Member member, PjBoard board) {
+	public int insertLike(Member member, PjBoard pjBoard) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("member", member);
-		map.put("board", board);
+		map.put("board", pjBoard);
 		return session.insert("PBoard.insertLike", map);
 	}
 	
 	// 글 좋아요 취소
-	public int deleteLike(Member member, PjBoard board) {
+	public int deleteLike(Member member, PjBoard pjBoard) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("member", member);
-		map.put("board", board);
+		map.put("board", pjBoard);
 		return session.delete("PBoard.deleteLike", map);
 	}
 	
@@ -79,6 +79,23 @@ public class PjBoardDao {
 		return session.delete("PBoard.deletePjBoardRecomment", map);
 	}
 	
+	// 글쓰기
+	public int insertBoard(Member member, PjBoard pjBoard) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("member", member);
+		map.put("pjBoard", pjBoard);
+		return session.insert("PBoard.insertBoard", map);
+	}
+	
+	// 글 수정
+	public int updateBoard(PjBoard pjBoard) {
+		return session.update("PBoard.updateBoard", pjBoard);
+	}
+	
+	// 글 삭제
+	public int deleteBoard(int b_no) {
+		return session.delete("PBoard.deleteBoard", b_no);
+	}
 
 
 }

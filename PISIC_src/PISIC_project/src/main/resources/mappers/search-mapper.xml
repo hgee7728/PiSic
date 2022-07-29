@@ -278,5 +278,53 @@ select count(*) from
 			order by a_no
 </select>
 
+<!-- 플리 게시판 검색(type) - 전체 -->
+<select id="selectSearchBoardWithType" parameterType="hashmap" resultType="PjBoard">
+	select t2.* from 
+	(select rownum rnum, t1.* from 
+		(select DISTINCT b_no, b_title, b_content,
+		b_writer, b_date, playlist.l_image, b_cnt
+		from board board
+		join playlist playlist on board.l_no = playlist.l_no and board.m_id = playlist.m_id
+		where 
+		<if test='type == "1"'>
+			b_title like '%'||#{keyword}||'%'
+		</if>
+		<if test='type == "2"'>
+			b_writer like '%'||#{keyword}||'%'
+		</if>
+		<if test='type == "3"'>
+			(b_title like '%'||#{keyword}||'%'
+			or
+			b_content like '%'||#{keyword}||'%')
+		</if>
+		order by b_no desc
+		) t1) t2
+	<![CDATA[
+	where rnum between (#{cri.pageNum} -1) * #{cri.amount} and #{cri.pageNum} * #{cri.amount}
+	]]>
+</select>
+
+<!-- 플리 게시판 검색(type) - 전체 갯수 -->
+<select id="totalCntSearchBoardWithType" parameterType="hashmap" resultType="int">
+select count(*) from 
+		(select DISTINCT b_no, b_title, b_content,
+		b_writer, b_date, playlist.l_image
+		from board board
+		join playlist playlist on board.l_no = playlist.l_no and board.m_id = playlist.m_id
+		where 
+		<if test='type == "1"'>
+			b_title like '%'||#{keyword}||'%')
+		</if>
+		<if test='type == "2"'>
+			b_writer like '%'||#{keyword}||'%')
+		</if>
+		<if test='type == 3'>
+			(b_title like '%'||#{keyword}||'%'
+			or
+			b_content like '%'||#{keyword}||'%'))
+		</if>
+</select>
+
 
 </mapper>

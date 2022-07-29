@@ -155,7 +155,7 @@ $(function(){
 										</tr>
 										<tr>
 											<td>수록곡 :</td>
-											<td>${MyMusic.sound_cnt}</td>
+											<td>${MyMusic.sound_cnt} 곡</td>
 										</tr>
 										<tr>
 											<td>공개여부 :</td>

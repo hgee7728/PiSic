@@ -263,11 +263,11 @@ let csrf_token = '${_csrf.token }';
 									</c:forEach>
 									<div class="form-group lyrics">
 										<label for="s_lyrics1" id="label_s_lyrics1">가사 1*</label>
-										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" id="s_lyrics1" name="s_lyrics1">${sound.s_lyrics1 }</textarea>
+										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" id="s_lyrics1" name="s_lyrics1" maxlength="1200">${sound.s_lyrics1 }</textarea>
 									</div>
 									<div class="form-group">
 										<label for="s_lyrics2">가사 2</label>
-										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력)" id="s_lyrics2" name="s_lyrics2">${sound.s_lyrics2 }</textarea>
+										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력)" id="s_lyrics2" name="s_lyrics2" maxlength="1200">${sound.s_lyrics2 }</textarea>
 									</div>
 									<div class="form-group change_sound_btn">
 										<label for="sound_change_btn">음원변경을 원하시면 누르세요</label>
@@ -593,7 +593,6 @@ let csrf_token = '${_csrf.token }';
 		}
 		// 장르 선택하기
 		var g_no = '${sound.g_no}';
-		console.log("g_no : " + g_no);
 		$("#SelectGenre").val(g_no).prop("selected", true);
 		
 		

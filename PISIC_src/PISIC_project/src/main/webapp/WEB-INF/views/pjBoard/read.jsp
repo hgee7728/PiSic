@@ -79,6 +79,14 @@ table.intro_table a {
 	line-height: 30px;
 	margin:0;
 } 
+div.table-responsive{
+	width:100%;
+	height:670px;
+	overflow: auto;
+}
+.my_btn{
+	margin:0px 5px;
+}
 .recomment_div {
 	margin: 0px 15px;
 }
@@ -117,6 +125,15 @@ table.board_recomment_table  tr > td:nth-child(5){
 	width: 10%;
 	text-align:center;
 }
+
+/* 따라다니는 목록으로 버튼 */
+#goList{
+	position : fixed;
+	right:25px;
+	bottom:25px;
+	display: none;
+	z-index: 10;
+}
 </style>
 <script>
 const root_path = '<%=request.getContextPath() %>';
@@ -125,11 +142,21 @@ $(function(){
 	if(msg){
 		alert(msg);
 	}
+	// 따라다니는 목록 버튼
+	$(window).scroll(function(){
+		if($(this).scrollTop() > 200){
+			$("#goList").fadeIn();
+		} 
+	});
+	$("#goList").click(function(){
+		location.href = root_path + "/pjBoard/list";
+	});
+	
 	// 댓글 등록
 	$("#insert_recomment").click(function(){
 		console.log("댓글 등록 클릭");
 		$.ajax({
-			url:"<%=request.getContextPath() %>/pjlounge/insertRecomment",
+			url:"<%=request.getContextPath() %>/pjBoard/insertRecomment",
 			type:"post",
 			beforeSend: function(xhr){
 		        xhr.setRequestHeader(header, token);
@@ -167,28 +194,52 @@ $(function(){
 	
 	// 댓글 삭제
 	$(".btn.delete").click(function(){
-		$.ajax({
-			url:"<%=request.getContextPath() %>/pjlounge/deleteRecomment",
-			type:"post",
-			beforeSend: function(xhr){
-		        xhr.setRequestHeader(header, token);
-		    },
-			data:{r_no: $("input[name=r_no]").val()},
-			success:function(result){
-				console.log(result);
-				if(result == "0"){
-					alert("댓글 삭제를 실패했습니다. 다시 시도해주세요.");
-				} else if(result == "1"){
-					alert("댓글을 삭제하였습니다.");
-					location.reload();
-				} 
-			},
-			error:function(error){
-				
-			}
-		}); // ajax 끝
+		var confm = confirm("댓글을 삭제하시겠습니까?");
+    	if (confm == false) {
+    		
+    	} else {
+    		$.ajax({
+    			url:"<%=request.getContextPath() %>/pjBoard/deleteRecomment",
+    			type:"post",
+    			beforeSend: function(xhr){
+    		        xhr.setRequestHeader(header, token);
+    		    },
+    			data:{r_no: $("input[name=r_no]").val()},
+    			success:function(result){
+    				console.log(result);
+    				if(result == "0"){
+    					alert("댓글 삭제를 실패했습니다. 다시 시도해주세요.");
+    				} else if(result == "1"){
+    					alert("댓글을 삭제하였습니다.");
+    					location.reload();
+    				} 
+    			},
+    			error:function(error){
+    				
+    			}
+    		}); // ajax 끝
+    	}
 	});
     
+	// 글 수정
+	$("#update_btn").click(function(){
+		modify_frm.action = "<%=request.getContextPath()%>/pjBoard/update";
+		modify_frm.method = "post";
+		modify_frm.submit();
+	});
+	
+	// 글 삭제
+	$("#delete_btn").click(function(){
+		var confm = confirm("해당 글을 삭제하시겠습니까?");
+    	if (confm == false) {
+    		
+    	} else {
+    		modify_frm.action = "<%=request.getContextPath()%>/pjBoard/delete";
+    		modify_frm.method = "post";
+    		modify_frm.submit();
+    	}
+		
+	});
 });
 
 let header = $("meta[name='_csrf_header']").attr('th:content');
@@ -199,7 +250,7 @@ let csrf_token = '${_csrf.token }';
 // 게시글 좋아요 - ajax
 function boardLike(b_no){
 	$.ajax({
-		url: root_path + "/pjlounge/like",
+		url: root_path + "/pjBoard/like",
 		type:"post",
 		beforeSend: function(xhr){
 	        xhr.setRequestHeader(header, token);
@@ -300,6 +351,27 @@ function selectAlbumDetail(a_no){
 												</div>
 											</td>
 										</tr>
+										<c:if test="${member.m_id != board.m_id}">
+											<tr style="text-align: center;">
+												<td colspan="2">
+													<button type="button" id="update_btn" class="btn btn-info btn-md my_btn" disabled>수정</button>
+													<button type="button" id="delete_btn" class="btn btn-info btn-md my_btn" disabled>삭제</button>
+												</td>
+											</tr>
+										</c:if>
+										<c:if test="${member.m_id == board.m_id}">
+											<tr style="text-align: center;">
+												<td colspan="2">
+													<form name="modify_frm">
+														<!-- csrf 공격 방지 -->
+                   										<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+														<input type="hidden" name="b_no" value="${board.b_no}">
+														<button type="button" id="update_btn" class="btn btn-info btn-md my_btn">수정</button>
+														<button type="button" id="delete_btn" class="btn btn-info btn-md my_btn">삭제</button>
+													</form>
+												</td>
+											</tr>
+										</c:if>
 									</tbody>
 								</table>
 							</div>
@@ -452,6 +524,7 @@ function selectAlbumDetail(a_no){
 							</table>
 						</div>
 					</div>
+					<button type="button" id="goList" class="btn btn-info btn-fw">목록으로</button>
 
 				</div>
 				<!-- content-wrapper ends -->

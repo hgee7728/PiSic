@@ -123,11 +123,11 @@
 									</div>
 									<div class="form-group">
 										<label for="artistInfo1">아티스트 소개 1</label>
-										<textarea class="form-control" id="artistInfo1" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" name="artist_info1"></textarea>
+										<textarea class="form-control" id="artistInfo1" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" name="artist_info1" maxlength="1200"></textarea>
 									</div>
 									<div class="form-group">
 										<label for="artistInfo2">아티스트 소개 2</label>
-										<textarea class="form-control" id="artistInfo2" rows="10" placeholder="(최대 4000byte 입력)" name="artist_info2"></textarea>
+										<textarea class="form-control" id="artistInfo2" rows="10" placeholder="(최대 4000byte 입력)" name="artist_info2" maxlength="1200"></textarea>
 									</div>
 
 									<div class="form-group">

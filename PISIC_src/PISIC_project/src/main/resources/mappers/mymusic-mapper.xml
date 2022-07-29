@@ -146,14 +146,22 @@
 
 <!-- 플레이 리스트에 담긴 곡 목록 -ajax -->
 <select id="selectPlaylistSound" parameterType="MyMusic" resultMap="soundResultMap">
-	select sound.s_no, sound.a_no, sound.s_name, sound.s_path, album.a_cover
+	select sound.s_no, sound.a_no, sound.s_name, album.a_cover
+	, playlist_content.l_no, playlist.l_image
 	from playlist_content playlist_content
-	join sound sound on playlist_content.s_no = sound.s_no and
-	playlist_content.a_no = sound.a_no
+	join playlist playlist on playlist.m_id = playlist_content.m_id and playlist.l_no = playlist_content.l_no
+	join sound sound on playlist_content.s_no = sound.s_no and playlist_content.a_no = sound.a_no
 	join album album on sound.a_no = album.a_no
 	where playlist_content.m_id = #{m_id} and playlist_content.l_no = #{l_no}
 	order by s_order
 </select>
+
+<!-- 플레이 리스트에 담긴 곡 갯수 -->
+<select id="totalCntPlaylistSound" parameterType="MyMusic" resultType="int">
+	select count(*) from playlist_content
+	where m_id = #{m_id} and l_no = #{l_no}
+</select>
+
 
 <!-- 최근 들은 곡 --><!-- TODO 날짜 수정해야돼, -->
 <select id="selectSoundRecent" resultMap="soundResultMap">

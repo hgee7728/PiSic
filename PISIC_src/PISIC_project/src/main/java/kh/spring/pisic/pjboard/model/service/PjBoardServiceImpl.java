@@ -44,20 +44,20 @@ public class PjBoardServiceImpl implements PjBoardService{
 
 	// 글 좋아요 확인
 	@Override
-	public int checkLike(Member member, PjBoard board) {
-		return dao.checkLike(member, board);
+	public int checkLike(Member member, PjBoard pjBoard) {
+		return dao.checkLike(member, pjBoard);
 	}
 
 	// 글 좋아요 - ajax
 	@Override
-	public int insertLike(Member member, PjBoard board) {
-		return dao.insertLike(member, board);
+	public int insertLike(Member member, PjBoard pjBoard) {
+		return dao.insertLike(member, pjBoard);
 	}
 
 	// 글 좋아요 취소
 	@Override
-	public int deleteLike(Member member, PjBoard board) {
-		return dao.deleteLike(member, board);
+	public int deleteLike(Member member, PjBoard pjBoard) {
+		return dao.deleteLike(member, pjBoard);
 	}
 
 	// 게시글 댓글 쓰기- ajax
@@ -71,6 +71,27 @@ public class PjBoardServiceImpl implements PjBoardService{
 	public int deletePjBoardRecomment(Member member, PjBoardRecomment pjBoardRecomment) {
 		return dao.deletePjBoardRecomment(member, pjBoardRecomment);
 	}
+
+	// 글쓰기
+	@Override
+	public int insertBoard(Member member, PjBoard pjBoard) {
+		return dao.insertBoard(member, pjBoard);
+	}
+
+	// 글 수정
+	@Override
+	public int updateBoard(PjBoard pjBoard) {
+		return dao.updateBoard(pjBoard);
+	}
+
+	// 글 삭제
+	@Override
+	public int deleteBoard(int b_no) {
+		return dao.deleteBoard(b_no);
+	}
+	
+	
+	
 
 	
 }

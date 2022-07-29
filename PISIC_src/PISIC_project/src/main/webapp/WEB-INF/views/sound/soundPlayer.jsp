@@ -105,7 +105,6 @@ $(document).ready(function(){
 		$("body").append(html);
 		
 		
-		opener.location.reload();
 
 		// stop watch 방식
 		let timerId;

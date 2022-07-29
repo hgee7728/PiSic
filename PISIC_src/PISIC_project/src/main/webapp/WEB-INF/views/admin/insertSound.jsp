@@ -238,11 +238,11 @@ let csrf_token = '${_csrf.token }';
 									</div>
 									<div class="form-group lyrics">
 										<label for="s_lyrics1" id="label_s_lyrics1">가사 1*</label>
-										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" id="s_lyrics1" name="s_lyrics1"></textarea>
+										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" id="s_lyrics1" name="s_lyrics1" maxlength="1200"></textarea>
 									</div>
 									<div class="form-group">
 										<label for="s_lyrics2">가사 2</label>
-										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력)" id="s_lyrics2" name="s_lyrics2"></textarea>
+										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력)" id="s_lyrics2" name="s_lyrics2" maxlength="1200"></textarea>
 									</div>
 
 									<div class="form-group">

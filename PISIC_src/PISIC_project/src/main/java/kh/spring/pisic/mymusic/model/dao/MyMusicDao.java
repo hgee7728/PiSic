@@ -54,6 +54,11 @@ public class MyMusicDao {
 	public List<Sound> selectPlaylistSound(MyMusic mymusic) {
 		return session.selectList("MyMusic.selectPlaylistSound", mymusic);
 	}
+	
+	// 플레이 리스트에 담긴 곡 갯수 - ajax
+	public int totalCntPlaylistSound(MyMusic mymusic) {
+		return session.selectOne("MyMusic.totalCntPlaylistSound", mymusic);
+	}
 
 	// 최근 들은 곡 조회 - ajax
 	public List<Sound> selectSoundRecent(String m_id) {

@@ -23,6 +23,7 @@ public class Sound {
 	private int s_order;
 	private String a_cover;
 	private List<SoundRecomment> soundRecomment;
+	private String l_image;
 	
 	private int chart;
 	private List<PlayInfo> playInfo;
@@ -42,9 +43,9 @@ public class Sound {
 				+ ", s_lyrics2=" + s_lyrics2 + ", s_age_yn=" + s_age_yn + ", s_path=" + s_path + ", g_no=" + g_no
 				+ ", singers=" + singers + ", sound_writers=" + sound_writers + ", sound_composers=" + sound_composers
 				+ ", cnt_like=" + cnt_like + ", l_no=" + l_no + ", m_id=" + m_id + ", s_order=" + s_order + ", a_cover="
-				+ a_cover + ", soundRecomment=" + soundRecomment + ", chart=" + chart + ", playInfo=" + playInfo
-				+ ", a_name=" + a_name + ", g_name=" + g_name + ", artist_name=" + artist_name + ", keyword=" + keyword
-				+ "]";
+				+ a_cover + ", soundRecomment=" + soundRecomment + ", l_image=" + l_image + ", chart=" + chart
+				+ ", playInfo=" + playInfo + ", a_name=" + a_name + ", g_name=" + g_name + ", artist_name="
+				+ artist_name + ", keyword=" + keyword + "]";
 	}
 
 	public int getS_no() {
@@ -229,6 +230,14 @@ public class Sound {
 
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
+	}
+
+	public String getL_image() {
+		return l_image;
+	}
+
+	public void setL_image(String l_image) {
+		this.l_image = l_image;
 	}
 	
 	

@@ -68,6 +68,12 @@ public class MyMusicServiceImpl implements MyMusicService{
 		return dao.selectPlaylistSound(mymusic);
 	}
 	
+	// 플레이 리스트에 담긴 곡 갯수 - ajax
+	@Override
+	public int totalCntPlaylistSound(MyMusic mymusic) {
+		return dao.totalCntPlaylistSound(mymusic);
+	}
+	
 	// 최근 들은 곡 조회 - ajax
 	@Override
 	public List<Sound> selectSoundRecent(String m_id) {
@@ -166,6 +172,8 @@ public class MyMusicServiceImpl implements MyMusicService{
 		dao.insertSoundPlaylist0(soundList, member);
 		return soundDao.selectSoundList(member);
 	}
+
+	
 
 
 

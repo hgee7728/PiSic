@@ -95,4 +95,21 @@ public class SearchDao {
 	public List<Sound> selectSearchSoundPlaylist(String keyword) {
 		return session.selectList("Search.selectSearchSoundPlaylist", keyword);
 	}
+	
+	// pjBoard 검색 - 검색된 총 갯수
+	public int totalCntSearchBoardWithType(String keyword, int type) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("keyword", keyword);
+		map.put("type", type);
+		return session.selectOne("Search.totalCntSearchBoardWithType", map);
+	}
+
+	// pjBoard 검색 - 페이징
+	public List<PjBoard> selectSearchBoardWithType(String keyword, Criteria cri, int type) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("keyword", keyword);
+		map.put("cri", cri);
+		map.put("type", type);
+		return session.selectList("Search.selectSearchBoardWithType", map);
+	}
 }

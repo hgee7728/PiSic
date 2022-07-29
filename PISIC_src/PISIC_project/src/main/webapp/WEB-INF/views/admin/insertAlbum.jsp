@@ -166,11 +166,11 @@ let csrf_token = '${_csrf.token }';
 									</div>
 									<div class="form-group">
 										<label for="a_introduce1" id="label_a_introduce1">앨범 소개 1*</label>
-										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" id="a_introduce1" name="a_introduce1"></textarea>
+										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력, 추가내용은 아래 입력해주세요)" id="a_introduce1" name="a_introduce1" maxlength="1200"></textarea>
 									</div>
 									<div class="form-group">
 										<label for="a_introduce2">앨범 소개 2</label>
-										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력)" id="a_introduce2" name="a_introduce2"></textarea>
+										<textarea class="form-control" rows="10" placeholder="(최대 4000byte 입력)" id="a_introduce2" name="a_introduce2" maxlength="1200"></textarea>
 									</div>
 
 									<div class="form-group">

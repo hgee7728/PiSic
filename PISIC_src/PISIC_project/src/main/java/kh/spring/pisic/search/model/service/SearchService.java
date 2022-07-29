@@ -24,4 +24,7 @@ public interface SearchService {
 	public int totalCntSearchBoard(String keyword);
 	public List<Sound> selectSearchSoundPlaylist(String keyword);
 	
+	
+	public int totalCntSearchBoardWithType(String keyword, int type);
+	public List<PjBoard> selectSearchBoardWithType(String keyword, Criteria cri, int type);
 }

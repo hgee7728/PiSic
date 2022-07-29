@@ -202,9 +202,21 @@ public class MyMusicController {
 		
 		return new Gson().toJson(service.selectPlaylistSound(mymusic));
 	}
+	
+	// 플레이 리스트에 담긴 곡 갯수 - ajax
+	@PostMapping("/totalCntPlaylistSound")
+	@ResponseBody
+	public int totalCntPlaylistSound(Authentication auth, MyMusic mymusic) {
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		mymusic.setM_id(ud.getUsername());
+
+		
+		return service.totalCntPlaylistSound(mymusic);
+	}
+	
 
 	// 최근 들은 곡 조회 - ajax
-	@PostMapping(value = "/soundRecent", produces = "text/plain;charset=UTF-8")
+	@PostMapping("/soundRecent")
 	@ResponseBody
 	public String selectSoundRecent(Authentication auth) {
 		// TODO 로그인 여부
@@ -225,7 +237,7 @@ public class MyMusicController {
 	}
 
 	// 좋아요 곡 조회 - ajax
-	@PostMapping(value = "/soundLike", produces = "text/plain;charset=UTF-8")
+	@PostMapping("/soundLike")
 	@ResponseBody
 	public String selectSoundLike(Authentication auth) {
 		// TODO 로그인 여부
