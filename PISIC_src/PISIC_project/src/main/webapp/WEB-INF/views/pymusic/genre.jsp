@@ -138,7 +138,7 @@ $(function(){
 														</tr>
 													</thead>
 													<tbody>
-														<c:forEach items="${pyGenre}" var="sounds">
+														<c:forEach items="${pyGenre}" var="sounds" varStatus="status">
 															<tr>
 																<td>
 																	<div class="form-check form-check-muted m-0">
@@ -150,7 +150,7 @@ $(function(){
 																			name="a_no"> 
 																	</div>
 																</td>
-																<td>${sounds.chart }</td>
+																<td>${status.count}</td>
 																<td><img src="${sounds.a_cover }" alt="image" /></td>
 																<td><a
 																	href="javascript:selectSoundDetail('${sounds.a_no }','${sounds.s_no}')">${sounds.s_name}</a></td>

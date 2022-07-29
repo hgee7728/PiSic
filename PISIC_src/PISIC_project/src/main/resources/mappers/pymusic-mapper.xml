@@ -26,52 +26,42 @@
 
 
 	<select id="selectPyArea" parameterType="_int" resultMap="soundResultMap" >
-		select t2.*
-		from (
-		select distinct t1.*
-		    , rank() over (partition by area_code order by cnt desc, s_no, a_no ) chart
-		from
-		    (select  a_cover, s_no, a_no, s_name, s_path, a_name, area_code, area_name, count(*) cnt 
-		    from sound
-		    join album using(a_no)
-		    join (select p_no, a_no, s_no, area_code, area_name from playinfo join area using (area_code)) using (a_no, s_no)
-		    where area_code=#{area_code}
-		    group by a_cover, s_no, a_no, s_name,a_name,s_path, area_code, area_name order by cnt) t1
-		) t2
-		where chart &lt;= 10
+	select chart, s_no, a_no, s_name, a_name, a_cover, s_path 
+        , (select area_name from area where area_code = tb_rank.area_code) area_name
+    from 
+        (select 
+            row_number() over (order by count(*) desc) chart, s_no, a_no, area_code
+         from playinfo 
+         where area_code = #{area_code}
+         group by s_no, a_no, area_code
+        ) tb_rank
+        join view_sound_alb_gnr using (s_no, a_no) 
+     where chart &lt;= 10
+	 order by chart
 	</select>
 	
 	<select id="selectPyGenre" parameterType="_int" resultMap="soundResultMap" >
-		select t2.*
-		from (
-		select distinct t1.*, (select g_name from genre where g_no=t1.g_no) g_name
-		    ,rank() over (partition by g_no order by cnt desc, s_no, a_no ) chart
-		from
-		    (select  a_cover, a_name, s_no, a_no, g_no,s_name,s_path, count(*) cnt 
-		    from (select s_no, a_no, g_no, s_name, s_path from sound where g_no=#{g_no}) 
-		    join album using(a_no)
-		    join (select p_no, a_no, s_no from playinfo) using (a_no, s_no)
-		    group by a_cover, a_name, s_no, a_no, g_no, s_name,s_path order by cnt) t1	
-		) t2
-		where chart &lt;= 10		
+	select rownum, s_no, a_no, s_name, a_name, a_cover, s_path, g_name 
+    from 
+        (select 
+            row_number() over (order by count(*) desc) chart, s_no, a_no
+         from playinfo 
+         group by s_no, a_no
+        ) tb_rank
+        join view_sound_alb_gnr using (s_no, a_no) 
+     where g_no= #{g_no} and rownum &lt;= 10
 	</select>
 	
 	
 	<select id="selectPyAgender" parameterType="string" resultMap="soundResultMap" >
-		select t2.*
-		from (
-		select distinct t1.*, 
-		    rank() over (partition by m_gender order by cnt desc, s_no, a_no ) chart
-		from
-		(
-		select  a_cover, s_no, a_no, s_name,s_path, m_id, m_birth, m_gender,a_name, count(*) cnt 
-		from 
-			(select s_no, a_no, s_name, s_path from sound) 
-		join (select p_no, a_no, s_no, m_id from playinfo) using (a_no, s_no)
-		join member using (m_id)
-		join album using (a_no)
-		group by a_cover, s_no, a_no, s_name, s_path, m_birth, m_gender, m_id, a_name order by cnt) t1
-		<choose>
+	select chart, s_no, a_no, s_name, a_name, a_cover, s_path
+    from 
+        (
+        select 
+            row_number() over (order by count(*) desc) chart, s_no, a_no
+         from playinfo 
+         join member using (m_id)
+		 <choose>
 			<when test='agender.equals("101")'>
 				where m_gender= 'M' and m_birth &lt;= (SELECT  to_char(SYSDATE,'YYYYMMDD') FROM dual) 
 					and m_birth &gt; (SELECT  to_char(add_months(SYSDATE, -240),'YYYYMMDD') FROM dual)
@@ -110,9 +100,12 @@
 			<when test='agender.equals("502")'>
 				where m_gender= 'F' and m_birth &lt;= (SELECT  to_char(add_months(SYSDATE, -600),'YYYYMMDD') FROM dual)
 			</when>	
-		</choose>
-		) t2
-		where chart &lt;= 10		
+		</choose>			
+         group by s_no, a_no
+        )
+        join view_sound_alb_gnr using (s_no, a_no) 
+     where chart &lt;= 10
+     order by chart
 	</select>
 	
 

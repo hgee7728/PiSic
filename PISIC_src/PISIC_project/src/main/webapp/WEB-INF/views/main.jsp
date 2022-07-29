@@ -270,18 +270,14 @@ let csrf_token = '${_csrf.token }';
 					</div>
 
 					<br>
-
+					<div id="reload">
 					<div class=" card-title">
-						<h4>실시간 TOP 10</h4>
-						<div>
-							<button type="button" class="mdi mdi-reload btn_reload"></button>
-							<code>${serverTime}</code>
-						</div>
+						<h4><button type="button" class="mdi mdi-reload btn_reload" id="btn_reload"></button> 실시간 TOP 10</h4>
 					</div>
 
 					<div class="col-lg-12 grid-margin stretch-card">
 						<div class="card-body">
-
+							<p>${serverTime}</p>
 							<div class="table-responsive">
 								<table class="table sound_list">
 									<thead>
@@ -324,6 +320,8 @@ let csrf_token = '${_csrf.token }';
 							</div>
 						</div>
 					</div>
+					</div>
+					
 					<br>
 					<div class="row">
 						<div class="col-md-6 corona-gradient-card">
@@ -444,7 +442,7 @@ let csrf_token = '${_csrf.token }';
 		var $layerPopup = document.querySelector('.popup-wrap');
 		var $btnLayerPopupClose = document.querySelector('.close');
 		var $btnLayerPopupTodayHide = document.querySelector('.close-cookie');
-		var $btnReload = document.querySelector('.btn_reload');
+		var $btnReload = document.querySelector('#btn_reload');
 		var $btnMembership = document.querySelector('.confirm');
 		
 		//최초 레이어팝업 노출 (todayCookie라는 이름의 쿠키가 존재하지 않으면 레이어 노출)
@@ -490,9 +488,11 @@ let csrf_token = '${_csrf.token }';
 		}
 
 		/* 실시간 차트 reload */
-		$btnReload.addEventListener('click', function() {
-			location.reload();
-		});
+	
+		$(document).on("click", "#btn_reload", function() {
+		        $("#reload").load(window.location.href+" #reload ");
+		    });
+		
 	</script>
 
 	<script

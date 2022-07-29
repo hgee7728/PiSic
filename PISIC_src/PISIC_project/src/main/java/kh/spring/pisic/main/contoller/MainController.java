@@ -1,6 +1,7 @@
 package kh.spring.pisic.main.contoller;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class MainController {
 		mv.addObject("chartDetail", serviceC.selectChartTopTen("top", 10));
 		
 		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 hh시 mm분 ss초 기준");
 		
 		String formattedDate = dateFormat.format(date);
 		
