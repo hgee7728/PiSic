@@ -1,6 +1,9 @@
 package kh.spring.pisic.pjboard.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
+
+import kh.spring.pisic.sound.domain.Sound;
 
 public class PjBoard {
 //	B_NO      NOT NULL NUMBER        
@@ -21,13 +24,15 @@ public class PjBoard {
 	private Timestamp b_date;
 	private String l_no;
 	private String l_image;	
+	private List<Sound> sounds;
+	private int cnt_like;
 	
 	
 	@Override
 	public String toString() {
 		return "PjBoard [b_no=" + b_no + ", b_title=" + b_title + ", b_content=" + b_content + ", b_writer=" + b_writer
 				+ ", b_cnt=" + b_cnt + ", m_id=" + m_id + ", b_date=" + b_date + ", l_no=" + l_no + ", l_image="
-				+ l_image + "]";
+				+ l_image + ", sounds=" + sounds + ", cnt_like=" + cnt_like + "]";
 	}
 	public int getB_no() {
 		return b_no;
@@ -82,6 +87,18 @@ public class PjBoard {
 	}
 	public void setL_image(String l_image) {
 		this.l_image = l_image;
+	}
+	public List<Sound> getSounds() {
+		return sounds;
+	}
+	public void setSounds(List<Sound> sounds) {
+		this.sounds = sounds;
+	}
+	public int getCnt_like() {
+		return cnt_like;
+	}
+	public void setCnt_like(int cnt_like) {
+		this.cnt_like = cnt_like;
 	}
 	
 	

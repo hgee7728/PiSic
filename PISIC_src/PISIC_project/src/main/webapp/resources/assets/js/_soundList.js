@@ -275,7 +275,7 @@ $(function(){
 			success: function(result){
 				if(result == "-2"){
 					alert("로그인 후 이용해 주세요.");
-					location.href = root_path + "/member/login";
+					location.href = root_path + "/login";
 				} else if(result == "-1"){
 					alert("좋아요 취소에 실패했습니다. 다시 시도해주세요.");
 				} else if(result == "0"){

@@ -1,19 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="PjBoard">
+<mapper namespace="PBoard">
+<resultMap type="PjBoard" id="boardResultMap">
+	<result column="b_no" property="b_no"/>
+	<result column="b_title" property="b_title"/>
+	<result column="b_content" property="b_content"/>
+	<result column="b_writer" property="b_writer"/>
+	<result column="b_cnt" property="b_cnt"/>
+	<result column="m_id" property="m_id"/>
+	<result column="b_date" property="b_date"/>
+	<result column="l_no" property="l_no"/>
+	<result column="l_image" property="l_image"/>
+	<collection column="{b_no=b_no}" property="sounds" select="selectBoardSound"></collection>
+</resultMap>
 
-<sql id="search_where">
-		<if test="search == 'b_title' or search == 'b_content'">
-			WHERE ${search } LIKE '%' || #{keyword } || '%'
-		</if>
-		<if test="search == 'b_writer'">
-			WHERE <include refid="search_b_writer" />
-		</if>
-		<if test="search == 'all'">
-			WHERE b_title LIKE '%' || #{keyword } || '%'
-			OR b_content LIKE '%' || #{keyword } || '%'
-			OR <include refid="search_b_writer" />
-		</if>
-</sql>
+<resultMap type="Sound" id="soundSearchMap">
+	<result column="s_no" property="s_no"/>
+	<result column="a_no" property="a_no"/>
+	<result column="s_name" property="s_name"/>
+	<result column="s_lyrics1" property="s_lyrics1"/>
+	<result column="s_lyrics2" property="s_lyrics2"/>
+	<result column="s_age_yn" property="s_age_yn"/>
+	<result column="s_path" property="s_path"/>
+	<result column="g_no" property="g_no"/>
+	<result column="cnt_like" property="cnt_like"/>
+	<result column="a_cover" property="a_cover"/>
+	<result column="a_name" property="a_name"/>
+	<result column="g_name" property="g_name"/>
+	<collection column="{a_no=a_no, s_no=s_no}" property="singers" select="soundSingerList"></collection>
+</resultMap>
 
+<!-- 글의 총 갯수 - 페이징 -->
+<select id="totalCntBoard" resultType="int">
+	select count(*) from board
+</select>
+
+<!-- 글 목록 조회 - 페이징 -->
+<select id="selectBoardList" resultType="PjBoard">
+<![CDATA[
+	select rnum, b_no, b_title, b_content, b_writer, b_date, b_cnt, l_image, m_id, l_no
+	from
+		(select rownum rnum, b_no, b_title, b_content
+		, b_writer, b_date, b_cnt, p.l_image, b.m_id, b.l_no
+		from board b
+		join playlist p on b.m_id = p.m_id and b.l_no = p.l_no
+		where rownum <= #{pageNum} * #{amount} order by b_no)
+	where rnum > (#{pageNum} -1) * #{amount}
+]]>
+</select>
+
+<!-- 글 조회수 증가 -->
+<update id="updateCnt">
+	update board 
+	set b_cnt = b_cnt +1 
+	where b_no=#{b_no}
+</update>
+
+<!-- 글 상세조회 -->
+<select id="selectBoard" resultMap="boardResultMap">
+	select b_no, b_title, b_content, b_writer, b_date, b_cnt, l_image, b.m_id, b.l_no
+	, (select count(*) from board_like where b_no = 1) cnt_like
+	from board b
+	join playlist p on b.m_id = p.m_id and b.l_no = p.l_no
+	where b_no = #{b_no}
+</select>
+
+<!-- 글 상세조회 - 수록곡 -->
+<select id="selectBoardSound" parameterType="map" resultMap="soundSearchMap">
+	select sound.s_no, sound.a_no, sound.s_name, 
+	album.artist_no, album.a_name, album.a_cover
+	from board b
+	join playlist p on b.m_id = p.m_id and b.l_no = p.l_no
+	join playlist_content pc on p.m_id = pc.m_id and p.l_no = pc.l_no
+	join sound sound on sound.s_no = pc.s_no and sound.a_no = pc.a_no
+	join album album on sound.a_no = album.a_no 
+	where b.b_no = #{b_no}
+	order by s_order
+</select>
+
+<!-- 곡 - 가수 -->
+<select id="soundSingerList" parameterType="map" resultType="Singer">
+	select artist.artist_name, artist.artist_no
+	from sound sound
+	join singer singer on sound.s_no=singer.s_no and sound.a_no=singer.a_no
+	join artist artist on singer.artist_no = artist.artist_no 
+	where sound.a_no=#{a_no} and sound.s_no=#{s_no}
+</select>
+
+<!-- 게시글 좋아요 -->
+<insert id="insertLike" parameterType="hashmap">
+	insert into board_like
+	(m_id, b_no)
+	values
+	(#{member.m_id}, #{board.b_no})
+</insert>
+
+<!-- 게시글 좋아요 여부 확인 -->
+<select id="checkLike" parameterType="hashmap" resultType="_int">
+	select count(*) from board_like 
+	where m_id = #{member.m_id}
+	and b_no = #{board.b_no}
+</select>
+
+<!-- 게시글 좋아요 취소 -->
+<delete id="deleteLike" parameterType="hashmap">
+	delete from board_like
+	where m_id = #{member.m_id}
+	and b_no = #{board.b_no}
+</delete>
 </mapper>

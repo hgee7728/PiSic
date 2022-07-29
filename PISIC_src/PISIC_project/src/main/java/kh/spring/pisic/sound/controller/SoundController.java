@@ -49,8 +49,9 @@ public class SoundController {
 			) {
 		System.out.println("음악 재생!!");
 		if(auth == null) {
-			rttr.addFlashAttribute("msg", "로그인 후 이용해주세요.");
-			mv.setViewName("member/login");
+			System.out.println("[[[[[[[[[[[[[[[[[[[여기냐]]]]]]]]]]]]]]]]]");
+			mv.addObject("msg", "로그인 후 이용해주세요.");
+			mv.setViewName("sound/soundPlayer");
 			return mv;
 		} else {
 			UserDetails ud = (UserDetails)auth.getPrincipal();

@@ -36,5 +36,6 @@
 	<mapper resource="mappers/membership-mapper.xml"/>
 	<mapper resource="mappers/security-mapper.xml"/>
 	<mapper resource="mappers/search-mapper.xml"/>
+	<mapper resource="mappers/pjlounge-mapper.xml"/>
 </mappers>
 </configuration>
