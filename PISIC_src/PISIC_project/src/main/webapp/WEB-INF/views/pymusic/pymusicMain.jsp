@@ -237,7 +237,7 @@ $(document).ready(function() {
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre" data-pty="1"
-									onclick="goPyWeather(this);'">비</button>
+									onclick="goPyWeather(this);">비</button>
 								</div>
 							</div>
 						</div>
@@ -353,7 +353,7 @@ $(document).ready(function() {
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">새벽 MIX</button>
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?time=1'">새벽 MIX</button>
 								</div>
 							</div>
 						</div>
@@ -361,7 +361,7 @@ $(document).ready(function() {
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">아침 MIX</button>
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?time=2'">아침 MIX</button>
 								</div>
 							</div>
 						</div>
@@ -369,7 +369,7 @@ $(document).ready(function() {
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">오후 MIX</button>
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?time=3'">오후 MIX</button>
 								</div>
 							</div>
 						</div>
@@ -377,13 +377,11 @@ $(document).ready(function() {
 							<div class="card">
 								<div class="card-body">
 									<button class="btn btn_genre"
-									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?'">밤 MIX</button>
+									onclick="location.href='<%=request.getContextPath()%>/pymusic/time?time=4'">밤 MIX</button>
 								</div>
 							</div>
 						</div>
 					</div>
-
-
 
 				</div>
 				<!-- content-wrapper ends -->

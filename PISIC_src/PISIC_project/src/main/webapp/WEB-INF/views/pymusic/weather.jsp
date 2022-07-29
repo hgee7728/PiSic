@@ -4,9 +4,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>PISIC YOUR MUSIC : WEATHER</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <!-- plugins:css -->
@@ -87,9 +90,9 @@ $(function(){
 							Pick Your Weather &nbsp;&nbsp;
 						</h2>
 						<h4>[   ${serverTime}  ]</h4>
+						<h3>${Temperature}</h3>
 						<br>
 					<p>날씨별 전체 재생 수 기준 랭킹 조회</p>
-					<p>${weather.tmp }</p>
 					<div class="content_div3">
 						<div class="select_btns">
 							<button type="button" id="select_play" class="btn btn-info btn-fw">선택재생</button>
@@ -99,10 +102,30 @@ $(function(){
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-										<c:set var="weather" value="${pyWeather.sky }"	/>
-										<h3 class="card-title">${tmp } TOP 10</h3>
+										<c:set var="pyWeather" value="${pyWeather }"	/>
+										<h3 class="card-title">
+										 <c:choose>
+											<c:when test="${'맑음'  eq  pyWeather.sky}">
+											맑음
+											</c:when>
+											<c:when test="${'구름 많음' eq  pyWeather.sky }">
+											구름 많음
+											</c:when>
+											<c:when test="${'흐림'  eq  pyWeather.sky}">
+											흐림
+											</c:when>
+											<c:when test="${pyWeather.pty eq 1  }">
+											비
+											</c:when>
+											<c:when test="${pyWeather.pty eq 3  }">
+											눈
+											</c:when>
+										</c:choose>
+										TOP 10</h3>
 										<div class="table-responsive">
 											<form name="sound_frm">
+											<!-- csrf 공격 방지 -->
+	                      					<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 												<table class="table sound_list">
 													<thead>
 														<tr>
@@ -125,25 +148,7 @@ $(function(){
 														</tr>
 													</thead>
 													<tbody>
-										<!--			<div class="weather_box"
-															style="display: inline-block; width: 500px; text-align: center; margin-top: 100px; margin-left: 500px; margin-right: 0;">
-															<h1>날씨 날씨??</h1>
-															<h3>
-																원하는 동네의 날씨 골라주세요 <br> ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ
-															</h3>
-															<select name="city">
-																<option value="서울시">서울시</option>
-															</select> <select name="gu">
-																<option value="관악구">관악구</option>
-																<option value="동작구">동작구</option>
-																<option value="강남구">강남구</option>
-																<option value="강서구">강서구</option>
-																<option value="종로구">종로구</option>
-																<option value="광진구">광진구</option>
-															</select>
-														
-															<button type="button" class="btn search">날씨 찾기 얍</button>
-														</div>  -->
+									
 														<c:forEach items="${pyWeather }" var="sounds">
 															<tr>
 																<td>
@@ -202,30 +207,6 @@ $(function(){
 		<!-- page-body-wrapper ends -->
 	</div>
 	<!-- container-scroller -->
-			<script>
-		$(".btn.search").on("click", lookup);
-
-		function lookup(idx, item) {
-			console.log(idx);
-			console.log(item);
-			var a = $("select[name=city]").val();
-			var b = $("select[name=gu]").val();
-
-			a = a + "/" + b;
-			console.log(a);
-			$.ajax({
-				url : "${pageContext.request.contextPath}/weather/" + a,
-				type : "post",
-				sucess : function(result) {
-					console.log(result);
-				},
-				error : function(errorcode) {
-					console.log(errorcode);
-				}
-			});
-
-		}
-	</script>
 
 	<!-- plugins:js -->
 	<script

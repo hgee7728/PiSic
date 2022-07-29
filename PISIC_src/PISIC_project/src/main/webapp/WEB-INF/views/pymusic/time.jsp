@@ -4,9 +4,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>PISIC YOUR MUSIC : TIME</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/soundList.css">
 <!-- plugins:css -->
@@ -101,11 +104,27 @@ $(function(){
 								<div class="card">
 									<div class="card-body">
 										<h3 class="card-title">
-									
+									<c:choose>
+											<c:when test="${p_date eq 1 }">
+											새벽 MIX
+											</c:when>
+											<c:when test="${p_date eq 2 }">
+											아침 MIX
+											</c:when>
+											<c:when test="${p_date eq 3 }">
+											오후 MIX
+											</c:when>
+											<c:when test="${p_date eq 4 }">
+											밤 MIX
+											</c:when>
+										
+										</c:choose>
 										TOP 10</h3>
 										
 										<div class="table-responsive">
 											<form name="sound_frm">
+											<!-- csrf 공격 방지 -->
+	                      					<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 												<table class="table sound_list">
 													<thead>
 														<tr>
