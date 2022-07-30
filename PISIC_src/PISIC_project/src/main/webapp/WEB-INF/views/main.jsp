@@ -217,6 +217,7 @@ a {
   color: white;
 }
 </style>
+
 <script>
 const root_path = '<%=request.getContextPath() %>';
 let header = $("meta[name='_csrf_header']").attr('th:content');
@@ -308,10 +309,10 @@ let csrf_token = '${_csrf.token }';
 													href="javascript:selectAlbumDetail('${sounds.a_no }')">${sounds.a_name }</a></td>
 												<td><a
 													href="javascript:playOne('${sounds.a_no }','${sounds.s_no}')"><i
-														class="mdi mdi-play list_icon"></i></a></td>
+														class="mdi mdi-play list_icon" style="color: #8f5fe8;"></i></a></td>
 												<td><a
 													href="javascript:soundLike('${sounds.a_no }','${sounds.s_no}')"><i
-														class="mdi mdi-heart list_icon like_after"></i></a> <!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
+														class="mdi mdi-heart list_icon like_after" style="color: #8f5fe8;"></i></a> <!-- <i class="mdi mdi-heart-outline list_icon like_before"></i> -->
 												</td>
 											</tr>
 										</c:forEach>
