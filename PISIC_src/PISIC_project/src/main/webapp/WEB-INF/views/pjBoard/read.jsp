@@ -125,7 +125,9 @@ table.board_recomment_table  tr > td:nth-child(5){
 	width: 10%;
 	text-align:center;
 }
-
+.intro_box {
+	white-space: pre-line;
+}
 /* 따라다니는 목록으로 버튼 */
 #goList{
 	position : fixed;

@@ -54,11 +54,11 @@ public class PjBoardController {
 	@GetMapping("/read")
 	public ModelAndView readBoard(
 			ModelAndView mv
-			, PjBoard board
+			, PjBoard pjBoard
 			, Authentication auth) {
 		
 		// 조회수 증가
-		service.updateCnt(board.getB_no());
+		service.updateCnt(pjBoard.getB_no());
 		
 		// 상세 페이지 불러오기
 		if(auth != null) {
@@ -66,7 +66,11 @@ public class PjBoardController {
 			Member member = memberService.selectLoginMember(ud.getUsername());
 			mv.addObject("member", member);
 		}
-		mv.addObject("board", service.selectBoard(board.getB_no()));
+		// 개행 문자 처리
+//		PjBoard result = service.selectBoard(pjBoard.getB_no());
+//		result.getB_content().replaceAll("\n", "<br>");
+		
+		mv.addObject("board", service.selectBoard(pjBoard.getB_no()));
 		mv.setViewName("pjBoard/read");
 		return mv;
 	}

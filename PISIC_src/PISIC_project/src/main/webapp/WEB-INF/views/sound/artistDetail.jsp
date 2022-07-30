@@ -134,7 +134,9 @@ function artistLike(artist_no){
 table.intro_table tr>td:nth-child(1) {
 	width: 50px;
 }
-
+.intro_box {
+	white-space: pre-line;
+}
 .content_info {
 	vertical-align: middle;
 }

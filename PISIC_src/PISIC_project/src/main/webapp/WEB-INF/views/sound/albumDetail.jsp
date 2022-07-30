@@ -70,6 +70,9 @@ table.intro_table a {
 .intro_box {
 	font-size:14px;
 }
+.intro_box {
+	white-space: pre-line;
+}
 </style>
 <script>
 const root_path = '<%=request.getContextPath() %>';

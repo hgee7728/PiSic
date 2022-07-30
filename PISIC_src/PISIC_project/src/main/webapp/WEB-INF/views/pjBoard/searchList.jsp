@@ -177,16 +177,19 @@ function selectBoardDetail(b_no){
 						</div>
 						<br>
 						
-						<div class="row board_div" >
+						
 						<c:choose>
 							<c:when test="${empty boardList }">
+							<div>
 								<div class="card">
 									<div class="artist_div card-body" style="text-align: center;">
-										<h4 class="card-title">검색 결과가 없어요</h4>
+										<h4 class="card-title">내가 쓴 글이 없어요</h4>
 									</div>
 								</div>
+							</div>
 							</c:when>
 							<c:otherwise>
+							<div class="row board_div" >
 								<c:forEach items="${boardList }" var="board">
 									<div class="col-lg-6 row" style="margin-left:10px; padding:10px 0px;">
 										<div class="main_img_div">
@@ -224,12 +227,13 @@ function selectBoardDetail(b_no){
 										</div>
 									</div>
 								</c:forEach>
+								</div>
 							</c:otherwise>
 						</c:choose>
 							
 						
 							
-						</div>
+						
 							<div class="pageInfo_wrap" >
 						        <div class="pageInfo_area">
 						        	<ul id="pageInfo" class="pageInfo">

@@ -108,7 +108,9 @@ table.intro_table tr > td:nth-child(1){
 	margin: 0px 15px;
 	text-align: center;
 }
-
+.intro_box {
+	white-space: pre-line;
+}
 .recomment_div {
 	margin: 0px 15px;
 }

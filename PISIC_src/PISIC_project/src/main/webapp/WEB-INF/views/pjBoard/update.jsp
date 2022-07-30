@@ -123,6 +123,7 @@ div.sound_select_btn input[name=keyword] {
 	width:500px;
 	color:white;
 }
+
 /* 따라다니는 목록으로 버튼 */
 #goList{
 	position : fixed;
@@ -273,6 +274,7 @@ $(function() {
 	// 저장되어있는 플레이리스트 선택하기
 	let l_no = '${board.l_no}';
 	$("#myplaylist_select").val(l_no).prop("selected", true);
+	$(".sound_list_div input[name=l_no]").val(l_no);
 		$.ajax({
 			url: "<%=request.getContextPath()%>/mymusic/playlistSound",
 			type: "post",
