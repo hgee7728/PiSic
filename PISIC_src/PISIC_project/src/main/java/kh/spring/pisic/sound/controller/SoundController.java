@@ -278,4 +278,13 @@ public class SoundController {
 		return "1";
 	}
 	
+	// 전체 재생 횟수 카운팅 - ajax
+	@GetMapping(value = "/countPlayCnt", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String countPlayCnt() {
+		System.out.println("-------------------"+service.selectCountPlayCnt());
+		return service.selectCountPlayCnt();
+		//return "1";
+	}
+	
 }

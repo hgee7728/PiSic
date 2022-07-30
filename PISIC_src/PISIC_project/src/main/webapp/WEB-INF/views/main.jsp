@@ -328,7 +328,17 @@ let csrf_token = '${_csrf.token }';
 						<div class="col-md-6 corona-gradient-card">
 							<h4 class="card-title">ALL TIME SCOROBBLES</h4>
 							<!-- TODO mg : total count 등록하기 -->
-
+							<button type="button" id="cnt_btn">테스트</button>
+							<div id="cnt_div">
+								<div class="card-body" style="text-align: center;">
+									<p class="text-muted mb-0">A live global counter showing the total number of tracks listened to by PISIC users since 2022</p>
+								</div>
+								<div class="card-body" style="text-align: center;">
+									<h3 class="font-weight-blod mb-0 count">0</h3>
+								</div>
+									
+							</div>
+		
 
 
 
@@ -494,6 +504,63 @@ let csrf_token = '${_csrf.token }';
 		        $("#reload").load(window.location.href+" #reload ");
 		    });
 		
+		// 카운트 보이기 - 테스트
+		/* setInterval(function(){
+			$.ajax({
+				url: root_path + "/sound/countPlayCnt",
+				type: "get",
+				beforeSend: function(xhr){
+	   				        xhr.setRequestHeader(header, token);
+	   				    },
+				success: function(result) {
+					console.log(result);
+					$("#cnt_div h3").text(result);
+				}
+			}); // ajax 끝
+		}, 1000); */
+		$("#cnt_btn").click(function(){
+			$.ajax({
+				url: root_path + "/sound/countPlayCnt",
+				type: "get",
+				beforeSend: function(xhr){
+	   				        xhr.setRequestHeader(header, token);
+	   				    },
+				success: function(result) {
+					console.log((parseInt(result)+1));
+					$("#cnt_div h3").text(AddComma(result));
+				}
+			}); // ajax 끝
+		});
+		
+	function AddComma(num){
+		var regexp = /\B(?=(\d{3})+(?!\d))/g;
+		return num.toString().replace(regexp, ',');
+	} 
+	
+	/* // 카운트를 표시할 요소
+	const $counter = document.querySelector(".count");
+
+	// 목표수치
+	let max = 17242;
+
+	counter($counter, max);
+	function counter($counter, max) {
+		  let now = max;
+
+		  const handle = setInterval(() => {
+		    $counter.innerHTML = Math.ceil(max - now);
+		  
+		    // 목표에 도달하면 정지
+		    if (now < 1) {
+		      clearInterval(handle);
+		    }
+		  
+		    // 적용될 수치, 점점 줄어듬
+		    const step = now / 10;
+
+		    now -= step;
+		  }, 50);
+		} */
 	</script>
 
 	<script

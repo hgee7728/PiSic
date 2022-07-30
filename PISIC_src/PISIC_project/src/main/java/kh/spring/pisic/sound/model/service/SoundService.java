@@ -33,6 +33,7 @@ public interface SoundService {
 	public PlayInfo selectBestChart(Sound sound);
 	public int insertPalyInfo(PlayInfo playInfo);
 	public List<Sound> checkAnoSno(List<Sound> soundList);
+	public String selectCountPlayCnt();
 	
 	
 }

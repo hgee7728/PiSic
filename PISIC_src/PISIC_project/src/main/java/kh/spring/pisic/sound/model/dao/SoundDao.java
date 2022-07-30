@@ -147,7 +147,10 @@ public class SoundDao {
 		return session.selectOne("Sound.checkAnoSno", sound);
 	}
 	
-	
+	// 전체 플레이 횟수 카운팅 - ajax
+	public String selectCountPlayCnt() {
+		return session.selectOne("Sound.selectCountPlayCnt");
+	}
 	
 	
 	

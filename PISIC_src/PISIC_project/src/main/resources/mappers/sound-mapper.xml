@@ -280,5 +280,8 @@ select * from (SELECT *
     where artist.artist_name = #{artist_name} and sound.s_name=#{s_name}
 </select>
 
-
+<!-- 전체 플레이 횟수 카운팅 -->
+<select id="selectCountPlayCnt" resultType="string">
+	select count(*) from playinfo
+</select>
 </mapper>

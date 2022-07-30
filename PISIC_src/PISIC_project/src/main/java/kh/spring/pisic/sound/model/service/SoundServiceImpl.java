@@ -150,6 +150,12 @@ public class SoundServiceImpl implements SoundService{
 		return resultSoundList;
 	}
 	
+	// 전체 플레이 횟수 카운팅 - ajax 
+	@Override
+	public String selectCountPlayCnt() {
+		return dao.selectCountPlayCnt();
+	}
+	
 	
 	
 	
