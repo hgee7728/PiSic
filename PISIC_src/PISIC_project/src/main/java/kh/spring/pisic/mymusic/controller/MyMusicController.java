@@ -3,7 +3,6 @@ package kh.spring.pisic.mymusic.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -280,7 +279,6 @@ public class MyMusicController {
 		// 좋아요 여부 확인
 		if(auth != null) {
 			UserDetails ud = (UserDetails)auth.getPrincipal();
-			Member member = memberService.selectLoginMember(ud.getUsername());
 			artist.setM_id(ud.getUsername());
 			
 			if(service.checkArtistLike(artist) > 0) { // 좋아요가 되어있는 경우

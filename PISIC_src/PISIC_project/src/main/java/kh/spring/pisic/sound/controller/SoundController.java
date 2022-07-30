@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -279,17 +278,4 @@ public class SoundController {
 		return "1";
 	}
 	
-	
-	
-	
-	@ExceptionHandler(Exception.class)
-	private ModelAndView handlerBoardException(Exception e) { // 얘가 최상이라 아래거로 들어갈 일 없어.
-		logger.error(e.getMessage());
-		e.printStackTrace();
-		
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("errorMessage", "오류");
-		mv.setViewName("redirect:/");
-		return mv;
-	}
 }

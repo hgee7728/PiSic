@@ -51,11 +51,4 @@ public class WeatherController {
 			return "";
 		}
 		
-		// 에러 페이지 처리
-		@ExceptionHandler(Exception.class)
-		public String handle404(Exception ex) {
-			
-			return "error";
-		}
-	
 }

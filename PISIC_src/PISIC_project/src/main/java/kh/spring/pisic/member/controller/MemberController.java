@@ -266,14 +266,5 @@ public class MemberController {
 		return mv;
 	}
 	
-	@ExceptionHandler(Exception.class)
-	private ModelAndView handlerBoardException(Exception e) { // 얘가 최상이라 아래거로 들어갈 일 없어.
-		logger.error(e.getMessage());
-		e.printStackTrace();
-		
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("errorMessage", "오류");
-		mv.setViewName("redirect:/");
-		return mv;
-	}
+
 }

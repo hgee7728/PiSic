@@ -356,8 +356,6 @@ function selectAlbumDetail(a_no){
 										<c:if test="${member.m_id != board.m_id}">
 											<tr style="text-align: center;">
 												<td colspan="2">
-													<button type="button" id="update_btn" class="btn btn-info btn-md my_btn" disabled>수정</button>
-													<button type="button" id="delete_btn" class="btn btn-info btn-md my_btn" disabled>삭제</button>
 												</td>
 											</tr>
 										</c:if>

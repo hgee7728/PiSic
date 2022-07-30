@@ -61,7 +61,7 @@
 <!-- 글 상세조회 -->
 <select id="selectBoard" resultMap="boardResultMap">
 	select b_no, b_title, b_content, b_writer, b_date, b_cnt, l_image, b.m_id, b.l_no
-	, (select count(*) from board_like where b_no = 1) cnt_like
+	, (select count(*) from board_like where b_no = #{b_no}) cnt_like
 	from board b
 	join playlist p on b.m_id = p.m_id and b.l_no = p.l_no
 	where b_no = #{b_no}
