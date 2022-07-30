@@ -141,11 +141,11 @@ select count(*) FROM
 		join singer singer on singer.a_no = sound.a_no and sound.s_no = sound.s_no
 		join artist artist on singer.artist_no = artist.artist_no
 		where
-		(sound.s_name
-		like '%'||#{keyword}||'%'
+		(lower(sound.s_name)
+		like lower('%'||#{keyword}||'%')
 		or
-		artist.artist_name
-		like '%'||#{keyword}||'%'))
+		lower(artist.artist_name)
+		like lower('%'||#{keyword}||'%')))
 </select>
 
 <!-- 앨범 검색 - 전체 -->
@@ -182,17 +182,17 @@ select count(*) FROM
 		from album album
 		join artist artist on album.artist_no = artist.artist_no
 		where
-		(album.a_name
-		like '%'||#{keyword}||'%'
+		(lower(album.a_name)
+		like lower('%'||#{keyword}||'%')
 		or
-		artist.artist_name
-		like '%'||#{keyword}||'%'
+		lower(artist.artist_name)
+		like lower('%'||#{keyword}||'%')
 		or
-		a_publishing
-		like '%'||#{keyword}||'%'
+		lower(a_publishing)
+		like lower('%'||#{keyword}||'%')
 		or
-		a_agency
-		like '%'||#{keyword}||'%'))
+		lower(a_agency)
+		like lower('%'||#{keyword}||'%')))
 </select>
 
 <!-- 아티스트 검색 - 전체 -->
@@ -222,8 +222,8 @@ select count(*) from
 		artist_profile, artist_info1,
 		artist_info2
 		from artist
-		where artist_name
-		like '%'||#{keyword}||'%')
+		where lower(artist_name)
+		like lower('%'||#{keyword}||'%'))
 </select>
 
 <!-- 플리 게시판 검색 - 전체 -->
@@ -254,11 +254,11 @@ select count(*) from
 		from board board
 		join playlist playlist on board.l_no = playlist.l_no and board.m_id = playlist.m_id
 		where 
-		(b_title
-		like '%'||#{keyword}||'%'
+		(lower(b_title)
+		like lower('%'||#{keyword}||'%')
 		or
-		b_content
-		like '%'||#{keyword}||'%'))
+		lower(b_content)
+		like lower('%'||#{keyword}||'%')))
 </select>
 
 <!-- 플레이 리스트 만들기 - 곡 검색 -->
@@ -314,15 +314,15 @@ select count(*) from
 		join playlist playlist on board.l_no = playlist.l_no and board.m_id = playlist.m_id
 		where 
 		<if test='type == "1"'>
-			b_title like '%'||#{keyword}||'%')
+			lower(b_title) like lower('%'||#{keyword}||'%'))
 		</if>
 		<if test='type == "2"'>
-			b_writer like '%'||#{keyword}||'%')
+			lower(b_writer) like lower('%'||#{keyword}||'%'))
 		</if>
 		<if test='type == 3'>
-			(b_title like '%'||#{keyword}||'%'
+			(lower(b_title) like lower('%'||#{keyword}||'%')
 			or
-			b_content like '%'||#{keyword}||'%'))
+			lower(b_content) like lower('%'||#{keyword}||'%')))
 		</if>
 </select>
 
