@@ -30,11 +30,11 @@
 		join singer singer on singer.a_no = sound.a_no and sound.s_no = sound.s_no
 		join artist artist on singer.artist_no = artist.artist_no
 		where
-		sound.s_name
-		like '%'||#{keyword}||'%'
+		lower(sound.s_name)
+		like lower('%'||#{keyword}||'%')
 		or
-		artist.artist_name
-		like '%'||#{keyword}||'%'
+		lower(artist.artist_name)
+		like lower('%'||#{keyword}||'%')
 		order by a_no) t1 
 	<![CDATA[
 	where rownum <= 3
@@ -58,17 +58,17 @@
 		from album album
 		join artist artist on album.artist_no = artist.artist_no
 		where
-		album.a_name
-		like '%'||#{keyword}||'%'
+		lower(album.a_name)
+		like lower('%'||#{keyword}||'%')
 		or
-		artist.artist_name
-		like '%'||#{keyword}||'%'
+		lower(artist.artist_name)
+		like lower('%'||#{keyword}||'%')
 		or
-		a_publishing
-		like '%'||#{keyword}||'%'
+		lower(a_publishing)
+		like lower('%'||#{keyword}||'%')
 		or
-		a_agency
-		like '%'||#{keyword}||'%'
+		lower(a_agency)
+		like lower('%'||#{keyword}||'%')
 		order by a_no) t1 
 	<![CDATA[
 	where rownum <= 3
@@ -84,8 +84,8 @@
 		artist_profile, artist_info1,
 		artist_info2
 		from artist
-		where artist_name
-		like '%'||#{keyword}||'%') t1
+		where lower(artist_name)
+		like lower('%'||#{keyword}||'%')) t1
 	<![CDATA[
 	where rownum <= 3
 	]]>
@@ -98,11 +98,11 @@
 		b_writer, b_date, playlist.l_image
 		from board board
 		join playlist playlist on board.l_no = playlist.l_no and board.m_id = playlist.m_id
-		where b_title
-		like '%'||#{keyword}||'%'
+		where lower(b_title)
+		like lower('%'||#{keyword}||'%')
 		or
-		b_content
-		like '%'||#{keyword}||'%'
+		lower(b_content)
+		like lower('%'||#{keyword}||'%')
 		) t1
 	<![CDATA[
 	where rownum <= 3
@@ -120,11 +120,11 @@
 			join singer singer on singer.a_no = sound.a_no and sound.s_no = sound.s_no
 			join artist artist on singer.artist_no = artist.artist_no
 			where
-			(sound.s_name
-			like '%'||#{keyword}||'%'
+			(lower(sound.s_name)
+			like lower('%'||#{keyword}||'%')
 			or
-			artist.artist_name
-			like '%'||#{keyword}||'%')
+			lower(artist.artist_name)
+			like lower('%'||#{keyword}||'%'))
 			order by a_no) t1 ) t2
 	<![CDATA[
 	where rnum between (#{cri.pageNum} -1) * #{cri.amount} and #{cri.pageNum} * #{cri.amount}
@@ -157,17 +157,17 @@ select count(*) FROM
 			from album album
 			join artist artist on album.artist_no = artist.artist_no
 			where
-			(album.a_name
-			like '%'||#{keyword}||'%'
+			(lower(album.a_name)
+			like lower('%'||#{keyword}||'%')
 			or
-			artist.artist_name
-			like '%'||#{keyword}||'%'
+			lower(artist.artist_name)
+			like lower('%'||#{keyword}||'%')
 			or
-			a_publishing
-			like '%'||#{keyword}||'%'
+			lower(a_publishing)
+			like lower('%'||#{keyword}||'%')
 			or
-			a_agency
-			like '%'||#{keyword}||'%')
+			lower(a_agency)
+			like lower('%'||#{keyword}||'%'))
 			order by a_no) t1 ) t2
 		<![CDATA[
 	where rnum between (#{cri.pageNum} -1) * #{cri.amount} and #{cri.pageNum} * #{cri.amount}
@@ -205,8 +205,8 @@ select count(*) FROM
 			artist_profile, artist_info1,
 			artist_info2
 			from artist
-			where artist_name
-			like '%'||#{keyword}||'%'
+			where lower(artist_name)
+			like lower('%'||#{keyword}||'%')
 			) t1) t2
 	<![CDATA[
 	where rnum between (#{cri.pageNum} -1) * #{cri.amount} and #{cri.pageNum} * #{cri.amount}
@@ -235,11 +235,11 @@ select count(*) from
 		from board board
 		join playlist playlist on board.l_no = playlist.l_no and board.m_id = playlist.m_id
 		where 
-		(b_title
-		like '%'||#{keyword}||'%'
+		(lower(b_title)
+		like lower('%'||#{keyword}||'%')
 		or
-		b_content
-		like '%'||#{keyword}||'%')
+		lower(b_content)
+		like lower('%'||#{keyword}||'%'))
 		) t1) t2
 	<![CDATA[
 	where rnum between (#{cri.pageNum} -1) * #{cri.amount} and #{cri.pageNum} * #{cri.amount}
@@ -270,11 +270,11 @@ select count(*) from
 			join singer singer on singer.a_no = sound.a_no and sound.s_no = sound.s_no
 			join artist artist on singer.artist_no = artist.artist_no
 			where
-			(sound.s_name
-			like '%'||#{keyword}||'%'
+			(lower(sound.s_name)
+			like lower('%'||#{keyword}||'%')
 			or
-			artist.artist_name
-			like '%'||#{keyword}||'%')
+			lower(artist.artist_name)
+			like lower('%'||#{keyword}||'%'))
 			order by a_no
 </select>
 
@@ -288,15 +288,15 @@ select count(*) from
 		join playlist playlist on board.l_no = playlist.l_no and board.m_id = playlist.m_id
 		where 
 		<if test='type == "1"'>
-			b_title like '%'||#{keyword}||'%'
+			lower(b_title) like lower('%'||#{keyword}||'%')
 		</if>
 		<if test='type == "2"'>
-			b_writer like '%'||#{keyword}||'%'
+			lower(b_writer) like lower('%'||#{keyword}||'%')
 		</if>
 		<if test='type == "3"'>
-			(b_title like '%'||#{keyword}||'%'
+			(lower(b_title) like lower('%'||#{keyword}||'%')
 			or
-			b_content like '%'||#{keyword}||'%')
+			lower(b_content) like 'lower(%'||#{keyword}||'%'))
 		</if>
 		order by b_no desc
 		) t1) t2

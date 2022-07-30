@@ -69,8 +69,8 @@
 		artist_profile, artist_info1,
 		artist_info2
 		from artist
-		where artist_name
-		like '%'||#{keyword}||'%'
+		where lower(artist_name)
+		like lower('%'||#{keyword}||'%')
 	</select>
 
 	<!-- 아티스트 추가 -->
@@ -136,11 +136,11 @@
 		select a_no, a_name, a_cover, a_date, a_publishing, a_agency, artist.artist_name
 			from album album
 			join artist artist using(artist_no) 
-			where artist.artist_name
-			like '%'||#{keyword}||'%'
+			where lower(artist.artist_name)
+			like lower('%'||#{keyword}||'%')
 			or
-			album.a_name
-			like '%'||#{keyword}||'%'
+			lower(album.a_name)
+			like lower('%'||#{keyword}||'%')
 			order by a_no
 	</select>
 	
@@ -236,11 +236,11 @@
 		join sound sound on album.a_no = sound.a_no
 		join singer singer on singer.a_no = sound.a_no and sound.s_no = sound.s_no
 		join artist artist on singer.artist_no = artist.artist_no
-		where artist.artist_name
-		like '%'||#{keyword}||'%'
+		where lower(artist.artist_name)
+		like lower('%'||#{keyword}||'%')
 		or
-		sound.s_name
-		like '%'||#{keyword}||'%'
+		lower(sound.s_name)
+		like lower('%'||#{keyword}||'%')
 		group by sound.a_no, album.a_name, album.a_cover, sound.s_no, sound.s_name
 		order by a_no
 	</select>
