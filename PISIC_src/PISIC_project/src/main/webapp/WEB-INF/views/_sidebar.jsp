@@ -137,16 +137,6 @@ $(function(){
         <button type="button" id="search_btn" class="btn btn-outline-light btn-sm">Search</button>
       </form>
     </li>
-    <sec:authorize access="hasRole('ROLE_ADMIN')">
-    <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">
-        <span class="menu-icon">
-          <i class="mdi mdi-account"></i>
-        </span>
-        <span class="menu-title">ADMIN PAGE</span>
-      </a>
-    </li>
-    </sec:authorize>
     <li class="nav-item nav-category">
       <span class="nav-link">MENU</span>
     </li>
@@ -184,14 +174,14 @@ $(function(){
     </li>
     <sec:authorize access="isAnonymous()">
     <li class="nav-item menu-items">
-      <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+      <a class="nav-link" data-toggle="collapse" href="#mymusic" aria-expanded="false" aria-controls="ui-basic">
         <span class="menu-icon">
           <i class="mdi mdi-laptop"></i>
         </span>
         <span class="menu-title">MY MUSIC</span>
         <i class="menu-arrow"></i>
       </a>
-      <div class="collapse" id="ui-basic">
+      <div class="collapse" id="mymusic">
       	<ul class="nav flex-column sub-menu">
       		<li class="nav-item"><p class="text-muted mb-0">로그인 후 이용해주세요.</p></li>
       	</ul>
@@ -200,14 +190,14 @@ $(function(){
     </sec:authorize>
     <sec:authorize access="isAuthenticated()">
     <li class="nav-item menu-items">
-      <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+      <a class="nav-link" data-toggle="collapse" href="#mymusic" aria-expanded="false" aria-controls="mymusic">
         <span class="menu-icon">
           <i class="mdi mdi-laptop"></i>
         </span>
         <span class="menu-title">MY MUSIC</span>
         <i class="menu-arrow"></i>
       </a>
-      <div class="collapse" id="ui-basic">
+      <div class="collapse" id="mymusic">
       	<ul class="nav flex-column sub-menu">
 		    <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/playlist">내 플레이 리스트</a></li>
 		    <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/mymusic/artistLikeList">좋아하는 아티스트</a></li>
@@ -227,6 +217,23 @@ $(function(){
     <li class="nav-item nav-category">
       <span class="nav-link"></span>
     </li>
+    <sec:authorize access="isAnonymous()">
+    <li class="nav-item menu-items">
+      <a class="nav-link" data-toggle="collapse" href="#membership" aria-expanded="false" aria-controls="membership">
+        <span class="menu-icon">
+          <i class="mdi mdi-square-inc-cash"></i>
+        </span>
+        <span class="menu-title">PISIC MEMBERSHIP</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="membership">
+        <ul class="nav flex-column sub-menu">
+        	<li class="nav-item"><p class="text-muted mb-0">로그인 후 이용해주세요.</p></li>
+        </ul>
+      </div>
+    </li>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
     <li class="nav-item menu-items">
       <a class="nav-link" data-toggle="collapse" href="#membership" aria-expanded="false" aria-controls="membership">
         <span class="menu-icon">
@@ -243,13 +250,32 @@ $(function(){
         </ul>
       </div>
     </li>
+    </sec:authorize>
     <li class="nav-item menu-items">
+	  <sec:authorize access="hasRole('ROLE_ADMIN')">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/member">
+        <span class="menu-icon">
+          <i class="mdi mdi-account"></i>
+        </span>
+        <span class="menu-title">ADMIN PAGE</span>
+      </a>
+      </sec:authorize>
+      <sec:authorize access="isAnonymous()">
       <a class="nav-link" href="<%=request.getContextPath()%>/member/showMyInfo">
         <span class="menu-icon">
           <i class="mdi mdi-account"></i>
         </span>
         <span class="menu-title">MY PAGE</span>
       </a>
+      </sec:authorize>
+      <sec:authorize access="hasRole('ROLE_MEMBER')">
+      <a class="nav-link" href="<%=request.getContextPath()%>/member/showMyInfo">
+        <span class="menu-icon">
+          <i class="mdi mdi-account"></i>
+        </span>
+        <span class="menu-title">MY PAGE</span>
+      </a>
+      </sec:authorize>
     </li>
     <li class="nav-item menu-items">
       <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">

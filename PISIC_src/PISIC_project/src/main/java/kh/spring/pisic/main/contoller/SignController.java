@@ -48,12 +48,51 @@ public class SignController {
 		}
 		System.out.println("===========================================" + returnUrl);
 		
-		return "member/login";
+		return "sign/login";
 	}
+	
+	// 스프링 시큐리티 대체
+//	@PostMapping("/login")
+//	public ModelAndView loginCheck(
+//			ModelAndView mv
+//			, Member member
+//			, RedirectAttributes rttr
+//			, HttpSession session) {
+////		if (pwEncoding.matches(null, null))
+//		
+////	member.setPasswd(pwEncoding.encode(member.getPasswd()));
+//		
+//		// login 세선이 존재하면 제거
+//		if (session.getAttribute("loginSsInfo") != null) {
+//			session.removeAttribute("loginSsInfo");
+//		}
+//		
+//		Member result = service.loginCheck(member);
+//		
+//		if (result != null) {
+//			session.setAttribute("loginSsInfo", result);
+//			System.out.println("로그인 성공");
+//			mv.setViewName("redirect:/");
+//		} else {
+//			System.out.println("로그인 실패");
+//			mv.setViewName("redirect:/member/login");
+//		}
+//		return mv;
+//	}
+	
+	// 스프링 시큐리티 대체
+//	@GetMapping("/logout")
+//	public String pageLogout(
+//			HttpSession session) {
+//		// 세션 초기화
+//		session.invalidate();
+////		session.removeAttribute("loginSsInfo");
+//		return "redirect:/";
+//	}
 	
 	@GetMapping("/join")
 	public String pageInsertMember() {
-		return "member/join";
+		return "sign/join";
 	}
 	
 	@PostMapping("/join")
@@ -68,12 +107,12 @@ public class SignController {
 		
 		int result = service.insertMember(member);
 		if(result < 1) {
-			rttr.addFlashAttribute("msg","회원가입 실패");
-			System.out.println("가입실패");
+			System.out.println("회원가입실패");
+			mv.addObject("msg", "회원가입에 실패하였습니다.");
 			mv.setViewName("redirect:/");
 		} else {
-			rttr.addFlashAttribute("msg","회원가입 성공");
-			System.out.println("가입성공");
+			System.out.println("회원가입성공");
+			mv.addObject("msg", "회원가입에 성공하였습니다.");
 			mv.setViewName("redirect:/");
 		}
 		return mv;
@@ -119,65 +158,78 @@ public class SignController {
 	
 	@GetMapping("/findId")
 	public String PageFindId() {
-		return "member/findId";
+		return "sign/findId";
 	}
 	
 	@PostMapping("/findId")
 	public ModelAndView findId(
 			ModelAndView mv
-			, Member member) {
+			, Member member
+			, RedirectAttributes rttr) {
 		Member result = service.findId(member);
 		if (result == null) {
 			System.out.println("아이디 찾기 실패");
+			mv.addObject("msg", "입력하신 정보와 일치하는 계정이 없습니다.");
+			mv.setViewName("sign/findId");
 		} else {
 			System.out.println("아이디 찾기 성공");
 			mv.addObject("member", result);
-			mv.setViewName("member/findIdA");
+			mv.setViewName("sign/findIdA");
 		}
 		return mv;
 	}
 	
 	@GetMapping("/findIdA")
 	public String pageFindIdA() {
-		return "member/findIdA";
-	}
-	
-	@PostMapping("/findIdA")
-	public ModelAndView findIdA(
-			ModelAndView mv
-			, Member member) {
-		int result = service.findPwA(member);
-		if (result < 1) {
-			System.out.println("비밀번호 변경 실패");
-		} else {
-			System.out.println("비밀번호 변경 성공");
-			mv.setViewName(null);
-		}
-		return mv;
+		return "sign/findIdA";
 	}
 	
 	@GetMapping("/findPw")
 	public String pageFindPw() {
-		return "member/findPw";
+		return "sign/findPw";
 	}
 	
 	@PostMapping("/findPw")
 	public ModelAndView findPw(
 			ModelAndView mv
-			, Member member) {
+			, Member member
+			, RedirectAttributes rttr) {
 		Member result = service.findPw(member);
 		if (result == null) {
 			System.out.println("비밀번호 찾기 실패");
+			mv.addObject("msg", "입력하신 정보와 일치하는 계정이 없습니다.");
+			mv.setViewName("sign/findPw");
 		} else {
 			System.out.println("비밀번호 찾기 성공");
 			mv.addObject("member", result);
-			mv.setViewName("member/findPwA");
+			mv.setViewName("sign/findPwA");
 		}
 		return mv;
 	}
 	
 	@GetMapping("/findPwA")
 	public String pageFindPwA() {
-		return "member/findPwA";
+		return "sign/findPwA";
+	}
+	
+	@PostMapping("/findPwA")
+	public ModelAndView findPwA(
+			ModelAndView mv
+			, Member member) {
+		// 암호화
+		String endcodedPassword = bCryptPasswordEncoder.encode(member.getM_password());
+		member.setM_password(endcodedPassword);
+		
+		int result = service.findPwA(member);
+		if (result < 1) {
+			System.out.println("비밀번호 변경 실패");
+			mv.addObject("msg", "비밀번호 변경에 실패하였습니다. 다시 시도해 주세요.");
+			mv.setViewName("sign/findPw");
+		} else {
+			System.out.println("비밀번호 변경 성공");
+			mv.addObject("msg", "비밀번호 변경에 성공하였습니다. 로그인 페이지로 이동합니다.");
+			mv.setViewName("sign/login");
+		}
+		return mv;
 	}
 }

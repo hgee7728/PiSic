@@ -1,5 +1,6 @@
 package kh.spring.pisic.member.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -24,6 +25,17 @@ public class MemberDao {
 	
 	public int idCheck(String m_id) {
 		return session.selectOne("Member.idCheck", m_id);
+	}
+	
+	public int passwordCheck(String m_id, String m_password) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("m_id", m_id);
+		map.put("m_password", m_password);
+		return session.selectOne("Member.passwordCheck", map);
+	}
+	
+	public String selectPassword(String m_id) {
+		return session.selectOne("Member.selectPassword", m_id);
 	}
 	
 	public int nicknameCheck(String m_nickname) {
@@ -64,5 +76,13 @@ public class MemberDao {
 	
 	public Member selectLoginMember(String m_id) {
 		return session.selectOne("Member.selectLoginMember", m_id);
+	}
+	
+	public int deleteMember(Member member) {
+		return session.update("Member.deleteMember", member);
+	}
+	
+	public int updatePassword(Member member) {
+		return session.update("Member.updatePassword", member);
 	}
 }

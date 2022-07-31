@@ -59,7 +59,11 @@ public class CustomUserDetails implements UserDetails  {
 	
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		if (m_delete_yn == "N" || m_delete_yn.equals("N")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	@Override

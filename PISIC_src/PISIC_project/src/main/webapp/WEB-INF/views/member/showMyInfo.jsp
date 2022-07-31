@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -34,6 +35,12 @@
   		margin: 0 auto;
   	}
     </style>
+    <script>
+		var msg = '${msg}';
+		if(msg){
+			alert(msg);
+		}
+	</script>
   </head>
   <body>
     <div class="container-scroller">
@@ -47,7 +54,7 @@
         <div class="main-panel">
           <div class="content-wrapper">
           	<div class="page-header">
-              <h3 class="page-title">회원정보</h3>
+              <h2 class="card-title">INFORMATION</h2>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="#">회원</a></li>
@@ -161,14 +168,15 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">가입일자</label>
                             <div class="col-sm-9">
-                              <input class="form-control file-upload-info" value="${member.m_date}" readonly>
+                              <input class="form-control file-upload-info" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${member.m_date}"/>" readonly>
                             </div>
                           </div>
                         </div>
                       </div>
                   	<div class="row">
 	                    <button type="button" class="btn btn-info btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/updateMyInfo'">정보수정</button>
-	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/deleteMember'">회원탈퇴</button>
+	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/updatePassword'">비밀번호 변경</button>
+		                <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/deleteMember'">회원탈퇴</button>
                     </div>
                   </div>
                 </div>

@@ -24,6 +24,16 @@
 		FROM member
 		WHERE m_id = #{m_id}
 	</select>
+	<select id="selectPassword" parameterType="string" resultType="string">
+		SELECT m_password
+		FROM member
+		WHERE m_id = #{m_id}
+	</select>
+	<select id="passwordCheck" parameterType="hashmap" resultType="_int">
+		SELECT count(*)
+		FROM member
+		WHERE = m_id = #{m_id} AND m_password = #{m_password}
+	</select>
 	<select id="nicknameCheck" parameterType="string" resultType="_int">
 		SELECT count(*)
 		FROM member
@@ -42,33 +52,32 @@
 	<select id="findId" parameterType="Member" resultType="Member">
 		SELECT *
 		FROM member
-		WHERE m_birth = #{m_birth} AND m_email = #{m_email} AND m_phone = #{m_phone}
+		WHERE m_name = #{m_name} AND m_birth = #{m_birth} AND m_email = #{m_email} AND m_phone = #{m_phone}
 	</select>
 	<select id="findPw" parameterType="Member" resultType="Member">
 		SELECT *
 		FROM member
 		WHERE m_id = #{m_id} AND m_birth = #{m_birth} AND m_email = #{m_email} AND m_phone = #{m_phone}
 	</select>
-	<select id="listMember" resultType="Member">
-		SELECT *
-		FROM member
-		WHERE m_grade = 1
-	</select>
-	<select id="listAdmin" resultType="Member">
-		SELECT *
-		FROM member
-		WHERE m_grade = 0
-	</select>
 	<update id="findPwA" parameterType="Member">
 		UPDATE member
 		SET m_password = #{m_password}
 		WHERE m_id = #{m_id}
 	</update>
+	<select id="listMember" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE m_grade = 'ROLE_MEMBER'
+	</select>
+	<select id="listAdmin" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE m_grade = 'ROLE_ADMIN'
+	</select>
 	<update id="updateMyInfo" parameterType="Member">
 		UPDATE member
 		SET 
 		m_id = #{m_id}, 
-		m_password = #{m_password}, 
 		m_name = #{m_name}, 
 		m_nickname = #{m_nickname}, 
 		m_phone = #{m_phone}, 
@@ -77,6 +86,18 @@
 		m_gender = #{m_gender}, 
 		m_profile = #{m_profile}, 
 		m_email = #{m_email}
+		WHERE m_id = #{m_id}
+	</update>
+	<update id="deleteMember" parameterType="Member">
+		UPDATE member
+		SET
+		m_delete_yn = 'Y'
+		WHERE m_id = #{m_id}
+	</update>
+	<update id="updatePassword" parameterType="Member">
+		UPDATE member
+		SET
+		m_password = #{m_password}
 		WHERE m_id = #{m_id}
 	</update>
 </mapper>

@@ -162,4 +162,14 @@ public class AdminServiceImpl implements AdminService{
 		return dao.selectMembershipList();
 	}
 
+	@Override
+	public int totalCntMember() {
+		return dao.totalCntMember();
+	}
+
+	@Override
+	public int totalCntAdmin() {
+		return dao.totalCntAdmin();
+	}
+
 }

@@ -286,13 +286,8 @@
 			console.log(header);
 			console.log(token);
     		
-			// 아이디
-			$("#InputId").on("input", function(){
-    			$.fn.FxId();
-    		})
-			
-    		// 아이디 함수
-    		$.fn.FxId = function(){
+    		// 아이디
+    		$("#InputId").on("input", function FxId(){
     			var regexId = /^[0-9a-zA-Z]{7,15}$/;
     			InputId = $("#InputId").val();
     			
@@ -332,15 +327,10 @@
     		    	})
     			}
     			console.log(FlagId);
-    		}
-    		
-    		// 비밀번호
-			$("#InputPassword1").on("input", function(){
-    			$.fn.FxPassword1();
     		})
     		
-    		// 비밀번호 함수
-    		$.fn.FxPassword1 = function(){
+    		// 비밀번호
+    		$("#InputPassword1").on("input", function FxPassword1(){
     			var regexPw = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
     			InputPw1 = $("#InputPassword1").val();
     			InputPw2 = $("#InputPassword2").val();
@@ -370,15 +360,10 @@
     			}
     			console.log(FlagPw1);
     			console.log(FlagPw2);
-    		}
-
-    		// 비밀번호 확인
-			$("#InputPassword2").on("input", function(){
-    			$.fn.FxPassword2();
     		})
     		
-    		// 비밀번호 확인 함수
-    		$.fn.FxPassword2 = function(){
+    		// 비밀번호 확인
+    		$("#InputPassword2").on("input", function FxPassword2(){
     			InputPw1 = $("#InputPassword1").val();
     			InputPw2 = $("#InputPassword2").val();
     			
@@ -392,15 +377,10 @@
     				FlagPw2 = true;
     			}
     			console.log(FlagPw2);
-    		}
-    		
-    		// 이름
-			$("#InputName").on("input", function(){
-    			$.fn.FxName();
     		})
     		
-    		// 이름 함수
-    		$.fn.FxName = function(){
+    		// 이름
+    		$("#InputName").on("input", function FxName(){
     			var regexName = /(^[가-힣]{2,5}$)|(^[a-zA-Z]{2,20}(\s[a-zA-Z]{2,20})?$)/;
     			InputName = $("#InputName").val();		
     			
@@ -418,15 +398,10 @@
     				FlagName = true;
     			}
     			console.log(FlagName);
-    		}
-    		
-    		// 닉네임
-    		$("#InputNickname").on("input", function(){
-    			$.fn.FxNickname();
     		})
     		
-    		// 닉네임 함수
-    		$.fn.FxNickname = function FxNickname(){
+    		// 닉네임
+    		$("#InputNickname").on("input", function FxNickname(){
     			var regexNickname = /^[가-힣|a-z|A-Z|0-9]{2,15}$/;
     			InputNickname = $("#InputNickname").val();
     			
@@ -467,15 +442,10 @@
     		    	})
     			}
     			console.log(FlagNickname);
-    		}
-    		
-    		// 이메일
-    		$("#InputEmail").on("input", function(){
-    			$.fn.FxEmail();
     		})
     		
-    		// 이메일 함수
-    		$.fn.FxEmail = function(){
+    		// 이메일
+    		$("#InputEmail").on("input", function FxEmail(){
     			var regexEmail = /^[A-Za-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
     			InputEmail = $("#InputEmail").val();		
     			
@@ -518,15 +488,10 @@
     		    	})
     			}
     			console.log(FlagEmail);
-    		}
-    		
-    		// 휴대전화
-    		$("#InputPhone").on("input", function(){
-    			$.fn.FxPhone();
     		})
     		
-    		// 휴대전화 함수
-    		$.fn.FxPhone = function(){
+    		// 휴대전화
+    		$("#InputPhone").on("input", function FxPhone(){
     			var regexPhone = /^01([0|1|6|7|8|9])+[0-9]{7,8}$/;
     			InputPhone = $("#InputPhone").val();
     			
@@ -566,15 +531,10 @@
     		    	})
     			}
     			console.log(FlagPhone);
-    		}
-    		
-    		// 생년월일
-    		$("#InputBirth").on("input", function(){
-    			$.fn.FxBirth();
     		})
     		
-    		// 생년월일 함수
-    		$.fn.FxBirth = function(){
+    		// 생년월일
+    		$("#InputBirth").on("input", function FxBirth(){
     			var regexBirth = /^[0-9]{8}$/;
     			InputBirth = $("#InputBirth").val();		
     			
@@ -592,7 +552,7 @@
     				FlagBirth = true;
     			}
     			console.log(FlagBirth);
-    		}
+    		})
     		
     		// 성별
     		$("#SelectGender").on("click", function(){
@@ -605,12 +565,7 @@
     		InputAddress = $("#InputAddress").val();
     		
     		// 상세주소
-    		$("#InputAddressDetail").on("input", function(){
-    			$.fn.FxAddressDetail();
-    		})
-    		
-    		// 상세주소 함수
-    		$.fn.FxAddressDetail = function(){
+    		$("#InputAddressDetail").on("keyup", function FxAddressDetail(){
     			InputAddressDetail = $("#InputAddressDetail").val();		
     			
 				if (InputAddressDetail == '') {
@@ -623,7 +578,7 @@
     				FlagAddressDetail = true;
     			}
 				console.log(FlagAddressDetail);
-    		}
+    		})
     		
     		// 프로필 사진
     		$("#BtnProfile").on("click", function(){
@@ -674,28 +629,20 @@
 	    	// Submit 유효성 검사
 	    	$("#InputSubmit").on("click", function(){
 		    	if (FlagId == false) {
-		    		$.fn.FxId();
 		    		$("#InputId").focus();
 		    	} else if (FlagPw1 == false) {
-		    		$.fn.FxPassword1();
 		    		$("#InputPassword1").focus();
 		    	} else if (FlagPw1 == false) {
-		    		$.fn.FxPassword2();
 		    		$("#InputPassword2").focus();
 		    	} else if (FlagName == false) {
-		    		$.fn.FxName();
 		    		$("#InputName").focus();
 		    	} else if (FlagNickname == false) {
-		    		$.fn.FxNickname();
 		    		$("#InputNickname").focus();
 		    	} else if (FlagEmail == false) {
-		    		$.fn.FxEmail();
 		    		$("#InputEmail").focus();
 		    	} else if (FlagPhone == false) {
-		    		$.fn.FxPhone();
 		    		$("#InputPhone").focus();
 		    	} else if (FlagBirth == false) {
-		    		$.fn.FxBirth();
 		    		$("#InputBirth").focus();
 		    	} else if (FlagGender == false) {
 		    		$("#LabelGender").html('성별 <span id="SpanGender"><i class="mdi mdi-close"></i> 성별을 선택해 주세요.</span>');
@@ -706,7 +653,6 @@
 		        	$("#SpanAddress").css("color", "red");
 		        	$("#InputAddress").focus();
 		    	} else if (FlagAddressDetail == false) {
-		    		$.fn.FxAddressDetail();
 		    		$("#InputAddressDetail").focus();
 		    	} else {
 		    		var submit = confirm("회원가입 하시겠습니까?");

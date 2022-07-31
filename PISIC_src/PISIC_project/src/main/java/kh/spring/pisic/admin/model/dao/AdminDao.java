@@ -176,4 +176,14 @@ public class AdminDao {
 	public List<Membership> selectMembershipList() {
 		return session.selectList("Admin.selectMembershipList");
 	}
+	
+	// 총 회원 수
+	public int totalCntMember() {
+		return session.selectOne("Admin.totalCntMember");
+	}
+	
+	// 총 관리자 수
+	public int totalCntAdmin() {
+		return session.selectOne("Admin.totalCntAdmin");
+	}
 }

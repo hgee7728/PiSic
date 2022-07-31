@@ -69,21 +69,57 @@
                   <div class="card-body">
                     <h4 class="card-title">비밀번호 변경</h4>
                     <p class="card-description">비밀번호 변경</p>
-                    <form class="forms-sample" action="<%=request.getContextPath() %>/member/findPwA" method="post">
+                    <form id="updatePwForm" class="forms-sample" action="<%=request.getContextPath() %>/findPwA" method="post">
+                      <!-- csrf 공격 방지 -->
+                      <input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
                       <input type="hidden" value="${member.m_id}" name="m_id">
                       <div class="form-group row">
-                        <label id="LabelPassword1" for="InputPassword1" class="col-sm-3 col-form-label">비밀번호</label>
+                        <label id="LabelPassword1" for="InputPassword1" class="col-sm-3 col-form-label">변경할 비밀번호</label>
                         <div class="col-sm-9">
+                         <div class="input-group">
                           <input type="password" class="form-control" id="InputPassword1" placeholder="Password" name="m_password" required>
+                          <div class="input-group-append">
+		                  	<button id="BtnPassword1" class="btn btn-inverse-secondary btn-fw" type="button"><i class="mdi mdi-eye-off"></i></button>
+		                  </div>
+		                 </div>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label id="LabelPassword2" for="InputPassword2" class="col-sm-3 col-form-label">비밀번호 확인</label>
+                        <label id="LabelPassword2" for="InputPassword2" class="col-sm-3 col-form-label">변경할 비밀번호 확인</label>
                         <div class="col-sm-9">
+                         <div class="input-group">
                           <input type="password" class="form-control" id="InputPassword2" placeholder="Re Password" required>
+                          <div class="input-group-append">
+		                  	<button id="BtnPassword2" class="btn btn-inverse-secondary btn-fw" type="button"><i class="mdi mdi-eye-off"></i></button>
+		                  </div>
+		                 </div>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-info btn-fw">비밀번호 변경</button>
+                      <script>
+                      	$(document).ready(function(){
+                      		$("#BtnPassword1").on("click", function(){
+                      			$("#InputPassword1").toggleClass("active");
+                      			if ($("#InputPassword1").hasClass("active")) {
+                      				$(this).find("i").attr("class", "mdi mdi-eye");
+                      				$("#InputPassword1").attr("type", "text");
+                      			} else {
+                      				$(this).find("i").attr("class", "mdi mdi-eye-off");
+                      				$("#InputPassword1").attr("type", "password");
+                      			}
+                      		})
+                      		$("#BtnPassword2").on("click", function(){
+                      			$("#InputPassword2").toggleClass("active");
+                      			if ($("#InputPassword2").hasClass("active")) {
+                      				$(this).find("i").attr("class", "mdi mdi-eye");
+                      				$("#InputPassword2").attr("type", "text");
+                      			} else {
+                      				$(this).find("i").attr("class", "mdi mdi-eye-off");
+                      				$("#InputPassword2").attr("type", "password");
+                      			}
+                      		})
+                      	});
+                      </script>
+                      <input id="InputSubmit" type="button" class="btn btn-info btn-fw" value="비밀번호 변경"/>
                     </form>
                   </div>
                 </div>
@@ -110,19 +146,30 @@
     		$("#InputPassword1").on("keyup", function(){
     			var regexPw = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
     			InputPw1 = $("#InputPassword1").val();
+    			InputPw2 = $("#InputPassword2").val();
     			
     			if (!regexPw.test(InputPw1)) {
     				if (InputPw1 == '') {
-    					$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+    					$("#LabelPassword1").html('비밀번호 <label id="cLabelPassword1"><i class="mdi mdi-close"></i> 필수 정보입니다.</label>');
     				} else {
-    					$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-close"></i> 8 ~ 20자의 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>');
+    					$("#LabelPassword1").html('비밀번호 <label id="cLabelPassword1"><i class="mdi mdi-close"></i> 8 ~ 20자의 영문 대 소문자, 숫자, 특수문자를 사용하세요.</label>');
     				}
     				FlagPw1 = false;
-    				$("#SpanPassword1").css("color", "red");
+    				$("#cLabelPassword1").css("color", "red");
     			} else {
-    				$("#LabelPassword1").html('비밀번호 <span id="SpanPassword1"><i class="mdi mdi-check"></i></span>');
-    				$("#SpanPassword1").css("color", "green");
+    				$("#LabelPassword1").html('비밀번호 <label id="cLabelPassword1"><i class="mdi mdi-check"></i></label>');
+    				$("#cLabelPassword1").css("color", "green");
     				FlagPw1 = true;
+    			}
+    			
+    			if (InputPw1 != InputPw2) {
+    				$("#LabelPassword2").html('비밀번호 확인 <label id="cLabelPassword2"><i class="mdi mdi-close"></i> 비밀번호가 일치하지 않습니다.</label>');
+    				$("#cLabelPassword2").css("color", "red");
+    				FlagPw2 = false;
+    			} else {
+    				$("#LabelPassword2").html('비밀번호 확인 <label id="cLabelPassword2"><i class="mdi mdi-check"></i></label>');
+    				$("#cLabelPassword2").css("color", "green");
+    				FlagPw2 = true;
     			}
     		})
     		
@@ -132,15 +179,35 @@
     			InputPw2 = $("#InputPassword2").val();
     			
     			if (InputPw1 != InputPw2) {
-    				$("#LabelPassword2").html('비밀번호 확인 <span id="SpanPassword2"><i class="mdi mdi-close"></i> 비밀번호가 일치하지 않습니다.</span>');
-    				$("#SpanPassword2").css("color", "red");
+    				$("#LabelPassword2").html('비밀번호 확인 <label id="cLabelPassword2"><i class="mdi mdi-close"></i> 비밀번호가 일치하지 않습니다.</label>');
+    				$("#cLabelPassword2").css("color", "red");
     				FlagPw2 = false;
     			} else {
-    				$("#LabelPassword2").html('비밀번호 확인 <span id="SpanPassword2"><i class="mdi mdi-check"></i></span>');
-    				$("#SpanPassword2").css("color", "green");
-    				FlagPw2 = false;
+    				$("#LabelPassword2").html('비밀번호 확인 <label id="cLabelPassword2"><i class="mdi mdi-check"></i></label>');
+    				$("#cLabelPassword2").css("color", "green");
+    				FlagPw2 = true;
     			}
     		})
+    		
+	    	// Submit 유효성 검사
+		    $("#InputSubmit").on("click", function(){
+		    	InputPw1 = $("#InputPassword1").val();
+				InputPw2 = $("#InputPassword2").val();
+		    		
+		    	if (FlagPw1 == false) {
+		    		if (InputPw1 == '') {
+		    			$("#LabelPassword1").html('비밀번호 <label id="cLabelPassword1"><i class="mdi mdi-close"></i> 필수 정보입니다.</label>');
+		    			$("#cLabelPassword1").css("color", "red");
+		    		}
+		    		$("#InputPassword1").focus();
+		    	} else if (FlagPw2 == false) {
+			    	$("#LabelPassword2").html('비밀번호 확인 <label id="cLabelPassword2"><i class="mdi mdi-close"></i> 비밀번호가 일치하지 않습니다.</label>');
+	    			$("#cLabelPassword2").css("color", "red");
+			    	$("#InputPassword2").focus();
+			    } else {
+			    	$("#updatePwForm").submit();
+			    }
+		    })
 	    });
     </script>
     <!-- container-scroller -->

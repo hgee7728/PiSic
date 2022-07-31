@@ -34,4 +34,6 @@ public interface AdminService {
 	public List<Member> selectMemberList();
 	public List<Member> selectAdminList();
 	public List<Membership> selectMembershipList();
+	public int totalCntMember();
+	public int totalCntAdmin();
 }

@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<style>
 		.table-responsive {
 			width: 100%;
@@ -33,7 +34,7 @@
 			overflow: auto;
 		}
 		
-		div.search_member {
+		.search_member {
 			width: 600px;
 		}
 		
@@ -46,6 +47,27 @@
 		table.member_list tr>td {
 			text-align: center;
 		}
+		.pageInfo_wrap{
+			text-align: center;
+		}
+		.pageInfo{
+		    list-style : none;
+		    display: inline-block;
+		   	margin: 50px 0 0 100px;      
+		}
+		.pageInfo li{
+		    float: left;
+		    font-size: 20px;
+		    margin-left: 18px;
+		    padding: 7px;
+		    font-weight: 500;
+		 }
+		.pageInfo a:link {color:white; text-decoration: none;}
+		.pageInfo a:visited {color:white; text-decoration: none;}
+		.pageInfo a:hover {color:white; text-decoration: underline;}
+		.here{
+		      background-color: #8f5fe8;
+		  }
     </style>
     <script>
 	    $(function(){
@@ -62,6 +84,17 @@
 	        		$('input:checkbox').prop('checked',false);
 	        	}
 	        })
+	        $("input:checkbox").click(function() {
+	    		var total = $(".member_checkbox").length;
+	    		var checked = $(".member_checkbox:checked").length;
+	    		console.log("total : " + total);
+	    		console.log("checked : " + checked);
+	    		if(total != checked) {
+	    			$("#check_all").prop("checked", false);
+	    		} else {
+	    			$("#check_all").prop("checked", true); 
+	    		}
+	    	});
 	    });
     </script>
   </head>
@@ -93,7 +126,7 @@
 						</div>
 					<form name="frm_sound">
 						<div class="select_btns">
-							<button type="button" id="insert_sound" class="btn btn-info btn-fw" >곡 추가</button>
+							<button type="button" id="insert_sound" class="btn btn-info btn-fw" >관리자 추가</button>
 							<button type="button" id="select_delete" class="btn btn-info btn-fw">선택 삭제</button>
 						</div>
 						<br>
@@ -169,6 +202,28 @@
 								</table>
 							</div>
 						</form>
+						<div class="pageInfo_wrap" >
+						        <div class="pageInfo_area">
+						        	<ul id="pageInfo" class="pageInfo">
+							        <c:if test="${memberPaging.prev}">
+					                    <li class="pageInfo_btn previous"><a href="<%=request.getContextPath()%>/admin/member?pageNum=${memberPaging.startPage-1}">Previous</a></li>
+					                </c:if>
+						 			
+						 			<c:forEach var="num" begin="${memberPaging.startPage}" end="${memberPaging.endPage}">
+					                    <li class='pageInfo_btn ${memberPaging.cri.pageNum == num ? "here":"" }'><a href="<%=request.getContextPath()%>/admin/member?pageNum=${num}">${num}</a></li>
+					                </c:forEach>
+					                
+					                <c:if test="${memberPaging.next}">
+					                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/admin/member?pageNum=${memberPaging.endPage + 1 }">Next</a></li>
+					                </c:if>  
+					                </ul>
+						        </div>
+						    </div>
+						</form>
+						<form id="movePage" method="get">
+							<input type="hidden" name="pageNum" value="${memberPaging.cri.pageNum }">
+	        				<input type="hidden" name="amount" value="${memberPaging.cri.amount }">
+        				</form>
 					</div>
           </div>
           <!-- content-wrapper ends -->

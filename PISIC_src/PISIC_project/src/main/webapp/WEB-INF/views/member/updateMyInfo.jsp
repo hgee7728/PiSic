@@ -7,6 +7,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+	<meta name="_csrf" th:content="${_csrf.token}">
     <title>정보 수정</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -31,9 +33,11 @@
   	.content-wrapper {
   		max-width: 900px;
   	}
-  	.btn.btn-info.btn-fw {
+  	#InputButtons {
+  		text-align: center;
+  	}
+  	#InputCancel, #InputSubmit {
   		margin: 0 auto;
-    	display: block;
   	}
   	#ImgProfilePre {
   		margin-right: 10px;
@@ -65,7 +69,7 @@
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="page-header">
-              <h3 class="page-title">정보수정</h3>
+              <h2 class="card-title">EDIT INFORMATION</h2>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="#">회원</a></li>
@@ -78,42 +82,46 @@
                   <div class="card-body">
                     <h4 class="card-title">정보수정</h4>
                     <form id="updateForm" class="forms-sample" action="<%=request.getContextPath() %>/member/updateMyInfo" method="post">
+                      <!-- csrf 공격 방지 -->
+                      <input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+                      <input type="hidden" id="InputPlatform" name="m_platform" value="${member.m_platform}">
+                      <input type="hidden" id="InputDate" name="m_date" value="${member.m_date}">
                       <div class="form-group">
                       	<label id="LabelId" for="InputId">아이디</label>
                       	<sec:authentication property="principal.m_id" var="m_id"/>
-                      	<input type="text" class="form-control file-upload-info" id="InputId" placeholder="ID" name="m_id" value="${m_id}" readonly required>
+                      	<input type="text" class="form-control file-upload-info" id="InputId" placeholder="ID" name="m_id" value="${member.m_id}" readonly required>
                       </div>
                       <div class="form-group">
                         <label id="LabelName" for="InputName">이름</label>
                         <sec:authentication property="principal.m_name" var="m_name"/>
-                        <input type="text" class="form-control" id="InputName" placeholder="Name" name="m_name" value="${m_name}" required>
+                        <input type="text" class="form-control" id="InputName" placeholder="Name" name="m_name" value="${member.m_name}" required>
                       </div>
                       <div class="form-group">
                         <label id="LabelNickname" for="InputNickname">닉네임</label>
                         <sec:authentication property="principal.m_nickname" var="m_nickname"/>
-                        <input type="text" class="form-control" id="InputNickname" placeholder="Nickname" name="m_nickname" value="${m_nickname}" required>
+                        <input type="text" class="form-control" id="InputNickname" placeholder="Nickname" name="m_nickname" value="${member.m_nickname}" required>
                       </div>
                       <div class="form-group">
                         <label id="LabelEmail" for="InputEmail">이메일</label>
                         <sec:authentication property="principal.m_email" var="m_email"/>
-                        <input type="email" class="form-control" id="InputEmail" placeholder="Email" name="m_email" value="${m_email}" required>
+                        <input type="email" class="form-control" id="InputEmail" placeholder="Email" name="m_email" value="${member.m_email}" required>
                       </div>
                       <div class="form-group">
                         <label id="LabelPhone" for="InputPhone">휴대전화</label>
                         <sec:authentication property="principal.m_phone" var="m_phone"/>
-                        <input type="text" class="form-control" id="InputPhone" placeholder="Phone" name="m_phone" value="${m_phone}" required>               
+                        <input type="text" class="form-control" id="InputPhone" placeholder="Phone" name="m_phone" value="${member.m_phone}" required>               
                       </div>
                       <div class="form-group">
                         <label id="LabelBirth" for="InputBirth">생년월일</label>
                         <sec:authentication property="principal.m_birth" var="m_birth"/>
-                        <input type="text" class="form-control file-upload-info" id="InputBirth" placeholder="Date of Birth" name="m_birth" value="${m_birth}" readonly required>
+                        <input type="text" class="form-control file-upload-info" id="InputBirth" placeholder="Date of Birth" name="m_birth" value="${member.m_birth}" readonly required>
                       </div>
                       <div class="form-group">
                         <label id="LabelGender" for="SelectGender">성별</label>
                         <sec:authentication property="principal.m_gender" var="m_gender"/>
                         <select class="form-control" id="SelectGender" name="m_gender">
                         <c:choose>
-                        	<c:when test="${m_gender eq 'M'}">
+                        	<c:when test="${member.m_gender eq 'M'}">
                         		<option value="M" selected>남성</option>
                           		<option value="F">여성</option>
                         	</c:when>
@@ -129,7 +137,7 @@
                         <label id="LabelAddress" for="InputAddress">주소</label>
                         <sec:authentication property="principal.m_address" var="m_address"/>
                         <div class="input-group">
-	                        <input type="text" class="form-control" id="InputAddress" placeholder="Address" name="m_address" value="${m_address}" readonly required>  
+	                        <input type="text" class="form-control" id="InputAddress" placeholder="Address" name="m_address" value="${member.m_address}" readonly required>  
 	                        <div class="input-group-append">
 	                          <button id="BtnAddress" class="btn btn-inverse-secondary btn-fw" type="button" onclick="daumPost()">주소찾기</button>
 	                        </div>
@@ -138,7 +146,7 @@
                       <div class="form-group">
                         <label id="LabelAddressDetail" for="InputAddressDetail">상세주소</label>
                         <sec:authentication property="principal.m_address_detail" var="m_address_detail"/>
-	                    <input type="text" class="form-control" id="InputAddressDetail" placeholder="AddressDetail" name="m_address_detail" value="${m_address_detail}" required>
+	                    <input type="text" class="form-control" id="InputAddressDetail" placeholder="AddressDetail" name="m_address_detail" value="${member.m_address_detail}" required>
                       </div>
 		      		  <!-- kakao 우편번호 서비스 -->
                       <script>
@@ -192,16 +200,27 @@
                         <label id="LabelProfile">프로필사진</label>
                         <sec:authentication property="principal.m_profile" var="m_profile"/>
                         <div class="input-group">
-                          <img id="ImgProfilePre" src="${m_profile}">
+                          <img id="ImgProfilePre" src="${member.m_profile}">
                           <span class="input-group-append">
                             <button id="BtnProfile" class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
                           </span>
                         </div>
-                        <input type="hidden" id="InputProfile" name="m_profile">
+                        <input type="hidden" id="InputProfile" name="m_profile" value="${member.m_profile}">
                         <input type="hidden" id="InputProfileUC" role="uploadcare-uploader" 
                             data-public-key="183400fad159d76bdf53" data-tabs="file gdrive gphotos"/>
                       </div>
-                      <input id="InputSubmit" type="button" class="btn btn-info btn-fw" value="정보수정">
+                      <div id="InputButtons">
+	                      <input id="InputSubmit" type="button" class="btn btn-info btn-fw" value="정보수정">
+	                      <input id="InputCancel" type="button" class="btn btn-inverse-secondary btn-fw" value="취소">                      
+                      </div>
+                      <script>
+                      	$("#InputCancel").on("click", function(){
+                      		var cancel = confirm("회원정보 수정을 취소하시겠습니까?");
+                      		if (cancel) {
+                      			location.href = '<%=request.getContextPath()%>/member/showMyInfo';                   			
+                      		}
+                      	})
+                      </script>
                     </form>
                   </div>
                 </div>
@@ -236,16 +255,26 @@
     		var InfoAddress = '${m_address}';
     		var InfoAddressDetail = '${m_address_detail}';
     		
-    		var FlagId = false;
-    		var FlagName = false;
-    		var FlagNickname = false;
-    		var FlagEmail = false;
-    		var FlagPhone = false;
-    		var FlagGender = false;
-    		var FlagAddressDetail = false;
+    		var FlagName = true;
+    		var FlagNickname = true;
+    		var FlagEmail = true;
+    		var FlagPhone = true;
+    		var FlagGender = true;
+    		var FlagAddress = true;
+    		var FlagAddressDetail = true;
+    		
+    		var header = $("meta[name='_csrf_header']").attr('th:content');
+    		var token = $("meta[name='_csrf']").attr('th:content');
+			console.log(header);
+			console.log(token);
     		
     		// 이름
-    		$("#InputName").on("input", function FxName(){
+    		$("#InputName").on("input", function(){
+    			$.fn.FxName();
+    		})
+    		
+    		// 이름 함수
+    		$.fn.FxName = function(){
     			var regexName = /(^[가-힣]{2,5}$)|(^[a-zA-Z]{2,20}(\s[a-zA-Z]{2,20})?$)/;
     			InputName = $("#InputName").val();		
     			
@@ -263,10 +292,15 @@
     				FlagName = true;
     			}
     			console.log(FlagName);
-    		})
+    		}
     		
     		// 닉네임
-    		$("#InputNickname").on("input", function FxNickname(){
+    		$("#InputNickname").on("input", function(){
+    			$.fn.FxNickname();
+    		})
+    		
+    		// 닉네임 함수
+    		$.fn.FxNickname = function(){
     			var regexNickname = /^[가-힣|a-z|A-Z|0-9]{2,15}$/;
     			InputNickname = $("#InputNickname").val();
     			
@@ -289,6 +323,9 @@
     					    m_nickname: InputNickname
     					},
     					type: "post",
+    					beforeSend: function(xhr){
+    				        xhr.setRequestHeader(header, token);
+    				    },
     					success: function(result){
     					    if (result == 1) {
     			    			$("#LabelNickname").html('닉네임 <span id="SpanNickName"><i class="mdi mdi-delta"></i> 중복된 닉네임이 있습니다.</span>');
@@ -307,10 +344,15 @@
     		    	})
     			}
     			console.log(FlagNickname);
-    		})
+    		}
     		
     		// 이메일
-    		$("#InputEmail").on("input", function FxEmail(){
+    		$("#InputEmail").on("input", function(){
+    			$.fn.FxEmail();
+    		})
+    		
+    		// 이메일 함수
+    		$.fn.FxEmail = function(){
     			var regexEmail = /^[A-Za-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
     			InputEmail = $("#InputEmail").val();		
     			
@@ -333,6 +375,9 @@
     					    m_email: InputEmail
     					},
     					type: "post",
+    					beforeSend: function(xhr){
+    				        xhr.setRequestHeader(header, token);
+    				    },
     					success: function(result){
     					    if (result == 1) {
     			    			$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-delta"></i> 중복된 이메일이 있습니다.</span>');
@@ -350,10 +395,15 @@
     		    	})
     			}
     			console.log(FlagEmail);
-    		})
+    		}
     		
     		// 휴대전화
-    		$("#InputPhone").on("input", function FxPhone(){
+    		$("#InputPhone").on("input", function(){
+    			$.fn.FxPhone();
+    		})
+    		
+    		// 휴대전화 함수
+    		$.fn.FxPhone = function(){
     			var regexPhone = /^[0][1]([0|1|6|7|8|9])+[0-9]{7,8}$/;
     			InputPhone = $("#InputPhone").val();
     			
@@ -376,6 +426,9 @@
     					    m_phone: InputPhone
     					},
     					type: "post",
+    					beforeSend: function(xhr){
+    				        xhr.setRequestHeader(header, token);
+    				    },
     					success: function(result){
     					    if (result == 1) {
     					    	$("#LabelPhone").html('휴대전화 <span id="SpanPhone"><i class="mdi mdi-delta"></i> 중복된 휴대전화 번호가 있습니다.</span>');
@@ -393,7 +446,7 @@
     		    	})
     			}
     			console.log(FlagPhone);
-    		})
+    		}
     		
     		// 성별
     		$("#SelectGender").on("click", function(){
@@ -406,8 +459,13 @@
     		InputAddress = $("#InputAddress").val();
     		
     		// 상세주소
-    		$("#InputAddressDetail").on("keyup", function FxAddressDetail(){
-    			InputAddressDetail = $("#InputAddressDetail").val();		
+    		$("#InputAddressDetail").on("keyup", function(){
+    			$.fn.FxAddressDetail();
+    		})
+    		
+    		// 상세주소 함수
+    		$.fn.FxAddressDetail = function(){
+				InputAddressDetail = $("#InputAddressDetail").val();		
     			
 				if (InputAddressDetail == '') {
 					$("#LabelAddressDetail").html('상세주소 <span id="SpanAddressDetail"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
@@ -419,7 +477,7 @@
     				FlagAddressDetail = true;
     			}
 				console.log(FlagAddressDetail);
-    		})
+    		}
     		
     		// 프로필 사진
     		$("#BtnProfile").on("click", function(){
@@ -466,25 +524,29 @@
 	    	// Submit 유효성 검사
 	    	$("#InputSubmit").on("click", function(){
 				if (FlagName == false) {
+					$.fn.FxName();
 		    		$("#InputName").focus();
 		    	} else if (FlagNickname == false) {
+		    		$.fn.FxNickname();
 		    		$("#InputNickname").focus();
 		    	} else if (FlagEmail == false) {
+		    		$.fn.FxEmail();
 		    		$("#InputEmail").focus();
 		    	} else if (FlagPhone == false) {
+		    		$.fn.FxPhone();
 		    		$("#InputPhone").focus();
 		    	} else if (FlagGender == false) {
 		    		$("#LabelGender").html('성별 <span id="SpanGender"><i class="mdi mdi-close"></i> 성별을 선택해 주세요.</span>');
 					$("#SpanGender").css("color", "red");
 					$("#SelectGender").focus();
-		    	} else if (FlagAddress == false) {
-		    		$("#LabelAddress").html('주소 <span id="SpanAddress"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-		        	$("#SpanAddress").css("color", "red");
-		        	$("#InputAddress").focus();
 		    	} else if (FlagAddressDetail == false) {
+		    		$.fn.FxAddressDetail();
 		    		$("#InputAddressDetail").focus();
 		    	} else {
-		    		$("#updateForm").submit();
+		    		var submit = confirm("회원정보 수정하시겠습니까?");
+              		if (submit) {
+              			$("#updateForm").submit();               			
+              		}
 		    	}
 	    	})
     	});

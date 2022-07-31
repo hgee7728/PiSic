@@ -39,9 +39,9 @@ import kh.spring.pisic.sound.domain.Sound;
 @RequestMapping("/admin")
 @PropertySource("classpath:cloudinary.properties") // properties 파일 등록
 public class AdminController {
+	
 	@Autowired
 	private AdminService service;
-	
 	
 	/*아티스트 관리자 페이지*/
 	@GetMapping("/artist")
@@ -453,11 +453,15 @@ public class AdminController {
 	@GetMapping("/member")
 	public ModelAndView pageMemberList(
 			ModelAndView mv
-			, Member member) {
-		
+			, Member member
+			, Criteria cri) {
+		Paging memberPaging = new Paging(cri, service.totalCntMember());
+		Paging adminPaging = new Paging(cri, service.totalCntAdmin());
 		// 회원 목록 List
+		mv.addObject("memberPaging", memberPaging);
 		mv.addObject("memberList", service.selectMemberList());
 		// 관리자 목록 List
+		mv.addObject("adminPaging", adminPaging);
 		mv.addObject("adminList", service.selectAdminList());
 		
 		mv.setViewName("admin/memberList");

@@ -32,6 +32,16 @@ public class MemberServiceImpl implements MemberService {
 	public int idCheck(String m_id) {
 		return dao.idCheck(m_id);
 	}
+	
+	@Override
+	public int passwordCheck(String m_id, String m_password) {
+		return dao.passwordCheck(m_id, m_password);
+	}
+
+	@Override
+	public String selectPassword(String m_id) {
+		return dao.selectPassword(m_id);
+	}
 
 	@Override
 	public int nicknameCheck(String m_nickname) {
@@ -104,5 +114,14 @@ public class MemberServiceImpl implements MemberService {
 		return cudDao.updateFailureCountReset(username);
 	}
 
+	@Override
+	public int deleteMember(Member member) {
+		return dao.deleteMember(member);
+	}
+
+	@Override
+	public int updatePassword(Member member) {
+		return dao.updatePassword(member);
+	}
 
 }

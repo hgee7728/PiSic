@@ -60,10 +60,14 @@
   	}
   </style> 
   <script>
-  var msg = '${msg}';
-  if(msg){
-	  alert(msg);
-  }
+	  var errormsg_name = '${errormsg_name}';
+	  if(errormsg_name){
+		  alert(errormsg_name);
+	  }
+	  var msg = '${msg}';
+	  if(msg){
+		  alert(msg);
+	  }
   </script>
   </head>
   <body>
@@ -145,7 +149,7 @@
                           <input id="remember_me" name="_spring_security_remember_me" type="checkbox" class="form-check-input">Remember me
                         </label>
                       </div>
-                      <button type="submit" class="btn btn-info btn-fw">로그인</button>
+                      <button id="InputSubmit" type="submit" class="btn btn-info btn-fw">로그인</button>
                     </form>
                     <div class="row">
 	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/findId'">아이디 찾기</button>

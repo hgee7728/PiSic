@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="utf-8">
 <meta name="viewport"
@@ -217,7 +220,12 @@ a {
   color: white;
 }
 </style>
-
+<script>
+	var msg = '${msg}';
+	if(msg){
+		alert(msg);
+	}
+</script>
 <script>
 const root_path = '<%=request.getContextPath() %>';
 let header = $("meta[name='_csrf_header']").attr('th:content');

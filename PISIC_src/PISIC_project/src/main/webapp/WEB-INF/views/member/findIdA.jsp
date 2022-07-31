@@ -81,8 +81,8 @@
                     	<h1 class="display-1">해당 아이디는<br>${member.m_id}<br>입니다.</h1>
                     </div>
                     <div class="row">
-	                    <button type="button" class="btn btn-info btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/login'">로그인</button>
-	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/member/findPw'">비밀번호 찾기</button>
+	                    <button type="button" class="btn btn-info btn-fw" onclick="location.href='<%=request.getContextPath()%>/login'">로그인</button>
+	                    <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="location.href='<%=request.getContextPath()%>/findPw'">비밀번호 찾기</button>
                     </div>
                   </div>
                 </div>

@@ -202,6 +202,19 @@
 		    <version>${org.springframework-security-version}</version>
 		</dependency>
 		
+		<!-- spring-security-oauth2 -->
+		<dependency>
+		    <groupId>org.springframework.security.oauth</groupId>
+		    <artifactId>spring-security-oauth2</artifactId>
+		    <version>2.5.0.RELEASE</version>
+		</dependency>
+		
+		<!-- thymeleaf-extras-springsecurity5 -->
+		<dependency>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		    <version>3.0.4.RELEASE</version>
+		</dependency>
 		
 		<!-- gson -->
 		<dependency>
@@ -231,12 +244,14 @@
 		    <artifactId>jackson-mapper-asl</artifactId> 
 		    <version>1.9.13</version>     
 		</dependency>
+		
 		<!-- geocoder -->
 		<dependency>
 		  <groupId>com.google.code.geocoder-java</groupId>
 		  <artifactId>geocoder-java</artifactId>
 		  <version>0.16</version>
 		</dependency>
+		
 		<!-- read excel file -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>

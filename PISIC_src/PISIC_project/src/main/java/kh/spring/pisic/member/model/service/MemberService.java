@@ -14,6 +14,10 @@ public interface MemberService {
 	
 	public int idCheck(String m_id);
 	
+	public int passwordCheck(String m_id, String m_password);
+	
+	public String selectPassword(String m_id);
+	
 	public int nicknameCheck(String m_nickname);
 	
 	public int emailCheck(String m_email);
@@ -33,7 +37,6 @@ public interface MemberService {
 	public int updateMyInfo(Member member);
 	
 	public Member selectLoginMember(String m_id);
-	
 
 	public int updateFailureCount(String username);
 
@@ -43,4 +46,7 @@ public interface MemberService {
 
 	public int updateFailureCountReset(String username);
 
+	public int deleteMember(Member member);
+	
+	public int updatePassword(Member member);
 }

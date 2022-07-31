@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,6 +18,7 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,43 +49,9 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
-//	@PostMapping("/login")
-//	public ModelAndView loginCheck(
-//			ModelAndView mv
-//			, Member member
-//			, RedirectAttributes rttr
-//			, HttpSession session) {
-////?		if (pwEncoding.matches(null, null))
-//		
-////암호화	member.setPasswd(pwEncoding.encode(member.getPasswd()));
-//		
-//		// login 세선이 존재하면 제거
-//		if (session.getAttribute("loginSsInfo") != null) {
-//			session.removeAttribute("loginSsInfo");
-//		}
-//		
-//		Member result = service.loginCheck(member);
-//		
-//		if (result != null) {
-//			session.setAttribute("loginSsInfo", result);
-//			System.out.println("로그인 성공");
-//			mv.setViewName("redirect:/");
-//		} else {
-//			System.out.println("로그인 실패");
-//			mv.setViewName("redirect:/member/login");
-//		}
-//		return mv;
-//	}
-	
-//	@GetMapping("/logout")
-//	public String pageLogout(
-//			HttpSession session) {
-//		// 세션 초기화
-//		session.invalidate();
-////		session.removeAttribute("loginSsInfo");
-//		return "redirect:/";
-//	}
-	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	@RequestMapping("/login/getKakaoAuthUrl")
 	public @ResponseBody String getKakaoAuthUrl(
 			HttpServletRequest request) throws Exception {
@@ -236,35 +204,116 @@ public class MemberController {
 	
 	@GetMapping("/updateMyInfo")
 	public ModelAndView pageUpdateMyInfo(
-			ModelAndView mv) {
-		
+			ModelAndView mv
+			, Authentication auth) {
+		// 현재 사용자 id
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		String uid = ud.getUsername();
+				
+		Member member = service.selectLoginMember(uid);
+		System.out.println("==========================================" + member);
+				
+		mv.addObject("member", member);
 		mv.setViewName("member/updateMyInfo");
 		return mv;
 	}
 	
 	@PostMapping("/updateMyInfo")
-	public ModelAndView updateMyInfo(
-			ModelAndView mv
-			, Member member) {
+	public String updateMyInfo(
+			Member member
+			, RedirectAttributes rttr) {
 		int result = service.updateMyInfo(member);
 		if (result < 1) {
 			System.out.println("회원정보수정 실패");
+			rttr.addFlashAttribute("msg", "회원정보수정을 실패하였습니다.");
 		} else {
 			System.out.println("회원정보수정 성공");
+			rttr.addFlashAttribute("msg", "회원정보수정이 완료되었습니다.");
 		}
+		return "redirect:/member/showMyInfo";
+	}
+	
+	@GetMapping("/updatePassword")
+	public ModelAndView pageUpdatePassword(
+			ModelAndView mv) {
+		mv.setViewName("member/updatePassword");
+		return mv;
+	}
+	
+	@PostMapping("/updatePassword")
+	public String updatePassword(
+			Member member
+			, RedirectAttributes rttr) {
+		// 암호화
+		String endcodedPassword = bCryptPasswordEncoder.encode(member.getM_password());
+		member.setM_password(endcodedPassword);
 		
-		mv.setViewName("redirect:/member/showMyInfo");
+		int result = service.updatePassword(member);
+		if (result < 1) {
+			System.out.println("비밀번호 변경 실패");
+			rttr.addFlashAttribute("msg", "비밀번호 변경 실패하였습니다.");
+		} else {
+			System.out.println("비밀번호 변경 성공");
+			rttr.addFlashAttribute("msg", "비밀번호 변경이 완료되었습니다.");
+		}
+		return "redirect:/member/showMyInfo";
+	}
+	
+	@GetMapping("/deleteMember")
+	public ModelAndView pageDeleteMember(
+			ModelAndView mv
+			, Member member) {
+		
+		mv.setViewName("member/deleteMember");
 		return mv;
 	}
 	
 	@PostMapping("/deleteMember")
-	public ModelAndView deleteMember(
-			ModelAndView mv
-			, Member member) {
+	public String deleteMember(
+			Member member
+			, RedirectAttributes rttr) {
+		int result = service.deleteMember(member);
+		if (result == 1) {
+			System.out.println("회원탈퇴 성공");
+			rttr.addFlashAttribute("msg", "회원탈퇴가 완료되었습니다.");
+			SecurityContextHolder.clearContext();
+		} else {
+			System.out.println("회원탈퇴 실패");
+			rttr.addFlashAttribute("msg", "회원탈퇴를 실패하였습니다.");
+		}
+		return "redirect:/";
+	}
+	
+	@PostMapping("/passwordCheck.ax")
+	@ResponseBody
+	public int passwordCheck(
+			@RequestParam (name = "m_id", required = false) String m_id
+			, @RequestParam (name = "m_password", required = false) String m_password) {
 		
+		String password = service.selectPassword(m_id);
+		int result = 0;
+		if (matchPassword(m_password, password)) {
+			System.out.println("================================================================== 일치");
+			result = 1;
+		} else {
+			System.out.println("================================================================== 불일치");
+			result = 0;
+		}
+		return result;
+	}
+	
+	private boolean matchPassword(String password, String Enpassword) {
+		return bCryptPasswordEncoder.matches(password, Enpassword);
+	}
+	
+	@ExceptionHandler(Exception.class)
+	private ModelAndView handlerBoardException(Exception e) {
+		logger.error(e.getMessage());
+		e.printStackTrace();
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("errorMessage", "오류");
 		mv.setViewName("redirect:/");
 		return mv;
 	}
-	
-
 }

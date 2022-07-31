@@ -387,4 +387,18 @@
 		SELECT *
 		FROM membership
 	</select>
+	
+	<!-- 총 회원 수 -->
+	<select id="totalCntMember" resultType="_int">
+		SELECT count(*)
+		FROM member
+		WHERE m_grade = 'ROLE_MEMBER'
+	</select>
+	
+	<!-- 총 관리자 수 -->
+	<select id="totalCntAdmin" resultType="_int">
+		SELECT count(*)
+		FROM member
+		WHERE m_grade = 'ROLE_ADMIN'
+	</select>
 </mapper>

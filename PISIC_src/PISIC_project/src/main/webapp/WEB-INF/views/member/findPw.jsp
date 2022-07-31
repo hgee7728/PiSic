@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -30,12 +31,17 @@
   	.stretch-card {
   		margin: 0 auto;
   	}
-  	.btn.btn-info.btn-fw {
+  	#InputButtons {
+  		text-align: center;
+  	}
+  	#InputCancel, #InputSubmit {
   		margin: 0 auto;
-    	display: block;
   	}
   	.row {
   		margin-top: 0.75rem;
+  	}
+  	#SpanErrormsg {
+  		color: red;
   	}
   	@media (min-width: 768px) {
   		.col-md-6 {
@@ -43,6 +49,12 @@
 		}
   	}
   </style>
+  <script>
+	  var msg = '${msg}';
+	  if(msg){
+		  alert(msg);
+	  }
+  </script>
   </head>
   <body>
     <div class="container-scroller">
@@ -68,8 +80,13 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">비밀번호 찾기</h4>
-                    <p class="card-description">비밀번호 찾기</p>
-                    <form class="forms-sample" action="<%=request.getContextPath() %>/member/findPw" method="post">
+                    <label class="card-description">비밀번호 찾기</label>
+                    <c:if test="${not empty msg}">
+                    	<span id="SpanErrormsg"><i class="mdi mdi-close"></i>${msg}</span>
+                    </c:if>
+                    <form id="findPwForm" class="forms-sample" action="<%=request.getContextPath() %>/findPw" method="post">
+                      <!-- csrf 공격 방지 -->
+                      <input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
                       <div class="form-group">
                         <label id="LabelId" for="InputId">아이디 *</label>
                         <input type="text" class="form-control" id="InputId" placeholder="Id" name="m_id" required>
@@ -90,7 +107,18 @@
                         <label id="LabelBirth" for="InputBirth">생년월일 *</label>
                         <input type="text" class="form-control" id="InputBirth" placeholder="Date of Birth" name="m_birth" required>
                       </div>
-                      <button type="submit" class="btn btn-info btn-fw" id="BtnSubmit">비밀번호 찾기</button>
+                      <div id="InputButtons">
+                      	<input id="InputSubmit" type="button" class="btn btn-info btn-fw" value="비밀번호 찾기"/>
+                      	<input id="InputCancel" type="button" class="btn btn-inverse-secondary btn-fw" value="취소">
+                      </div>
+                      <script>
+                      	$("#InputCancel").on("click", function(){
+                      		var cancel = confirm("비밀번호 찾기를 취소하시겠습니까?");
+                      		if (cancel) {
+                      			location.href = '<%=request.getContextPath()%>/login';                   			
+                      		}
+                      	})
+                      </script>
                     </form>
                   </div>
                 </div>
@@ -181,7 +209,7 @@
 		
 		// 휴대전화
 		$("#InputPhone").on("keyup", function(){
-			var regexPhone = /^01([0|1|6|7|8|9]{2})+([0-9]{6,7})$/;
+			var regexPhone = /^01([0|1|6|7|8|9])+[0-9]{7,8}$/;
 			InputPhone = $("#InputPhone").val();
 			
 			if (!regexPhone.test(InputPhone)) {
@@ -218,6 +246,49 @@
 				FlagBirth = true;
 			}
 		})
+		
+		// Submit 유효성 검사
+	    $("#InputSubmit").on("click", function(){
+	    	InputId = $("#InputId").val();
+	    	InputName = $("#InputName").val();
+	    	InputEmail = $("#InputEmail").val();
+	    	InputPhone = $("#InputPhone").val();
+	    	InputBirth = $("#InputBirth").val();
+	    		
+	    	if (FlagId == false) {
+	    		if (InputId == '') {
+					$("#LabelId").html('아이디 <span id="SpanId"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+					$("#SpanId").css("color", "red");
+	    		}
+	    		$("#InputId").focus();
+	    	} else if (FlagName == false) {
+		    	if (InputName == '') {
+		    		$("#LabelName").html('이름 <span id="SpanName"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+		    		$("#SpanName").css("color", "red");
+		    	}
+		    	$("#InputName").focus();
+		    } else if (FlagEmail == false) {
+		    	if (InputEmail == '') {
+    				$("#LabelEmail").html('이메일 <span id="SpanEmail"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+    				$("#SpanEmail").css("color", "red");
+		    	}
+		    	$("#InputEmail").focus();
+		    } else if (FlagPhone == false) {
+		    	if (InputPhone == '') {
+    				$("#LabelPhone").html('휴대전화 <span id="SpanPhone"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+    				$("#SpanPhone").css("color", "red");
+		    	}
+		    	$("#InputPhone").focus();
+		    } else if (FlagBirth == false) {
+		    	if (InputBirth == '') {
+    				$("#LabelBirth").html('생년월일 <span id="SpanBirth"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
+    				$("#SpanBirth").css("color", "red");
+		    	}
+		    	$("#InputBirth").focus();
+		    } else {
+		    	$("#findPwForm").submit();
+		    }
+	    })
 	});
     </script>
     <!-- container-scroller -->
