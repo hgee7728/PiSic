@@ -269,8 +269,9 @@ public class SoundController {
 		playInfo.setSky((String) jobWeather.get("Sky condition"));
 		playInfo.setPty((String)jobWeather.get("Precipitation types"));
 		playInfo.setTmp(nowTemperature);
+		playInfo.setArea_name(jsonAddress.get("region_2depth_name").toString());
+		//playInfo.setArea_name("강남구");
 
-		// TODO
 		if(service.insertPalyInfo(playInfo) < 1) {
 			return "0";
 		}else {

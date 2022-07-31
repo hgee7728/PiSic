@@ -267,7 +267,7 @@ select * from (SELECT *
 		, default
 		, #{sky}
 		, #{pty}
-		, #{tmp}
+		, 0
 	)
 </insert>
 

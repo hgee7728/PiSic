@@ -394,9 +394,9 @@ function goInsertPlayinfo(){
 		},
 		success: function(result) {
 			if(result=="1"){
-				alert("성공");
+				
 			}else{
-				alert("실패");
+				
 			}
 				
 			
