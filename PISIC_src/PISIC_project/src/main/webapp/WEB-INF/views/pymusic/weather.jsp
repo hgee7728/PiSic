@@ -90,7 +90,7 @@ $(function(){
 							Pick Your Weather &nbsp;&nbsp;
 						</h2>
 						<h4>[   ${serverTime}  ]</h4>
-						<h3>${Temperature}</h3>
+						<h3>${tmp }</h3>
 						<br>
 					<p>날씨별 전체 재생 수 기준 랭킹 조회</p>
 					<div class="content_div3">
@@ -105,13 +105,13 @@ $(function(){
 										<c:set var="pyWeather" value="${pyWeather }"	/>
 										<h3 class="card-title">
 										 <c:choose>
-											<c:when test="${'맑음'  eq  pyWeather.sky}">
+											<c:when test="${pyWeather.sky eq '맑음'  }">
 											맑음
 											</c:when>
-											<c:when test="${'구름 많음' eq  pyWeather.sky }">
+											<c:when test="${pyWeather.sky eq '구름 많음' }">
 											구름 많음
 											</c:when>
-											<c:when test="${'흐림'  eq  pyWeather.sky}">
+											<c:when test="${pyWeather.sky eq '흐림' }">
 											흐림
 											</c:when>
 											<c:when test="${pyWeather.pty eq 1  }">

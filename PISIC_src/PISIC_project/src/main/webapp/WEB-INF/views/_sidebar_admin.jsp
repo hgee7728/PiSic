@@ -206,7 +206,7 @@ $(function(){
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/insertFaq">
         <span class="menu-icon">
           <i class="mdi mdi-account"></i>
         </span>

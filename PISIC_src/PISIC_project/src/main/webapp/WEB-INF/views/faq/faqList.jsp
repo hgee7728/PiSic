@@ -112,7 +112,7 @@
 																<td style="height: 300px;">
 																	<div>
 																		<% pageContext.setAttribute("newLineChar", "\n"); %>
-																		내용:${fn:replace(faqBoard.faq_content, newLineChar, "<br/>")}
+																		${fn:replace(faqBoard.faq_content, newLineChar, "<br/>")}
 																	</div>
 																</td>
 																<td></td>

@@ -115,10 +115,12 @@ display: none;
 											
 												<table class="table qna_list">
 													<thead>
-														<tr>
+														<c:if test="${qnaBoard.m_id eq loginSsInfo.m_id }">
 															<div class="btn_qna">
 																<button type="button" class="btn btn-info btn-fw" onclick="location.href='<%=request.getContextPath()%>/qna/qnaWrite'">1:1문의하기</button>
 															</div>
+														</c:if>
+														<tr>
 															<th>NO.</th>
 															<th>제목</th>
 															<th>작성자</th>
@@ -127,33 +129,31 @@ display: none;
 													</thead>
 													
 													<tbody>
-													
 													<c:forEach items="${qnalist }" var="qnaBoard">
-									
-									<c:if test="${qnaBoard.gr_layer == 0} ">
-										<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nbsp;</span>
-									</c:if>
-									<c:if test="${qnaBoard.gr_layer == 0} ">
-									</c:if>
-										<tr class="ctsSbj">
-												<th type="hidden">${qnaBoard.qna_no }</th>
-									<c:forEach begin="1" end="${qnaBoard.gr_layer }">
-										&nbsp;&nbsp;
-									</c:forEach>
+														<c:if test="${qnaBoard.gr_layer == 0} ">
+															<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nbsp;</span>
+														</c:if>
+														<c:if test="${qnaBoard.gr_layer == 0} ">
+														</c:if>
+															<tr class="ctsSbj">
+														<th type="hidden">${qnaBoard.qna_no }</th>
+													<c:forEach begin="1" end="${qnaBoard.gr_layer }">
+														&nbsp;&nbsp;
+													</c:forEach>
 
-										<td>
-											<form id="frm${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">		
-												 <!-- csrf 공격 방지 -->
-                     						 	<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
-											    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
-											    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
-											</form>
-										</td>
-										<td>${qnaBoard.m_id }</td>
-										<td>${qnaBoard.qna_date }</td>
-									</tr>
-									
-									</c:forEach>
+													<td>
+														<form id="frm${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">		
+															 <!-- csrf 공격 방지 -->
+			                     						 	<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
+														    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
+														    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
+														</form>
+													</td>
+													<td>${qnaBoard.m_id }</td>
+													<td>${qnaBoard.qna_date }</td>
+												</tr>
+												
+												</c:forEach>
 															
 															
 														<!-- 답변글 아닌 원글 -->

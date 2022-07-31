@@ -60,7 +60,11 @@
 .table th, td {
 	text-align: left;
 }
-
+input {
+  outline-color: white;
+  padding: 5px;
+  color:white;
+}
 /*버튼*/
 .ctsSbj a {
 	color: #8f5fe8;
@@ -70,9 +74,6 @@
 	font-weight: bold;
 }
 
-.form-control {
-	
-}
 
 .stretch-card>.card {
 	width: 100%;
@@ -81,7 +82,7 @@
 .btn_qna {
 	position: relative;
 	margin:30px auto;
-	float: right;
+	float: center;
 /*center*/
 }
 textarea{
@@ -89,6 +90,13 @@ textarea{
     height: 200px;
     font-size: 15px;
     padding: 10px;
+    border-color:white;
+    background-color: transparent;
+    color: white;
+}
+
+label {
+float:left;
 }
 </style>
 </head>
@@ -111,24 +119,27 @@ textarea{
 									<div class="card-body">
 
 										<form id="writeform" action="<%=request.getContextPath()%>/qna/qnaWrite" method="post">
+										 <!-- csrf 공격 방지 -->
+           						 		<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">		
 											<h4 class="card-title">문의글 등록하기</h4>
 
 											<div  class="form-group">
 												<label  for="qna_title">제목</label>             
-												<input  type="text"  class="form-control"  id="qna_title" name="qna_title" placeholder="제목을 작성해주세요." style="width: 1000px;"> 
+												<textarea  class="form-control" id="qna_title" name="qna_title" placeholder="제목을 작성해주세요."   style="height: 50px; width: 1000px;"></textarea>
+												<!--  <input  type="text"  class="form-control" style="background-color:transparent; width: 1000px; height: 30px;"  id="qna_title" name="qna_title" placeholder="제목을 작성해주세요." > 
+										-->
 											</div>
-											<div class="form-check form-check-inline mt-3">
-											   <label class="form-check-label">비밀글 설정</label>
-												<input class="form-check-input" type="checkbox" name="qna_secret" id="qna_secret">
-											</div>
+											
 											<div  class="form-group">	
 												<label  for="qna_content">내용</label>            
 												<textarea  class="form-control" id="qna_content" name="qna_content" placeholder="1:1문의할 내용을 입력해주세요."  maxlength="2048" style="height: 400px; width: 1000px;"></textarea>
 											</div>
-										<div class="btn_qna">
+											
+										<div class="btn_qna" style="float:center;">
 											<button type="submit" class="btn btn-info btn-fw">등록하기</button>
 											<button type="button" class="btn btn-info btn-fw"  onclick="location.href='<%=request.getContextPath()%>/qna/qnaList'">목록으로</button>
 										</div>
+									</form>
 									</div>
 								</div>
 							</div>

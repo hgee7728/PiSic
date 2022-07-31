@@ -5,16 +5,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Required meta tags -->
+    <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="_csrf_header" th:content="${_csrf.headerName}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <meta name="_csrf" th:content="${_csrf.token}">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <title>1:1문의게시판 상세조회</title>
 <!-- plugins:css -->
 <link rel="stylesheet"
@@ -38,29 +41,73 @@
 	.col-md-6 {
 	max-width: 100%;
 	}
-/*시작*/
-.input_wrap{
-	padding: 5px 20px;
+ table.qnaRead {
+  border-collapse: separate;
+  border-spacing: 1px;
+  text-align: left;
+  line-height: 1.5;
+  border-top: 1px solid #ccc;
+  margin : 20px 10px;
 }
-label{
-    display: block;
-    margin: 10px 0;
-    font-size: 20px;	
+table.qnaRead th {
+  width: 150px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
 }
-input{
-	padding: 5px;
-    font-size: 17px;
+table.qnaRead td {
+  width: 350px;
+  padding: 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
 }
-textarea{
-	width: 800px;
-    height: 200px;
-    font-size: 15px;
-    padding: 10px;
+table.qnaContent {
+  hegith:500px;
 }
-
-
+.btnSet { 
+	display :inline-block;
+}
 </style>
+<script>
+const root_path = '<%=request.getContextPath() %>';
+$(function(){
+	// 게시물 100자 제한
+	$('#recomment_content').on('keyup', function() {
+        $('.recomment_cnt').html("("+$(this).val().length+" / 100)");
+ 
+        if($(this).val().length > 100) {
+            $(this).val($(this).val().substring(0, 100));
+            $('.recomment_cnt').html("(100 / 100)");
+        }
+    });
+}
+// 글 수정
+$("#update_btn").click(function(){
+	modify_frm.action = "<%=request.getContextPath()%>/qna/qnaUpdate";
+	modify_frm.method = "post";
+	modify_frm.submit();
+});
 
+// 글 삭제
+$("#delete_btn").click(function(){
+	var confm = confirm("해당 글을 삭제하시겠습니까?");
+	if (confm == false) {
+		
+	} else {
+		modify_frm.action = "<%=request.getContextPath()%>/qna/delete";
+		modify_frm.method = "post";
+		modify_frm.submit();
+	}
+	
+});
+});
+
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -91,115 +138,46 @@ textarea{
 						<c:otherwise>
 							<div>
 									<c:if test="${qnaBoard.m_id eq loginSsInfo.m_id }">
-										<form id="frmNum" >
-										 <!-- csrf 공격 방지 -->
-                     						<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
+										<form id="frmNum">
+										<!-- csrf 공격 방지 -->
+                      					<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 											<input type="hidden" name="qna_no" value="${qnaBoard.qna_no }">
-											<button type="button" id="qna_update" class="btn btn-info btn-fw">수정</button>
-											<button type="button" id="qna_delete" class="btn btn-info btn-fw">삭제</button>
+											<button type="button" id="update_btn" class="btn btn-info btn-fw">수정</button>
+											<button type="button" id="delete_btn" class="btn btn-info btn-fw">삭제</button>
 										</form>
-										<script>
-											$("#qna_update").click(function(){
-												if($(this).hasClass("update")){
-													frmNum.action="<%=request.getContextPath()%>/qna/qnaUpdate";
-												}else {
-													frmNum.action="<%=request.getContextPath()%>/qna/qnaDelete";
-												}
-												frmNum.method="post";
-												frmNum.submit();
-											});
-											
-											$("#qna_delete").click(function(){
-												$.ajax({
-													url:"<%=request.getContextPath()%>/qna/delete",
-													type:"post",
-													data: {qna_no:"${qnaBoard.qna_no }"},
-													success:function(result){
-														console.log(result);
-														if(result){
-															alert(result);
-														}
-														location.href="<%=request.getContextPath() %>/qna/qnaList";
-													},
-													error:function(error){
-													}
-												});
-											});
-										</script>
 											</c:if>
-										<div class="input_wrap">
-											<label>게시판 번호</label>
-											<input name="qna_no" readonly="readonly" value='<c:out value="${qnaBoard.qna_no}"/>' >
-										</div>
-										<div class="input_wrap">
-											<label>비밀글 여부</label>
-											<input name="qna_secret" readonly="readonly" value="${qnaBoard.qna_secret}"/>' >
-										</div>	
-										<div class="input_wrap">
-											<label>게시판 제목</label>
-											<input name="title" readonly="readonly" value='<c:out value="${qnaBoard.qna_title}"/>' >
-										</div>
-										<div class="input_wrap">
-											<label>게시판 내용</label>
-											<textarea rows="3" name="content" readonly="readonly"><c:out value="${qnaBoard.qna_content}"/></textarea>
-										</div>
-										<div class="input_wrap">
-											<label>게시판 작성자</label>
-											<input name="writer" readonly="readonly" value='<c:out value="${qnaBoard.m_id}"/>' >
-										</div>
-										<div class="input_wrap">
-											<label>게시판 등록일</label>
-											<input name="regdater" readonly="readonly" value="${qnaBoard.qna_date}"/>' >
-										</div>
-	
-										
-
-							<!--		<table border="1">
+										<table class="qnaRead">
 											<tr>
-												<td>level</td>	
-												<td>ref</td>	
-												<td>seq</td>			
-												<td>번호</td>
-												<td>제목</td>
-												<td>작성일</td>
-												<td>작성자</td>
-												<td>비밀글</td>				
-											</tr>
-											<tr>
-												<td>${qnaBoard.gr_layer }</td>	
-												<td>${qnaBoard.gr_ord }</td>	
-												<td>${qnaBoard.orgin_no }</td>			
-												<td><a href="<%=request.getContextPath()%>/qna/qnaRead?refnum=${qnaBoard.qna_no }">${qnaBoard.qna_no }</a></td>
-												<td>
-								<c:forEach begin="1" end="${qnaBoard.qna_no }"> 
-												&#8618;
-								</c:forEach>
-												${qnaBoard.qna_title }
-												</td>
+												<th>번호</th>
+												<td>${qnaBoard.qna_no }</a></td>
+												<th>작성일</th>
 												<td>${qnaBoard.qna_date }</td>
-												<td>${qnaBoard.m_id }</td>
-												<td>${qnaBoard.qna_secret }</td>	
 											</tr>
-										</table>
-										<div>
-											<% pageContext.setAttribute("newLineChar", "\n"); %>
-											내용:${fn:replace(qnaBoard.qna_content, newLineChar, "<br/>")}
-										</div>
-										  -->	
+											<tr>
+												<th>제목</th>
+												<td>${qnaBoard.qna_title }</td>
+												<th>작성자</th>
+												<td>${qnaBoard.m_id }</td>
+											</tr>
+											<tr>
+												<th class="qnaContent">내용</th>	
+												<td colspan="3"><% pageContext.setAttribute("newLineChar", "\n"); %>${fn:replace(qnaBoard.qna_content, newLineChar, "<br/>")}</td>
+											</tr>
+									</table>
 										
 								<div class="btnSet">
 									<!-- 관리자인 경우 수정 삭제 가능 -->
-									<!--<core:if test="${login_info.admin eq 'Y' }">
-										<a class="btn btn-info btn-fw" href="qnaUpdate?id=${member.m_id }">수정</a>
-										<a class="btn btn-info btn-fw" onclick="if(confirm('정말 삭제하시겠습니까?')) { href='qnaDelete?id=${member.m_id }' }">삭제</a>
-									</core:if>-->
+									<core:if test="${login_info.m_id eq 'admin' }">
+										<a class="btn btn-info btn-fw"  id="update_btn" href="qnaUpdate?id=${member.m_id }">수정</a>
+										<a class="btn btn-info btn-fw" id="delete_btn" onclick="if(confirm('정말 삭제하시겠습니까?')) { href='qnaDelete?id=${member.m_id }' }">삭제</a>
+									</core:if>
 									<!-- 로그인이 된 경우 답글 쓰기 가능 -->
 									<core:if test="${!empty login_info }">
 										<a class="btn btn-info btn-fw" href="<%=request.getContextPath()%>/qna/qnaWrite?refnum=${qnaBoard.qna_no }">답글 쓰기</a>
 									</core:if>
 								</div>
-								
-						</div>
+									
+									</div>
 									<hr>
 									<!-- 관리자만 보이게하기  
 								  	<div>답글작성</div>

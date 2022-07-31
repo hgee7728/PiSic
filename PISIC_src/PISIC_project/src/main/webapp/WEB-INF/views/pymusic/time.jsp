@@ -104,7 +104,8 @@ $(function(){
 								<div class="card">
 									<div class="card-body">
 										<h3 class="card-title">
-									<c:choose>
+										<c:set var="p_date" value="${pyTime[1].p_date }"/>
+					<!-- 				<c:choose>
 											<c:when test="${p_date eq 1 }">
 											새벽 MIX
 											</c:when>
@@ -118,7 +119,7 @@ $(function(){
 											밤 MIX
 											</c:when>
 										
-										</c:choose>
+										</c:choose> -->
 										TOP 10</h3>
 										
 										<div class="table-responsive">
