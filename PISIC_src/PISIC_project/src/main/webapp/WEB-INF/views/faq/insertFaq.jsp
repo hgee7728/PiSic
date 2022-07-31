@@ -13,7 +13,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<title>FAQ 질문관리</title>
+<title>FAQ 관리자 페이지</title>
 
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -60,7 +60,11 @@
 .table th, td {
 	text-align: left;
 }
-
+input {
+  outline-color: white;
+  padding: 5px;
+  color:white;
+}
 /*버튼*/
 .ctsSbj a {
 	color: #8f5fe8;
@@ -70,6 +74,7 @@
 	font-weight: bold;
 }
 
+
 .stretch-card>.card {
 	width: 100%;
 	min-width: 100%;
@@ -77,14 +82,21 @@
 .btn_faq {
 	position: relative;
 	margin:30px auto;
-	float: right;
+	float: center;
 /*center*/
 }
 textarea{
 	width: 800px;
     height: 200px;
     font-size: 15px;
-    padding: 10px;
+    padding: 20px;
+    border-color:white;
+    background-color: transparent;
+    color: white;
+}
+
+label {
+float:left;
 }
 </style>
 </head>
@@ -98,33 +110,33 @@ textarea{
 			<jsp:include page="../_navbar.jsp" />
 			<div class="main-panel">
 				<div class="content-wrapper">
-					<h2 class=" card-title">FAQ 관리자 질문관리</h2>
+					<h2 class=" card-title">고객센터</h2>
 					<br>
-					<h3 class=" card-title">자주묻는 질문 작성 및 삭제</h3>
+					<h3 class=" card-title">자주묻는 문의글 등록</h3>
 
 							<div class="col-lg-12 grid-margin stretch-card">
 								<div class="card">
 									<div class="card-body">
 
-										<form id="writeform" action="<%=request.getContextPath()%>/qna/qnaWrite" method="post">
-											<h4 class="card-title">문의글 등록하기</h4>
+										<form id="writeform" action="<%=request.getContextPath()%>/faq/insertFaq" method="post">
+										 <!-- csrf 공격 방지 -->
+										 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 											<div  class="form-group">
-												<label  for="qna_title">제목</label>             
-												<input  type="text"  class="form-control"  id="qna_title" name="qna_title" placeholder="제목을 작성해주세요." style="width: 1000px;"> 
+												<label  for="faq_title">자주 묻는 문의</label>             
+												<textarea  class="form-control" id="faq_title" name="faq_title" placeholder="(자주 묻는 질문을 등록해주세요)"   style="height: 250px; width: 1000px;"></textarea>
 											</div>
-											<div class="form-check form-check-inline mt-3">
-											   <label class="form-check-label">비밀글 설정</label>
-												<input class="form-check-input" type="checkbox" name="qna_secret" id="qna_secret">
-											</div>
+											<br>
 											<div  class="form-group">	
-												<label  for="qna_content">내용</label>            
-												<textarea  class="form-control" id="qna_content" name="qna_content" placeholder="1:1문의할 내용을 입력해주세요."  maxlength="2048" style="height: 400px; width: 1000px;"></textarea>
+												<label  for="faq_content">문의 답변 내용</label>            
+												<textarea  class="form-control" id="faq_content" name="faq_content" placeholder="(자주 묻는 질문에 대한 답변을 등록해주세요)"  maxlength="2048" style="height: 350px; width: 1000px;"></textarea>
 											</div>
-										<div class="btn_faq">
+											
+										<div class="btn_faq" style="float:center;">
 											<button type="submit" class="btn btn-info btn-fw">등록하기</button>
-											<button type="button" class="btn btn-info btn-fw"  onclick="location.href='<%=request.getContextPath()%>/qna/qnaList'">목록으로</button>
+											<button type="button" class="btn btn-info btn-fw"  onclick="location.href='<%=request.getContextPath()%>/faq/faqList'">목록으로</button>
 										</div>
+									</form>
 									</div>
 								</div>
 							</div>

@@ -10,6 +10,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
@@ -65,6 +67,46 @@
 	font-weight: bold;
 }
 </style>
+<script>
+//한개 삭제 버튼
+$(document).on("click", ".select_artist_delete", function() {
+	console.log($(this).next("input[name=delete_faq_no]").val()+"---------------------------------");
+	var confm = confirm("해당 FAQ를 삭제 하시겠습니까?");
+	var header = $("meta[name='_csrf_header']").attr('th:content');
+	var token = $("meta[name='_csrf']").attr('th:content');
+	console.log(header);
+	console.log(token);
+	
+	if (confm == false) {
+		alert("취소하셨습니다.");
+	} else {
+		$.ajax({
+			url:"<%=request.getContextPath()%>/faq/deleteFaq",
+			type:"post",
+			data:{
+				faq_no: $(this).next("input[name=delete_faq_no]").val()
+				},
+			beforeSend: function(xhr){
+		        xhr.setRequestHeader(header, token);
+		    },
+			success:function(result){
+				console.log(result);
+				if(result == "0"){
+					alert("FAQ 삭제가 실패했습니다. 다시 시도해주세요");
+					
+				} else {
+					alert("FAQ가 삭제 되었습니다.");
+					location.reload();
+				}
+			},
+			error:function(error){
+				
+			}
+		}); // ajax 끝
+	}
+});
+
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -89,6 +131,7 @@
 										<h4 class="card-title">질문 TOP10</h4>
 										<div class="table-responsive">
 											<form name="faq_frm">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<table class="table faq_list">
 													<thead>
 														<tr>
@@ -100,12 +143,33 @@
 
 													</thead>
 													<tbody>
-														<c:forEach items="${faqlist }" var="faqBoard">
+														<c:forEach items="${faqBoard }" var="faqBoard">
 															<tr class="ctsSbj" style="cursor: pointer;">
 																<th>${faqBoard.faq_no }</th>
 																<td>${faqBoard.faq_title }</td>
 																<td><fmt:formatDate pattern="yyyy-MM-dd"
 																		value="${faqBoard.faq_date }" /></td>
+																		
+																		
+																<td>
+																	<div class="select_btns">
+																		<button type="button"
+																			class="btn btn-info btn-md update update_faq"
+																			onclick="location.href='<%=request.getContextPath() %>/faq/updateFaq?faq_no=${faqBoard.faq_no }'">
+																			수정</button>
+																	</div>
+																</td>
+																<td>
+																	<div class="select_btns">
+																		<button type="button"
+																			class="btn btn-info btn-md delete delete_faq">
+																			삭제</button>
+																		<input type="hidden" value="${faqBoard.faq_no}"
+																			name="delete_faq_no">
+																	</div>
+																</td>
+																
+																
 															</tr>
 															<tr class="contents">
 																<td></td>

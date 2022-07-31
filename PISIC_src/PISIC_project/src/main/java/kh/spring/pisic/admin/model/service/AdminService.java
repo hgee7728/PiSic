@@ -17,6 +17,7 @@ public interface AdminService {
 	public int insertArtist(Artist artist);
 	public int updateArtist(Artist artist);
 	public int deleteArtist(List<Artist> aritstList);
+	
 	public int totalCntAlbum();
 	public List<Album> selectAlbumList(Criteria cri);
 	public List<Album> selectSearchAlbumList(String keyword);
@@ -24,6 +25,7 @@ public interface AdminService {
 	public Album selectAlbum(int a_no);
 	public int updateAlbum(Album album);
 	public int deleteAlbum(List<Album> albumList);
+	
 	public int totalCntSound();
 	public List<Sound> selectSoundList(Criteria cri);
 	public List<Sound> selectSearchSoundList(String keyword);
@@ -31,9 +33,12 @@ public interface AdminService {
 	public Sound selectSound(Sound sound);
 	public int updateSound(Sound sound, int[] singer_noArr, int[] writer_noArr, int[] composer_noArr);
 	public int deleteSound(List<Sound> soundList);
+	
 	public List<Member> selectMemberList();
 	public List<Member> selectAdminList();
 	public List<Membership> selectMembershipList();
 	public int totalCntMember();
 	public int totalCntAdmin();
+	
+
 }
