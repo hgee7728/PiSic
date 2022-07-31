@@ -355,6 +355,29 @@ $(document).ready(function(){
 		    
 });
 
+
+let latitude ="";
+let longitude ="";
+
+$(document).ready(function() {
+	if ("geolocation" in navigator) { /* geolocation 사용 가능 */
+		navigator.geolocation.getCurrentPosition(
+			function(data) {
+				latitude = data.coords.latitude;
+				longitude = data.coords.longitude;
+			}, function(error) {
+				alert(error);
+			}, {
+				enableHighAccuracy : true,
+				timeout : Infinity,
+				maximumAge : 0
+			}
+		);
+	} else { /* geolocation 사용 불가능 */
+		alert('geolocation 사용 불가능');
+	}
+});
+
 function goInsertPlayinfo(){
 	console.log($("li.jp-playlist-current").index());
 	$.ajax({
@@ -365,11 +388,15 @@ function goInsertPlayinfo(){
 	    },
 		data:{
 			a_no: $('div#soundData'+$("li.jp-playlist-current").index()+'').children("input[name=a_no]").val(),
-			s_no: $('div#soundData'+$("li.jp-playlist-current").index()+'').children("input[name=s_no]").val()
+			s_no: $('div#soundData'+$("li.jp-playlist-current").index()+'').children("input[name=s_no]").val(),
+			currentLat: latitude,
+			currentLon: longitude
 		},
 		success: function(result) {
 			if(result=="1"){
 				alert("성공");
+			}else{
+				alert("실패");
 			}
 				
 			
@@ -382,6 +409,7 @@ function goInsertPlayinfo(){
 };
 //]]>
 </script>
+
 <script>
 	/* function delete0(i){
 		console.log("제발 되라ㅏㅏㅏㅏㅏㅏ: " + i);

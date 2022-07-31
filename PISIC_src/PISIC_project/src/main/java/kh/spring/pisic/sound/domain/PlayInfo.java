@@ -17,7 +17,7 @@ public class PlayInfo {
 	private Timestamp p_date;
 	private String sky;
 	private String pty;
-	private int tmp;
+	private String tmp;
 	
 	private String s_name;
 	private String a_name;
@@ -92,10 +92,10 @@ public class PlayInfo {
 	public void setPty(String pty) {
 		this.pty = pty;
 	}
-	public int getTmp() {
+	public String getTmp() {
 		return tmp;
 	}
-	public void setTmp(int tmp) {
+	public void setTmp(String tmp) {
 		this.tmp = tmp;
 	}
 	public String getArea_name() {

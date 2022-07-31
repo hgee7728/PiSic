@@ -198,7 +198,7 @@ public class WeatherData {
 						
 						if(key.equals("POP")) val = "Rainfall";
 						else if(key.equals("PCP")) val = "Precipitation";
-						//else if(key.equals("PTY")) val = "Precipitation types";
+						else if(key.equals("PTY")) val = "Precipitation types";
 						//else if(key.equals("REH")) val = "Humidity";
 						//else if(key.equals("SNO")) val = "Snowfall";
 						else if(key.equals("SKY")) val = "Sky condition";
@@ -225,13 +225,12 @@ public class WeatherData {
 				val = Float.parseFloat(value);
 			
 			if(category.equals("POP")) result += "%";
-			else if(category.equals("PTY")) {
-				if(result.equals("0")) result = "강수없음";
-				else if(result.equals("1")) result = "비";
-				else if(result.equals("2")) result = "비/눈";
-				else if(result.equals("3")) result = "눈";
-				else result = "소나기";
-			} else if(category.equals("REH")) result += "%";
+			/*
+			 * else if(category.equals("PTY")) { if(result.equals("0")) result = "강수없음";
+			 * else if(result.equals("1")) result = "비"; else if(result.equals("2")) result
+			 * = "비/눈"; else if(result.equals("3")) result = "눈"; else result = "소나기"; }
+			 * else if(category.equals("REH")) result += "%";
+			 */
 			else if(category.equals("SKY")) {
 				if(val >= 0.0f && val < 6.0f) result = "맑음";//맑음
 				else if(val >= 6.0f && val < 9.0f) result = "구름많음";//구름많음
