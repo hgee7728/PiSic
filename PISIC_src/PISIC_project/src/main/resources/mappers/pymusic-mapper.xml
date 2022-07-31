@@ -123,12 +123,12 @@
 	
 	<select id="selectPyWeather" parameterType="hashmap" resultMap="soundResultMap" >
 		select 
-		    playrank, s_no, a_no,
+		    chart, s_no, a_no,
 		    A_NAME, A_COVER,
 		    S_NAME, S_PATH 
 		from 
 		    (
-		        select rank() over (order by count(*) desc) playrank, s_no, a_no
+		        select rank() over (order by count(*) desc) chart, s_no, a_no
 		        from 
 		            playinfo
 		        <where>
@@ -144,17 +144,17 @@
 		        group by s_no,a_no
 		    ) 
 		    join view_sound_alb_gnr using(s_no,a_no)
-		    where playrank &lt;= 10
+		    where chart &lt;= 10
 	</select>
 	
 	<select id="selectPyTime" parameterType="String" resultMap="soundResultMap" >
 		select 
-	    playrank, s_no, a_no,  
+	    chart, s_no, a_no,  
 	    A_NAME, A_COVER,
 	    S_NAME, S_PATH 
 	from 
 	    (
-	        select rank() over (order by count(*) desc, s_no, a_no) playrank, s_no, a_no
+	        select rank() over (order by count(*) desc, s_no, a_no) chart, s_no, a_no
 	        from 
 	            playinfo 
 	          <where>
@@ -176,7 +176,7 @@
 	        group by s_no,a_no
 	    ) 
 	    join view_sound_alb_gnr using(s_no,a_no)
-    	where playrank &lt;= 10	
+    	where chart &lt;= 10	
 	</select>
 
 </mapper>

@@ -90,7 +90,15 @@ $(function(){
 							Pick Your Weather &nbsp;&nbsp;
 						</h2>
 						<h4>[   ${serverTime}  ]</h4>
-						<h3>${tmp }</h3>
+						<h3>${nowtemperature }</h3>
+						<c:choose>
+							<c:when test="${empty nowsky }">
+								<h3>${nowpty }</h3>
+							</c:when>
+							<c:when test="${empty nowpty }">
+								<h3>${nowsky }</h3>
+							</c:when>
+						</c:choose>
 						<br>
 					<p>날씨별 전체 재생 수 기준 랭킹 조회</p>
 					<div class="content_div3">
@@ -102,22 +110,22 @@ $(function(){
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-										<c:set var="pyWeather" value="${pyWeather }"	/>
+										<c:set var="sky" value="${sky }"	/>
 										<h3 class="card-title">
 										 <c:choose>
-											<c:when test="${pyWeather.sky eq '맑음'  }">
+											<c:when test="${sky eq '맑음'  }">
 											맑음
 											</c:when>
-											<c:when test="${pyWeather.sky eq '구름 많음' }">
+											<c:when test="${sky eq '구름 많음' }">
 											구름 많음
 											</c:when>
-											<c:when test="${pyWeather.sky eq '흐림' }">
+											<c:when test="${sky eq '흐림' }">
 											흐림
 											</c:when>
-											<c:when test="${pyWeather.pty eq 1  }">
+											<c:when test="${pty eq 1  }">
 											비
 											</c:when>
-											<c:when test="${pyWeather.pty eq 3  }">
+											<c:when test="${pty eq 3  }">
 											눈
 											</c:when>
 										</c:choose>
@@ -149,7 +157,7 @@ $(function(){
 													</thead>
 													<tbody>
 									
-														<c:forEach items="${pyWeather }" var="sounds">
+														<c:forEach items="${PyWeather }" var="sounds">
 															<tr>
 																<td>
 																	<div class="form-check form-check-muted m-0">

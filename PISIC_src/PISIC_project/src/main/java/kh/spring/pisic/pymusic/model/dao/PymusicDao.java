@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kh.spring.pisic.sound.domain.PlayInfo;
 import kh.spring.pisic.sound.domain.Sound;
 
 @Repository
@@ -27,7 +28,7 @@ public class PymusicDao {
 		return session.selectList("Pymusic.selectPyAgender", agender);
 	}
 	
-	public List<Sound> selectPyWeather(HashMap<String, Object> weather){
+	public List<PlayInfo> selectPyWeather(HashMap<String, Object> weather){
 		return session.selectList("Pymusic.selectPyWeather", weather);
 	}
 

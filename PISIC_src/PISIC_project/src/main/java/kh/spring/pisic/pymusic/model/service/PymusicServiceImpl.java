@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.spring.pisic.pymusic.model.dao.PymusicDao;
+import kh.spring.pisic.sound.domain.PlayInfo;
 import kh.spring.pisic.sound.domain.Sound;
 
 @Service
@@ -31,7 +32,7 @@ public class PymusicServiceImpl implements PymusicService{
 	}
 	
 	@Override
-	public List<Sound> selectPyWeather(HashMap<String, Object> weather) {
+	public List<PlayInfo> selectPyWeather(HashMap<String, Object> weather) {
 		return dao.selectPyWeather(weather);
 	}
 	

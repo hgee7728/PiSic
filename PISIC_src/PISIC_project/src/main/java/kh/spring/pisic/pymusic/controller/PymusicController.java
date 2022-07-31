@@ -88,7 +88,7 @@ public class PymusicController {
 		Date date = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 기준");
 		String formattedDate = dateFormat.format(date);
-		String nowTemperature ="";
+		String nowTemperature = "";
 		mv.addObject("serverTime", formattedDate);
 
 		HashMap<String, Object> map = new HashMap<>();
@@ -96,7 +96,7 @@ public class PymusicController {
 		map.put("pty", pty);
 		mv.addObject("PyWeather", service.selectPyWeather(map));
 		mv.addObject("sky", sky);
-		mv.addObject("pty", sky);
+		mv.addObject("pty", pty);
 
 		
 		// 입력한 지역의 경도, 위도 -> 행정구역코드 -> 격자 좌표 구할 클래스
@@ -115,16 +115,16 @@ public class PymusicController {
 			e.printStackTrace();
 			
 		}
-		System.out.println(jobWeather);
-		System.out.println(jsonAddress);
-		System.out.println("여기여기여기...."+jsonAddress.get("region_2depth_name").toString());
-		
+		System.out.println("[[[[[[[[[[[[[[[[[[[jobWeather"+jobWeather);
+		System.out.println("[[[[[[[[[[[[[[[[[[[[[[[[jsonAddress"+jsonAddress);
+		nowTemperature= (String)jobWeather.get("Temperature");
+		System.out.println("여기여기여기....----------------"+nowTemperature);
 		mv.addObject("nowlocation", jsonAddress.get("region_2depth_name").toString());
 		
 		mv.addObject("nowtemperature", nowTemperature);
 		
 		mv.addObject("nowsky", sky);
-		mv.addObject("nowpty", sky);
+		mv.addObject("nowpty", pty);
 
 		mv.setViewName("pymusic/weather");
 		return mv;
