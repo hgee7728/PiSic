@@ -108,7 +108,10 @@ $(document).ready(function(){
 			    	},
 				success: function(result){
 					if(result == 1){
-						alert("dddddddd");
+						console.log("[[[[[[[[[[[성공"+result);
+						location.reload();
+					}else{
+						console.log("[[[[[[[[[[[실패"+result);
 						location.reload();
 					}
 				},
@@ -199,7 +202,7 @@ $(document).on("click", ".delete_faq", function() {
 													<tbody>
 														<c:forEach items="${faqBoard }" var="faqBoard">
 															<tr class="ctsSbj" style="cursor: pointer;">
-																<th>${faqBoard.faq_no }</th>
+																<th>${faqBoard.faq_no }<input type="hidden" value="${faqBoard.faq_no}" name="update_faq_cnt"></th>
 																<td>${faqBoard.faq_title }</td>
 																<td><fmt:formatDate pattern="yyyy-MM-dd" value="${faqBoard.faq_date }" /></td>
 																<td style="text-align: center;">${faqBoard.faq_cnt }</td>

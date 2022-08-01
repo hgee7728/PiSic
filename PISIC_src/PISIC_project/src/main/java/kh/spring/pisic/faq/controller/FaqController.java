@@ -95,8 +95,9 @@ public class FaqController {
 	}
 	
 	//FAQ 조회수 cnt
+	@ResponseBody
 	@PostMapping("/updateFaqCnt")
-	public int UpdateFaqCnt(int faq_no){ 
+	public int UpdateFaqCnt(@RequestParam(name = "faq_no", required = false) int faq_no){ 
 		
 		int result = service.updateFaqCnt(faq_no);
 		
