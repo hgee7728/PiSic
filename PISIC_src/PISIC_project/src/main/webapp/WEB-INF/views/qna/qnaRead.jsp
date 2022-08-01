@@ -37,7 +37,7 @@
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 <style>
-	@media  {
+@media  {
 	.col-md-6 {
 	max-width: 100%;
 	}
@@ -62,12 +62,11 @@ table.qnaRead td {
   vertical-align: top;
   border-bottom: 1px solid #ccc;
 }
-table.qnaContent {
-  hegith:500px;
-}
+
 .btnSet { 
 	display :inline-block;
 }
+
 </style>
 <script>
 const root_path = '<%=request.getContextPath() %>';
@@ -149,7 +148,7 @@ let csrf_token = '${_csrf.token }';
 										<table class="qnaRead">
 											<tr>
 												<th>번호</th>
-												<td>${qnaBoard.qna_no }</a></td>
+												<td>${qnaBoard.qna_no }</td>
 												<th>작성일</th>
 												<td>${qnaBoard.qna_date }</td>
 											</tr>
@@ -159,11 +158,11 @@ let csrf_token = '${_csrf.token }';
 												<th>작성자</th>
 												<td>${qnaBoard.m_id }</td>
 											</tr>
-											<tr>
-												<th class="qnaContent">내용</th>	
+											<tr class="qnaContent">
+												<th >내용</th>	
 												<td colspan="3"><% pageContext.setAttribute("newLineChar", "\n"); %>${fn:replace(qnaBoard.qna_content, newLineChar, "<br/>")}</td>
 											</tr>
-									</table>
+										</table>
 										
 								<div class="btnSet">
 									<!-- 관리자인 경우 수정 삭제 가능 -->

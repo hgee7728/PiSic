@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="QnaBoard">
+ 
+ <select id="totalQnaBoard" resultType="int">
+ select count(*) from qna
+ </select>
   
-  
+
+
+<!-- criteria 를 적용한 게시판 페이징 조회 
 <select id="pageSelectQna" resultType="QnaBoard">
 
 select * from qna 
 order by origin_no desc, 
 gr_ord asc
+</select>
+-->
+
+<select id="pageSelectQna" resultType="QnaBoard" parameterType="kh.spring.pisic.qna.domain.QnaPaging">
+<![CDATA[
+select
+*
+from
+    qna
+where qna_no > 0
+order by origin_no desc, gr_ord asc
+]]>
 </select>
 
 <insert id="insertQna" parameterType="QnaBoard">
@@ -57,6 +75,7 @@ gr_ord asc
 <delete id="deleteQna" parameterType="string">
 	delete from qna where qna_no=#{qna_no}
 </delete>
+
 
 
 </mapper>

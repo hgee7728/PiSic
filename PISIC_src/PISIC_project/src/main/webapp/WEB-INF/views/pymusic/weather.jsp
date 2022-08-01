@@ -89,16 +89,15 @@ $(function(){
 						<h2 class=" card-title">
 							Pick Your Weather &nbsp;&nbsp;
 						</h2>
-						<h4>[   ${serverTime}  ]</h4>
-						<h3>${nowtemperature }</h3>
-						<c:choose>
+						<h4>[   ${serverTime}  ] &nbsp;&nbsp;&nbsp;&nbsp;${nowtemperature }</h4>
+			<!--  		<c:choose>
 							<c:when test="${empty nowsky }">
 								<h3>${nowpty }</h3>
 							</c:when>
 							<c:when test="${empty nowpty }">
 								<h3>${nowsky }</h3>
 							</c:when>
-						</c:choose>
+						</c:choose>-->	
 						<br>
 					<p>날씨별 전체 재생 수 기준 랭킹 조회</p>
 					<div class="content_div3">

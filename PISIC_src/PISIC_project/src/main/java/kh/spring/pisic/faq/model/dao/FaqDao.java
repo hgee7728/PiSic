@@ -27,7 +27,7 @@ public class FaqDao {
 		return sqlSession.insert("FaqBoard.insertFaq", faqBoard);
 	}
 	
-	// 자주묻는 질문 등록하기
+	// 자주묻는 질문 수정하기
 	public int updateFaq(FaqBoard faqBoard) {
 		return sqlSession.update("FaqBoard.updateFaq", faqBoard);
 	}

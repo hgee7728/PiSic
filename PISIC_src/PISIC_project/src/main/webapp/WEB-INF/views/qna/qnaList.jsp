@@ -84,6 +84,31 @@ text-decoration: none;
 .qnalist_page {
 	margin: 200px auto;
 }
+
+.pageInfo_wrap{
+	text-align: center;
+}
+.pageInfo{
+    list-style : none;
+    display: inline-block;
+   	margin: 50px 0 0 100px;      
+}
+.pageInfo li{
+    float: left;
+    font-size: 20px;
+    margin-left: 18px;
+    padding: 7px;
+    font-weight: 500;
+ }
+.board_table a{
+	color: #6c7293;
+}
+.pageInfo a:link {color:white; text-decoration: none;}
+.pageInfo a:visited {color:white; text-decoration: none;}
+.pageInfo a:hover {color:white; text-decoration: underline;}
+.here{
+      background-color: #8f5fe8;
+  }
 /*th:nth-of-type(1) { 
 display: none;
  } */
@@ -142,7 +167,7 @@ display: none;
 													</c:forEach>
 
 													<td>
-														<form id="frm${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">		
+														<form id="frm ${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">		
 															 <!-- csrf 공격 방지 -->
 			                     						 	<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
 														    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
@@ -164,27 +189,43 @@ display: none;
 																</span>
 													</c:if> -->
 														<!-- 답변글인 경우 -->
-														<!-- 		<c:if test="${qnaBoard.gr_layer > 0 }">
+														<!-- 		
+														<c:if test="${qnaBoard.gr_layer > 0 }">
 																<span class="subject" onclick="goView('${qnaBoard.qna_no}');">
 																<span style="vertical-align: super;">[<span style="color: purple;  font-style:inalic;" > Re&nbsp;&nbsp;</span>${qnaBoard.title }&nbsp;
 																<span style="vertical-align: super;">[<span style="color: purple; font-size:9pt; font-style:inalic; font-weight:bold;" ></span>]</span>
 																</span>
-																</span> </c:if>  -->
+																</span> 
+														</c:if> 
+														 -->
 
 														
 															
 													</tbody>
 												</table>
-											
 										</div>
-
 									</div>
-									<div class="qnalist_page">
-										<div class="pagination__links">
-											<button type="button" class="btn btn-outline-secondary">1</button>
+									
+									 <!-- 게시판 하단의 페이징 버튼 -->
+							<div class="pageInfo_wrap" >
+						        <div class="pageInfo_area">
+						        	<ul id="pageInfo" class="pageInfo">
+											 <c:if test="${paging.prev}">
+							                    <li class="pageInfo_btn previous"><a href="<%=request.getContextPath()%>/qna/qnaList?pageNum=${qnaPaging.startPage-1}">Previous</a></li>
+							                </c:if>
+								 			
+								 			<c:forEach var="num" begin="${qnaPaging.startPage}" end="${qnaPaging.endPage}">
+							                    <li class='pageInfo_btn ${qnaPaging.cr.pageNum == num ? "here":"" }'><a href="<%=request.getContextPath()%>/qna/qnaList?pageNum=${num}">${num}</a></li>
+							                </c:forEach>
+							                
+							                <c:if test="${qnaPaging.next}">
+							                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/qna/qnaList?pageNum=${qnaPaging.endPage + 1 }">Next</a></li>
+							                </c:if>  
+								<!--  		<button type="button" class="btn btn-outline-secondary">1</button>
 											<button type="button" class="btn btn-outline-secondary">2</button>
 											<button type="button" class="btn btn-outline-secondary">3</button>
-											<button type="button" class="btn btn-outline-secondary">4</button>
+											<button type="button" class="btn btn-outline-secondary">4</button>-->	
+											</ul>
 										</div>
 									</div>
 								</div>

@@ -16,14 +16,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.qna.domain.QnaBoard;
+import kh.spring.pisic.qna.domain.Criteria;
+import kh.spring.pisic.qna.domain.QnaPaging;
 import kh.spring.pisic.qna.model.service.*;
-import kh.spring.pisic.qna.model.service.QnaServiceImpl;
+
 
 @Controller
 @RequestMapping("/qna")
@@ -33,11 +34,15 @@ public class QnaController {
 	@Autowired
 	private QnaService service;
 
-	
+	// QNA 리스트 / 페이징처리
 	@GetMapping("/qnaList")
-	public ModelAndView pageSelectQna(ModelAndView mv) {
-		List<QnaBoard> qnalist = service.pageSelectQna();
-		mv.addObject("qnalist", qnalist);
+	public ModelAndView pageSelectQna(ModelAndView mv, Criteria cr) {
+		
+		Logger.info(cr.toString());
+		
+		QnaPaging qnaPaging = new QnaPaging(cr, service.totalQnaBoard());
+		mv.addObject("qnaPaging", qnaPaging);
+		mv.addObject("qnalist", service.pageSelectQna(qnaPaging));
 		mv.setViewName("qna/qnaList");
 		return mv;
 	}
@@ -58,7 +63,7 @@ public class QnaController {
 		return mv;
 	}
 	
-
+	//QNA 작성하기
 	@GetMapping("/qnaWrite")
 	public ModelAndView pageInsertQna(ModelAndView mv
 			, @RequestParam(name="gr_ord", defaultValue = "0") String gr_ordStr
@@ -77,7 +82,6 @@ public class QnaController {
 	   public ModelAndView insertQna(ModelAndView mv
 //	         , @RequestParam(name="gr_ord", defaultValue = "0") String gr_ord
 	         , QnaBoard qnaBoard
-	         , @RequestParam(name="uploadfile", required = false) MultipartFile multiFile
 	         , HttpServletRequest req
 	         , HttpSession session
 	         , RedirectAttributes rttr
@@ -97,7 +101,7 @@ public class QnaController {
 	      return mv;
 	   }
 		
-		//수정
+		// QNA 수정페이지로 이동
 		@PostMapping("/qnaUpdate")
 		public ModelAndView pageUpdateQna(ModelAndView mv
 				, @RequestParam(name="qna_no", required = false) String qna_no  
@@ -109,22 +113,31 @@ public class QnaController {
 			try {
 				mv.addObject("qnaBoard", service.selectQnaBoard(qna_no));
 			} catch (Throwable e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			mv.setViewName("qna/qnaUpdate");
 			return mv;
 		}
 		
-		@PostMapping("/qnaUpdateDo")
-		public ModelAndView updateQna(ModelAndView mv
+		// QNA 수정하기
+		@PostMapping("/qnaUpdate")
+		public ModelAndView pageUpdateQna(ModelAndView mv
 				, @RequestParam(name="qna_no", required = false) String qna_no 
 				, QnaBoard qnaBoard
 				, HttpServletRequest req
 				, HttpSession session
 				, RedirectAttributes rttr
+				, Authentication auth
 				) {
-			
+			 // 현재 사용자 id
+		      UserDetails ud = (UserDetails)auth.getPrincipal();
+		      String uid = ud.getUsername();
+		      qnaBoard.setM_id(uid);
+		      
+		  	// DB  update
+				int result = service.updateQna(qnaBoard);
+				System.out.println("[냐냐]: 똑똑?");
+				
 			// 예외처리
 			if(qna_no == null) {
 				mv.setViewName("redirect:/qna/qnaList");
@@ -138,16 +151,15 @@ public class QnaController {
 				return mv;
 			}
 			
-			// DB  update
-			int result = service.updateQna(qnaBoard);
-			System.out.println("[냐냐]: 똑똑?");
+		
 			mv.addObject("qna_no", qna_no);
 			mv.setViewName("redirect:/qna/qnaRead");
 			return mv;
 
 		}
 		
-		@PostMapping(value="/delete", produces = "text/plain;charset=UTF-8")
+		// QNA 삭제
+		@PostMapping(value="/delete")
 		@ResponseBody
 		public String deleteQna(
 				@RequestParam(name="qna_no", required = false) String qna_no 

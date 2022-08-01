@@ -60,11 +60,13 @@
 .table th, td {
 	text-align: left;
 }
+
 input {
   outline-color: white;
   padding: 5px;
   color:white;
 }
+
 /*버튼*/
 .ctsSbj a {
 	color: #8f5fe8;
@@ -79,12 +81,14 @@ input {
 	width: 100%;
 	min-width: 100%;
 }
+
 .btn_qna {
-	position: relative;
-	margin:30px auto;
-	float: center;
-/*center*/
+	display:block;
+	width:400px;
+    margin:auto;
+	padding: 30px;
 }
+
 textarea{
 	width: 800px;
     height: 200px;
@@ -99,6 +103,19 @@ label {
 float:left;
 }
 </style>
+<script>
+$(function(){
+	// 게시물 100자 제한
+	$('#recomment_content').on('keyup', function() {
+        $('.recomment_cnt').html("("+$(this).val().length+" / 100)");
+ 
+        if($(this).val().length > 100) {
+            $(this).val($(this).val().substring(0, 100));
+            $('.recomment_cnt').html("(100 / 100)");
+        }
+    });
+}
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -124,18 +141,16 @@ float:left;
 											<h4 class="card-title">문의글 등록하기</h4>
 
 											<div  class="form-group">
-												<label  for="qna_title">제목</label>             
+												<label  for="qna_title">제목</label>  
 												<textarea  class="form-control" id="qna_title" name="qna_title" placeholder="제목을 작성해주세요."   style="height: 50px; width: 1000px;"></textarea>
-												<!--  <input  type="text"  class="form-control" style="background-color:transparent; width: 1000px; height: 30px;"  id="qna_title" name="qna_title" placeholder="제목을 작성해주세요." > 
-										-->
+												<!--  <input  type="text"  class="form-control" style="background-color:transparent; width: 1000px; height: 30px;"  id="qna_title" name="qna_title" placeholder="제목을 작성해주세요." > -->
 											</div>
-											
 											<div  class="form-group">	
 												<label  for="qna_content">내용</label>            
 												<textarea  class="form-control" id="qna_content" name="qna_content" placeholder="1:1문의할 내용을 입력해주세요."  maxlength="2048" style="height: 400px; width: 1000px;"></textarea>
 											</div>
 											
-										<div class="btn_qna" style="float:center;">
+										<div class="btn_qna" >
 											<button type="submit" class="btn btn-info btn-fw">등록하기</button>
 											<button type="button" class="btn btn-info btn-fw"  onclick="location.href='<%=request.getContextPath()%>/qna/qnaList'">목록으로</button>
 										</div>
