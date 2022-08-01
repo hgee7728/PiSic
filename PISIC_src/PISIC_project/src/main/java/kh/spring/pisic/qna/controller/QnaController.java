@@ -36,13 +36,21 @@ public class QnaController {
 
 	// QNA 리스트 / 페이징처리
 	@GetMapping("/qnaList")
-	public ModelAndView pageSelectQna(ModelAndView mv, Criteria cr) {
+	public ModelAndView pageSelectQna(ModelAndView mv, 
+			Criteria cr
+	       , Authentication auth
+	         )  {
+	      // 현재 사용자 id
+	      UserDetails ud = (UserDetails)auth.getPrincipal();
+	      String uid = ud.getUsername();
+	      
+	      
 		
 		Logger.info(cr.toString());
 		
 		QnaPaging qnaPaging = new QnaPaging(cr, service.totalQnaBoard());
 		mv.addObject("qnaPaging", qnaPaging);
-		mv.addObject("qnalist", service.pageSelectQna(qnaPaging));
+		mv.addObject("qnalist", service.pageSelectQna(qnaPaging, uid));
 		mv.setViewName("qna/qnaList");
 		return mv;
 	}

@@ -153,14 +153,15 @@ display: none;
 														</tr>
 													</thead>
 													<tbody>
-													<form id="frm ${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">
-														<c:forEach items="${qnaBoard }" var="qnaBoard">
+													
+												<c:forEach items="${qnalist }" var="qnaBoard">
 													<td>
+													<form id="frm ${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">
 															 <!-- csrf 공격 방지 -->
 			                     						 	<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
 														    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
 														    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
-														
+														    </form>
 													</td>
 														<c:if test="${qnaBoard.gr_layer == 0} ">
 															<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nbsp;
@@ -176,10 +177,7 @@ display: none;
 													<td>${qnaBoard.m_id }</td>
 													<td>${qnaBoard.qna_date }</td>
 												</tr>
-												</c:forEach>
-												</form>
-												
-															
+											 </c:forEach>
 														<!-- 답변글 아닌 원글 -->
 
 														<!-- 			<c:if test="${qnaBoard.gr_layer == 0 }">
@@ -197,9 +195,6 @@ display: none;
 																</span> 
 														</c:if> 
 														 -->
-
-														
-															
 													</tbody>
 												</table>
 										</div>
@@ -220,18 +215,12 @@ display: none;
 							                <c:if test="${qnaPaging.next}">
 							                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/qna/qnaList?pageNum=${qnaPaging.endPage + 1 }">Next</a></li>
 							                </c:if>  
-								<!--  		<button type="button" class="btn btn-outline-secondary">1</button>
-											<button type="button" class="btn btn-outline-secondary">2</button>
-											<button type="button" class="btn btn-outline-secondary">3</button>
-											<button type="button" class="btn btn-outline-secondary">4</button>-->	
 											</ul>
 										</div>
 									</div>
 								</div>
 							</div>
-
 						</div>
-
 					</div>
 
 					<!-- content-wrapper ends -->

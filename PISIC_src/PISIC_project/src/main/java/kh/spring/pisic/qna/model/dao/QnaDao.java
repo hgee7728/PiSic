@@ -18,9 +18,9 @@ public class QnaDao {
 	private SqlSession sqlsession;
 	
 	//1:1문의 목록 (페이징처리)
-	public List<QnaBoard> pageSelectQna(QnaPaging qnaPaging){
+	public List<QnaBoard> pageSelectQna(QnaPaging qnaPaging, String m_id){
 		RowBounds rowBounds = new RowBounds((qnaPaging.getStartPage() -1) * qnaPaging.getEndPage(), qnaPaging.getEndPage());
-		return sqlsession.selectList("QnaBoard.pageSelectQna",qnaPaging, rowBounds);
+		return sqlsession.selectList("QnaBoard.pageSelectQna", qnaPaging, rowBounds);
 	}
 	public int totalQnaBoard() {
 		return sqlsession.selectOne("QnaBoard.totalQnaBoard");

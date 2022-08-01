@@ -162,6 +162,7 @@ $(document).on("click", ".delete_qna", function() {
 						</c:when>
 						<c:otherwise>
 							<div>
+							<c:if test="${ }">
 									<c:if test="${qnaBoard.m_id eq loginSsInfo.m_id }">
 										<form id="frmNum">
 										<!-- csrf 공격 방지 -->
@@ -170,7 +171,7 @@ $(document).on("click", ".delete_qna", function() {
 											<button type="button" id="update_btn" class="btn btn-info btn-fw">수정</button>
 											<button type="button" id="delete_btn" class="btn btn-info btn-fw">삭제</button>
 										</form>
-											</c:if>
+									</c:if>
 										<table class="qnaRead">
 											<tr>
 												<th>번호</th>
@@ -184,7 +185,7 @@ $(document).on("click", ".delete_qna", function() {
 												<th>작성자</th>
 												<td>${qnaBoard.m_id }</td>
 											</tr>
-											<tr >
+											<tr>
 												<th>내용</th>	
 												<td colspan="3"><% pageContext.setAttribute("newLineChar", "\n"); %>${fn:replace(qnaBoard.qna_content, newLineChar, "<br/>")}</td>
 											</tr>
@@ -194,7 +195,7 @@ $(document).on("click", ".delete_qna", function() {
 									<!-- 관리자인 경우 수정 삭제 가능 -->
 									<core:if test="${login_info.m_id eq 'admin' }">
 										<a class="btn btn-info btn-fw"  id="update_btn" href="qnaUpdate?id=${member.m_id }">수정</a>
-										<a class="btn btn-info btn-fw" id="delete_btn" onclick="if(confirm('정말 삭제하시겠습니까?')) { href='qnaDelete?id=${member.m_id }' }">삭제</a>
+										<a class="btn btn-info btn-fw" id="delete_btn" onclick="if(confirm('정말 삭제하시겠습니까?')) { href='delete?id=${member.m_id }' }">삭제</a>
 									</core:if>
 									<!-- 로그인이 된 경우 답글 쓰기 가능 -->
 									<core:if test="${!empty login_info }">
@@ -214,7 +215,6 @@ $(document).on("click", ".delete_qna", function() {
 									</form>-->
 								</c:otherwise>
 							</c:choose>
-								
 						<div>
 						<button type="button" class="btn btn-info btn-fw" onclick="location.href='<%=request.getContextPath() %>/'">메인으로 돌아가기</button>
 						</div>

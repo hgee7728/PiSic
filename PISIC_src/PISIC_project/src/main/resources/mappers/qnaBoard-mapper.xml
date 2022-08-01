@@ -3,7 +3,8 @@
 <mapper namespace="QnaBoard">
  
  <select id="totalQnaBoard" resultType="int">
- select count(*) from qna
+ select count(*) from qna 
+ where m_id = #{m_id}
  </select>
   
 
@@ -23,7 +24,7 @@ select
 *
 from
     qna
-where qna_no > 0
+where  m_id = #{m_id}
 order by origin_no desc, gr_ord asc
 ]]>
 </select>

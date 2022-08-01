@@ -21,8 +21,8 @@ public class QnaServiceImpl implements QnaService {
 	public int totalQnaBoard() {
 		return dao.totalQnaBoard();
 	}
-	public List<QnaBoard> pageSelectQna(QnaPaging qnaPaging) {
-		return dao.pageSelectQna(qnaPaging);
+	public List<QnaBoard> pageSelectQna(QnaPaging qnaPaging, String m_id) {
+		return dao.pageSelectQna(qnaPaging, m_id);
 	}
 	public QnaBoard selectQnaBoard(String qna_no) {
 		return dao.selectQnaBoard(qna_no);

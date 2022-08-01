@@ -9,7 +9,7 @@ import kh.spring.pisic.qna.domain.QnaPaging;
 public interface QnaService {
 	
 	public int totalQnaBoard();
-	public List<QnaBoard> pageSelectQna(QnaPaging qnaPaging);
+	public List<QnaBoard> pageSelectQna(QnaPaging qnaPaging, String m_id);
 	public QnaBoard selectQnaBoard(String qna_no);
 	public int insertQna(QnaBoard qnaBoard);
 	public int updateQna(QnaBoard qnaBoard);
