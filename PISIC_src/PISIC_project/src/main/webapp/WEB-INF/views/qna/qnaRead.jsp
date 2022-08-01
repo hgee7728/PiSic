@@ -90,7 +90,7 @@ $(function(){
 }
 // 글 수정
 $("#update_btn").click(function(){
-	modify_frm.action = "<%=request.getContextPath()%>/qna/qnaUpdate";
+	modify_frm.action = "<%=request.getContextPath()%>/qna/qnaUpdateDo";
 	modify_frm.method = "post";
 	modify_frm.submit();
 });
@@ -185,7 +185,7 @@ $(document).on("click", ".delete_qna", function() {
 												<td>${qnaBoard.m_id }</td>
 											</tr>
 											<tr >
-												<th >내용</th>	
+												<th>내용</th>	
 												<td colspan="3"><% pageContext.setAttribute("newLineChar", "\n"); %>${fn:replace(qnaBoard.qna_content, newLineChar, "<br/>")}</td>
 											</tr>
 										</table>

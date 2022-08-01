@@ -45,7 +45,6 @@ input[type="password"] {
   line-height: normal;  /* line-height 초기화 */
   padding: .8em .5em;  /* 여백 설정 */
 }
-출처: https://webdir.tistory.com/429 [WEBDIR:티스토리]
 </style>
 </head>
 <body>

@@ -15,4 +15,5 @@ public interface QnaService {
 	public int updateQna(QnaBoard qnaBoard);
 	public int deleteQna(int qna_no);
 	public int deleteQna(List<Integer> qna_no_list);
+	
 }

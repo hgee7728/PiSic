@@ -152,11 +152,19 @@ display: none;
 															<th>등록날짜</th>
 														</tr>
 													</thead>
-													
 													<tbody>
-													<c:forEach items="${qnaBoard }" var="qnaBoard">
+													<form id="frm ${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">
+														<c:forEach items="${qnaBoard }" var="qnaBoard">
+													<td>
+															 <!-- csrf 공격 방지 -->
+			                     						 	<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
+														    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
+														    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
+														
+													</td>
 														<c:if test="${qnaBoard.gr_layer == 0} ">
-															<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nbsp;</span>
+															<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nbsp;
+															</span>
 														</c:if>
 														<c:if test="${qnaBoard.gr_layer == 0} ">
 														</c:if>
@@ -165,21 +173,12 @@ display: none;
 													<c:forEach begin="1" end="${qnaBoard.gr_layer }">
 														&nbsp;&nbsp;
 													</c:forEach>
-
-													<td>
-														<form id="frm ${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">		
-															 <!-- csrf 공격 방지 -->
-			                     						 	<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
-														    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
-														    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
-														</form>
-													</td>
 													<td>${qnaBoard.m_id }</td>
 													<td>${qnaBoard.qna_date }</td>
 												</tr>
-												
 												</c:forEach>
-															
+												</form>
+												
 															
 														<!-- 답변글 아닌 원글 -->
 
