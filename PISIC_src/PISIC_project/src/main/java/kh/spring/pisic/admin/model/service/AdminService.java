@@ -4,6 +4,8 @@ import java.util.List;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.membership.domain.Membership;
+import kh.spring.pisic.pjboard.domain.PjBoard;
+import kh.spring.pisic.pjboard.domain.PjBoardReport;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -40,5 +42,9 @@ public interface AdminService {
 	public int totalCntMember();
 	public int totalCntAdmin();
 	
+	public int totalCntReportBoard();
+	public List<PjBoardReport> selectReportBoardList(Criteria cri);
+	public PjBoardReport selectReprotBoard(PjBoardReport pjBoardReport);
+	public int deleteReportBoard(List<PjBoard> boardList);
 
 }

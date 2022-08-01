@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en"
 	  xmlns:th="http://www.thymeleaf.org"
@@ -336,13 +337,12 @@ let csrf_token = '${_csrf.token }';
 						<div class="col-md-6 corona-gradient-card">
 							<h4 class="card-title">ALL TIME SCOROBBLES</h4>
 							<!-- TODO mg : total count 등록하기 -->
-							<button type="button" id="cnt_btn">테스트</button>
 							<div id="cnt_div">
 								<div class="card-body" style="text-align: center;">
 									<p class="text-muted mb-0">A live global counter showing the total number of tracks listened to by PISIC users since 2022</p>
 								</div>
 								<div class="card-body" style="text-align: center;">
-									<h3 class="font-weight-blod mb-0 count">0</h3>
+									<h3 class="font-weight-blod mb-0 count_h3"><fmt:formatNumber value="${playCnt }" pattern="#,###"/></h3>
 								</div>
 									
 							</div>
@@ -512,63 +512,66 @@ let csrf_token = '${_csrf.token }';
 		        $("#reload").load(window.location.href+" #reload ");
 		    });
 		
+		// 카운트를 표시할 요소
+		const $counter = document.querySelector(".count_h3");
+
 		// 카운트 보이기 - 테스트
 		/* setInterval(function(){
 			$.ajax({
 				url: root_path + "/sound/countPlayCnt",
 				type: "get",
-				beforeSend: function(xhr){
-	   				        xhr.setRequestHeader(header, token);
-	   				    },
 				success: function(result) {
 					console.log(result);
 					$("#cnt_div h3").text(result);
 				}
 			}); // ajax 끝
 		}, 1000); */
-		$("#cnt_btn").click(function(){
+		setInterval(() => {
 			$.ajax({
 				url: root_path + "/sound/countPlayCnt",
 				type: "get",
-				beforeSend: function(xhr){
-	   				        xhr.setRequestHeader(header, token);
-	   				    },
 				success: function(result) {
-					console.log((parseInt(result)+1));
-					$("#cnt_div h3").text(AddComma(result));
+					// 목표수치
+					let max = parseInt(result);
+					let now = parseInt(minusComma($("#cnt_div h3").text()));
+					console.log("max : "+max);
+					console.log("now : "+now);
+
+					counter($counter, max, now);
 				}
 			}); // ajax 끝
-		});
-		
+		 }, 3000);
+	
+	// 3자리 마다 콤마 찍기 함수
 	function AddComma(num){
 		var regexp = /\B(?=(\d{3})+(?!\d))/g;
 		return num.toString().replace(regexp, ',');
 	} 
+	// 콤마 빼기
+	function minusComma(str){
+		return str.replace(/,/gi , "");
+	}
 	
-	/* // 카운트를 표시할 요소
-	const $counter = document.querySelector(".count");
-
-	// 목표수치
-	let max = 17242;
-
-	counter($counter, max);
-	function counter($counter, max) {
-		  let now = max;
-
-		  const handle = setInterval(() => {
-		    $counter.innerHTML = Math.ceil(max - now);
-		  
-		    // 목표에 도달하면 정지
-		    if (now < 1) {
-		      clearInterval(handle);
-		    }
-		  
-		    // 적용될 수치, 점점 줄어듬
-		    const step = now / 10;
-
-		    now -= step;
-		  }, 50);
-		} */
+	// 카운트 함수
+	function counter($counter, max, now) {
+			if(max > now){
+				const handle = setInterval(() => {
+					$(".count_h3").css("color","red");
+					now += 1;
+				    $counter.innerHTML = AddComma(now);
+				  	
+				    // 목표에 도달하면 정지
+				    if (now >= max) {
+				      clearInterval(handle);
+				      $(".count_h3").css("color","white");
+				    }
+				  
+				    
+				  }, 30);
+			}
+		 
+		}
+	
 	</script>
 
 	<script

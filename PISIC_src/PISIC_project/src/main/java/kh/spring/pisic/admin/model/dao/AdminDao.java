@@ -6,9 +6,12 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.membership.domain.Membership;
+import kh.spring.pisic.pjboard.domain.PjBoard;
+import kh.spring.pisic.pjboard.domain.PjBoardReport;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -185,5 +188,25 @@ public class AdminDao {
 	// 총 관리자 수
 	public int totalCntAdmin() {
 		return session.selectOne("Admin.totalCntAdmin");
+	}
+	
+	// 신고된 게시글 총 갯수
+	public int totalCntReportBoard() {
+		return session.selectOne("Admin.totalCntReportBoard");
+	}
+		
+	// 신고된 게시글 목록
+	public List<PjBoardReport> selectReportBoardList(Criteria cri) {
+		return session.selectList("Admin.selectReportBoardList", cri);
+	}
+	
+	// 신고 내역 상세조회
+	public PjBoardReport selectReprotBoard(PjBoardReport pjBoardReport) {
+		return session.selectOne("Admin.selectReprotBoard", pjBoardReport);
+	}
+	
+	// 신고된 게시글 삭제
+	public int deleteReportBoard(List<PjBoard> boardList) {
+		return session.delete("Admin.deleteReportBoard", boardList);
 	}
 }

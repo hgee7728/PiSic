@@ -41,10 +41,6 @@
 	margin: 30px 0px 30px 0px;
 }
 
-.main_img_div {
-	margin-right: 20px;
-}
-
 .img_btn {
 	text-align: center;
 	margin: 10px 0px;

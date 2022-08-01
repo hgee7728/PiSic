@@ -29,6 +29,8 @@ import com.google.gson.Gson;
 import kh.spring.pisic.admin.model.service.AdminService;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.membership.domain.Membership;
+import kh.spring.pisic.pjboard.domain.PjBoard;
+import kh.spring.pisic.pjboard.domain.PjBoardReport;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -485,5 +487,55 @@ public class AdminController {
 		return "pymusic/test";
 	}
 	
-
+	// 신고글 관리 - 페이지 이동
+	@GetMapping("/report")
+	public ModelAndView pageReportBoardList(ModelAndView mv, Criteria cri) {
+		Paging paging = new Paging(cri, service.totalCntReportBoard());
+        mv.addObject("paging", paging);
+        
+        List<PjBoardReport> resultSql = service.selectReportBoardList(cri);
+        
+        // 긴 제목 짜르기
+        for(int i = 0 ; i < resultSql.size() ; i ++) {
+        	if(resultSql.get(i).getB_r_content().length() > 20) {
+        		String newContent = resultSql.get(i).getB_r_content().substring(0, 20) + " ...";
+        		resultSql.get(i).setB_r_content(newContent);
+        	}
+        }
+        
+		mv.addObject("boardList", resultSql);
+		mv.setViewName("admin/reportBoardList");
+		return mv;
+	}
+	
+	// 신고 내역 상세조회
+	@PostMapping("/readReport")
+	@ResponseBody
+	public String readReportBoard(ModelAndView mv, PjBoardReport pjBoardReport) {
+		return new Gson().toJson(service.selectReprotBoard(pjBoardReport));
+	}
+	
+	// 신고된 게시글 삭제
+	@PostMapping("/deleteReportBoard")
+	@ResponseBody
+	public String deleteReportBoard(@RequestParam(name="b_no", required = false) int[] b_noArray ) {
+		
+		List<PjBoard> boardList = new ArrayList<PjBoard>();
+		// 들고 온 데이터 domain형태로 list 시키기
+		for (int i = 0; i < b_noArray.length; i++) {
+			PjBoard board = new PjBoard();
+			board.setB_no(b_noArray[i]);
+			boardList.add(board);
+		}
+		// 신고된 게시글 삭제
+		if(service.deleteReportBoard(boardList) < 1) { // 삭제 실패
+			return "0";
+			
+		} else { // 삭제 성공
+			return "1";
+		}
+	}
+	
+	
+	
 }

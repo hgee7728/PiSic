@@ -114,7 +114,7 @@ $(function(){
 	
 	// 내가 쓴 글 보기
 	$("#select_my_board").click(function(){
-		location.href = "<%=request.getContextPath()%>/search/searchBoard?type=4"
+		location.href = "<%=request.getContextPath()%>/search/searchBoard?type=-1"
 	});
 	
 	

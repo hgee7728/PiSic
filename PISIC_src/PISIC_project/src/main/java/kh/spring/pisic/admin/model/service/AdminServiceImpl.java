@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import kh.spring.pisic.admin.model.dao.AdminDao;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.membership.domain.Membership;
+import kh.spring.pisic.pjboard.domain.PjBoard;
+import kh.spring.pisic.pjboard.domain.PjBoardReport;
+import kh.spring.pisic.pjboard.model.dao.PjBoardDao;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -171,5 +174,33 @@ public class AdminServiceImpl implements AdminService{
 	public int totalCntAdmin() {
 		return dao.totalCntAdmin();
 	}
+
+	// 신고된 게시글 총 갯수
+	@Override
+	public int totalCntReportBoard() {
+		return dao.totalCntReportBoard();
+	}
+	
+	// 신고된 게시글 목록
+	@Override
+	public List<PjBoardReport> selectReportBoardList(Criteria cri) {
+		return dao.selectReportBoardList(cri);
+	}
+
+	// 신고 내역 상세조회
+	@Override
+	public PjBoardReport selectReprotBoard(PjBoardReport pjBoardReport) {
+		return dao.selectReprotBoard(pjBoardReport);
+	}
+
+	// 신고된 게시글 삭제
+	@Override
+	public int deleteReportBoard(List<PjBoard> boardList) {
+		return dao.deleteReportBoard(boardList);
+	}
+	
+	
+
+	
 
 }

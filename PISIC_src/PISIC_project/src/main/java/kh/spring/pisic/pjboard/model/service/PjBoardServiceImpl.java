@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.pjboard.domain.PjBoardRecomment;
+import kh.spring.pisic.pjboard.domain.PjBoardReport;
 import kh.spring.pisic.pjboard.model.dao.PjBoardDao;
 import kh.spring.pisic.sound.domain.Criteria;
 
@@ -88,6 +89,18 @@ public class PjBoardServiceImpl implements PjBoardService{
 	@Override
 	public int deleteBoard(int b_no) {
 		return dao.deleteBoard(b_no);
+	}
+
+	// 게시글 신고 여부 확인
+	@Override
+	public int checkReport(PjBoardReport report) {
+		return dao.checkReport(report);
+	}
+
+	// 게시글 신고
+	@Override
+	public int insertReport(PjBoardReport report) {
+		return dao.insertReport(report);
 	}
 	
 	

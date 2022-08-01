@@ -174,7 +174,7 @@ $(function(){
       </div>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/admin/album">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/report">
         <span class="menu-icon">
           <i class="mdi mdi-table-large"></i>
         </span>

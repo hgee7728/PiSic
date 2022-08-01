@@ -117,11 +117,6 @@ $(function(){
 		location.href="<%=request.getContextPath()%>/pjBoard/write";
 	});
 	
-	// 내가 쓴 글 보기
-	$("#select_my_board").click(function(){
-		location.href = "<%=request.getContextPath()%>/search/searchBoard?type=4"
-	});
-	
 	// select-option 선택하기
 	var type = '${type}';
 	$("#search_type").val(type).prop("selected", true);
@@ -171,8 +166,6 @@ function selectBoardDetail(b_no){
 						<div class="select_btns">
 							<button type="button" id="insert_board"
 								class="btn btn-info btn-fw" >글쓰기</button>
-							<button type="button" id="select_my_board"
-								class="btn btn-info btn-fw">내가 쓴 글 보기</button>
 							<button type="button" id="goList" class="btn btn-info btn-fw">목록으로</button>
 						</div>
 						<br>

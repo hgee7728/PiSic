@@ -124,9 +124,9 @@
 			,artist.artist_name
 			from album album
 			join artist artist using(artist_no)
-			order by a_no) t1
+			order by a_no) t1 where rownum <= #{pageNum} * #{amount}
             ) t2
-		where rnum between (#{pageNum} -1) * #{amount} and #{pageNum} * #{amount}
+		where rnum > (#{pageNum} -1) * #{amount}
 		]]>
 	</select>
 	
@@ -401,4 +401,40 @@
 		FROM member
 		WHERE m_grade = 'ROLE_ADMIN'
 	</select>
+	
+	<!-- 신고된 게시글 총 갯수 -->
+	<select id="totalCntReportBoard" resultType="int">
+		select count(*)	from board_report
+	</select>
+	
+	<!-- 신고된 게시글 목록 -->
+	<select id="selectReportBoardList" resultType="PjBoardReport">
+	<![CDATA[
+		select t2.* from (select rownum rnum, t1.* from 
+			(select b_r_no, b_no, br.b_r_content, br.b_r_writer, br.m_id, br.b_r_date
+			from board b
+			join board_report br using (b_no)
+			group by b_r_no, b_no, br.b_r_content, br.b_r_writer, br.m_id, br.b_r_date
+			order by b_r_no desc) t1 where rownum <= #{pageNum} * #{amount} ) t2
+		where rnum > (#{pageNum} -1) * #{amount}
+	]]>
+	</select>
+	
+	<!-- 신고 내역 상세조회 -->
+	<select id="selectReprotBoard" resultType="PjBoardReport">
+		select * from board_report
+		where b_r_no = #{b_r_no}
+	</select>
+	
+	<!-- 신고 내역 삭제 -->
+	<delete id="deleteReportBoard" parameterType="list">
+		delete from board
+		where
+		<foreach collection="list" item="item" separator="or">
+			(b_no = #{item.b_no})
+		</foreach>
+	</delete>
+	
 </mapper>
+
+

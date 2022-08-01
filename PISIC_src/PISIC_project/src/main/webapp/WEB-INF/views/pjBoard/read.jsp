@@ -4,6 +4,7 @@
 	href="<%=request.getContextPath()%>/resources/assets/css/reset.css">
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 	
 <!DOCTYPE html>
 <html lang="ko">
@@ -136,9 +137,51 @@ table.board_recomment_table  tr > td:nth-child(5){
 	display: none;
 	z-index: 10;
 }
+
+/* modal 신고하기*/
+#report_modal.report_modal_overlay {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 10px;
+	border: 1px solid black;
+	z-index: 1000;
+	
+}
+#report_modal .report_modal_window {
+	border-radius: 10px;
+	width: 400px;
+	height: 400px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	overflow: auto;
+}
+.report_modal_new{
+	padding:30px !important;
+}
+.report_modal_content p.modal_content {
+	line-height: 40px !important;
+}
+.report_modal{
+	overflow: auto !important;
+}
 </style>
 <script>
 const root_path = '<%=request.getContextPath() %>';
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
+
 $(function(){
 	var msg = '${msg}';
 	if(msg){
@@ -242,12 +285,61 @@ $(function(){
     	}
 		
 	});
+	// 글 신고하기 - 모달창
+	$("#report_btn").click(function(){
+		$("#report_modal").show();
+	});
+	// 글 신고하기
+	$("#report_submit_btn").click(function(){
+		if($("textarea[name=b_r_content]").val()==""){
+			alert("신고 내용을 입력해주세요.");
+		} else {
+			var confm = confirm("해당 글을 신고하시겠습니까?");
+	    	if (confm == false) {
+	    		
+	    	} else {
+	   			$.ajax({
+	       			url: root_path + "/pjBoard/report",
+	       			type:"post",
+	       			beforeSend: function(xhr){
+	       		        xhr.setRequestHeader(header, token);
+	       		    },
+	       			data:{
+	       				b_no: $("input[name=b_no]").val(),
+	       				b_r_content: $("textarea[name=b_r_content]").val()
+	       				},
+	       			success: function(result){
+	       				if(result == "-1"){
+	       					alert("로그인 후 이용해 주세요.");
+	       					location.href = root_path + "/login";
+	       				} else if(result == "0"){
+	       					alert("이미 신고한 글 입니다.");
+	       				} else if(result == "1"){
+	       					alert("게시글 신고가 실패했습니다. 다시 시도해주세요.");
+	       				} else if(result == "2"){
+	       					alert("해당 게시글을 신고했습니다.");
+	       					$("#report_modal").hide();
+	       				} 
+	       				
+	       			},
+	       			error:function(){
+	       				
+	       			}
+	       		}); //ajax 끝
+	    	}
+		}
+	});
+	
+	// 신고하기 모달창 끄기
+	report_modal.addEventListener("click", e => {
+		const evTarget = e.target
+		if (evTarget.classList.contains("report_modal_overlay")) {
+			$("#report_modal").hide();
+		}
+	});
 });
 
-let header = $("meta[name='_csrf_header']").attr('th:content');
-let token = $("meta[name='_csrf']").attr('th:content');
-let csrf_parameterName = '${_csrf.parameterName }';
-let csrf_token = '${_csrf.token }';
+
 
 // 게시글 좋아요 - ajax
 function boardLike(b_no){
@@ -292,6 +384,11 @@ function selectArtistDetail(artist_no){
 };
 function selectAlbumDetail(a_no){
 	location.href = "<%=request.getContextPath() %>/sound/albumDetail?a_no=" + a_no;
+};
+
+//로그인 페이지로
+function goLogin(){
+	location.href= root_path + "/login"
 };
 
 </script>
@@ -356,21 +453,36 @@ function selectAlbumDetail(a_no){
 										<c:if test="${member.m_id != board.m_id}">
 											<tr style="text-align: center;">
 												<td colspan="2">
+													<button type="button" id="report_btn" class="btn btn-info btn-md my_btn">신고하기</button>
 												</td>
 											</tr>
 										</c:if>
 										<c:if test="${member.m_id == board.m_id}">
-											<tr style="text-align: center;">
-												<td colspan="2">
-													<form name="modify_frm">
-														<!-- csrf 공격 방지 -->
-                   										<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-														<input type="hidden" name="b_no" value="${board.b_no}">
-														<button type="button" id="update_btn" class="btn btn-info btn-md my_btn">수정</button>
-														<button type="button" id="delete_btn" class="btn btn-info btn-md my_btn">삭제</button>
-													</form>
-												</td>
-											</tr>
+											<sec:authorize access="hasRole('ROLE_MEMBER')">
+												<tr style="text-align: center;">
+													<td colspan="2">
+														<form name="modify_frm">
+															<!-- csrf 공격 방지 -->
+	                   										<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+															<input type="hidden" name="b_no" value="${board.b_no}">
+															<button type="button" id="update_btn" class="btn btn-info btn-md my_btn">수정</button>
+															<button type="button" id="delete_btn" class="btn btn-info btn-md my_btn">삭제</button>
+														</form>
+													</td>
+												</tr>
+											</sec:authorize>
+											<sec:authorize access="hasRole('ROLE_ADMIN')">
+												<tr style="text-align: center;">
+													<td colspan="2">
+														<form name="modify_frm">
+															<!-- csrf 공격 방지 -->
+	                   										<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+															<input type="hidden" name="b_no" value="${board.b_no}">
+															<button type="button" id="delete_btn" class="btn btn-info btn-md my_btn">삭제</button>
+														</form>
+													</td>
+												</tr>
+											</sec:authorize>
 										</c:if>
 									</tbody>
 								</table>
@@ -535,6 +647,40 @@ function selectAlbumDetail(a_no){
 			<!-- main-panel ends -->
 		</div>
 		<!-- page-body-wrapper ends -->
+	</div>
+	<div id="report_modal" class="report_modal_overlay">
+		<div
+			class="col-md-8 grid-margin stretch-card report_modal_window">
+			<div class="card report_modal">
+				<div class="card-body">
+					<div class="d-flex flex-row justify-content-between">
+						<h3 class="card-title mb-1">신고하기</h3>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="preview-list">
+								<div class="preview-item-content d-sm-flex flex-grow report_modal_content">
+									<div class="flex-grow report_modal_new" style="text-align: center;">
+										<h5 class="preview-subject">
+											<sec:authorize access="isAnonymous()">
+												<a href="javascript:goLogin()">로그인 후 이용해주세요.</a>
+											</sec:authorize>
+											<sec:authorize access="isAuthenticated()">
+													<div class="form-group">
+														<label for="b_r_content" id="label_b_r_content">신고내용*</label>
+														<textarea class="form-control" rows="10" placeholder="(최대 한글 150자 입력)" name="b_r_content" maxlength="150"></textarea>
+													</div>
+													<button type="button" id="report_submit_btn" class="btn btn-info btn-fw">신고하기</button>
+											</sec:authorize>
+										</h5>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- container-scroller -->
 	<!-- plugins:js -->

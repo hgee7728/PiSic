@@ -106,7 +106,7 @@ public class SearchController {
 			rttr.addFlashAttribute("msg", "로그인 후 이용해 주세요");
 			mv.setViewName("redirect:/pjBoard/list");
 		} else {
-			if(type == 4) {
+			if(type == -1) {
 				UserDetails ud = (UserDetails)auth.getPrincipal();
 				Member member = memberService.selectLoginMember(ud.getUsername());
 				keyword = member.getM_nickname();

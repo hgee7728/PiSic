@@ -5,6 +5,7 @@ import java.util.List;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.pjboard.domain.PjBoardRecomment;
+import kh.spring.pisic.pjboard.domain.PjBoardReport;
 import kh.spring.pisic.sound.domain.Criteria;
 
 
@@ -22,5 +23,7 @@ public interface PjBoardService {
 	public int insertBoard(Member member, PjBoard pjBoard);
 	public int updateBoard(PjBoard pjBoard);
 	public int deleteBoard(int b_no);
+	public int checkReport(PjBoardReport report);
+	public int insertReport(PjBoardReport report);
 
 }

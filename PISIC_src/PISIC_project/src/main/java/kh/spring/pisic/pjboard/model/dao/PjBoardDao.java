@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.pjboard.domain.PjBoardRecomment;
+import kh.spring.pisic.pjboard.domain.PjBoardReport;
 import kh.spring.pisic.sound.domain.Criteria;
 
 
@@ -97,5 +98,13 @@ public class PjBoardDao {
 		return session.delete("PBoard.deleteBoard", b_no);
 	}
 
-
+	// 게시글 신고 여부 확인
+	public int checkReport(PjBoardReport report) {
+		return session.selectOne("PBoard.checkReport", report);
+	}
+	
+	// 게시글 신고
+	public int insertReport(PjBoardReport report) {
+		return session.insert("PBoard.insertReport", report);
+	}
 }

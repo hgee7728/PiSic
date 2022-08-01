@@ -18,6 +18,7 @@ import kh.spring.pisic.member.model.service.MemberService;
 import kh.spring.pisic.mymusic.model.service.MyMusicService;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.pjboard.domain.PjBoardRecomment;
+import kh.spring.pisic.pjboard.domain.PjBoardReport;
 import kh.spring.pisic.pjboard.model.service.PjBoardService;
 import kh.spring.pisic.sound.domain.Criteria;
 import kh.spring.pisic.sound.domain.Paging;
@@ -229,6 +230,31 @@ public class PjBoardController {
 		return resultAjax;
 	}
 	
+	// 게시글 신고하기 - ajax
+	@PostMapping("/report")
+	@ResponseBody
+	public String reportBoard(PjBoardReport report, Authentication auth) {
+		String resultAjax = "";
+		if(auth != null) {
+			UserDetails ud = (UserDetails)auth.getPrincipal();
+			
+			// 신고 여부 확인
+			report.setM_id(ud.getUsername());
+			if(service.checkReport(report) > 0) { // 이미 신고 했음
+				resultAjax = "0";
+			} else { // 처음 신고
+				int result = service.insertReport(report);
+				if(result < 1) { // 신고 실패
+					resultAjax = "1";
+				} else { // 신고 성공
+					resultAjax = "2";
+				}
+			}
+		} else { // 로그인 풀렸을때
+			resultAjax = "-1";
+		}
+		return resultAjax;
+	}
 	
 
 	
