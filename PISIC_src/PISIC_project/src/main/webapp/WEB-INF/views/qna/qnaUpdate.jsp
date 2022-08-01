@@ -77,7 +77,7 @@ input[type="password"] {
 						<c:otherwise>
 							<div>
 								<form id="frmNum"
-									action="<%=request.getContextPath()%>/qna/qnaUpdate"
+									action="<%=request.getContextPath()%>/qna/qnaUpdateDo"
 									method="post">
 									<table border="1">
 										<tr>

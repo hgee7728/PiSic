@@ -137,7 +137,7 @@ $(function(){
 
 										<form id="writeform" action="<%=request.getContextPath()%>/qna/qnaWrite" method="post">
 										 <!-- csrf 공격 방지 -->
-           						 			<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">		
+           						 		<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">		
 											<h4 class="card-title">문의글 등록하기</h4>
 
 											<div  class="form-group">
