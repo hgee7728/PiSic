@@ -18,12 +18,13 @@ public class QnaDao {
 	private SqlSession sqlsession;
 	
 	//1:1문의 목록 (페이징처리)
-	public List<QnaBoard> pageSelectQna(QnaPaging qnaPaging, String m_id){
-		RowBounds rowBounds = new RowBounds((qnaPaging.getStartPage() -1) * qnaPaging.getEndPage(), qnaPaging.getEndPage());
-		return sqlsession.selectList("QnaBoard.pageSelectQna", qnaPaging, rowBounds);
+	public List<QnaBoard> pageSelectQna(QnaPaging qnaPaging, String uid){
+		System.out.println("여기여기여기"+ qnaPaging);
+		RowBounds rowBounds = new RowBounds((qnaPaging.getCr().getPage() -1) * qnaPaging.getDisplayPageNum(), qnaPaging.getDisplayPageNum());
+		return sqlsession.selectList("QnaBoard.pageSelectQna",uid, rowBounds);
 	}
-	public int totalQnaBoard() {
-		return sqlsession.selectOne("QnaBoard.totalQnaBoard");
+	public int totalQnaBoard(String uid) {
+		return sqlsession.selectOne("QnaBoard.totalQnaBoard", uid);
 	}
 	public QnaBoard selectQnaBoard(String qna_no) {
 		return sqlsession.selectOne("QnaBoard.selectQnaBoard",qna_no);

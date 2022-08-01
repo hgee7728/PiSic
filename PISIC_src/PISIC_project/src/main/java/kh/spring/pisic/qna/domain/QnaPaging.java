@@ -14,6 +14,7 @@ public class QnaPaging {
 
 	public QnaPaging(Criteria cr, int totalQnaBoard) {
 		totalCount = totalQnaBoard;
+		this.cr = cr;
 		endPage = (int) (Math.ceil(cr.getPage() / (double) displayPageNum) * displayPageNum);
 		
 		startPage = (endPage - displayPageNum) + 1;

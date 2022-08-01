@@ -36,19 +36,15 @@ public class QnaController {
 
 	// QNA 리스트 / 페이징처리
 	@GetMapping("/qnaList")
-	public ModelAndView pageSelectQna(ModelAndView mv, 
-			Criteria cr
-	       , Authentication auth
-	         )  {
-	      // 현재 사용자 id
-	      UserDetails ud = (UserDetails)auth.getPrincipal();
-	      String uid = ud.getUsername();
-	      
-	      
-		
+	public ModelAndView pageSelectQna(ModelAndView mv, Criteria cr
+			, Authentication auth) {
+        
+     // 현재 사용자 id
+     UserDetails ud = (UserDetails)auth.getPrincipal();
+     String uid = ud.getUsername();
 		Logger.info(cr.toString());
 		
-		QnaPaging qnaPaging = new QnaPaging(cr, service.totalQnaBoard());
+		QnaPaging qnaPaging = new QnaPaging(cr, service.totalQnaBoard(uid)); 
 		mv.addObject("qnaPaging", qnaPaging);
 		mv.addObject("qnalist", service.pageSelectQna(qnaPaging, uid));
 		mv.setViewName("qna/qnaList");
@@ -129,7 +125,7 @@ public class QnaController {
 		
 		// QNA 수정하기
 		@PostMapping("/qnaUpdateDo")
-		public ModelAndView pageUpdateDoQna(ModelAndView mv
+		public ModelAndView pageUpdateQnaDo(ModelAndView mv
 				, @RequestParam(name="qna_no", required = false) String qna_no 
 				, QnaBoard qnaBoard
 				, HttpServletRequest req
@@ -150,14 +146,22 @@ public class QnaController {
 			if(qna_no == null) {
 				mv.setViewName("redirect:/qna/qnaList");
 				return mv;
-			} else {
+			}
 			// 예외처리 - 로그인
+			Member loginInfo = (Member)session.getAttribute("loginSsInfo");
+			if(loginInfo == null) {
+				rttr.addFlashAttribute("msg", "로그인 후 글쓰기를 다시 시도해 주세요.");
+				mv.setViewName("redirect:/member/login");
+				return mv;
+			}
+			
+		
 			mv.addObject("qna_no", qna_no);
 			mv.setViewName("redirect:/qna/qnaRead");
 			return mv;
 
 		}
-}
+		
 		// QNA 삭제
 		@ResponseBody
 		@PostMapping(value="/delete")
@@ -183,4 +187,6 @@ public class QnaController {
 //		
 		
 		}
+		
+
 }

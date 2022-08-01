@@ -3,8 +3,8 @@
 <mapper namespace="QnaBoard">
  
  <select id="totalQnaBoard" resultType="int">
- select count(*) from qna 
- where m_id = #{m_id}
+ select count(*) from qna
+ where m_id=#{uid}
  </select>
   
 
@@ -18,13 +18,13 @@ gr_ord asc
 </select>
 -->
 
-<select id="pageSelectQna" resultType="QnaBoard" parameterType="kh.spring.pisic.qna.domain.QnaPaging">
+<select id="pageSelectQna" resultType="QnaBoard">
 <![CDATA[
 select
 *
 from
     qna
-where  m_id = #{m_id}
+where m_id=#{uid}
 order by origin_no desc, gr_ord asc
 ]]>
 </select>

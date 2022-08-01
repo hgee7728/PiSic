@@ -152,20 +152,11 @@ display: none;
 															<th>등록날짜</th>
 														</tr>
 													</thead>
-													<tbody>
 													
-												<c:forEach items="${qnalist }" var="qnaBoard">
-													<td>
-													<form id="frm ${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">
-															 <!-- csrf 공격 방지 -->
-			                     						 	<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
-														    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
-														    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
-														    </form>
-													</td>
+													<tbody>
+										<c:forEach items="${qnalist }" var="qnaBoard">
 														<c:if test="${qnaBoard.gr_layer == 0} ">
-															<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nbsp;
-															</span>
+															<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nbsp;</span>
 														</c:if>
 														<c:if test="${qnaBoard.gr_layer == 0} ">
 														</c:if>
@@ -174,10 +165,22 @@ display: none;
 													<c:forEach begin="1" end="${qnaBoard.gr_layer }">
 														&nbsp;&nbsp;
 													</c:forEach>
+
+													<td>
+														<form id="frm${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">		
+															 <!-- csrf 공격 방지 -->
+			                     						 	<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
+														    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
+														    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
+														</form>
+													</td>
 													<td>${qnaBoard.m_id }</td>
 													<td>${qnaBoard.qna_date }</td>
 												</tr>
-											 </c:forEach>
+												
+										</c:forEach>
+															
+															
 														<!-- 답변글 아닌 원글 -->
 
 														<!-- 			<c:if test="${qnaBoard.gr_layer == 0 }">
@@ -195,6 +198,9 @@ display: none;
 																</span> 
 														</c:if> 
 														 -->
+
+														
+															
 													</tbody>
 												</table>
 										</div>
@@ -205,22 +211,28 @@ display: none;
 						        <div class="pageInfo_area">
 						        	<ul id="pageInfo" class="pageInfo">
 											 <c:if test="${paging.prev}">
-							                    <li class="pageInfo_btn previous"><a href="<%=request.getContextPath()%>/qna/qnaList?pageNum=${qnaPaging.startPage-1}">Previous</a></li>
+							                    <li class="pageInfo_btn previous"><a href="<%=request.getContextPath()%>/qna/qnaList?page=${qnaPaging.startPage-1}&">Previous</a></li>
 							                </c:if>
 								 			
 								 			<c:forEach var="num" begin="${qnaPaging.startPage}" end="${qnaPaging.endPage}">
-							                    <li class='pageInfo_btn ${qnaPaging.cr.pageNum == num ? "here":"" }'><a href="<%=request.getContextPath()%>/qna/qnaList?pageNum=${num}">${num}</a></li>
+							                    <li class='pageInfo_btn ${qnaPaging.cr.page == num ? "here":"" }'><a href="<%=request.getContextPath()%>/qna/qnaList?page=${num}">${num}</a></li>
 							                </c:forEach>
 							                
 							                <c:if test="${qnaPaging.next}">
-							                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/qna/qnaList?pageNum=${qnaPaging.endPage + 1 }">Next</a></li>
+							                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/qna/qnaList?page=${qnaPaging.endPage + 1 }">Next</a></li>
 							                </c:if>  
+								<!--  		<button type="button" class="btn btn-outline-secondary">1</button>
+											<button type="button" class="btn btn-outline-secondary">2</button>
+											<button type="button" class="btn btn-outline-secondary">3</button>
+											<button type="button" class="btn btn-outline-secondary">4</button>-->	
 											</ul>
 										</div>
 									</div>
 								</div>
 							</div>
+
 						</div>
+
 					</div>
 
 					<!-- content-wrapper ends -->

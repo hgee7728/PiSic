@@ -18,15 +18,17 @@ public class QnaServiceImpl implements QnaService {
 	private QnaDao dao;
 	
 	@Override
-	public int totalQnaBoard() {
-		return dao.totalQnaBoard();
+	public int totalQnaBoard(String uid) {
+		return dao.totalQnaBoard(uid);
 	}
-	public List<QnaBoard> pageSelectQna(QnaPaging qnaPaging, String m_id) {
-		return dao.pageSelectQna(qnaPaging, m_id);
+	@Override
+	public List<QnaBoard> pageSelectQna(QnaPaging qnaPaging, String uid) {
+		return dao.pageSelectQna(qnaPaging, uid);
 	}
 	public QnaBoard selectQnaBoard(String qna_no) {
 		return dao.selectQnaBoard(qna_no);
 	}
+	
 	@Transactional
 	public int insertQna(QnaBoard qnaBoard) {
 		if(qnaBoard.getQna_no()>0) {
@@ -40,12 +42,15 @@ public class QnaServiceImpl implements QnaService {
 	public int updateQna(QnaBoard qnaBoard) {
 		return dao.updateQna(qnaBoard);
 	}
+
 	@Override
 	public int deleteQna(int qna_no){
 		return dao.deleteQna(qna_no);
 	}
+	
 	@Override
 	public int deleteQna(List<Integer> qna_no_list)  {
 		return 0;
 	}
+
 }
