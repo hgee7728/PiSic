@@ -307,7 +307,7 @@ function playOne(a_no,s_no){
     frm.setAttribute('method', 'post');
     frm.setAttribute('action', root_path + '/sound/play');
     document.body.appendChild(frm);
-	windowObj = window.open('', 'SoundPlayer', 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no');
+	windowObj = window.open('', 'SoundPlayer', 'top=10, left=10, width=500, height=700, status=no, menubar=no, toolbar=no, resizable=no');
 	frm.target="SoundPlayer";
     frm.submit();
 };
