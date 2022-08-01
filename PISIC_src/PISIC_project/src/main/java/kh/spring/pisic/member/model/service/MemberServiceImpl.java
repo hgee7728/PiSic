@@ -124,4 +124,14 @@ public class MemberServiceImpl implements MemberService {
 		return dao.updatePassword(member);
 	}
 
+	@Override
+	public int updateMemberMembershipYn(String m_id) {
+		return dao.updateMemberMembershipYn(m_id);
+	}
+
+	@Override
+	public int checkMembershipYn(String m_id) {
+		return dao.checkMembershipYn(m_id);
+	}
+
 }

@@ -49,4 +49,8 @@ public interface MemberService {
 	public int deleteMember(Member member);
 	
 	public int updatePassword(Member member);
+	
+	public int updateMemberMembershipYn(String m_id);
+	
+	public int checkMembershipYn(String m_id);
 }

@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,6 +25,11 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
+    <style>
+    	table {
+    		text-align: center;
+    	}
+    </style>
   </head>
   <body>
     <div class="container-scroller">
@@ -35,7 +43,7 @@
         <div class="main-panel">
           <div class="content-wrapper">
           	<div class="page-header">
-              <h2 class="card-title">결제내역</h2>
+              <h2 class="card-title">PAYMENT HISTORY</h2>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="#">이용권</a></li>
@@ -46,32 +54,35 @@
             <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Bordered table</h4>
-                    <p class="card-description"> Add class <code>.table-bordered</code>
+                    <h4 class="card-title">결제 내역</h4>
                     </p>
                     <div class="table-responsive">
                       <table class="table table-bordered">
                         <thead>
                           <tr>
+                            <th>No</th>
                             <th>결제번호</th>
+                            <th>PG사</th>
+                            <th>결제금액</th>
                             <th>이용권이름</th>
                             <th>결제일</th>
-                            <th>결제금액</th>
-                            <th>카드사</th>
+                            <th>종료일</th>
                           </tr>
                         </thead>
                         <tbody>
+                        <c:forEach items="${membershipInfoList}" var="membershipInfoList" varStatus="status">
+                        <!-- 1행 시작 -->
                           <tr>
-                            <td></td>
-                            <td></td>
-                            <td>
-                              <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                              </div>
-                            </td>
-                            <td></td>
-                            <td></td>
+                            <td>${status.count}</td>
+                            <td>${membershipInfoList.ms_i_no}</td>
+                            <td>${membershipInfoList.ms_i_pg}</td>
+                            <td><fmt:formatNumber type="number" value="${membershipInfoList.ms_price}" /></td>
+                            <td>${membershipInfoList.ms_name}</td>
+                            <td><fmt:formatDate pattern="yyyy-MM-dd" value="${membershipInfoList.ms_p_date}"/></td>
+                            <td><fmt:formatDate pattern="yyyy-MM-dd" value="${membershipInfoList.ms_d_date}"/></td>
                           </tr>
+                        <!-- 1행 끝 -->
+           	 			</c:forEach>  
                         </tbody>
                       </table>
                     </div>

@@ -302,7 +302,7 @@ public class MemberController {
 		return result;
 	}
 	
-	private boolean matchPassword(String password, String Enpassword) {
+	protected boolean matchPassword(String password, String Enpassword) {
 		return bCryptPasswordEncoder.matches(password, Enpassword);
 	}
 	

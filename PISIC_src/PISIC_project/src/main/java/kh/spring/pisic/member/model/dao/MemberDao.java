@@ -85,4 +85,12 @@ public class MemberDao {
 	public int updatePassword(Member member) {
 		return session.update("Member.updatePassword", member);
 	}
+	
+	public int updateMemberMembershipYn(String m_id) {
+		return session.update("Member.updateMemberMembershipYn", m_id);
+	}
+	
+	public int checkMembershipYn(String m_id) {
+		return session.selectOne("Member.checkMembershipYn", m_id);
+	}
 }

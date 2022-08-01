@@ -45,6 +45,7 @@
 		<security:intercept-url pattern="/qna/qnaWrite" access="hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')"/>
 		<security:intercept-url pattern="/member/**" access="hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')"/>
 		<security:intercept-url pattern="/membership/**" access="hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')"/>
+		<security:intercept-url pattern="/payments/**" access="hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')"/>
 		<security:intercept-url pattern="/pjBoard/write" access="hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')"/>
 		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 		

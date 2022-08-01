@@ -74,6 +74,11 @@
 		FROM member
 		WHERE m_grade = 'ROLE_ADMIN'
 	</select>
+	<select id="checkMembershipYn" parameterType="string" resultType="_int">
+		SELECT count(*)
+		FROM member
+		WHERE m_id = #{m_id} AND m_membership_yn = 'Y'
+	</select>
 	<update id="updateMyInfo" parameterType="Member">
 		UPDATE member
 		SET 
@@ -98,6 +103,12 @@
 		UPDATE member
 		SET
 		m_password = #{m_password}
+		WHERE m_id = #{m_id}
+	</update>
+	<update id="updateMemberMembershipYn" parameterType="string">
+		UPDATE member
+		SET
+		m_membership = 'Y'
 		WHERE m_id = #{m_id}
 	</update>
 </mapper>

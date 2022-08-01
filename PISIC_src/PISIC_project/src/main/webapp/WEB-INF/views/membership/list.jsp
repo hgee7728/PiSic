@@ -32,6 +32,9 @@
   		h3 {
   			font-size: xx-large;
   		}
+  		h6 {
+  			padding-left: 12px;
+  		}
   		.text-success {
   			font-size: xx-large;
   			color: #8f5fe8 !important;
@@ -51,6 +54,7 @@
     <sec:authentication property="principal.m_nickname" var="m_nickname"/>
     <sec:authentication property="principal.m_email" var="m_email"/>
     <sec:authentication property="principal.m_phone" var="m_phone"/>
+    <sec:authentication property="principal.m_address" var="m_address"/>
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.html -->
       <jsp:include page="../_sidebar.jsp" />
@@ -85,9 +89,10 @@
                       </div>
                       <div class="col-3">
                           <input type="button" class="InputPurchase btn btn-info btn-lg btn-block" value="구매">
+                          <input type="hidden" class="inputPeriod" value="${membershipList.ms_period}">
                       </div>
+                      <h6 class="text-muted font-weight-normal">무제한 듣기<span id="spanPno">${membershipList.ms_no}</span></h6>
                     </div>
-                    <h6 class="text-muted font-weight-normal">무제한 듣기 ${membershipList.ms_no}</h6>
                   </div>
                 </div>
               </div>
@@ -122,16 +127,59 @@
 			console.log(header);
 			console.log(token);
             
-            $(".InputPurchase").on("click", function(){
-    	    	var price = $(this).parent().prev().find("#pPname").text();
-    	    	var pname = $(this).parent().prev().find("#h3Price").text();
+			var price = null;
+			var pname = null;
+			var period = null;
+			var pno = null;
+			var ppg = null;
+			
+			$(".InputPurchase").on("click", function(){
+            	price = $(this).parent().prev().find("#pPname").text();
+    	    	pname = $(this).parent().prev().find("#h3Price").text();
+    	    	period = $(this).next().val();
+    	    	pno = $(this).parent().next().find("#spanPno").text();
+    	    	
     	    	console.log(pname);
     	    	console.log(price);
+    	    	console.log(period);
+    	    	console.log(pno);
     	    	
+    	    	var res = null;
+    	    	
+    	    	$.ajax({
+					url: "<%=request.getContextPath()%>/membership/checkMembership",
+					data: {
+					    m_id: mId
+					},
+					beforeSend: function(xhr){
+				        xhr.setRequestHeader(header, token);
+				    },
+				    dataType: "json",
+					type: "post",
+					success: function(result){
+						if (result > 0) {
+							alert("이용권을 이미 보유 중입니다.");
+						} else {
+							if (period != 0) {
+				            	$.fn.FxGeneralPayment();    	    		
+			    	    	} else {
+			    	    		$.fn.FxRegularPayment();  
+			    	    	}
+						}
+					},
+					error: function(error){
+					    console.log(error);
+				    }
+		    	})
+        	})
+			
+			// 일반 결제
+			$.fn.FxGeneralPayment = function(){
+				ppg = '카카오페이';
     	    	IMP.request_pay({
-    	    		pg : 'html5_inicis',
+    	    		pg : 'kakaopay',
     	    		pay_method : 'card',
-    	    		merchant_uid: "merchant_" + new Date().getTime(),
+    	    		merchant_uid : "merchant_" + new Date().getTime(),
     	    		name : pname,
     	    		amount : price,
     	    		buyer_email : mEmail,
@@ -140,8 +188,9 @@
     	    	}, function (rsp) { // callback
     	    		// 결제 성공
     	            if (rsp.success) {
+    	            	console.log("빌링키 발급");
 	    	            $.ajax({
-		    	            url: "<%=request.getContextPath()%>/membership/payments/complete",
+		    	            url: "<%=request.getContextPath()%>/payments/completeG",
 		    	            type: 'POST',
 	    					beforeSend: function(xhr){
 	    				        xhr.setRequestHeader(header, token);
@@ -149,30 +198,100 @@
 		    	            dataType: 'json',
 		    	            data: {
 		    	            	imp_uid : rsp.imp_uid,
-		    	            	merchant_uid: rsp.merchant_uid,
-		    	        		m_id : mId
+		    	            	merchant_uid : rsp.merchant_uid,
+		    	            	price : rsp.paid_amount,
+		    	            	pno : pno,
+		    	            	period : period,
+		    	            	ppg : ppg
 	    	        		}
 	    	            }).done(function(data) {
+	    	            	console.log(data);
+	    	            	console.log("일반결제 완료");
 	    	            	if (everythings_fine) {
 	    	            		var msg = '결제가 완료되었습니다.';
 	    	            		msg += '\n고유ID : ' + rsp.imp_uid;
 	    	        			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
-	    	        			msg += '\결제 금액 : ' + rsp.paid_amount;
-	    	        			msg += '카드 승인번호 : ' + rsp.apply_num;
+	    	        			msg += '\n결제 금액 : ' + rsp.paid_amount;
+	    	        			msg += '\n카드 승인번호 : ' + rsp.apply_num;
 	    	        			alert(msg);
+	    	        			alert("결제 완료하였습니다.");
+	    	    	    		location.href="<%=request.getContextPath()%>/membership/history";
 	    	            	} else {
 	    	            		var msg = '결제가 제대로 되지 않았습니다.';
 	    	            		alert(msg);
 	    	            	}
-	    	            })
+	    	            });
+    	            // 결제 실패
+    	            } else {
+    	               var msg = '결제에 실패하였습니다.';
+    	               msg += '에러내용 : ' + rsp.error_msg;
+    	               alert(msg);
+    	            }
+    	    		console.log("끝");
+    	    		location.href="<%=request.getContextPath()%>/membership/history";
+    	        });
+        	}
+			
+			// 정기 결제
+			$.fn.FxRegularPayment = function(){
+				ppg = '카카오페이';
+    	    	IMP.request_pay({
+    	    		pg : 'html5_inicis.INIBillTst',
+    	    		pay_method : 'card',
+    	    		merchant_uid: "merchant_" + new Date().getTime(),
+    	    		name : pname,
+    	    		amount : price,
+    	    		customer_uid : mId,
+    	    		buyer_email : mEmail,
+    	    		buyer_name : mName,
+    	    		buyer_tel : remPhone
+    	    	}, function (rsp) { // callback
+    	    		// 결제 성공
+    	            if (rsp.success) {
+    	            	console.log("빌링키 발급");
+	    	            $.ajax({
+		    	            url: "<%=request.getContextPath()%>/payments/completeR",
+		    	            type: 'POST',
+	    					beforeSend: function(xhr){
+	    				        xhr.setRequestHeader(header, token);
+	    				    },
+		    	            dataType: 'json',
+		    	            data: {
+		    	            	customer_uid : mId,
+		    	            	imp_uid : rsp.imp_uid,
+		    	            	merchant_uid : rsp.merchant_uid,
+		    	            	price : rsp.price,
+		    	            	pno : pno,
+		    	            	period : period,
+		    	            	ppg : ppg
+	    	        		}
+	    	            }).done(function(data) {
+	    	            	console.log(data);
+	    	            	console.log("정기결제 완료");
+	    	            	if (everythings_fine) {
+	    	            		var msg = '결제가 완료되었습니다.';
+	    	            		msg += '\n고유ID : ' + rsp.imp_uid;
+	    	        			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+	    	        			msg += '\n결제 금액 : ' + rsp.paid_amount;
+	    	        			msg += '\n카드 승인번호 : ' + rsp.apply_num;
+	    	        			alert(msg);
+	    	        			alert("결제 완료하였습니다.");
+	    	    	    		location.href="<%=request.getContextPath()%>/membership/history";
+	    	            	} else {
+	    	            		var msg = '결제가 제대로 되지 않았습니다.';
+	    	            		alert(msg);
+	    	            	}
+	    	            });
     	            // 결제 실패  
     	            } else {
     	               var msg = '결제에 실패하였습니다.';
     	               msg += '에러내용 : ' + rsp.error_msg;
     	               alert(msg);
     	            }
+    	            console.log("끝");
+    	            location.href="<%=request.getContextPath()%>/membership/history";
     	        });
-        	})
+			}
     	});
     </script>
     <!-- container-scroller -->

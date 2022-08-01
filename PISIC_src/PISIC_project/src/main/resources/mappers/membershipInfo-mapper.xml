@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="MembershipInfo">
+	<insert id="insertMembershipInfo" parameterType="MembershipInfo">
+		INSERT INTO
+		membership_info
+		(ms_i_no, m_id, ms_no, ms_i_pg, ms_i_card, ms_p_date, ms_s_date, ms_d_date, ms_period, ms_customer_uid, ms_merchant_uid)
+		VALUES
+		(#{ms_i_no}, #{m_id}, #{ms_no}, #{ms_i_pg}, null, default, sysdate, (SELECT ADD_MONTHS(sysdate, + #{ms_period}) FROM dual), #{ms_period}, #{ms_customer_uid}, #{ms_merchant_uid})
+	</insert>
+	<select id="selectMembershipInfoList" parameterType="string" resultType="MembershipInfo">
+		SELECT ms_i_no, ms_no, ms_i_pg, ms_p_date, ms_d_date, ms_name, ms_price
+		FROM membership_info JOIN membership
+		USING(ms_no)
+		WHERE m_id = #{m_id}
+		ORDER BY ms_p_date DESC
+	</select>
+	<select id="checkMembership" parameterType="string" resultType="_int">
+		<![CDATA[
+			SELECT count(*)
+			FROM membership_info
+			WHERE m_id = #{m_id} AND sysdate < ms_d_date
+		]]>
+	</select>
+</mapper>

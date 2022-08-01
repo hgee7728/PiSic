@@ -5,6 +5,7 @@ import java.security.Principal;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,16 +22,16 @@ import kh.spring.pisic.membership.model.service.MembershipService;
 @Controller
 @RequestMapping("/membership")
 public class MembershipController {
+	
 	@Autowired
 	private MembershipService service;
 	
 	@GetMapping("/list")
 	public ModelAndView pageSelectMembership(
-			HttpSession session
-			, ModelAndView mv
+			ModelAndView mv
 			, Principal principal) {
 		
-		session.setAttribute("membershipList", service.selectMembership());
+		mv.addObject("membershipList", service.selectMembership());
 		mv.setViewName("membership/list");
 		return mv;
 	}
@@ -43,17 +44,22 @@ public class MembershipController {
 	}
 	
 	@GetMapping("/history")
-	public String pageHistoryMembership(
-			HttpSession session) {
+	public ModelAndView pageHistoryMembership(
+			ModelAndView mv
+			, Authentication auth) {
+		// 현재 사용자 id
+		UserDetails ud = (UserDetails)auth.getPrincipal();
+		String uid = ud.getUsername();
 		
-		return "membership/history";
+		mv.addObject("membershipInfoList", service.selectMembershipInfoList(uid));
+		mv.setViewName("membership/history");
+		return mv;
 	}
 	
-	@PostMapping("/payments/complete")
-	public String paymentsComplete(
-			@RequestParam (name = "imp_uid", required = true) String imp_uid
-			, @RequestParam (name = "merchant_uid", required = true) String merchant_uid
-			, @RequestParam (name = "m_id", required = true) String m_id) {
-		return "";
+	@PostMapping("/checkMembership")
+	@ResponseBody
+	public int checkMembership(String m_id) {
+		int result = service.checkMembership(m_id);
+		return result;
 	}
 }
