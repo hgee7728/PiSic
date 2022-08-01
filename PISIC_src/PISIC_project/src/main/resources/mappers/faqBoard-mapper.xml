@@ -9,21 +9,22 @@
 		ORDER BY faq_no DESC
 	</select>
 	
+	<!-- 자주묻는 질문 정보 가져오기 -->
 	<select id="selectFaq" resultType="FaqBoard">
 		select faq_no, faq_title, faq_content, faq_cnt, m_id, faq_date
 		from faq
 		where faq_no=#{faq_no}
 	</select>
 	
-<!-- 
+
 	<update id="qnaBoardCnt" parameterType="_int">
 		UPDATE faq
 		SET
 		faq_cnt = faq_cnt + 1
 		WHERE
-		faq_no = ${faq_no}
+		faq_no = #{faq_no}
 	</update>
- -->	
+	
 
 	<!-- 자주묻는 질문 등록하기 -->
 	<insert id="insertFaq" parameterType="FaqBoard">
@@ -32,14 +33,19 @@
 		values (
 		(select nvl(max(faq_no),0)+1 from faq),
 		#{faq_title }, #{faq_content },
-		#{faq_cnt }, "admin", systimestamp)
+		#{faq_cnt }, 'admin', systimestamp)
 	</insert>
 	
  	
 	<!-- 자주묻는 질문 수정하기 -->
 	<update id="updateFaq" parameterType="FaqBoard">
 		update faq set
-		faq_title=#{faq_title }, faq_content=#{faq_content },
+		faq_no=#{faq_no},
+		faq_title=#{faq_title }, 
+		faq_content=#{faq_content },
+		faq_cnt=#{faq_cnt},
+		m_id=#{m_id},
+		faq_date=systimestamp
 		where faq_no=#{faq_no}
 	</update>
 	

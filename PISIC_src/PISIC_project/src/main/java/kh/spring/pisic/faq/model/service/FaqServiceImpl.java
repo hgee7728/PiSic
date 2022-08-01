@@ -38,12 +38,20 @@ public class FaqServiceImpl implements FaqService {
 	public int updateFaq(FaqBoard faqBoard) {
 		return dao.updateFaq(faqBoard);
 	}
+	
+	// 자주 묻는 질문 조회수 cnt
+	@Override
+	public int updateFaqCnt(int faq_no) {
+		return dao.updateFaqCnt(faq_no);
+	}
 
 	// 자주 묻는 질문 삭제
 	@Override
 	public int deleteFaq(int faq_no) {
 		return dao.deleteFaq(faq_no);
 	}
+	
+	
 
 
 	

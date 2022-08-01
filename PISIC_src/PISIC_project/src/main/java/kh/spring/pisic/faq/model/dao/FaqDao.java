@@ -32,9 +32,15 @@ public class FaqDao {
 		return sqlSession.update("FaqBoard.updateFaq", faqBoard);
 	}
 	
+	// 자주 묻는 질문 조회수 cnt
+	public int updateFaqCnt(int faq_no) {
+		return sqlSession.update("FaqBoard.updateFaqCnt", faq_no);
+	}
+	
+	
 	// 자주묻는 질문 등록하기
 	public int deleteFaq(int faq_no) {
-		return sqlSession.update("FaqBoard.deleteFaq", faq_no);
+		return sqlSession.delete("FaqBoard.deleteFaq", faq_no);
 	}
 	
 	

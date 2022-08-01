@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!-- jstl 포맷라이브러리 추가 -->
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@  taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -54,7 +56,7 @@
 /*버튼*/
 .board-list btn btn-info btn-fw {
 	margin-left: 500px;
-	margin-top: 50px;
+	margin: 50px;
 }
 
 .btn_faq {
@@ -66,10 +68,59 @@
 .content-wrapper h2, h3 {
 	font-weight: bold;
 }
+
+button{
+	margin-right: 10px;
+}
 </style>
 <script>
+$(function(){
+	var msg = '${msg}';
+	if(msg){
+		alert(msg);
+	}
+	var header = $("meta[name='_csrf_header']").attr('th:content');
+	var token = $("meta[name='_csrf']").attr('th:content');
+});
+
+//조회수 cnt
+$(document).ready(function(){
+	$(".ctsSbj").on("click", function(){
+		$(".contents").toggleClass("active");
+		if ($(".contents").hasClass("active")) {
+			$(this).next('.contents').slideToggle(500);
+		} else {
+			$(this).next('.contents').slideToggle(500);
+			
+			var header = $("meta[name='_csrf_header']").attr('th:content');
+			var token = $("meta[name='_csrf']").attr('th:content');
+			console.log(header);
+			console.log(token);
+			
+			$.ajax({
+				url:"<%=request.getContextPath() %>/faq/updateFaqCnt",
+				type:"post",
+				data:{
+					faq_no : $(this).next("input[name=update_faq_cnt]").val()
+					},
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    	},
+				success: function(result){
+					if(result == 1){
+						alert("dddddddd");
+						location.reload();
+					}
+				},
+				error:function(){
+				}
+			}); //ajax 끝
+		}
+	})
+});
+
 //한개 삭제 버튼
-$(document).on("click", ".select_artist_delete", function() {
+$(document).on("click", ".delete_faq", function() {
 	console.log($(this).next("input[name=delete_faq_no]").val()+"---------------------------------");
 	var confm = confirm("해당 FAQ를 삭제 하시겠습니까?");
 	var header = $("meta[name='_csrf_header']").attr('th:content');
@@ -82,30 +133,29 @@ $(document).on("click", ".select_artist_delete", function() {
 	} else {
 		$.ajax({
 			url:"<%=request.getContextPath()%>/faq/deleteFaq",
-			type:"post",
-			data:{
-				faq_no: $(this).next("input[name=delete_faq_no]").val()
-				},
-			beforeSend: function(xhr){
-		        xhr.setRequestHeader(header, token);
-		    },
-			success:function(result){
+			type : "post",
+			data : {
+				faq_no : $(this).next("input[name=delete_faq_no]").val()
+			},
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result) {
 				console.log(result);
-				if(result == "0"){
+				if (result == 0) {
 					alert("FAQ 삭제가 실패했습니다. 다시 시도해주세요");
-					
+
 				} else {
 					alert("FAQ가 삭제 되었습니다.");
 					location.reload();
 				}
 			},
-			error:function(error){
-				
+			error : function(error) {
+
 			}
 		}); // ajax 끝
 	}
 });
-
 </script>
 </head>
 <body>
@@ -128,10 +178,10 @@ $(document).on("click", ".select_artist_delete", function() {
 							<div class="col-lg-12 grid-margin stretch-card">
 								<div class="card">
 									<div class="card-body">
-										<h4 class="card-title">질문 TOP10</h4>
 										<div class="table-responsive">
 											<form name="faq_frm">
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+												<input type="hidden" name="${_csrf.parameterName}"
+													value="${_csrf.token}" />
 												<table class="table faq_list">
 													<thead>
 														<tr>
@@ -139,6 +189,10 @@ $(document).on("click", ".select_artist_delete", function() {
 															<td>No.</td>
 															<td>제목</td>
 															<td>최종 수정일</td>
+															<td>조회수</td>
+															<sec:authorize access="hasRole('ROLE_ADMIN')">
+															<td colspan="2">관리자 기능</td>
+															</sec:authorize>
 														</tr>
 
 													</thead>
@@ -147,51 +201,61 @@ $(document).on("click", ".select_artist_delete", function() {
 															<tr class="ctsSbj" style="cursor: pointer;">
 																<th>${faqBoard.faq_no }</th>
 																<td>${faqBoard.faq_title }</td>
-																<td><fmt:formatDate pattern="yyyy-MM-dd"
-																		value="${faqBoard.faq_date }" /></td>
-																		
-																		
-																<td>
-																	<div class="select_btns">
-																		<button type="button"
-																			class="btn btn-info btn-md update update_faq"
-																			onclick="location.href='<%=request.getContextPath() %>/faq/updateFaq?faq_no=${faqBoard.faq_no }'">
-																			수정</button>
-																	</div>
-																</td>
-																<td>
-																	<div class="select_btns">
-																		<button type="button"
-																			class="btn btn-info btn-md delete delete_faq">
-																			삭제</button>
-																		<input type="hidden" value="${faqBoard.faq_no}"
-																			name="delete_faq_no">
-																	</div>
-																</td>
-																
-																
+																<td><fmt:formatDate pattern="yyyy-MM-dd" value="${faqBoard.faq_date }" /></td>
+																<td style="text-align: center;">${faqBoard.faq_cnt }</td>
+																<sec:authorize access="hasRole('ROLE_ADMIN')">
+																	<td>
+																		<div class="select_btns">
+																			<button type="button"
+																				class="btn btn-info btn-md update update_faq"
+																				onclick="location.href='<%=request.getContextPath() %>/faq/updateFaq?faq_no=${faqBoard.faq_no }'">
+																				수정</button>
+																		</div>
+																	</td>
+																	<td>
+																		<div class="select_btns">
+																			<button type="button"
+																				class="btn btn-info btn-md delete delete_faq">
+																				삭제</button>
+																			<input type="hidden" value="${faqBoard.faq_no}"
+																				name="delete_faq_no">
+																		</div>
+																	</td>
+																</sec:authorize>
+
 															</tr>
 															<tr class="contents">
 																<td></td>
-																<td style="height: 300px;">
+																<td style="height: 200px;">
+																<p>
 																	<div>
-																		<% pageContext.setAttribute("newLineChar", "\n"); %>
-																		${fn:replace(faqBoard.faq_content, newLineChar, "<br/>")}
+																		<%pageContext.setAttribute("newLineChar", "\n");%>${fn:replace(faqBoard.faq_content, newLineChar, "<br/>")}
 																	</div>
+																</p>
 																</td>
-																<td></td>
-																<td></td>
+															
 															</tr>
 														</c:forEach>
 													</tbody>
 												</table>
 											</form>
-											<div class="btn_faq">
+											<div class="btn_faq row">
+												<sec:authorize access="hasRole('ROLE_ADMIN')">
+												<div>
+												<h5>[관리자 기능]</h5>
+												<button type="button" class="btn btn-info btn-fw"
+													onclick="location.href='<%=request.getContextPath()%>/faq/insertFaq'">
+													자주묻는질문<br>등록하기</a>
+												</button>
+												</div>
+												</sec:authorize>
+												<div>
 												<h5>찾으시는 내용이 없으신가요?</h5>
 												<button type="button" class="btn btn-info btn-fw"
 													onclick="location.href='<%=request.getContextPath()%>/qna/qnaList'">
 													1:1 문의로<br>이동하기</a>
 												</button>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -242,15 +306,7 @@ $(document).on("click", ".select_artist_delete", function() {
 		<script
 			src="<%=request.getContextPath()%>/resources/assets/js/dashboard.js"></script>
 		<!-- End custom js for this page -->
-		<script>
-			$(function() {
 
-				$('.ctsSbj').click(function() {
-					$(this).next('.contents').slideToggle(300);
-				});
-
-			});
-		</script>
 </body>
 
 </html>

@@ -10,5 +10,6 @@ public interface FaqService {
 	public FaqBoard selectFaq(int faq_no);
 	public int insertFaq(FaqBoard faqBoard);
 	public int updateFaq(FaqBoard faqBoard);
+	public int updateFaqCnt(int faq_no);
 	public int deleteFaq(int faq_no);
 }

@@ -99,6 +99,16 @@ label {
 float:left;
 }
 </style>
+<script>
+$(function(){
+	var msg = '${msg}';
+	if(msg){
+		alert(msg);
+	}
+	var header = $("meta[name='_csrf_header']").attr('th:content');
+	var token = $("meta[name='_csrf']").attr('th:content');
+});
+</script>
 </head>
 <body>
 	<div class="container-scroller">

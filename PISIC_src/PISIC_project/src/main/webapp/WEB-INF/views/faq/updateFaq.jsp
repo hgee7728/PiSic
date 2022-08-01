@@ -99,6 +99,16 @@ label {
 float:left;
 }
 </style>
+<script>
+$(function(){
+	var msg = '${msg}';
+	if(msg){
+		alert(msg);
+	}
+	var header = $("meta[name='_csrf_header']").attr('th:content');
+	var token = $("meta[name='_csrf']").attr('th:content');
+});
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -117,11 +127,13 @@ float:left;
 							<div class="col-lg-12 grid-margin stretch-card">
 								<div class="card">
 									<div class="card-body">
-
 										<form id="writeform" action="<%=request.getContextPath()%>/faq/updateFaq" method="post">
 										 <!-- csrf 공격 방지 -->
 										 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
+										 <input type="hidden" value="${faqBoard.faq_no}" name="faq_no">
+										 <input type="hidden" value="${faqBoard.m_id}" name="m_id">
+										 <input type="hidden" value="${faqBoard.faq_date}" name="faq_date">
+	
 											<div  class="form-group">
 												<label  for="faq_title">자주 묻는 문의</label>             
 												<textarea  class="form-control" id="faq_title" name="faq_title" 
@@ -136,10 +148,8 @@ float:left;
 												placeholder="(자주 묻는 질문에 대한 답변을 등록해주세요)">${faqBoard.faq_content }</textarea>
 											</div>
 											
-										<div class="btn_faq" style="float:center;">
-											<button type="submit" class="btn btn-info btn-fw">등록하기</button>
-											<button type="button" class="btn btn-info btn-fw"  onclick="location.href='<%=request.getContextPath()%>/faq/faqList'">목록으로</button>
-										</div>
+											<button type="submit" class="btn btn_faq btn-info btn-fw">수정완료</button>
+											<button type="button" class="btn btn_faq btn-info btn-fw"  onclick="location.href='<%=request.getContextPath()%>/faq/faqList'">목록으로</button>
 									</form>
 									</div>
 								</div>

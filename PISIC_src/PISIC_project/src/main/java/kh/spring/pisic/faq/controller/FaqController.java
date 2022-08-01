@@ -30,6 +30,7 @@ public class FaqController {
 	@Autowired
 	private FaqService service;
 	
+	//FAQ 리스트
 	@GetMapping("/faqList")
 	public ModelAndView pageSelectFaq(ModelAndView mv) {
 		List<FaqBoard> faqBoard = service.selectFaqBoard();
@@ -38,16 +39,16 @@ public class FaqController {
 		return mv;
 	}
 	
+	//FAQ 정보 읽어오기
 	@GetMapping("/insertFaq")
 	public String InsertFaq() {
 		return "faq/insertFaq";
 	}
-
+	
+	//FAQ 추가
 	@PostMapping("/insertFaq")
 	public ModelAndView InsertFaqBoard(ModelAndView mv, 
-			FaqBoard faqBoard, 
-			HttpServletRequest req, 
-			HttpSession session,
+			FaqBoard faqBoard,
 			RedirectAttributes rttr) throws Throwable {
 
 		int result = service.insertFaq(faqBoard);
@@ -63,6 +64,7 @@ public class FaqController {
 		return mv;
 	}
 	
+	//FAQ 수정 페이지로 이동
 	@GetMapping("/updateFaq")
 	public ModelAndView UpdateFaqBoard(ModelAndView mv
 			,@RequestParam(name="faq_no", defaultValue = "0") int faq_no) {
@@ -74,11 +76,10 @@ public class FaqController {
 		
 	}
 	
+	//FAQ 수정
 	@PostMapping("/updateFaq")
 	public ModelAndView UpdateFaqBoard(ModelAndView mv
 			, FaqBoard faqBoard
-			, HttpServletRequest req
-			, HttpSession session
 			, RedirectAttributes rttr) throws Throwable { 
 		
 		int result = service.updateFaq(faqBoard);
@@ -88,23 +89,42 @@ public class FaqController {
 			mv.setViewName("redirect:/faq/faqList");
 		}else {
 			rttr.addFlashAttribute("msg", "FAQ 정보 수정 성공하였습니다.");
-		mv.setViewName("redirect:/faq/faqList");
+			mv.setViewName("redirect:/faq/faqList");
 		}
 		return mv; 
 	}
 	
+	//FAQ 조회수 cnt
+	@PostMapping("/updateFaqCnt")
+	public int UpdateFaqCnt(int faq_no){ 
+		
+		int result = service.updateFaqCnt(faq_no);
+		
+		if(result==0) {
+			System.out.println("0000000000");
+			return 0; 
+		}else {
+			System.out.println("111111111");
+			return 1; 
+		}
+	}
+	
+	//FAQ 삭제
 	@ResponseBody
-	@PostMapping(value="deleteFaq", produces = "text/plain;charset=UTF-8")
-	public String deleteFaq(
+	@PostMapping(value="/deleteFaq", produces = "text/plain;charset=UTF-8")
+	public int deleteFaq(
 			@RequestParam(name = "faq_no", required = false) int faq_no
 			) throws Throwable {
 		int result = service.deleteFaq(faq_no);
 		
-		if(result<1) {
-			return "0";
-		}else {
-			return "1";
+		
+		if (result == 0) {
+			return 0;
+
+		} else {
+			return 1;
 		}
+		
 	}
 
 
