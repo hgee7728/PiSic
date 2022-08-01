@@ -128,7 +128,7 @@
 		    S_NAME, S_PATH 
 		from 
 		    (
-		        select rank() over (order by count(*) desc) chart, s_no, a_no
+		        select  row_number() over (order by count(*) desc) chart, s_no, a_no
 		        from 
 		            playinfo
 		        <where>
@@ -154,7 +154,7 @@
 	    S_NAME, S_PATH 
 	from 
 	    (
-	        select rank() over (order by count(*) desc, s_no, a_no) chart, s_no, a_no
+	        select  row_number() over (order by count(*) desc, s_no, a_no) chart, s_no, a_no
 	        from 
 	            playinfo 
 	          <where>

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,31 +73,29 @@ public class QnaController {
 		return mv;
 	}
 	
-	@PostMapping("/qnaWrite")
-	public ModelAndView insertQna(ModelAndView mv
-//			, @RequestParam(name="gr_ord", defaultValue = "0") String gr_ord
-			, QnaBoard qnaBoard
-			, @RequestParam(name="uploadfile", required = false) MultipartFile multiFile
-			, HttpServletRequest req
-			, HttpSession session
-			, RedirectAttributes rttr
-			)  {
-		Member loginInfo = (Member)session.getAttribute("loginSsInfo");
-		if(loginInfo == null) {
-			rttr.addFlashAttribute("msg", "로그인 후 글쓰기를 다시 시도해 주세요.");
-			mv.setViewName("redirect:/member/login");
-			return mv;
-		}
-		
-		qnaBoard.setM_id(loginInfo.getM_id());
-		
-		int result = service.insertQna(qnaBoard);
-		if(result > 1)
-			mv.setViewName("redirect:/qna/qnaList");
-		else
-			mv.setViewName("redirect:/qna/qnaList");
-		return mv;
-	}
+	 @PostMapping("/qnaWrite")
+	   public ModelAndView insertQna(ModelAndView mv
+//	         , @RequestParam(name="gr_ord", defaultValue = "0") String gr_ord
+	         , QnaBoard qnaBoard
+	         , @RequestParam(name="uploadfile", required = false) MultipartFile multiFile
+	         , HttpServletRequest req
+	         , HttpSession session
+	         , RedirectAttributes rttr
+	         , Authentication auth
+	         )  {
+	      // 현재 사용자 id
+	      UserDetails ud = (UserDetails)auth.getPrincipal();
+	      String uid = ud.getUsername();
+	      
+	      qnaBoard.setM_id(uid);
+	      
+	      int result = service.insertQna(qnaBoard);
+	      if(result > 1)
+	         mv.setViewName("redirect:/qna/qnaList");
+	      else
+	         mv.setViewName("redirect:/qna/qnaList");
+	      return mv;
+	   }
 		
 		//수정
 		@PostMapping("/qnaUpdate")
