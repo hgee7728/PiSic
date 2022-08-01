@@ -159,22 +159,28 @@ public class QnaController {
 		}
 		
 		// QNA 삭제
-		@PostMapping(value="/delete")
 		@ResponseBody
-		public String deleteQna(
-				@RequestParam(name="qna_no", required = false) String qna_no 
-				) {
+		@PostMapping(value="/delete")
+		public int deleteQna(
+				@RequestParam(name="qna_no", required = false) int qna_no 
+				) throws Throwable {
 			int result = service.deleteQna(qna_no);
 			// ajax인 경우 페이지 이동 설정이 필요없음. 이동할 데이터를 return에 실어주면됨.
-			String msg="";
-			if(result>0) {
-				msg= "게시글 "+qna_no+"번 삭제되었습니다.";
-			}else {
-				msg="게시글이 삭제되지 못했습니다. 다시 확인하고 삭제해주세요.";
+//			String msg="";
+			if (result == 0) {
+				return 0;
+
+			} else {
+				return 1;
 			}
-			return msg;
+//			if(result>0) {
+//				msg= "게시글 "+qna_no+"번 삭제되었습니다.";
+//			}else {
+//				msg="게시글이 삭제되지 못했습니다. 다시 확인하고 삭제해주세요.";
+//			}
+//			return msg;
+//		}
+//		
+		
 		}
-		
-		
-		
 }

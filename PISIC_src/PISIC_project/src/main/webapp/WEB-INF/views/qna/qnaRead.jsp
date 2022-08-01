@@ -71,13 +71,20 @@ table.qnaRead td {
 <script>
 const root_path = '<%=request.getContextPath() %>';
 $(function(){
+		var msg = '${msg}';
+		if(msg){
+			alert(msg);
+		}
+		var header = $("meta[name='_csrf_header']").attr('th:content');
+		var token = $("meta[name='_csrf']").attr('th:content');
+	});
 	// 게시물 100자 제한
-	$('#recomment_content').on('keyup', function() {
-        $('.recomment_cnt').html("("+$(this).val().length+" / 100)");
+	$('#').on('keyup', function() {
+        $('.').html("("+$(this).val().length+" / 100)");
  
         if($(this).val().length > 100) {
             $(this).val($(this).val().substring(0, 100));
-            $('.recomment_cnt').html("(100 / 100)");
+            $('.').html("(100 / 100)");
         }
     });
 }
@@ -88,24 +95,43 @@ $("#update_btn").click(function(){
 	modify_frm.submit();
 });
 
-// 글 삭제
-$("#delete_btn").click(function(){
-	var confm = confirm("해당 글을 삭제하시겠습니까?");
-	if (confm == false) {
-		
-	} else {
-		modify_frm.action = "<%=request.getContextPath()%>/qna/delete";
-		modify_frm.method = "post";
-		modify_frm.submit();
-	}
+//한개 삭제 버튼
+$(document).on("click", ".delete_qna", function() {
+	console.log($(this).next("input[name=delete_qna_no]").val()+"---------------------------------");
+	var confm = confirm("해당 QNA를 삭제 하시겠습니까?");
+	var header = $("meta[name='_csrf_header']").attr('th:content');
+	var token = $("meta[name='_csrf']").attr('th:content');
+	console.log(header);
+	console.log(token);
 	
-});
-});
+	if (confm == false) {
+		alert("취소하셨습니다.");
+	} else {
+		$.ajax({
+			url:"<%=request.getContextPath()%>/qna/delete",
+			type : "post",
+			data : {
+				faq_no : $(this).next("input[name=delete_qna_no]").val()
+			},
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result) {
+				console.log(result);
+				if (result == 0) {
+					alert("QNA 삭제가 실패했습니다.");
 
-let header = $("meta[name='_csrf_header']").attr('th:content');
-let token = $("meta[name='_csrf']").attr('th:content');
-let csrf_parameterName = '${_csrf.parameterName }';
-let csrf_token = '${_csrf.token }';
+				} else {
+					alert("QNA가 삭제 되었습니다.");
+					location.reload();
+				}
+			},
+			error : function(error) {
+
+			}
+		}); 
+	}
+});
 </script>
 </head>
 <body>
@@ -158,7 +184,7 @@ let csrf_token = '${_csrf.token }';
 												<th>작성자</th>
 												<td>${qnaBoard.m_id }</td>
 											</tr>
-											<tr class="qnaContent">
+											<tr >
 												<th >내용</th>	
 												<td colspan="3"><% pageContext.setAttribute("newLineChar", "\n"); %>${fn:replace(qnaBoard.qna_content, newLineChar, "<br/>")}</td>
 											</tr>

@@ -44,7 +44,7 @@ public class QnaServiceImpl implements QnaService {
 	}
 
 	@Override
-	public String deleteQna(String qna_no){
+	public int deleteQna(int qna_no){
 		return dao.deleteQna(qna_no);
 	}
 	

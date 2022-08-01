@@ -38,7 +38,7 @@ public class QnaDao {
 		return sqlsession.update("QnaBoard.updateQna",qnaBoard);
 	}
 	// QNA 삭제
-	public int deleteQna(String qna_no) {
+	public int deleteQna(int qna_no) {
 		return sqlsession.delete("QnaBoard.deleteQna", qna_no);
 	}
 	

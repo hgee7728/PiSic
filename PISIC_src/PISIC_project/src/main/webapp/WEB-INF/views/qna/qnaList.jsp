@@ -154,7 +154,7 @@ display: none;
 													</thead>
 													
 													<tbody>
-													<c:forEach items="${qnalist }" var="qnaBoard">
+													<c:forEach items="${qnaBoard }" var="qnaBoard">
 														<c:if test="${qnaBoard.gr_layer == 0} ">
 															<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nbsp;</span>
 														</c:if>
