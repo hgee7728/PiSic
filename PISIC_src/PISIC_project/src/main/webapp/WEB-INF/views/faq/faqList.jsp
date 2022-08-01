@@ -88,9 +88,7 @@ $(document).ready(function(){
 	$(".ctsSbj").on("click", function(){
 		$(".contents").toggleClass("active");
 		if ($(".contents").hasClass("active")) {
-			$(this).next('.contents').slideToggle(500);
-		} else {
-			$(this).next('.contents').slideToggle(500);
+			$(this).next('.contents').slideDown(500);
 			
 			var header = $("meta[name='_csrf_header']").attr('th:content');
 			var token = $("meta[name='_csrf']").attr('th:content');
@@ -101,23 +99,26 @@ $(document).ready(function(){
 				url:"<%=request.getContextPath() %>/faq/updateFaqCnt",
 				type:"post",
 				data:{
-					faq_no : $(this).next("input[name=update_faq_cnt]").val()
+					faq_no : $(this).children("th:nth-child(1)").text()
 					},
 				beforeSend: function(xhr){
 			        xhr.setRequestHeader(header, token);
 			    	},
 				success: function(result){
-					if(result == 1){
+					if(result == "1"){
 						console.log("[[[[[[[[[[[성공"+result);
-						location.reload();
 					}else{
 						console.log("[[[[[[[[[[[실패"+result);
-						location.reload();
 					}
 				},
 				error:function(){
 				}
 			}); //ajax 끝
+			
+		} else {
+			$(this).next('.contents').slideUp(500);
+			
+			
 		}
 	})
 });
@@ -202,7 +203,7 @@ $(document).on("click", ".delete_faq", function() {
 													<tbody>
 														<c:forEach items="${faqBoard }" var="faqBoard">
 															<tr class="ctsSbj" style="cursor: pointer;">
-																<th>${faqBoard.faq_no }<input type="hidden" value="${faqBoard.faq_no}" name="update_faq_cnt"></th>
+																<th>${faqBoard.faq_no }</th>
 																<td>${faqBoard.faq_title }</td>
 																<td><fmt:formatDate pattern="yyyy-MM-dd" value="${faqBoard.faq_date }" /></td>
 																<td style="text-align: center;">${faqBoard.faq_cnt }</td>

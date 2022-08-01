@@ -17,7 +17,7 @@
 	</select>
 	
 
-	<update id="qnaBoardCnt" parameterType="_int">
+	<update id="updateFaqCnt">
 		UPDATE faq
 		SET
 		faq_cnt = faq_cnt + 1
