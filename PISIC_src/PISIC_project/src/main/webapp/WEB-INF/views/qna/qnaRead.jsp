@@ -89,7 +89,7 @@ $(function(){
     });
 }
 // 글 수정
-$("#update_btn").click(function(){
+$("#update_qna").click(function(){
 	modify_frm.action = "<%=request.getContextPath()%>/qna/qnaUpdate";
 	modify_frm.method = "post";
 	modify_frm.submit();
@@ -164,12 +164,12 @@ $(document).on("click", ".delete_qna", function() {
 							<div>
 									<c:if test="${qnaBoard.m_id eq loginSsInfo.m_id }">
 										<form id="frmNum">
-										<!-- csrf 공격 방지 -->
+										 csrf 공격 방지 
                       					<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 											<input type="hidden" name="qna_no" value="${qnaBoard.qna_no }">
-											<button type="button" id="update_btn" class="btn btn-info btn-fw">수정</button>
-											<button type="button" id="delete_btn" class="btn btn-info btn-fw">삭제</button>
-										</form>
+											<button type="button" id="update_qna" class="btn btn-info btn-fw">수정</button>
+											<button type="button" id="delete_qna" class="btn btn-info btn-fw">삭제</button>
+										</form> 
 											</c:if>
 										<table class="qnaRead">
 											<tr>
@@ -190,17 +190,17 @@ $(document).on("click", ".delete_qna", function() {
 											</tr>
 										</table>
 										
-								<div class="btnSet">
-									<!-- 관리자인 경우 수정 삭제 가능 -->
+							<!--	<div class="btnSet">
+									 관리자인 경우 수정 삭제 가능
 									<core:if test="${login_info.m_id eq 'admin' }">
 										<a class="btn btn-info btn-fw"  id="update_btn" href="qnaUpdate?id=${member.m_id }">수정</a>
 										<a class="btn btn-info btn-fw" id="delete_btn" onclick="if(confirm('정말 삭제하시겠습니까?')) { href='qnaDelete?id=${member.m_id }' }">삭제</a>
-									</core:if>
+									</core:if> -->
 									<!-- 로그인이 된 경우 답글 쓰기 가능 -->
-									<core:if test="${!empty login_info }">
+							<!--		<core:if test="${!empty login_info }">
 										<a class="btn btn-info btn-fw" href="<%=request.getContextPath()%>/qna/qnaWrite?refnum=${qnaBoard.qna_no }">답글 쓰기</a>
 									</core:if>
-								</div>
+								</div>-->
 									
 									</div>
 									<hr>
