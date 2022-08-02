@@ -9,15 +9,6 @@
   
 
 
-<!-- criteria 를 적용한 게시판 페이징 조회 
-<select id="pageSelectQna" resultType="QnaBoard">
-
-select * from qna 
-order by origin_no desc, 
-gr_ord asc
-</select>
--->
-
 <select id="pageSelectQna" resultType="QnaBoard">
 <![CDATA[
 select
