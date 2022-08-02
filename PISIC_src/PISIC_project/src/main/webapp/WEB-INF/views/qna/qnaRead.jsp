@@ -164,7 +164,7 @@ $(document).on("click", ".delete_qna", function() {
 							<div>
 									<c:if test="${qnaBoard.m_id eq loginSsInfo.m_id }">
 										<form id="frmNum">
-										 csrf 공격 방지 
+										
                       					<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 											<input type="hidden" name="qna_no" value="${qnaBoard.qna_no }">
 											<button type="button" id="update_qna" class="btn btn-info btn-fw">수정</button>

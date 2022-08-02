@@ -21,7 +21,6 @@ public class Criteria {
 				this.page = 1;
 				return;
 			}
-			
 			this.page = page;
 		}
 
@@ -35,7 +34,6 @@ public class Criteria {
 				this.perPageNum = 8;
 				return;
 			}
-			
 			this.perPageNum = perPageNum;
 		}
 		
@@ -45,9 +43,6 @@ public class Criteria {
 		public int getPageStart() {
 			return (this.page -1) * perPageNum;
 		}
-		
-
-		
 		public String toString() {
 			return "Criteria [page=" + page + ", perPageNum=" + perPageNum + "]";
 		}

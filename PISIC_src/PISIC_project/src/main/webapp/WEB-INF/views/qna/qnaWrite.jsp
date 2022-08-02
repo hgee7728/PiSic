@@ -102,7 +102,7 @@ textarea{
 label {
 float:left;
 }
-</style>
+<</style>
 <script>
 $(function(){
 	// 게시물 100자 제한
@@ -147,7 +147,7 @@ $(function(){
 											</div>
 											<div  class="form-group">	
 												<label  for="qna_content">내용</label>            
-												<textarea  class="form-control" id="qna_content" name="qna_content" placeholder="1:1문의할 내용을 입력해주세요."  maxlength="2048" style="height: 400px; width: 1000px;"></textarea>
+												<textarea  class="form-control" id="qna_content" name="qna_content" placeholder="1:1문의할 내용을 입력해주세요."  maxlength="2048" style="height: 400px; width: 1000px; margin-left: -38px;" ></textarea>
 											</div>
 											
 										<div class="btn_qna" >
