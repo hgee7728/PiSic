@@ -245,7 +245,6 @@ $(function(){
       <div class="collapse" id="membership">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/membership/list">이용권 구매</a></li>
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/membership/cancel">이용권 해지</a></li>
           <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/membership/history">결제내역</a></li>
         </ul>
       </div>

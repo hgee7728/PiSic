@@ -426,7 +426,7 @@
     		})
     		
     		// 닉네임 함수
-    		$.fn.FxNickname = function FxNickname(){
+    		$.fn.FxNickname = function(){
     			var regexNickname = /^[가-힣|a-z|A-Z|0-9]{2,15}$/;
     			InputNickname = $("#InputNickname").val();
     			
@@ -440,7 +440,7 @@
     				$("#SpanNickName").css("color", "red");
     			} else {
     				$.ajax({
-    					url: "<%=request.getContextPath()%>/member/nicknameCheck.ax",
+    					url: "<%=request.getContextPath()%>/nicknameCheck.ax",
     					data: {
     					    m_nickname: InputNickname
     					},

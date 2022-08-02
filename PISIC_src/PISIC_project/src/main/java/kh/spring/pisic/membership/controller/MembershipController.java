@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kh.spring.pisic.member.domain.Member;
+import kh.spring.pisic.member.model.service.MemberService;
 import kh.spring.pisic.membership.domain.Membership;
 import kh.spring.pisic.membership.model.service.MembershipService;
 
@@ -25,6 +26,9 @@ public class MembershipController {
 	
 	@Autowired
 	private MembershipService service;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@GetMapping("/list")
 	public ModelAndView pageSelectMembership(
@@ -56,10 +60,11 @@ public class MembershipController {
 		return mv;
 	}
 	
-	@PostMapping("/checkMembership")
 	@ResponseBody
+	@PostMapping("/checkMembership")
 	public int checkMembership(String m_id) {
-		int result = service.checkMembership(m_id);
-		return result;
+		int result1 = memberService.checkMembershipYn(m_id);
+		int result2 = service.checkMembership(m_id);
+		return result1;
 	}
 }

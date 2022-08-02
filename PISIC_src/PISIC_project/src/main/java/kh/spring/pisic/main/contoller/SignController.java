@@ -124,32 +124,32 @@ public class SignController {
 		return filename;
 	}
 	
-	@PostMapping("/idCheck.ax")
 	@ResponseBody
+	@PostMapping("/idCheck.ax")
 	public int idCheck(
 			@RequestParam (name = "m_id", required = false) String m_id) {
 		int result = service.idCheck(m_id);
 		return result;
 	}
 	
-	@PostMapping("/nicknameCheck.ax")
 	@ResponseBody
+	@PostMapping("/nicknameCheck.ax")
 	public int nicknameCheck(
 			@RequestParam (name = "m_nickname", required = false) String m_nickname) {
 		int result = service.nicknameCheck(m_nickname);
 		return result;
 	}
 	
-	@PostMapping("/emailCheck.ax")
 	@ResponseBody
+	@PostMapping("/emailCheck.ax")
 	public int emailCheck(
 			@RequestParam (name = "m_email", required = false) String m_email) {
 		int result = service.emailCheck(m_email);
 		return result;
 	}
 	
-	@PostMapping("/phoneCheck.ax")
 	@ResponseBody
+	@PostMapping("/phoneCheck.ax")
 	public int phoneCheck(
 			@RequestParam (name = "m_phone", required = false) int m_phone) {
 		int result = service.phoneCheck(m_phone);

@@ -199,8 +199,14 @@ public class AdminServiceImpl implements AdminService{
 		return dao.deleteReportBoard(boardList);
 	}
 	
-	
+	@Override
+	public int updateMemberDeleteYn(List<Member> memberList) {
+		return dao.updateMemberDeleteYn(memberList);
+	}
 
-	
+	Override
+	public int insertAdmin(Member member) {
+		return dao.insertAdmin(member);
+	}
 
 }

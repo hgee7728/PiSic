@@ -33,7 +33,7 @@ public class PayMemtController {
 	
 	// 정기 결제
 //	@PostMapping("/payment")
-//	public void selectPay(
+//	public String selectPay(
 //			MembershipInfo membershipInfo
 //			, int period
 //			, Model model
@@ -50,13 +50,16 @@ public class PayMemtController {
 //		
 //		// 이용권 내역 등록
 //		int result1 = paymentService.insertMembershipInfo(membershipInfo);
-//			
+//		
+//		//등록된 내역으로 결제정보 가져오기
+//		MembershipInfo result2 = paymentService.getPayInfo(membershipInfo);		
 //		System.out.println(result2);
-//		model.addAttribute("payInfo", result2);
+//		model.addAttribute("payInfoVO", result2);
+//		return "payment/paymentPeriod";
 //	}
 	
-	@PostMapping("/completeG")
 	@ResponseBody
+	@PostMapping("/completeG")
 	public int completeG(
 			@RequestParam (name = "imp_uid", required = false) String imp_uid
 			, @RequestParam (name = "merchant_uid", required = false) String merchant_uid

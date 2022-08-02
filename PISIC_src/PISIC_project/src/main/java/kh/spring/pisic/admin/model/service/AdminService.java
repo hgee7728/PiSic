@@ -46,5 +46,7 @@ public interface AdminService {
 	public List<PjBoardReport> selectReportBoardList(Criteria cri);
 	public PjBoardReport selectReprotBoard(PjBoardReport pjBoardReport);
 	public int deleteReportBoard(List<PjBoard> boardList);
-
+	
+	public int updateMemberDeleteYn(List<Member> memberList);
+	public int insertAdmin(Member member);
 }

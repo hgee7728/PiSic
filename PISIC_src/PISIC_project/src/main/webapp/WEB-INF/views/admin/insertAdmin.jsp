@@ -25,8 +25,6 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
   <style>
   	.content-wrapper {
   		max-width: 900px;
@@ -48,17 +46,11 @@
 		}
   	}
   </style>
-  <style>
-  	.uploadcare--widget__button, .uploadcare--widget__file-name, 
-  	.uploadcare--widget__file-size, .uploadcare--widget__text {
-    	display: none;
-	}
-  </style>
   </head>
   <body>
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.html -->
-      <jsp:include page="../_sidebar.jsp" />
+      <jsp:include page="../_sidebar_admin.jsp" />
       <!-- partial -->
       <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_navbar.html -->
@@ -67,19 +59,19 @@
         <div class="main-panel">
           <div class="content-wrapper">
           	<div class="page-header">
-              <h2 class="card-title">SIGN UP</h2>
+              <h2 class="card-title">ADMIN SIGN UP</h2>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">회원</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">회원가입</li>
+                  <li class="breadcrumb-item"><a href="#">회원 관리</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">관리자 추가</li>
                 </ol>
               </nav>
             </div>
           	<div class="col-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">회원가입</h4>
-                    <form id="insertForm" class="forms-sample" action="<%=request.getContextPath() %>/join" method="post">
+                    <h4 class="card-title">관리자 추가</h4>
+                    <form id="insertForm" class="forms-sample" action="<%=request.getContextPath() %>/admin/insertAdmin" method="post">
                       <!-- csrf 공격 방지 -->
                       <input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
                       <input type="hidden" id="InputPlatform" name="m_platform" value="PISIC">
@@ -156,88 +148,18 @@
                           <option value="F">여성</option>
                         </select>
                       </div>
-                      <div class="form-group">
-                        <label id="LabelAddress" for="InputAddress">주소 *</label>
-                        <div class="input-group">
-	                        <input type="text" class="form-control" id="InputAddress" placeholder="Address" name="m_address" readonly required>  
-	                        <div class="input-group-append">
-	                          <button id="BtnAddress" class="btn btn-inverse-secondary btn-fw" type="button" onclick="daumPost()">주소찾기</button>
-	                        </div>
-                      	</div>   
-                      </div>
-                      <div class="form-group">
-                        <label id="LabelAddressDetail" for="InputAddressDetail">상세주소 *</label>
-	                    <input type="text" class="form-control" id="InputAddressDetail" placeholder="AddressDetail" name="m_address_detail" required>
-                      </div>
-		      		  <!-- kakao 우편번호 서비스 -->
-                      <script>
-              			var FlagAddress = false;
-                      
-                      	function daumPost() {
-                      		new daum.Postcode({
-                      			oncomplete: function(data) {
-                      				var fullAddr = '';
-                      				var extraAddr = '';
-                      				
-                      				//도로명 주소를 선택했을 경우
-                      				if (data.userSelectedType === 'R') {
-                      					fullAddr = data.roadAddress;
-                      				//지번 주소를 선택했을 경우
-                      				} else {
-                      					fullAddr = data.jibunAddress;
-                      				}
-                      				//도로명일때 조합
-                      				if (data.userSelectedType === 'R') {
-                      					//법정동명 추가
-                      					if (data.bname !== '') {
-                      						extraAddr += data.bname;
-                      					}
-                      					//건물명 추가
-                      					if (data.buildingName !== '') {
-                      						extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                      					}
-                      					//괄호 추가
-                      					fullAddr += (extraAddr !== '' ? ' (' + extraAddr + ')' : '');
-                      				}
-                      				$("#InputAddress").val(fullAddr);
-                      				$("#InputAddress").attr("readonly", false);
-                      				if ($("#InputAddress").val() == fullAddr) {
-                      					$("#LabelAddress").html('주소 <span id="SpanAddress"><i class="mdi mdi-check"></i></span>');
-                            		    $("#SpanAddress").css("color", "green");
-                        		    	FlagAddress = true;
-                      				} else {
-                      					$("#LabelAddress").html('주소 <span id="SpanAddress"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-                        		    	$("#SpanAddress").css("color", "red");
-                            		    FlagAddress = false;
-                      				}
-                      				$("#InputAddress").attr("readonly", true);
-                      				$("#InputAddressDetail").focus();
-                      				console.log(FlagAddress);
-                      			}
-                      		}).open();
-                      	}
-                      </script>
-                      <div class="form-group">
-                        <label id="LabelProfile">프로필사진</label>
-                        <div class="input-group">
-                          <img id="ImgProfilePre" src="<%=request.getContextPath()%>/resources/assets/images/DummyImage.png">
-                          <span class="input-group-append">
-                            <button id="BtnProfile" class="btn btn-inverse-secondary btn-fw" type="button">첨부파일</button>
-                          </span>
-                        </div>
-                        <input type="hidden" id="InputProfile" name="m_profile" value="https://ucarecdn.com/84e42d19-06cb-483f-8fb3-955f1fa8affe/">
-                        <input type="hidden" id="InputProfileUC" role="uploadcare-uploader" 
-                            data-public-key="183400fad159d76bdf53" data-tabs="file gdrive gphotos"/>
-                      </div>
+	                  <input type="hidden" class="form-control" id="InputAddress" placeholder="Address" name="m_address" value="관리자" required>  
+                      <input type="hidden" class="form-control" id="InputAddressDetail" placeholder="AddressDetail" name="m_address_detail" value="관리자" required>
+                      <input type="hidden" id="InputProfile" name="m_profile" value="https://ucarecdn.com/84e42d19-06cb-483f-8fb3-955f1fa8affe/">
                       <div id="InputButtons">
-                      	<input id="InputSubmit" type="button" class="btn btn-info btn-fw" value="회원가입">
+                      	<input id="InputSubmit" type="button" class="btn btn-info btn-fw" value="추가">
                       	<input id="InputCancel" type="button" class="btn btn-inverse-secondary btn-fw" value="취소">
                       </div>
                       <script>
                       	$("#InputCancel").on("click", function(){
-                      		var cancel = confirm("회원가입을 취소하시겠습니까?");
+                      		var cancel = confirm("관리자 추가를 취소하시겠습니까?");
                       		if (cancel) {
-                      			location.href = '<%=request.getContextPath()%>/login';                   			
+                      			location.href = '<%=request.getContextPath()%>/admin/member';                   			
                       		}
                       	})
                       </script>
@@ -266,9 +188,6 @@
     		var InputEmail = null;
     		var InputPhone = null;
     		var InputBirth = null;
-    		var InputAddress = null;
-    		var InputAddressDetail = null;
-    		var InputProfile = null;
 
     		var FlagId = false;
     		var FlagPw1 = false;
@@ -279,15 +198,19 @@
     		var FlagPhone = false;
     		var FlagBirth = false;
     		var FlagGender = false;
-    		var FlagAddressDetail = false;
     		
     		var header = $("meta[name='_csrf_header']").attr('th:content');
     		var token = $("meta[name='_csrf']").attr('th:content');
 			console.log(header);
 			console.log(token);
     		
-    		// 아이디
-    		$("#InputId").on("input", function FxId(){
+			// 아이디
+			$("#InputId").on("input", function(){
+    			$.fn.FxId();
+    		})
+			
+    		// 아이디 함수
+    		$.fn.FxId = function(){
     			var regexId = /^[0-9a-zA-Z]{7,15}$/;
     			InputId = $("#InputId").val();
     			
@@ -327,10 +250,15 @@
     		    	})
     			}
     			console.log(FlagId);
-    		})
+    		}
     		
     		// 비밀번호
-    		$("#InputPassword1").on("input", function FxPassword1(){
+			$("#InputPassword1").on("input", function(){
+    			$.fn.FxPassword1();
+    		})
+    		
+    		// 비밀번호 함수
+    		$.fn.FxPassword1 = function(){
     			var regexPw = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
     			InputPw1 = $("#InputPassword1").val();
     			InputPw2 = $("#InputPassword2").val();
@@ -360,10 +288,15 @@
     			}
     			console.log(FlagPw1);
     			console.log(FlagPw2);
+    		}
+
+    		// 비밀번호 확인
+			$("#InputPassword2").on("input", function(){
+    			$.fn.FxPassword2();
     		})
     		
-    		// 비밀번호 확인
-    		$("#InputPassword2").on("input", function FxPassword2(){
+    		// 비밀번호 확인 함수
+    		$.fn.FxPassword2 = function(){
     			InputPw1 = $("#InputPassword1").val();
     			InputPw2 = $("#InputPassword2").val();
     			
@@ -377,10 +310,15 @@
     				FlagPw2 = true;
     			}
     			console.log(FlagPw2);
-    		})
+    		}
     		
     		// 이름
-    		$("#InputName").on("input", function FxName(){
+			$("#InputName").on("input", function(){
+    			$.fn.FxName();
+    		})
+    		
+    		// 이름 함수
+    		$.fn.FxName = function(){
     			var regexName = /(^[가-힣]{2,5}$)|(^[a-zA-Z]{2,20}(\s[a-zA-Z]{2,20})?$)/;
     			InputName = $("#InputName").val();		
     			
@@ -398,10 +336,15 @@
     				FlagName = true;
     			}
     			console.log(FlagName);
-    		})
+    		}
     		
     		// 닉네임
-    		$("#InputNickname").on("input", function FxNickname(){
+    		$("#InputNickname").on("input", function(){
+    			$.fn.FxNickname();
+    		})
+    		
+    		// 닉네임 함수
+    		$.fn.FxNickname = function(){
     			var regexNickname = /^[가-힣|a-z|A-Z|0-9]{2,15}$/;
     			InputNickname = $("#InputNickname").val();
     			
@@ -415,7 +358,7 @@
     				$("#SpanNickName").css("color", "red");
     			} else {
     				$.ajax({
-    					url: "<%=request.getContextPath()%>/member/nicknameCheck.ax",
+    					url: "<%=request.getContextPath()%>/nicknameCheck.ax",
     					data: {
     					    m_nickname: InputNickname
     					},
@@ -442,10 +385,15 @@
     		    	})
     			}
     			console.log(FlagNickname);
-    		})
+    		}
     		
     		// 이메일
-    		$("#InputEmail").on("input", function FxEmail(){
+    		$("#InputEmail").on("input", function(){
+    			$.fn.FxEmail();
+    		})
+    		
+    		// 이메일 함수
+    		$.fn.FxEmail = function(){
     			var regexEmail = /^[A-Za-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
     			InputEmail = $("#InputEmail").val();		
     			
@@ -488,10 +436,15 @@
     		    	})
     			}
     			console.log(FlagEmail);
-    		})
+    		}
     		
     		// 휴대전화
-    		$("#InputPhone").on("input", function FxPhone(){
+    		$("#InputPhone").on("input", function(){
+    			$.fn.FxPhone();
+    		})
+    		
+    		// 휴대전화 함수
+    		$.fn.FxPhone = function(){
     			var regexPhone = /^01([0|1|6|7|8|9])+[0-9]{7,8}$/;
     			InputPhone = $("#InputPhone").val();
     			
@@ -531,10 +484,15 @@
     		    	})
     			}
     			console.log(FlagPhone);
-    		})
+    		}
     		
     		// 생년월일
-    		$("#InputBirth").on("input", function FxBirth(){
+    		$("#InputBirth").on("input", function(){
+    			$.fn.FxBirth();
+    		})
+    		
+    		// 생년월일 함수
+    		$.fn.FxBirth = function(){
     			var regexBirth = /^[0-9]{8}$/;
     			InputBirth = $("#InputBirth").val();		
     			
@@ -552,7 +510,7 @@
     				FlagBirth = true;
     			}
     			console.log(FlagBirth);
-    		})
+    		}
     		
     		// 성별
     		$("#SelectGender").on("click", function(){
@@ -561,101 +519,38 @@
 				FlagGender = true;
     		})
     		
-    		// 주소
-    		InputAddress = $("#InputAddress").val();
-    		
-    		// 상세주소
-    		$("#InputAddressDetail").on("keyup", function FxAddressDetail(){
-    			InputAddressDetail = $("#InputAddressDetail").val();		
-    			
-				if (InputAddressDetail == '') {
-					$("#LabelAddressDetail").html('상세주소 <span id="SpanAddressDetail"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-					$("#SpanAddressDetail").css("color", "red");
-					FlagAddressDetail = false;
-    			} else {
-    				$("#LabelAddressDetail").html('상세주소 <span id="SpanAddressDetail"><i class="mdi mdi-check"></i></span>');
-    				$("#SpanAddressDetail").css("color", "green");
-    				FlagAddressDetail = true;
-    			}
-				console.log(FlagAddressDetail);
-    		})
-    		
-    		// 프로필 사진
-    		$("#BtnProfile").on("click", function(){
-	    		$(".uploadcare--widget__button.uploadcare--widget__button_type_open").trigger("click");    			
-    		})
-			
-    		/* uploadcare */
-    	    UPLOADCARE_LOCALE = "ko"
-    	    UPLOADCARE_LOCALE_TRANSLATIONS = {
-    	        buttons: {
-    	            choose: {
-    	                files: {
-    	                    one: '사진첨부'
-    	                }
-    	            }
-    	        }
-    	    }
-    		
-    		/* uploadcare */
-    		var singleWidget = uploadcare.SingleWidget('[role=uploadcare-uploader]');
-	    	singleWidget.onUploadComplete(function(info){
-		    	console.log(info.cdnUrl);
-		    	var fileUrl = info.cdnUrl;
-				    $("#ImgProfilePre").attr("src", fileUrl);
-				    $("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-check"></i></span>');
-				    $("#SpanProfile").css("color", "green");
-				    $("#InputProfile").attr("value", fileUrl);
-				/* 	$("#ImgProfilePre").attr("src", fileUrl);
-				    $("#LabelProfile").html('프로필사진 <span id="SpanProfile"><i class="mdi mdi-close"></i> 다시 시도해 주세요.</span>');
-				    $("#SpanProfile").css("color", "red");
-				    $("#InputProfile").attr("value", fileUrl); */
-    		});
-	    	
-	    	// Flag 확인
-	    	$("#BtnProfile").on("click", function(){
-	    		console.log(FlagId);
-	    		console.log(FlagPw1);
-	    		console.log(FlagPw2);
-	    		console.log(FlagName);
-	    		console.log(FlagNickname);
-	    		console.log(FlagEmail);
-	    		console.log(FlagPhone);
-	    		console.log(FlagBirth);
-	    		console.log(FlagAddress);
-	    		console.log(FlagAddressDetail);
-	    	})
-	    	
 	    	// Submit 유효성 검사
 	    	$("#InputSubmit").on("click", function(){
 		    	if (FlagId == false) {
+		    		$.fn.FxId();
 		    		$("#InputId").focus();
 		    	} else if (FlagPw1 == false) {
+		    		$.fn.FxPassword1();
 		    		$("#InputPassword1").focus();
 		    	} else if (FlagPw1 == false) {
+		    		$.fn.FxPassword2();
 		    		$("#InputPassword2").focus();
 		    	} else if (FlagName == false) {
+		    		$.fn.FxName();
 		    		$("#InputName").focus();
 		    	} else if (FlagNickname == false) {
+		    		$.fn.FxNickname();
 		    		$("#InputNickname").focus();
 		    	} else if (FlagEmail == false) {
+		    		$.fn.FxEmail();
 		    		$("#InputEmail").focus();
 		    	} else if (FlagPhone == false) {
+		    		$.fn.FxPhone();
 		    		$("#InputPhone").focus();
 		    	} else if (FlagBirth == false) {
+		    		$.fn.FxBirth();
 		    		$("#InputBirth").focus();
 		    	} else if (FlagGender == false) {
 		    		$("#LabelGender").html('성별 <span id="SpanGender"><i class="mdi mdi-close"></i> 성별을 선택해 주세요.</span>');
 					$("#SpanGender").css("color", "red");
 					$("#SelectGender").focus();
-		    	} else if (FlagAddress == false) {
-		    		$("#LabelAddress").html('주소 <span id="SpanAddress"><i class="mdi mdi-close"></i> 필수 정보입니다.</span>');
-		        	$("#SpanAddress").css("color", "red");
-		        	$("#InputAddress").focus();
-		    	} else if (FlagAddressDetail == false) {
-		    		$("#InputAddressDetail").focus();
 		    	} else {
-		    		var submit = confirm("회원가입 하시겠습니까?");
+		    		var submit = confirm("관리자를 추가하시겠습니까?");
               		if (submit) {
               			$("#insertForm").submit();                			
               		}

@@ -49,15 +49,18 @@
 		<security:intercept-url pattern="/pjBoard/write" access="hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')"/>
 		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 		
+		<!-- 로그인 설정 -->
 		<security:form-login login-page="/login"
 							authentication-success-handler-ref="authLoginSuccess"
 							authentication-failure-handler-ref="authLoginFailure"
 							username-parameter="m_id"
 							password-parameter="m_password"/>
+		<!-- 로그아웃 설정 -->
 		<security:logout logout-url="/logout"
 				logout-success-url="/main"
 				invalidate-session="true"
 				delete-cookies="JSESSIONID, SPRING_SECURITY_REMEMBER_ME_COOKIE"/>
+		
 		<!-- 자동로그인 (4주) -->
 		<security:remember-me data-source-ref="dataSource" authentication-success-handler-ref="authLoginSuccess" token-validity-seconds="2419200"/>
 	</security:http>

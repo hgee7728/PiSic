@@ -73,7 +73,7 @@
   <body>
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.html -->
-      <jsp:include page="../_sidebar.jsp" />
+      <jsp:include page="../_sidebar_login.jsp" />
       <!-- partial -->
       <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_navbar.html -->

@@ -435,6 +435,27 @@
 		</foreach>
 	</delete>
 	
+	<!-- 회원 삭제 -->
+	<update id="updateMemberDeleteYn" parameterType="list">
+		UPDATE member
+		SET 
+		m_delete_yn = 'Y'
+		WHERE
+		<foreach collection="list" item="item" separator="or">
+			(m_id = #{item.m_id})
+		</foreach>
+	</update>
+	
+	<!-- 관리자 추가 -->
+	<insert id="insertAdmin" parameterType="Member">
+		INSERT INTO member
+		VALUES
+		(#{m_id}, #{m_platform}, #{m_platform_id}, #{m_password}, #{m_name}, 
+		#{m_nickname}, #{m_phone}, #{m_address}, #{m_address_detail}, default, 
+		#{m_birth}, #{m_gender}, #{m_profile}, default, #{m_email}, 
+		'Y', 'ROLE_ADMIN', default, default)
+	</insert>
+	
 </mapper>
 
 

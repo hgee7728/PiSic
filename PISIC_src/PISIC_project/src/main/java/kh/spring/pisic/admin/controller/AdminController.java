@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +45,9 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService service;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	/*아티스트 관리자 페이지*/
 	@GetMapping("/artist")
@@ -456,6 +460,7 @@ public class AdminController {
 	public ModelAndView pageMemberList(
 			ModelAndView mv
 			, Member member
+			, RedirectAttributes rttr
 			, Criteria cri) {
 		Paging memberPaging = new Paging(cri, service.totalCntMember());
 		Paging adminPaging = new Paging(cri, service.totalCntAdmin());
@@ -470,6 +475,28 @@ public class AdminController {
 		return mv;
 	}
 	
+	@ResponseBody
+	@PostMapping("/deleteMember")
+	public String deleteMember(
+			@RequestParam(name = "m_id", required = false) String[] m_idArray) {
+		List<Member> memberList = new ArrayList<Member>();
+
+		// 들고 온 데이터 domain형태로 list 시키기
+		for (int i = 0; i < m_idArray.length; i++) {
+			Member member = new Member();
+			member.setM_id(m_idArray[i]);
+			memberList.add(member);
+		}
+		System.out.println("[[[memberList]]] : " + memberList);
+
+		int result = service.updateMemberDeleteYn(memberList);
+		if (result < 1) { // 삭제 실패
+			return "0";
+		} else {
+			return "1";
+		}
+	}
+	
 	@GetMapping("/membership")
 	public ModelAndView pageMembershipList(
 			ModelAndView mv
@@ -481,10 +508,36 @@ public class AdminController {
 		mv.setViewName("admin/membershipList");
 		return mv;
 	}
-		
+	
 	@GetMapping("/test")
 	public String TestPage() {
 		return "pymusic/test";
+	}
+	
+	@GetMapping("/insertAdmin")
+	public String pageInsertAdmin() {
+		return "admin/insertAdmin";
+	}
+	
+	@PostMapping("/insertAdmin")
+	public ModelAndView insertAdmin(
+			ModelAndView mv
+			, Member member
+			, RedirectAttributes rttr) {
+		// 암호화
+		String endcodedPassword = bCryptPasswordEncoder.encode(member.getM_password());
+		member.setM_password(endcodedPassword);
+		
+		int result = service.insertAdmin(member);
+		if(result < 1) {
+			System.out.println("관리자 추가 실패");
+			rttr.addFlashAttribute("msg", "관리자 추가에 실패하였습니다.");
+		} else {
+			System.out.println("관리자 추가 성공");
+			rttr.addFlashAttribute("msg", "관리자 추가에 실패하였습니다.");
+		}
+		mv.setViewName("redirect:/admin/member");
+		return mv;
 	}
 	
 	// 신고글 관리 - 페이지 이동

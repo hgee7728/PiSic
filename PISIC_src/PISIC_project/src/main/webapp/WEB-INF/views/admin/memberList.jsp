@@ -71,10 +71,18 @@
     </style>
     <script>
 	    $(function(){
+	    	var header = $("meta[name='_csrf_header']").attr('th:content');
+			var token = $("meta[name='_csrf']").attr('th:content');
+	    	
 	    	var msg = '${msg}';
 	    	if(msg){
 	    		alert(msg);
 	    	}
+	    	
+	    	// 관리자 추가 버튼
+	    	$("#insert_admin").click(function(){
+	    		location.href="<%=request.getContextPath()%>/admin/insertAdmin";
+	    	});
 	    	
 	    	// 체크박스 전체선택
 	        $("#check_all").click(function(){
@@ -94,6 +102,74 @@
 	    		} else {
 	    			$("#check_all").prop("checked", true); 
 	    		}
+	    	});
+	    	
+	     	// 한개 탈퇴 버튼
+	    	$(document).on("click", ".delete_member_btn", function() {
+	    		var confm = confirm("해당 회원을 탈퇴처리 하시겠습니까?");
+	        	if (confm == false) {
+	        		alert("취소하셨습니다.");
+	        	} else {
+	        		$.ajax({
+	        			url:"<%=request.getContextPath()%>/admin/deleteMember",
+	        			type:"post",
+	        			beforeSend: function(xhr){
+	    			        xhr.setRequestHeader(header, token);
+	    			    },
+	        			data:{
+	        				m_id: $(this).next("input[name=delete_one_m_id]").val()
+	        			},
+	        			success:function(result){
+	        				console.log(result);
+	        				if(result == "0"){
+	        					alert("회원 탈퇴처리가 실패했습니다. 다시 시도해주세요");
+	        				} else {
+	        					alert("회원이 탈퇴처리 되었습니다.");
+	        					location.reload();
+	        				}
+	        			},
+	        			error:function(error){
+	        				
+	        			}
+	        		});
+	        	}
+	    	});
+	     	
+	    	// 선택 탈퇴
+	    	$("#select_delete").click(function(){
+	    		var confm = confirm("선택된 회원을 삭제 하시겠습니까?");
+	        	if (confm == false) {
+	        		alert("취소하셨습니다.");
+	        	} else {
+	        		var m_idArray = [];
+	        		$('input[name=m_id]:checked').each(function(){ //체크된 리스트 저장
+	        			m_idArray.push($(this).val());
+	        	    });
+	        		console.log("m_idArray : " + m_idArray);
+	        		$.ajax({
+	        			url:"<%=request.getContextPath()%>/admin/deleteMember",
+	        			type:"post",
+	        			traditional:true,
+	        			beforeSend: function(xhr){
+	    			        xhr.setRequestHeader(header, token);
+	    			    },
+	        			data:{
+	        				m_id : m_idArray
+	        				},
+	        			success:function(result){
+	        				console.log(result);
+	        				if(result == "0"){
+	        					alert("회원 탈퇴처리가 실패했습니다. 다시 시도해주세요");
+	        				} else {
+	        					alert("회원이 탈퇴처리 되었습니다.");
+	        					location.reload();
+	        				}
+	        			},
+	        			error:function(error){
+	        				
+	        			}
+	        		});
+	        	}
 	    	});
 	    });
     </script>
@@ -126,8 +202,8 @@
 						</div>
 					<form name="frm_sound">
 						<div class="select_btns">
-							<button type="button" id="insert_sound" class="btn btn-info btn-fw" >관리자 추가</button>
-							<button type="button" id="select_delete" class="btn btn-info btn-fw">선택 삭제</button>
+							<button type="button" id="insert_admin" class="btn btn-info btn-fw" >관리자 추가</button>
+							<button type="button" id="select_delete" class="btn btn-info btn-fw">선택 탈퇴</button>
 						</div>
 						<br>
 							<div class="table-responsive">
@@ -151,8 +227,7 @@
 											<td>이용권</td>
 											<td>로그인실패횟수</td>
 											<td>계정잠금</td>
-											<td>수정</td>
-											<td>삭제</td>
+											<td>탈퇴처리</td>
 										</tr>
 									</thead>
 									<tbody>
@@ -186,13 +261,7 @@
 												</td>
 												<td>
 													<div class="select_btns">
-														<button type="button" class="btn btn-info btn-fw update_member_btn" onclick="location.href='<%=request.getContextPath() %>/admin/updateMember?m_id=${member.m_id}'">수정</button>
-													</div>
-												</td>
-												<td>
-													<div class="select_btns">
-														<button type="button"
-															class="btn btn-info btn-fw delete_member_btn">삭제</button>
+														<button type="button" class="btn btn-info btn-fw delete_member_btn">탈퇴</button>
 														<input type="hidden" value="${member.m_id}" name="delete_one_m_id">
 													</div>
 												</td>

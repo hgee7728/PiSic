@@ -39,7 +39,7 @@ public class Member {
 				+ m_phone + ", m_address=" + m_address + ", m_address_detail=" + m_address_detail + ", m_date=" + m_date
 				+ ", m_birth=" + m_birth + ", m_gender=" + m_gender + ", m_profile=" + m_profile + ", m_delete_yn="
 				+ m_delete_yn + ", m_email=" + m_email + ", m_membership_yn=" + m_membership_yn + ", m_grade=" + m_grade
-				+ "]";
+				+ ", m_fail_cnt=" + m_fail_cnt + ", m_enabled=" + m_enabled + "]";
 	}
 
 	public String getM_id() {

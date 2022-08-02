@@ -108,7 +108,7 @@
 	<update id="updateMemberMembershipYn" parameterType="string">
 		UPDATE member
 		SET
-		m_membership = 'Y'
+		m_membership_yn = 'Y'
 		WHERE m_id = #{m_id}
 	</update>
 </mapper>

@@ -175,9 +175,9 @@
 			
 			// 일반 결제
 			$.fn.FxGeneralPayment = function(){
-				ppg = '카카오페이';
+				ppg = '이니시스(웹표준)';
     	    	IMP.request_pay({
-    	    		pg : 'kakaopay',
+    	    		pg : 'html5_inicis',
     	    		pay_method : 'card',
     	    		merchant_uid : "merchant_" + new Date().getTime(),
     	    		name : pname,
@@ -204,31 +204,26 @@
 		    	            	period : period,
 		    	            	ppg : ppg
 	    	        		}
+	    				// ajax 종료
 	    	            }).done(function(data) {
 	    	            	console.log(data);
 	    	            	console.log("일반결제 완료");
-	    	            	if (everythings_fine) {
-	    	            		var msg = '결제가 완료되었습니다.';
-	    	            		msg += '\n고유ID : ' + rsp.imp_uid;
-	    	        			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
-	    	        			msg += '\n결제 금액 : ' + rsp.paid_amount;
-	    	        			msg += '\n카드 승인번호 : ' + rsp.apply_num;
-	    	        			alert(msg);
-	    	        			alert("결제 완료하였습니다.");
-	    	    	    		location.href="<%=request.getContextPath()%>/membership/history";
-	    	            	} else {
-	    	            		var msg = '결제가 제대로 되지 않았습니다.';
-	    	            		alert(msg);
-	    	            	}
+	    	            	
+	    	            	var msg = '결제가 완료되었습니다.';
+	    	            	msg += '\n고유ID : ' + rsp.imp_uid;
+	    	        		msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+	    	        		msg += '\n결제 금액 : ' + rsp.paid_amount;
+	    	        		alert(msg);
+	    	        		alert("결제 완료하였습니다.");
+	    	        		// 이용권 내역 페이지 이동
+	    	    	    	location.href="<%=request.getContextPath()%>/membership/history";
 	    	            });
     	            // 결제 실패
     	            } else {
     	               var msg = '결제에 실패하였습니다.';
-    	               msg += '에러내용 : ' + rsp.error_msg;
+    	               msg += '\n에러내용 : ' + rsp.error_msg;
     	               alert(msg);
     	            }
-    	    		console.log("끝");
-    	    		location.href="<%=request.getContextPath()%>/membership/history";
     	        });
         	}
 			
@@ -268,19 +263,14 @@
 	    	            }).done(function(data) {
 	    	            	console.log(data);
 	    	            	console.log("정기결제 완료");
-	    	            	if (everythings_fine) {
-	    	            		var msg = '결제가 완료되었습니다.';
-	    	            		msg += '\n고유ID : ' + rsp.imp_uid;
-	    	        			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
-	    	        			msg += '\n결제 금액 : ' + rsp.paid_amount;
-	    	        			msg += '\n카드 승인번호 : ' + rsp.apply_num;
-	    	        			alert(msg);
-	    	        			alert("결제 완료하였습니다.");
-	    	    	    		location.href="<%=request.getContextPath()%>/membership/history";
-	    	            	} else {
-	    	            		var msg = '결제가 제대로 되지 않았습니다.';
-	    	            		alert(msg);
-	    	            	}
+	    	            	
+	    	            	var msg = '결제가 완료되었습니다.';
+	    	            	msg += '\n고유ID : ' + rsp.imp_uid;
+	    	        		msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+	    	        		msg += '\n결제 금액 : ' + rsp.paid_amount;
+	    	        		alert(msg);
+	    	        		alert("결제 완료하였습니다.");
+	    	    	    	location.href="<%=request.getContextPath()%>/membership/history";
 	    	            });
     	            // 결제 실패  
     	            } else {
@@ -289,7 +279,6 @@
     	               alert(msg);
     	            }
     	            console.log("끝");
-    	            location.href="<%=request.getContextPath()%>/membership/history";
     	        });
 			}
     	});

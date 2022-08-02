@@ -134,7 +134,7 @@
                             <label class="col-sm-3 col-form-label">성별</label>
                             <div class="col-sm-9">
                             	<c:choose>
-                            		<c:when test="${loginSsInfo.m_gender eq 'M'}">
+                            		<c:when test="${member.m_gender eq 'M'}">
 		                              <input class="form-control file-upload-info" value="남자" readonly>
                             		</c:when>
                             		<c:otherwise>

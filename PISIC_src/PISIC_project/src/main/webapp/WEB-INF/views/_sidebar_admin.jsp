@@ -159,19 +159,12 @@ $(function(){
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" data-toggle="collapse" href="#membership" aria-expanded="false" aria-controls="membership">
+      <a class="nav-link" href="<%=request.getContextPath()%>/admin/membership">
         <span class="menu-icon">
           <i class="mdi mdi-chart-bar"></i>
         </span>
         <span class="menu-title">이용권 관리</span>
-        <i class="menu-arrow"></i>
       </a>
-      <div class="collapse" id="membership">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/admin/membership">이용권 관리</a></li>
-          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/admin/cancelMembership">이용권 해지</a></li>
-        </ul>
-      </div>
     </li>
     <li class="nav-item menu-items">
       <a class="nav-link" href="<%=request.getContextPath()%>/admin/report">
@@ -206,12 +199,19 @@ $(function(){
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<%=request.getContextPath()%>/admin/insertFaq">
+      <a class="nav-link" data-toggle="collapse" href="#Faq" aria-expanded="false" aria-controls="Faq">
         <span class="menu-icon">
           <i class="mdi mdi-account"></i>
         </span>
         <span class="menu-title">고객센터 관리</span>
+        <i class="menu-arrow"></i>
       </a>
+      <div class="collapse" id="Faq">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/faq/faqList">자주묻는 질문</a></li>
+          <li class="nav-item"> <a class="nav-link" href="<%=request.getContextPath()%>/qna/qnaList">1:1 문의</a></li>
+        </ul>
+      </div>
     </li>
   </ul>
 </nav>
