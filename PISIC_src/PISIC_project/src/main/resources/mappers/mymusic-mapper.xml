@@ -2,14 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="MyMusic">
 
-<resultMap type="MyMusic" id="MyMusicResultMap">
-	<result column="l_no" property="l_no" />
-	<result column="m_id" property="m_id" />
-	<result column="l_name" property="l_name" />
-	<result column="l_private_yn" property="l_private_yn" />
-	<result column="l_image" property="l_image" />
-	<collection column="{m_id=m_id, l_no=l_no}" property="sounds" select="selectPlaylistDetailSound"></collection>
-</resultMap>
+	<!-- 플레이 리스트 resultMap -->
+	<resultMap type="MyMusic" id="MyMusicResultMap">
+		<result column="l_no" property="l_no" />
+		<result column="m_id" property="m_id" />
+		<result column="l_name" property="l_name" />
+		<result column="l_private_yn" property="l_private_yn" />
+		<result column="l_image" property="l_image" />
+		<collection column="{m_id=m_id, l_no=l_no}" property="sounds" select="selectPlaylistDetailSound"/>
+	</resultMap>
 
 <!-- <resultMap type="Sound" id="mySoundResultMap"> <result column="s_no" 
 	property="s_no"/> <result column="a_no" property="a_no"/> <result column="s_name" 
@@ -47,18 +48,6 @@
 	]]>
 </select>
 
-<!-- 플레이 리스트에 노래 담기 -->
-<insert id="insertSound" parameterType="list">
-	insert all
-	<foreach collection="list" item="item" index="index">
-		into playlist_content 
-			values (#{item.l_no}, #{item.m_id}, #{item.s_no},
-			#{item.a_no}
-			, (select nvl(max(s_order),0)+#{index}+1 from playlist_content 
-				where m_id=#{item.m_id} and l_no=#{item.l_no}))
-	</foreach>
-	select * from dual
-</insert>
 
 <!-- 플레이 리스트 삭제 -->
 <delete id="deletePlaylist" parameterType="list">
@@ -129,7 +118,9 @@
 		)
 		, #{MyMusic.m_id}, #{item.s_no}, #{item.a_no}
 		, (select nvl(max(s_order),0)+#{index}+1 from playlist_content 
-				where m_id=#{MyMusic.m_id} and l_no=(select nvl(max(l_no),0)+1 from playlist where m_id=#{MyMusic.m_id}))
+				where m_id=#{MyMusic.m_id} 
+				and 
+				l_no=(select nvl(max(l_no),0)+1 from playlist where m_id=#{MyMusic.m_id}))
 		)
 	</foreach>
 
@@ -261,63 +252,81 @@
 	where m_id=#{m_id} and p_date BETWEEN sysdate-100 and sysdate)
 </select>
 	
-<!-- 플레이리스트 수록곡 삭제하기 -->
-<delete id="deletePlaylistSound" parameterType="MyMusic">
-	delete from playlist_content where m_id=#{m_id} and l_no=#{l_no}
-</delete>
+	<!-- 플레이리스트 수록곡 삭제하기 -->
+	<delete id="deletePlaylistSound" parameterType="MyMusic">
+		delete from playlist_content where m_id=#{m_id} and l_no=#{l_no}
+	</delete>
 	
-<!-- 플레이리스트 정보 변경하기 -->
-<update id="updatePlaylist" parameterType="MyMusic">
-	update playlist set 
-	l_name=#{l_name}, l_private_yn=#{l_private_yn}, l_image=#{l_image}
-	where l_no=#{l_no} and m_id=#{m_id} 
-</update>
+	<!-- 플레이 리스트에 노래 담기 -->
+	<insert id="insertSound" parameterType="list">
+		insert all
+		<foreach collection="list" item="item" index="index">
+			into playlist_content 
+				values (#{item.l_no}, #{item.m_id}, #{item.s_no},
+				#{item.a_no}
+				, (select nvl(max(s_order),0)+#{index}+1 from playlist_content 
+					where m_id=#{item.m_id} and l_no=#{item.l_no}))
+		</foreach>
+		select * from dual
+	</insert>
+		
+	<!-- 플레이리스트 정보 변경하기 -->
+	<update id="updatePlaylist" parameterType="MyMusic">
+		update playlist set 
+		l_name=#{l_name}, l_private_yn=#{l_private_yn}, l_image=#{l_image}
+		where l_no=#{l_no} and m_id=#{m_id} 
+	</update>
 
-<!-- 현재 플레이 리스트 확인 -->
-<select id="checkPlaylist0" resultType="int">
-	select count(*) from playlist
-	where m_id=#{m_id} and l_no=0
-</select>
+	<!-- 현재 플레이 리스트 확인 -->
+	<select id="checkPlaylist0" resultType="int">
+		select count(*) from playlist
+		where m_id=#{m_id} and l_no=0
+	</select>
+	
+	<!-- 현재 플레이 리스트 만들기 -->
+	<insert id="insertPlaylist0">
+		insert into playlist 
+		(l_no, m_id, l_name)
+		values(0, #{m_id}, '현재 플레이리스트')
+	</insert>
+	
+	
 
-<!-- 현재 플레이 리스트 만들기 -->
-<insert id="insertPlaylist0">
-	insert into playlist 
-	(l_no, m_id, l_name)
-	values(0, #{m_id}, '현재 플레이리스트')
-</insert>
 
-<!-- 현재 플레이 리스트에 노래 담기 -->
-<insert id="insertSoundPlaylist0" parameterType="hashmap">
-	insert all
-	<foreach collection="soundList" item="item" index="index">
-		into playlist_content 
-			values (0, #{member.m_id}, #{item.s_no},
-			#{item.a_no}
-			, (select nvl(max(s_order),0)+#{index}+1 from playlist_content 
-				where m_id=#{member.m_id} and l_no=0))
-	</foreach>
-	select * from dual
-</insert>
+	<!-- 현재 플레이 리스트에서 노래 삭제 -->
+	<delete id="deleteSoundPlaylist0" parameterType="Sound">
+		delete from playlist_content
+		where m_id=#{m_id} and l_no = 0 and s_no=#{s_no} and a_no=#{a_no} and s_order=#{s_order}
+	</delete>
 
-<!-- 현재 플레이 리스트에서 노래 삭제 -->
-<delete id="deleteSoundPlaylist0" parameterType="Sound">
-	delete from playlist_content
-	where m_id=#{m_id} and l_no = 0 and s_no=#{s_no} and a_no=#{a_no} and s_order=#{s_order}
-</delete>
+	<!-- 현재 플레이 리스트에 노래 담기 -->
+	<insert id="insertSoundPlaylist0" parameterType="hashmap">
+		insert all
+		<foreach collection="soundList" item="item" index="index">
+			into playlist_content 
+				values (0, #{member.m_id}, #{item.s_no},
+				#{item.a_no}
+				, (select nvl(max(s_order),0)+#{index}+1 from playlist_content 
+					where m_id=#{member.m_id} and l_no=0))
+		</foreach>
+		select * from dual
+	</insert>
 
-<!-- 현재 플레이 리스트에서 노래 삭제 후 s_order 재 설정 -->
-<update id="updateSoundOrder" parameterType="Sound">
-	update playlist_content set  
-	s_order = (s_order-1) 
-	where s_order BETWEEN #{s_order} and (select max(s_order) from playlist_content where m_id=#{m_id} and l_no=0)
-    and m_id=#{m_id} and l_no=0
-</update>
-
-<!-- 현재 플레이 리스트 전부 삭제 -->
-<delete id="deleteAllPlaylist0" >
-	delete from playlist_content
-	where m_id=#{m_id} and l_no = 0
-</delete>
+	<!-- 현재 플레이 리스트에서 노래 삭제 후 s_order 재 설정 -->
+	<update id="updateSoundOrder" parameterType="Sound">
+		update playlist_content set  
+		s_order = (s_order-1) 
+		where s_order BETWEEN #{s_order} 
+		and 
+		(select max(s_order) from playlist_content where m_id=#{m_id} and l_no=0)
+	    and m_id=#{m_id} and l_no=0
+	</update>
+	
+	<!-- 현재 플레이 리스트 전부 삭제 -->
+	<delete id="deleteAllPlaylist0" >
+		delete from playlist_content
+		where m_id=#{m_id} and l_no = 0
+	</delete>
 
 
 </mapper>

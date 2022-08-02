@@ -126,8 +126,14 @@ public class MyMusicServiceImpl implements MyMusicService{
 	@Override
 	@Transactional
 	public int updatePlaylist(MyMusic mymusic, List<Sound> soundList) {
+		
+		// 기존에 담겨 있는 노래들 다 삭제
 		dao.deletePlaylistSound(mymusic);
+		
+		// 새로 들고 온 노래 데이터 삽입
 		dao.insertSound(soundList);
+		
+		// 새로 변경된 기본 정보 업데이트
 		return dao.updatePlaylist(mymusic);
 	}
 
@@ -159,7 +165,11 @@ public class MyMusicServiceImpl implements MyMusicService{
 	@Override
 	@Transactional
 	public int deleteSoundPlaylist0(Sound sound) {
+		
+		// 0번 플레이리스트에서 삭제
 		int result = dao.deleteSoundPlaylist0(sound);
+		
+		// 순서 다시 맞추기
 		dao.updateSoundOrder(sound); 
 		return result;
 	}
@@ -168,8 +178,14 @@ public class MyMusicServiceImpl implements MyMusicService{
 	@Override
 	@Transactional
 	public List<Sound> insertPlaylist0Order(List<Sound> soundList, Member member) {
+		
+		// 현재 플레이 리스트 모두 삭제
 		dao.deleteAllPlaylist0(member.getM_id());
+		
+		// 받아온 노래 데이터로 다시 현재 플레이 리스트에 삽입
 		dao.insertSoundPlaylist0(soundList, member);
+		
+		// 삽입된 노래 정보 가져오기
 		return soundDao.selectSoundList(member);
 	}
 

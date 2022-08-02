@@ -27,12 +27,14 @@ $(function(){
     	if($('input[name=s_no]:checked').length == '0'){
 			alert("곡을 선택하세요.");
 		} else {
+			
+			// 체크된 정보만 가져가기 위해 체크 안된 노래 정보 지우기
 			$("input[name=s_no]").each(function(){
 				if(!(this.checked)){
-					console.log("히든 지우기");
 					$(this).parent().next("input[name=a_no]").remove();
-				} 
+				}
 			});
+			
 	    	// Post 방식으로 새창 열기
 	    	window.open('', 'SoundPlayer', 'top=10, left=10, width=500, height=700, status=no, menubar=no, toolbar=no, resizable=no');
 	    	sound_frm.action= root_path + "/sound/play";
@@ -41,6 +43,7 @@ $(function(){
 	    	sound_frm.submit();
 		}
     });
+    
     
     /* 플레이 리스트 담기 - modal */
 	$("#select_insert").click(function() {
@@ -102,30 +105,21 @@ $(function(){
 
 	// 선택 담기
 	function playlistSelectInsertDo(l_no){
-	/* $("input[name=s_no]").each(function(){
-		if(!(this.checked)){
-			console.log("히든 지우기");
-			$(this).parent().next("input[name=a_no]").remove();
-		} 
-		console.log(this.checked);
-		}); */
+	
+		// 체크 된 노래 정보 저장
 		var s_noArray = [];
 		var a_noArray = [];
 		$('input[name=s_no]:checked').each(function(){ //체크된 리스트 저장
 			s_noArray.push($(this).val());
 			a_noArray.push($(this).parent().next("input[name=a_no]").val());
 	    });
-		/* $('input[name=a_no]').each(function(){
-			a_noArray.push($(this).val());
-	    }); */
-		console.log("s_noArray: "+s_noArray);
-		console.log("a_noArray: "+a_noArray);
 		var ajaxData = {
 				s_no : s_noArray,
 				a_no : a_noArray,
 				l_no : l_no
 		}
 	
+		// 비동기 방식으로 선택 담기 기능 수행
 		$.ajax({
 			url: root_path + "/mymusic/insertSound",
 			type: "post",
@@ -150,6 +144,7 @@ $(function(){
 			}
 		});  // ajax 끝
 	}
+	
 	// 한곡 담기
 	function playlistInsertDo(a_no, s_no, l_no){
 		console.log("한곡담기");

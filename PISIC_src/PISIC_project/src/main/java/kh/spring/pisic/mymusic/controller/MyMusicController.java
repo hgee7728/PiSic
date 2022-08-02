@@ -120,16 +120,20 @@ public class MyMusicController {
 	}
 
 	// 플레이 리스트 만들기
-	@PostMapping(value = "/insertPlaylist.do", produces = "text/plain;charset=UTF-8")
+	@PostMapping("/insertPlaylist.do")
 	@ResponseBody
-	public String insertPlaylist(@RequestParam(name = "a_no", required = false) int[] a_noArr,
-			@RequestParam(name = "s_no", required = false) int[] s_noArr, MyMusic mymusic, Authentication auth) {
+	public String insertPlaylist(
+			@RequestParam(name = "a_no", required = false) int[] a_noArr
+			,@RequestParam(name = "s_no", required = false) int[] s_noArr
+			, MyMusic mymusic, Authentication auth
+			) {
 		
+		// 유저 정보 가져오기
 		UserDetails ud = (UserDetails)auth.getPrincipal();
 		mymusic.setM_id(ud.getUsername());
 
-		List<Sound> soundList = new ArrayList<Sound>();
 		// 들고 온 데이터 domain형태로 list 시키기
+		List<Sound> soundList = new ArrayList<Sound>();
 		for (int i = 0; i < s_noArr.length; i++) {
 			System.out.println("a_noArr: " + a_noArr[i]);
 			System.out.println("s_noArr: " + s_noArr[i]);
@@ -143,6 +147,7 @@ public class MyMusicController {
 			sound.setM_id(ud.getUsername());
 			soundList.add(sound);
 		}
+		
 		// 플레이 리스트 만들기
 		int result = service.insertPlaylist(mymusic, soundList);
 		if (result < 1) { // 실패
@@ -378,13 +383,17 @@ public class MyMusicController {
 	// 플레이 리스트 수정하기 - ajax
 	@PostMapping(value = "/updatePlaylist.do", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String updatePlaylist(@RequestParam(name = "a_no", required = false) int[] a_noArr,
-			@RequestParam(name = "s_no", required = false) int[] s_noArr, MyMusic mymusic, Authentication auth) {
+	public String updatePlaylist(
+			@RequestParam(name = "a_no", required = false) int[] a_noArr
+			,@RequestParam(name = "s_no", required = false) int[] s_noArr
+			, MyMusic mymusic, Authentication auth) {
+		
+		// 유저 정보 가져오기
 		UserDetails ud = (UserDetails)auth.getPrincipal();
 		mymusic.setM_id(ud.getUsername());
 		
-		List<Sound> soundList = new ArrayList<Sound>();
 		// 들고 온 데이터 domain형태로 list 시키기
+		List<Sound> soundList = new ArrayList<Sound>();
 		for (int i = 0; i < s_noArr.length; i++) {
 			System.out.println("a_noArr: " + a_noArr[i]);
 			System.out.println("s_noArr: " + s_noArr[i]);
@@ -399,12 +408,12 @@ public class MyMusicController {
 			sound.setM_id(ud.getUsername());
 			soundList.add(sound);
 		}
+		
 		// 플레이 리스트 update
 		int result = service.updatePlaylist(mymusic, soundList);
 		if (result < 1) { // 실패
 			return "0";
 		}
-
 		return "1";
 	}
 	
@@ -429,7 +438,7 @@ public class MyMusicController {
 	}
 	
 	// 셔플 기능 작동하면 현재 플레이 리스트 순서 맞추기
-	@PostMapping(value = "/insertPlaylist0Order", produces = "text/plain;charset=UTF-8")
+	@PostMapping("/insertPlaylist0Order")
 	@ResponseBody
 	public String insertPlaylist0Order(
 			 @RequestParam(name="s_name", required = false) String[] s_nameArray
@@ -437,6 +446,7 @@ public class MyMusicController {
 			, Authentication auth
 			){
 		
+		// 유저 정보 확인
 		UserDetails ud = (UserDetails)auth.getPrincipal();
 		Member member = memberService.selectLoginMember(ud.getUsername());
 		// 들고 온 데이터 domain형태로 list 시키기

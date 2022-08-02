@@ -13,7 +13,6 @@ import kh.spring.pisic.member.model.service.MemberService;
 import kh.spring.pisic.membership.domain.MembershipInfo;
 import kh.spring.pisic.membership.model.service.ImportService;
 import kh.spring.pisic.membership.model.service.PaymentService;
-import kh.spring.pisic.membership.model.service.SchedulerService;
 
 @Controller
 @RequestMapping("/payments")
@@ -25,8 +24,6 @@ public class PayMemtController {
 	@Autowired
 	ImportService importService;
 	
-	@Autowired
-	SchedulerService schedulerService;
 	
 	@Autowired
 	MemberService memberService;

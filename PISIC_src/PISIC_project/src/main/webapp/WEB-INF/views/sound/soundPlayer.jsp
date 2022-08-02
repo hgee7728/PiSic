@@ -15,6 +15,8 @@
 <script type="text/javascript" src="<%=request.getContextPath() %>/resources/jPlayer/dist/jplayer/jquery.jplayer.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/resources/jPlayer/dist/add-on/jplayer.playlist.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="shortcut icon"
+	href="<%=request.getContextPath()%>/resources/assets/images/favicon.png" />
 <script type="text/javascript">
 //<![CDATA[
 let header = $("meta[name='_csrf_header']").attr('th:content');
@@ -48,39 +50,22 @@ $(document).ready(function(){
 			smoothPlayBar: true,
 			keyEnabled: true,
 			audioFullScreen: true,
-			//ready: setPlayer(sound_obj, singerArray)
 		});
+		
 		// JSON 형태로 넘겨 받은 데이터 OBJECT 형태로 변환 
 		var sound_data = '${soundList}';
-		//var obj = JSON.parse(sound_data);
 		var sound_obj = JSON.parse(sound_data);
-		console.log("sound_data : " + sound_data);
-		console.log("sound_obj : " + sound_obj);
-		
-		//console.log("sound_obj[1].singers.length : " + sound_obj[1].singers.length);
-		//console.log("sound_obj[2].singers.length : " + sound_obj[2].singers.length);
-		//console.log("sound_obj[1].singers : " + sound_obj[1].singers[0].artist_name);
-		//console.log("sound_obj[2].singers : " + sound_obj[2].singers[0].artist_name);
-		console.log("sound_obj.length : " + sound_obj.length);
 		var singerObj = {};
 		for (var i = 0 ; i < sound_obj.length ; i ++){
 			for(var k = 0 ; k < sound_obj[i].singers.length ; k++){
-				//console.log("sound_obj[i].singers[k].artist_name :" + sound_obj[i].singers[k].artist_name);
-				//singerArray.push(sound_obj[i].singers[k].artist_name);
 				singerObj[i] = sound_obj[i].singers[k].artist_name;
 			}
-		
 		}
-		const json = JSON.stringify(singerObj);
-		console.log("json : " + json);
-		console.log("singerObj.singers0 : " + singerObj.singers0);
-		//console.log("singerObj[1].index : " + singerObj[1].index);
-		//console.log("singerObj[1].singers : " + singerObj[1].singers);
-		var a_noArray = [];
-		var s_noArray = [];
+		
 		// 받은 노래 데이터로 플레이 리스트 만들기
 		var html = "";
 		for(var i = 0 ; i < sound_obj.length ; i++){
+			
 			// jPlayer
 			myPlaylist.add({
 				title: sound_obj[i].s_name,
@@ -89,29 +74,22 @@ $(document).ready(function(){
 				poster: sound_obj[i].a_cover,
 				s_no : sound_obj[i].s_no
 			});
-			console.log("플레이 리스트 세팅");
+			
 			html += '<div id="soundData'+i+'" class="soundDataDiv">';
 			html += '<input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'">';
 			html += '<input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'">';
 			html += '<input type="hidden" name="s_order" value="'+sound_obj[i].s_order+'">';
 			html += '</div>';
-			//$(".jp-type-playlist").attr('id','ididid');
 			$("div.jp-playlist ul li:nth-child("+(i+1)+")").attr('id',(i+1))
-			//a_noArray.push('<div><input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'"></div>');
-			//s_noArray.push('<div><input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'"></div>');
-			//$("div.jp-playlist ul li:nth-child("+(i+1)+")").append('<input type="hidden" name="a_no" value="'+sound_obj[i].a_no+'">');
-			//$("div.jp-playlist ul li:nth-child("+(i+1)+")").append('<input type="hidden" name="s_no" value="'+sound_obj[i].s_no+'">');
 		};
 		$("body").append(html);
 		
 		
 
 		// stop watch 방식
-		let timerId;
 		let time = 0;
 		let timeLimit = 5;
 		let timer;
-		let initTime = '00:00';
 
 		//시계 시작
 		function startClock() {
@@ -131,8 +109,15 @@ $(document).ready(function(){
 		    time = 0;
 		}
 
-			console.log("intervalFunction() 실행");
-			var interval;
+		// DB 대기 Interval 함수
+		var interval = setInterval(function () {
+			console.log("db다녀오기 대기 시작");
+			if(time == timeLimit){
+				clearInterval(interval);
+				console.log("db 다녀왕~");
+				goInsertPlayinfo();
+			}
+		}, 1000)
 
 		// 재생, 일시정지 버튼
 		$(".jp-play").click(function() {
@@ -156,6 +141,12 @@ $(document).ready(function(){
 			}
 		});
 
+		// 정지 버튼
+		$(".jp-stop").click(function() {
+			clearInterval(interval);
+			resetClock();
+		});
+		
 		// 다음곡 재생
 		$(".jp-next").click(function() {
 			if($('li.jp-playlist-current').index() == $('ul li:nth-last-child(1)').index()){
@@ -193,11 +184,7 @@ $(document).ready(function(){
 			}, 1000)
 		});
 		
-		// 정지 버튼
-		$(".jp-stop").click(function() {
-			clearInterval(interval);
-			resetClock();
-		});
+		
 		
 		// 플레이 리스트에 곡을 클릭했을 경우
 		$(document).on("click", ".jp-playlist-item", function() {
@@ -223,24 +210,14 @@ $(document).ready(function(){
 		
 		// 동적으로 생성된 x 버튼에 기능 추가 - 현재 플레이 리스트 table에서 삭제
 		$(document).on("click", ".jp-playlist-item-remove", function() {
-			//alert("x 누른 곡 인덱스 : "+$(this).closest('li').index());
-			console.log("누른곳 인덱스 0: " + $(this).closest('div.jp-playlist').index());
-			console.log("누른곳 인덱스 1: " + $(this).closest('li').index());
 			if($(this).closest('li').hasClass("jp-playlist-current") == true){
 				console.log("현재 곡 지웠어");
 				clearInterval(timer)
 				clearInterval(interval);
 				time = 0;
 			} 
-			//alert("현재 플레이 리스트에서 삭제 했습니다.");
-			console.log("누른곳 인덱스 2: " + $(this).closest('li').index());
-			//alert("어디 눌렀니 : "+JSON.stringify($(this)));
-			//alert("x 누른 곡 인덱스 : "+$(this).closest('li').index());
-			//alert("현재곡 인덱스 : " + $(".jp-playlist-current").closest('li').index());
-			//alert("누른곡의 div : " + JSON.stringify($('div#soundData'+$(this).closest('li').index()+'')));
-			console.log("누른곡 앨범 번호: " + $('div#soundData'+$(this).closest('li').index()+'').children("input[name=a_no]").val());
-			console.log("누른곡 노래 번호: " + $('div#soundData'+$(this).closest('li').index()+'').children("input[name=s_no]").val());
-			  
+			
+			// 비동기 방식으로 현재 플레이 리스트에서 삭제 후 순서 다시 맞추기
 			$.ajax({
 				url: "<%=request.getContextPath() %>/mymusic/deleteSoundPlaylist0",
 				type: "post",
@@ -258,7 +235,6 @@ $(document).ready(function(){
 					if(result.s_no == "0" && result.a_no == "0"){
 						alert("리스트에서 삭제에 실패하였습니다. 다시 시도해주세요.");
 					} else {
-						//alert("해당 곡을 플레이 리스트에서 삭제했습니다.");
 						
 						// 해당 곡 리스트에서 삭제 후 다시 순서 부여
 						$('div#soundData'+(result.s_order-1)+'').remove();
@@ -266,8 +242,6 @@ $(document).ready(function(){
 							$(this).attr('id', 'soundData'+index);
 							$(this).children('input[name=s_order]').val(index+1);
 						});
-						
-					
 					}
 				},
 				error:function(){
@@ -275,30 +249,25 @@ $(document).ready(function(){
 				}
 			}); // ajax 끝
 			
-		   
 		});
 		
 		// 셔플 기능 작동하면 현재 플레이 리스트 순서 맞추기
 		$(".jp-shuffle").click(function(){
-			console.log("셔플??");
 			var s_nameArray = [];
 			var artist_nameArray = [];
 			$('div.jp-playlist ul li div a.jp-playlist-item').each(function(){
+				
 				// API form에 맞춰서 원하는 데이터 가공
 				var totalStr = $(this).text().split('by');
 				for(var i in totalStr){
-					//console.log("자른거 두개 : "+ totalStr[i]);
 					if(i % 2 == 0){
 						s_nameArray.push(totalStr[i].trim());
 					} else {
 						artist_nameArray.push(totalStr[i].trim());
 					}
 				}
-				//s_nameArray.push($(this).text().trim());
-				//artist_nameArray.push($(this).children('span').text().substr(3,$(this).children('span').text().length))
 			});
-			console.log("s_nameArray : " + s_nameArray);
-			console.log("artist_nameArray : " + artist_nameArray);
+			
 			// 가공된 데이터 가지고 db 변경
 			$.ajax({
 				url: "<%=request.getContextPath() %>/mymusic/insertPlaylist0Order",
@@ -314,11 +283,6 @@ $(document).ready(function(){
 				dataType: "json",
 				success: function(result) {
 					var re_sound_obj = result;
-					for(var i = 0 ; i < re_sound_obj.length ; i++){
-						console.log("sound_obj["+i+"].a_no : "+re_sound_obj[i].a_no);
-						console.log("sound_obj["+i+"].s_no : "+re_sound_obj[i].s_no);
-					};
-					
 					var re_singerObj = {};
 					for (var i = 0 ; i < re_sound_obj.length ; i ++){
 						for(var k = 0 ; k < re_sound_obj[i].singers.length ; k++){
@@ -326,11 +290,10 @@ $(document).ready(function(){
 						}
 					
 					}
+					
 					// 받은 노래 데이터 순서 다시 맞추기
 					var html = "";
 					for(var i = 0 ; i < re_sound_obj.length ; i++){
-						
-						console.log("플레이 리스트 세팅");
 						html += '<div id="soundData'+i+'" class="soundDataDiv">';
 						html += '<input type="hidden" name="a_no" value="'+re_sound_obj[i].a_no+'">';
 						html += '<input type="hidden" name="s_no" value="'+re_sound_obj[i].s_no+'">';
@@ -359,6 +322,7 @@ $(document).ready(function(){
 let latitude ="";
 let longitude ="";
 
+// 위도 경도 위치값 받아오기
 $(document).ready(function() {
 	if ("geolocation" in navigator) { /* geolocation 사용 가능 */
 		navigator.geolocation.getCurrentPosition(
@@ -378,6 +342,7 @@ $(document).ready(function() {
 	}
 });
 
+// 플레이 인포 데이터 삽입
 function goInsertPlayinfo(){
 	console.log($("li.jp-playlist-current").index());
 	$.ajax({
@@ -393,14 +358,7 @@ function goInsertPlayinfo(){
 			currentLon: longitude
 		},
 		success: function(result) {
-			if(result=="1"){
-				
-			}else{
-				
-			}
-				
 			
-		
 		},
 		error:function(){
 			

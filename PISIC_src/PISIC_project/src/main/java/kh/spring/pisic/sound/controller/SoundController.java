@@ -41,12 +41,14 @@ public class SoundController {
 
 	// 음악 재생
 	@PostMapping("/play")
-	public ModelAndView musicPlayer(ModelAndView mv, @RequestParam(name = "a_no", required = false) int[] a_noArr,
-			@RequestParam(name = "s_no", required = false) int[] s_noArr, Authentication auth,
+	public ModelAndView musicPlayer(ModelAndView mv
+			, @RequestParam(name = "a_no", required = false) int[] a_noArr,
+			@RequestParam(name = "s_no", required = false) int[] s_noArr
+			, Authentication auth,
 			RedirectAttributes rttr) {
-		System.out.println("음악 재생!!");
+		
+		// 유저 정보 확인
 		if (auth == null) {
-			System.out.println("[[[[[[[[[[[[[[[[[[[여기냐]]]]]]]]]]]]]]]]]");
 			mv.addObject("msg", "로그인 후 이용해주세요.");
 			mv.setViewName("sound/soundPlayer");
 			return mv;
@@ -54,9 +56,8 @@ public class SoundController {
 			UserDetails ud = (UserDetails) auth.getPrincipal();
 			Member member = memberService.selectLoginMember(ud.getUsername());
 
-			List<Sound> soundList = new ArrayList<Sound>();
-
 			// 들고 온 데이터 domain형태로 list 시키기
+			List<Sound> soundList = new ArrayList<Sound>();
 			for (int i = 0; i < s_noArr.length; i++) {
 				Sound sound = new Sound();
 				System.out.println("a_no : " + a_noArr[i]);
@@ -67,9 +68,6 @@ public class SoundController {
 				soundList.add(sound);
 			}
 			System.out.println("[[[soundList]]] : " + soundList);
-
-			// System.out.println("Gson : " + new
-			// Gson().toJson(service.selectSoundList(soundList, member)));
 
 			// list<domain> 형태 JSON형태로 바꿔 보내기
 			mv.addObject("soundList", new Gson().toJson(service.selectSoundList(soundList, member)));
@@ -269,8 +267,8 @@ public class SoundController {
 		playInfo.setSky((String) jobWeather.get("Sky condition"));
 		playInfo.setPty((String)jobWeather.get("Precipitation types"));
 		playInfo.setTmp(nowTemperature);
-		playInfo.setArea_name(jsonAddress.get("region_2depth_name").toString());
-		//playInfo.setArea_name("강남구");
+		//playInfo.setArea_name(jsonAddress.get("region_2depth_name").toString());
+		playInfo.setArea_name("강남구");
 
 		if(service.insertPalyInfo(playInfo) < 1) {
 			return "0";

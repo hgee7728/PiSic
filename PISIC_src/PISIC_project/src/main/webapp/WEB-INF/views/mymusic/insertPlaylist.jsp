@@ -152,8 +152,8 @@ UPLOADCARE_LOCALE = "ko"
 		
 		// 플레이 리스트 선택시 해당 목록 불러오기 - select-option
 		$("#myplaylist_select").change(function(){
-			console.log("변했당");
-			console.log($("#myplaylist_select").val());
+			
+			// 비동기로 데이터 값 가져오기
 			$.ajax({
 				url: "<%=request.getContextPath()%>/mymusic/playlistSound",
 				type: "post",
@@ -165,6 +165,8 @@ UPLOADCARE_LOCALE = "ko"
 				},
 				dataType: 'json',
 				success: function(result) {
+					
+					// 들고 온 List 화면에 출력하기 위한 작업
 					$(".left_title").text($("#myplaylist_select option:selected").text());
 					console.log(result);
 					var html = "";
@@ -172,11 +174,14 @@ UPLOADCARE_LOCALE = "ko"
 						var resultData = result[i];
 						html += '<tr>';
 						html += '<td><div class="form-check form-check-muted m-0"><label class="form-check-label">';
-						html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no"><i class="input-helper"></i>';
+						html += '<input type="checkbox" class="form-check-input sound_checkbox1" value="'+resultData.s_no+'" name="s_no">';
+						html += '<i class="input-helper"></i>';
 						html += '</label><input type="hidden" value="'+resultData.a_no+'" name="a_no"></div></td>';
 						html += '<td>'+(i+1)+'</td>';
 						html += '<td><img src="'+resultData.a_cover+'" alt="image" /></td>'
-						html += '<td><a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a></td>'
+						html += '<td>';
+						html += '<a href="javascript:selectSoundDetail('+resultData.a_no+','+resultData.s_no+')">'+resultData.s_name+'</a>';
+						html += '</td>';
 						html += '<td>';
 							for(var j = 0 ; j < resultData.singers.length ; j ++){
 								var resultData2 = resultData.singers[j]
@@ -189,9 +194,10 @@ UPLOADCARE_LOCALE = "ko"
 						
 					
 					}
-					console.log(html);
+					// 기존에 있던 화면 지우고 새 데이터 출력
 					$("table.left_sound_list tbody").children().remove();
 					$("table.left_sound_list tbody").append(html);
+					
 					// 미니 버튼들 a태그 색상 바꾸기
 					$("i.mdi").parent('a').css('color','#8f5fe8');
 				},
@@ -390,25 +396,22 @@ UPLOADCARE_LOCALE = "ko"
 	    	if($('table.left_sound_list input[name=s_no]:checked').length == '0'){
 				alert("곡을 선택하세요.");
 			} else {
+				// 왼쪽 테이블에 선택된 element 복사
 		    	var tableArray = [];
-		    	var s_noArray = [];
-		    	var a_noArray = [];
-		    	$('table.left_sound_list input[name=s_no]:checked').each(function(){ //체크된 리스트 저장
-		    		s_noArray.push($(this).val());
-					a_noArray.push($(this).parent().next("input[name=a_no]").val());
+		    	$('table.left_sound_list input[name=s_no]:checked').each(function(){
 		    		tableArray.push($(this).closest('tr').html());
 		        });
-		    	
 				var html = "";
 				for (var i = 0; i < tableArray.length; i++) {
 					html += '<tr>';
 					html += tableArray[i];
 					html += '</tr>';
 				}
-				console.log(html);
+				
+				// 오른쪽 테이블에 복사
 				$("table.right_sound_list tbody").append(html);
-
-				// number 부여하기, 빼기 버튼 함수 바꾸기
+				
+				// 다시 number 부여하기, 빼기 버튼 함수 바꾸기
 				for (var i = 0; i < $("table.right_sound_list tbody tr").length; i++) {
 					$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(2)').text(i + 1);
 					$('table.right_sound_list tbody tr:nth-child('+(i+1)+') td:nth-child(6) a').attr('href','javascript:soundMinus('+(i+1)+')');
@@ -416,13 +419,6 @@ UPLOADCARE_LOCALE = "ko"
 		    		$("table.right_sound_list tr:nth-child("+(i+1)+") td:nth-child(6) a").children("i").attr('class','mdi mdi-minus-box list_icon');
 
 				}
-				/* // 다시 hidden 생성
-		    	$("table.left_sound_list input[name=s_no]").each(function(){
-		    		if(!($(this).parent().next("table.left_sound_list input[name=a_no]").length)){
-		    			$(this).parent().after();
-		    		} 
-		    	}); */
-		    	
 				// 담으면 전체 선택 해제
 				$('table.left_sound_list input:checkbox').prop('checked',false);
 				// 미니 버튼들 a태그 색상 바꾸기
@@ -452,7 +448,6 @@ UPLOADCARE_LOCALE = "ko"
 	    
 	    // 플레이 리스트 만들기
 	    $("#submit_btn").click(function(){
-	    	console.log("만들기 버튼 클릭");
 	    	if($("input[name=l_name]").val().trim() == null || $("input[name=l_name]").val().trim() == ""){
 	    		alert("플레이 리스트 명을 입력해주세요.");
 	    		$("input[name=l_name]").focus();
@@ -463,15 +458,11 @@ UPLOADCARE_LOCALE = "ko"
 	    	}
 	    	var s_noArray = [];
 	    	var a_noArray = [];
-	    	$('table.right_sound_list input[name=s_no]').each(function(){ // 옮겨진 val 저장
+	    	// 선택한 음악 정보 담기
+	    	$('table.right_sound_list input[name=s_no]').each(function(){ 
 	    		s_noArray.push($(this).val());
 	    		a_noArray.push($(this).parent().next("table.right_sound_list input[name=a_no]").val());
 	        });
-	    	/* $('input[name=a_no]').each(function(){
-	    		a_noArray.push($(this).val());
-	        }); */
-	    	console.log("s_noArray: "+s_noArray);
-	    	console.log("a_noArray: "+a_noArray);
 	    	var ajaxData = {
 	    			s_no : s_noArray,
 	    			a_no : a_noArray,
@@ -479,6 +470,7 @@ UPLOADCARE_LOCALE = "ko"
 	    			l_private_yn : $("input[name=l_private_yn]:checked").val(),
 	    			l_image : $('input[name=l_image]').val()
 	    	}
+	    	// 비동기로 플레이 리스트 만들기
 	    	$.ajax({
 	    		url: "<%=request.getContextPath() %>/mymusic/insertPlaylist.do",
 	    		type: "post",
@@ -500,10 +492,6 @@ UPLOADCARE_LOCALE = "ko"
 	    			
 	    		}
 	    	});  // ajax 끝
-	    	<%-- right_sound_list_frm.action="<%=request.getContextPath() %>/mymusic/insertPlaylist";
-	    	right_sound_list_frm.method="post";
-	    	right_sound_list_frm.submit(); --%>
-	    	
 	    });
 	    
 	 // 초기화 버튼 클릭

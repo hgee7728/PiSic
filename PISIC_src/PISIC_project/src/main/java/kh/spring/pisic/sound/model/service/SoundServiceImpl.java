@@ -37,18 +37,25 @@ public class SoundServiceImpl implements SoundService{
 	public Sound selectSound(Sound sound) {
 		return  dao.selectSound(sound);
 	}
+	
 	// 선택 재생
 	@Override
 	@Transactional
 	public List<Sound> selectSoundList(List<Sound> soundList, Member member) {
-		// 0번 플레이 리스트가 있는지 확인
-		if(daoMyMusic.checkPlaylist0(member.getM_id()) == 0) { // 없다면
+		
+		// 0번 플레이 리스트(현재 플레이리스트)가 있는지 확인
+		if(daoMyMusic.checkPlaylist0(member.getM_id()) == 0) {
+			// 없다면(처음 재생) 0번 플레이리스트 만들어줌
 			daoMyMusic.insertPlaylist0(member.getM_id());
 		} 
 		
+		// 현재 플레이 리스트에 노래 삽입
 		daoMyMusic.insertSoundPlaylist0(soundList, member);
+		
+		// 선택한 노래 정보 가져오기
 		return dao.selectSoundList(member);
 	}
+	
 	// 노래 좋아요 - ajax
 	@Override
 	public int insertLike(Member member, Sound sound) {
