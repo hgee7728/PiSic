@@ -209,4 +209,14 @@ public class AdminDao {
 	public int deleteReportBoard(List<PjBoard> boardList) {
 		return session.delete("Admin.deleteReportBoard", boardList);
 	}
+	
+	// 회원 탈퇴
+	public int updateMemberDeleteYn(List<Member> memberList) {
+		return session.update("Admin.updateMemberDeleteYn", memberList);
+	}
+		
+	// 관리자 추가
+	public int insertAdmin(Member member) {
+		return session.insert("Admin.insertAdmin", member);
+	}
 }

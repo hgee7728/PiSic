@@ -204,7 +204,7 @@ public class AdminServiceImpl implements AdminService{
 		return dao.updateMemberDeleteYn(memberList);
 	}
 
-	Override
+	@Override
 	public int insertAdmin(Member member) {
 		return dao.insertAdmin(member);
 	}
