@@ -51,8 +51,6 @@ public class QnaController {
 		return mv;
 	}
 	
-	
-	
 //	문의글은 아무나 보지 못하도록 post
 	@PostMapping("/qnaRead")
 	public ModelAndView selectQnaBoard(ModelAndView mv

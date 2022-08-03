@@ -154,13 +154,8 @@ display: none;
 													
 													<tbody>
 													<c:forEach items="${qnalist }" var="qnaBoard" varStatus="status">
-														<c:if test="${qnaBoard.gr_layer == 0} ">
-															<span class="subject" onclick="goView('${qnaBoard.qna_no}');">${qnaBoard.subject }&nbsp;</span>
-														</c:if>
-														<c:if test="${qnaBoard.gr_layer == 0} ">
-														</c:if>
-															<tr class="ctsSbj">
-														<th>${qnaPaging.totalCount - ((qnaPaging.cr.page-1) * qnaPaging.cr.perPageNum + status.index) }</th>
+														<tr class="ctsSbj">
+															<th>${qnaPaging.totalCount - ((qnaPaging.cr.page-1) * qnaPaging.cr.perPageNum + status.index) }</th>
 													<c:forEach begin="1" end="${qnaBoard.gr_layer }">
 														&nbsp;&nbsp;
 													</c:forEach>

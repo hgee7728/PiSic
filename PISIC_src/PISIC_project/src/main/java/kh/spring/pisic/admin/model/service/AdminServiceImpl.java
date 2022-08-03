@@ -12,6 +12,7 @@ import kh.spring.pisic.membership.domain.Membership;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.pjboard.domain.PjBoardReport;
 import kh.spring.pisic.pjboard.model.dao.PjBoardDao;
+import kh.spring.pisic.qna.domain.QnaBoard;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -209,4 +210,17 @@ public class AdminServiceImpl implements AdminService{
 		return dao.insertAdmin(member);
 	}
 
+	// QNA 게시글 총 갯수
+	@Override
+	public int totalQnaBoard() {
+		return dao.totalQnaBoard();
+	}
+
+	// QNA 게시글 목록 - 관리자
+	@Override
+	public List<QnaBoard> selectQnaList(Criteria cri) {
+		return dao.selectQnaList(cri);
+	}
+
+	
 }

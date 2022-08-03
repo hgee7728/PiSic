@@ -12,6 +12,7 @@ import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.membership.domain.Membership;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.pjboard.domain.PjBoardReport;
+import kh.spring.pisic.qna.domain.QnaBoard;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -218,5 +219,15 @@ public class AdminDao {
 	// 관리자 추가
 	public int insertAdmin(Member member) {
 		return session.insert("Admin.insertAdmin", member);
+	}
+	
+	// QNA 게시글 총 갯수
+	public int totalQnaBoard() {
+		return session.selectOne("Admin.totalQnaBoard");
+	}
+	
+	// QNA 게시글 목록 - 관리자
+	public List<QnaBoard> selectQnaList(Criteria cri) {
+		return session.selectList("Admin.selectQnaList", cri);
 	}
 }

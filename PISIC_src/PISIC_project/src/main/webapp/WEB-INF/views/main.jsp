@@ -342,7 +342,7 @@ let csrf_token = '${_csrf.token }';
 									<p class="text-muted mb-0">A live global counter showing the total number of tracks listened to by PISIC users since 2022</p>
 								</div>
 								<div class="card-body" style="text-align: center;">
-									<h3 class="font-weight-blod mb-0 count_h3"><fmt:formatNumber value="${playCnt }" pattern="#,###"/></h3>
+									<h1 class="font-weight-blod mb-0 count_h3"><fmt:formatNumber value="${playCnt }" pattern="#,###"/></h1>
 								</div>
 									
 							</div>

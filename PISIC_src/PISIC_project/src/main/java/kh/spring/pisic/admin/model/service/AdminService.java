@@ -6,6 +6,7 @@ import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.membership.domain.Membership;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.pjboard.domain.PjBoardReport;
+import kh.spring.pisic.qna.domain.QnaBoard;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -49,4 +50,7 @@ public interface AdminService {
 	
 	public int updateMemberDeleteYn(List<Member> memberList);
 	public int insertAdmin(Member member);
+	
+	public int totalQnaBoard();
+	public List<QnaBoard> selectQnaList(Criteria cri);
 }

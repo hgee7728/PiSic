@@ -194,10 +194,15 @@
 	<!-- 곡 목록 조회 -->
 	<select id="selectSoundList" resultMap="soundResultMap">
 		<![CDATA[
-		select t2.* from (select rownum rnum, t1.* from (select sound.s_no, sound.a_no, sound.s_name, 
-		sound.s_lyrics1, sound.s_lyrics2, sound.s_age_yn, sound.s_path, album.artist_no, album.a_name, album.a_cover
-		from sound sound
-		join album album on sound.a_no=album.a_no)t1 where rownum <= #{pageNum} * #{amount})t2
+		select t2.* from 
+			(select rownum rnum, t1.* 
+				from (select sound.s_no, sound.a_no, sound.s_name, 
+					sound.s_lyrics1, sound.s_lyrics2, sound.s_age_yn
+					, sound.s_path, album.artist_no, album.a_name
+					, album.a_cover
+					from sound sound
+					join album album on sound.a_no=album.a_no)t1 
+					where rownum <= #{pageNum} * #{amount})t2
         where rnum > (#{pageNum} -1) * #{amount}
         ]]>
 	</select>
@@ -456,6 +461,24 @@
 		'Y', 'ROLE_ADMIN', default, default)
 	</insert>
 	
+	<!-- QNA 게시글 총갯수 -->
+	<select id="totalQnaBoard" resultType="int">
+		select count(*) from qna
+	</select>
+	
+	<!-- QNA 게시글 목록 - 관리자 -->
+	<select id="selectQnaList" resultType="QnaBoard">
+	<![CDATA[
+		select t2.* from 
+			(select rownum rnum, t1.* 
+				from (select qna_no, qna_title, qna_content
+					, m_id, qna_date, orgin_no
+					, gr_ord, gr_layer
+					from QNA)t1 
+					where rownum <= #{pageNum} * #{amount})t2
+        where rnum > (#{pageNum} -1) * #{amount}
+        ]]>
+	</select>
 </mapper>
 
 

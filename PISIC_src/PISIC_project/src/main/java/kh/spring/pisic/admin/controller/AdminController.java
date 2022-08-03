@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +34,7 @@ import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.membership.domain.Membership;
 import kh.spring.pisic.pjboard.domain.PjBoard;
 import kh.spring.pisic.pjboard.domain.PjBoardReport;
+import kh.spring.pisic.qna.domain.QnaPaging;
 import kh.spring.pisic.sound.domain.Album;
 import kh.spring.pisic.sound.domain.Artist;
 import kh.spring.pisic.sound.domain.Criteria;
@@ -589,6 +592,17 @@ public class AdminController {
 		}
 	}
 	
+	// QNA 리스트 / 페이징처리 - 관리자
+	@GetMapping("/qnaList")
+	public ModelAndView pageSelectQna(ModelAndView mv, Criteria cri) {
+        
+		
+		Paging paging = new Paging(cri, service.totalQnaBoard()); 
+		mv.addObject("qnaPaging", paging);
+		mv.addObject("qnalist", service.selectQnaList(cri));
+		mv.setViewName("qna/qnaList");
+		return mv;
+	}
 	
 	
 }
