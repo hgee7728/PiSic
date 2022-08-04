@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@  taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@  taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -204,14 +205,25 @@ $(document).on("click", ".delete_qna", function() {
 									
 									</div>
 									<hr>
-									<!-- 관리자만 보이게하기  
-								  	<div>답글작성</div>
-									<form action="<%=request.getContextPath() %>/qna/qnaWrite" method="post">
-									 	<input type="text" name="refnum" value="${qnaBoard.qna_no }" readonly>
-										<div>제목:<input type="text" name="qna_title" required></div>
-										<div>내용:<input type="text" name="qna_content" required></div>
-										<div><button type="submit">답글등록</button></div>
-									</form>-->
+									<sec:authorize access="hasRole('ROLE_ADMIN')">
+									  	<div>답글작성</div>
+									  	<br>
+										<form action="<%=request.getContextPath() %>/qna/qnaWrite" method="post">
+										<!-- csrf 공격 방지 -->
+           						 		<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">		
+										 	<input type="hidden" name="origin_no" value="${qnaBoard.qna_no }">
+										 	<input type="hidden" name="gr_ord" value="${qnaBoard.gr_ord }">
+											<div class="form-group">
+												<label for="qna_title" id="label_qna_title">제목</label> 
+												<input type="text" class="form-control" name="qna_title" value="RE: ${qnaBoard.qna_title }" readonly>
+											</div>
+											<div class="form-group">
+												<label for="qna_content" id="label_qna_content">내용</label>
+												<textarea class="form-control" rows="10" placeholder="(최대 한글150자 입력)" name="qna_content" maxlength="150"></textarea>
+											</div>
+											<div style="text-align: center;"><button type="submit" class="btn btn-info btn-fw">답글등록</button></div>
+										</form>
+									</sec:authorize>
 								</c:otherwise>
 							</c:choose>
 								

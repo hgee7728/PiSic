@@ -73,6 +73,7 @@ public class QnaController {
 		try {
 			gr_ord = Integer.parseInt(gr_ordStr);
 		}catch (Exception e) {
+			e.printStackTrace();
 		}
 		mv.addObject("gr_ord", gr_ord);
 		mv.setViewName("qna/qnaWrite");
@@ -83,8 +84,6 @@ public class QnaController {
 	   public ModelAndView insertQna(ModelAndView mv
 //	         , @RequestParam(name="gr_ord", defaultValue = "0") String gr_ord
 	         , QnaBoard qnaBoard
-	         , HttpServletRequest req
-	         , HttpSession session
 	         , RedirectAttributes rttr
 	         , Authentication auth
 	         )  {
@@ -93,6 +92,7 @@ public class QnaController {
 	      String uid = ud.getUsername();
 	      
 	      qnaBoard.setM_id(uid);
+	      
 	      
 	      int result = service.insertQna(qnaBoard);
 	      if(result > 1)

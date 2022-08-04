@@ -34,6 +34,10 @@ public class QnaDao {
 	public int insertQna(QnaBoard qnaBoard) {
 		return sqlsession.insert("QnaBoard.insertQna",qnaBoard);
 	}
+	// QNA OREDR 수정
+	public int updateQnaOrd(QnaBoard qnaBoard) {
+		return sqlsession.insert("QnaBoard.updateQnaOrd",qnaBoard);
+	}
 	// QNA 수정
 	public int updateQna(QnaBoard qnaBoard) {
 		return sqlsession.update("QnaBoard.updateQna",qnaBoard);

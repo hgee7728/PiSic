@@ -474,7 +474,7 @@
 				from (select qna_no, qna_title, qna_content
 					, m_id, qna_date, origin_no
 					, gr_ord, gr_layer
-					from QNA)t1 
+					from QNA ORDER BY origin_No DESC, gr_Ord ASC)t1 
 					where rownum <= #{pageNum} * #{amount})t2
         where rnum > (#{pageNum} -1) * #{amount}
         ]]>

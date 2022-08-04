@@ -21,6 +21,7 @@ order by origin_no desc, gr_ord asc
 </select>
 
 <insert id="insertQna" parameterType="QnaBoard">
+<!-- 	
 	insert into qna (qna_no
 			,qna_title, m_id, qna_content
 			,qna_secret	,qna_date
@@ -43,8 +44,44 @@ order by origin_no desc, gr_ord asc
 			,default
 </otherwise>
 </choose>
-)
+) 
+-->
+<choose>
+<when test="gr_ord > 0">
+	insert into qna (qna_no
+			,qna_title, m_id, qna_content
+			,qna_secret	,qna_date
+			,origin_no
+			,gr_ord
+			,gr_layer
+		) values ( 
+			(select nvl(max(qna_no),0)+1 from qna)
+			, #{qna_title}, #{ m_id}, #{qna_content}
+			, default ,default
+			, (select origin_no from qna where qna_no=#{origin_no})
+			, (select gr_ord+1 from qna where qna_no=#{origin_no})
+			, (select gr_layer+1 from qna where qna_no=#{origin_no})
+
+</when>
+<otherwise>
+	insert into qna (qna_no
+			,qna_title, m_id, qna_content
+			,qna_secret	,qna_date
+			,origin_no
+			,gr_ord
+			,gr_layer
+		) values ( 
+			(select nvl(max(qna_no),0)+1 from qna)
+			, #{qna_title}, #{ m_id}, #{qna_content}
+			, default ,default
+			,(select nvl(max(qna_no),0)+1 from qna)
+			,default
+			,default
+</otherwise>
+</choose>
+) 
 </insert> 
+
  <select id="selectQnaBoard" resultType="QnaBoard" parameterType="string">
 	select * from qna
 	where qna_no=#{qna_no}
@@ -55,6 +92,16 @@ order by origin_no desc, gr_ord asc
 	update qna set board_reply_seq = gr_layer+1
 	where gr_ord = (select gr_ord from qna where qna_no=#{gr_ord})
 	and gr_layer > (select gr_layer from qna where qna_no=#{gr_ord})
+]]>
+</update>
+
+<!-- QNA ORDER 수정 -->
+<update id="updateQnaOrd">
+<![CDATA[
+	update qna set 
+	gr_ord = gr_ord + 1 
+	where origin_no = #{origin_no} 
+		and gr_ord > #{gr_ord}
 ]]>
 </update>
 

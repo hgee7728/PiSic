@@ -156,23 +156,24 @@ display: none;
 													<c:forEach items="${qnalist }" var="qnaBoard" varStatus="status">
 														<tr class="ctsSbj">
 															<th>${qnaPaging.total - ((qnaPaging.cri.pageNum-1) * qnaPaging.cri.amount + status.index) }</th>
-													<c:forEach begin="1" end="${qnaBoard.gr_layer }">
-														&nbsp;&nbsp;
-													</c:forEach>
-
-													<td>
-														<form id="frm${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">		
-															 <!-- csrf 공격 방지 -->
-			                     						 	<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
-														    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">${qnaBoard.qna_title }</a>
-														    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
-														</form>
-													</td>
-													<td>${qnaBoard.m_id }</td>
-													<td>${qnaBoard.qna_date }</td>
-												</tr>
-												
-										</c:forEach>
+															<td>
+																
+																<form id="frm${qnaBoard.qna_no }" action="<%=request.getContextPath()%>/qna/qnaRead" method="post">		
+																	 <!-- csrf 공격 방지 -->
+					                     						 	<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">							
+																    <a href="javascript:;" onclick="document.getElementById('frm${qnaBoard.qna_no }').submit();">
+																	    <c:forEach begin="1" end="${qnaBoard.gr_layer }" step="1">
+																		<i class="mdi mdi-subdirectory-arrow-right"></i>
+																		</c:forEach>
+																		${qnaBoard.qna_title }
+																	</a>
+																    <input type="hidden" name="qna_no" value="${qnaBoard.qna_no }"/>
+																</form>
+															</td>
+															<td>${qnaBoard.m_id }</td>
+															<td>${qnaBoard.qna_date }</td>
+														</tr>
+												</c:forEach>
 															
 															
 														<!-- 답변글 아닌 원글 -->

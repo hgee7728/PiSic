@@ -31,8 +31,8 @@ public class QnaServiceImpl implements QnaService {
 	
 	@Transactional
 	public int insertQna(QnaBoard qnaBoard) {
-		if(qnaBoard.getQna_no()>0) {
-			dao.updateQna(qnaBoard); // 수정하기
+		if(qnaBoard.getGr_ord()>0) {
+			dao.updateQnaOrd(qnaBoard); // 수정하기
 			return dao.insertQna(qnaBoard);
 		}else {
 			return dao.insertQna(qnaBoard);
