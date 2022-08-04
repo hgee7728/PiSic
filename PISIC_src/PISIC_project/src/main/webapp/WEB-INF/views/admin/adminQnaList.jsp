@@ -124,7 +124,7 @@ display: none;
 			<!-- partial:partials/_navbar.html -->
 			<jsp:include page="../_navbar.jsp" />
 			<!-- partial -->
-			<div class="main-panel">
+			<div class="main-panel"> 
 				<div class="content-wrapper">
 					<h2 class=" card-title">고객센터</h2>
 					<br>
@@ -135,7 +135,7 @@ display: none;
 							<div class="col-lg-12 grid-margin stretch-card">
 								<div class="card">
 									<div class="card-body">
-										<h4 class="card-title">문의글 등록하기</h4>
+										<h4 class="card-title">문의글 등록하기</h4> 
 										<div class="table-responsive">
 												<table class="table qna_list">
 													<thead>
@@ -155,7 +155,7 @@ display: none;
 													<tbody>
 													<c:forEach items="${qnalist }" var="qnaBoard" varStatus="status">
 														<tr class="ctsSbj">
-															<th>${qnaPaging.totalCount - ((qnaPaging.cr.page-1) * qnaPaging.cr.perPageNum + status.index) }</th>
+															<th>${qnaPaging.total - ((qnaPaging.cri.pageNum-1) * qnaPaging.cri.amount + status.index) }</th>
 													<c:forEach begin="1" end="${qnaBoard.gr_layer }">
 														&nbsp;&nbsp;
 													</c:forEach>
@@ -204,31 +204,27 @@ display: none;
 							<div class="pageInfo_wrap" >
 						        <div class="pageInfo_area">
 						        	<ul id="pageInfo" class="pageInfo">
-											 <c:if test="${paging.prev}">
-							                    <li class="pageInfo_btn previous"><a href="<%=request.getContextPath()%>/qna/qnaList?page=${qnaPaging.startPage-1}&">Previous</a></li>
-							                </c:if>
-								 			
-								 			<c:forEach var="num" begin="${qnaPaging.startPage}" end="${qnaPaging.endPage}">
-							                    <li class='pageInfo_btn ${qnaPaging.cr.page == num ? "here":"" }'><a href="<%=request.getContextPath()%>/qna/qnaList?page=${num}">${num}</a></li>
-							                </c:forEach>
-							                
-							                <c:if test="${qnaPaging.next}">
-							                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/qna/qnaList?page=${qnaPaging.endPage + 1 }">Next</a></li>
-							                </c:if>  
-								<!--  		<button type="button" class="btn btn-outline-secondary">1</button>
-											<button type="button" class="btn btn-outline-secondary">2</button>
-											<button type="button" class="btn btn-outline-secondary">3</button>
-											<button type="button" class="btn btn-outline-secondary">4</button>-->	
-											</ul>
-										</div>
-									</div>
+							        <c:if test="${qnaPaging.prev}">
+					                    <li class="pageInfo_btn previous"><a href="<%=request.getContextPath()%>/admin/qnaList?pageNum=${qnaPaging.startPage-1}">Previous</a></li>
+					                </c:if>
+						 			
+						 			<c:forEach var="num" begin="${qnaPaging.startPage}" end="${qnaPaging.endPage}">
+					                    <li class='pageInfo_btn ${qnaPaging.cri.pageNum == num ? "here":"" }'><a href="<%=request.getContextPath()%>/admin/qnaList?pageNum=${num}">${num}</a></li>
+					                </c:forEach>
+					                
+					                <c:if test="${qnaPaging.next}">
+					                    <li class="pageInfo_btn next"><a href="<%=request.getContextPath()%>/admin/qnaList?pageNum=${qnaPaging.endPage + 1 }">Next</a></li>
+					                </c:if>  
+					                </ul>
+						        </div>
+						    </div>
 								</div>
 							</div>
 
 						</div>
 
 					</div>
-
+					</div>
 					<!-- content-wrapper ends -->
 					<!-- partial:partials/_footer.html -->
 					<jsp:include page="../_footer.jsp" />

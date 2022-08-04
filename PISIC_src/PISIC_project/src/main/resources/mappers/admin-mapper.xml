@@ -472,7 +472,7 @@
 		select t2.* from 
 			(select rownum rnum, t1.* 
 				from (select qna_no, qna_title, qna_content
-					, m_id, qna_date, orgin_no
+					, m_id, qna_date, origin_no
 					, gr_ord, gr_layer
 					from QNA)t1 
 					where rownum <= #{pageNum} * #{amount})t2

@@ -248,7 +248,7 @@ public class AdminController {
 		}
 	}
 
-	// 곡 목록 조회
+	// 곡 목록 조회 - 페이징
 	@GetMapping("/sound")
 	public ModelAndView pageSoundList(ModelAndView mv, Criteria cri) {
 		Paging paging = new Paging(cri, service.totalCntSound());
@@ -592,7 +592,7 @@ public class AdminController {
 		}
 	}
 	
-	// QNA 리스트 / 페이징처리 - 관리자
+	// QNA 리스트 - 페이징 - 관리자
 	@GetMapping("/qnaList")
 	public ModelAndView pageSelectQna(ModelAndView mv, Criteria cri) {
         
@@ -600,7 +600,7 @@ public class AdminController {
 		Paging paging = new Paging(cri, service.totalQnaBoard()); 
 		mv.addObject("qnaPaging", paging);
 		mv.addObject("qnalist", service.selectQnaList(cri));
-		mv.setViewName("qna/qnaList");
+		mv.setViewName("admin/adminQnaList");
 		return mv;
 	}
 	
