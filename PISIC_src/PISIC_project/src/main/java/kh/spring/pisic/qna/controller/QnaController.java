@@ -20,9 +20,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kh.spring.pisic.member.domain.Member;
 import kh.spring.pisic.qna.domain.QnaBoard;
-import kh.spring.pisic.qna.domain.Criteria;
-import kh.spring.pisic.qna.domain.QnaPaging;
 import kh.spring.pisic.qna.model.service.*;
+import kh.spring.pisic.sound.domain.Criteria;
+import kh.spring.pisic.sound.domain.Paging;
 
 
 @Controller
@@ -43,9 +43,9 @@ public class QnaController {
      String uid = ud.getUsername();
 		Logger.info(cr.toString());
 		
-		QnaPaging qnaPaging = new QnaPaging(cr, service.totalQnaBoard(uid)); 
+		Paging qnaPaging = new Paging(cr, service.totalQnaBoard(uid)); 
 		mv.addObject("qnaPaging", qnaPaging);
-		mv.addObject("qnalist", service.pageSelectQna(qnaPaging, uid));
+		mv.addObject("qnalist", service.pageSelectQna(cr, uid));
 		mv.setViewName("qna/qnaList");
 		return mv;
 	}

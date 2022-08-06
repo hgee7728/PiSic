@@ -2,24 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="QnaBoard">
  
+ <!-- 전체 글 갯수 -->
  <select id="totalQnaBoard" resultType="int">
  select count(*) from qna
- where m_id=#{uid}
+ where
+ <choose>
+	<when test='m_id.equals("admin")'>
+		1=1
+	</when>
+	<otherwise>
+		m_id=#{m_id}
+	</otherwise>
+</choose>
  </select>
-  
 
+<!-- 글목록 -->
+<select id="pageSelectQna" parameterType="hashmap" resultType="QnaBoard">
+select t2.* from 
+	(select rownum rnum, t1.* 
+		from (select qna_no, qna_title, qna_content
+			, m_id, qna_date, origin_no
+			, gr_ord, gr_layer
+			from QNA 
+			where
+			<choose>
+				<when test='m_id.equals("admin")'>
+					1=1
+				</when>
+				<otherwise>
+					m_id=#{m_id}
+				</otherwise>
+			</choose>
+			ORDER BY origin_No DESC, gr_Ord ASC)t1 
+			<![CDATA[
+			where rownum <= #{cri.pageNum} * #{cri.amount})t2
+      where rnum > (#{cri.pageNum} -1) * #{cri.amount}
+      ]]>
 
-<select id="pageSelectQna" resultType="QnaBoard">
-<![CDATA[
-select
-*
-from
-    qna
-where m_id=#{uid}
-order by origin_no desc, gr_ord asc
-]]>
 </select>
 
+<!-- 글쓰기 -->
 <insert id="insertQna" parameterType="QnaBoard">
 <!-- 	
 	insert into qna (qna_no
@@ -46,8 +68,7 @@ order by origin_no desc, gr_ord asc
 </choose>
 ) 
 -->
-<choose>
-<when test="gr_ord > 0">
+
 	insert into qna (qna_no
 			,qna_title, m_id, qna_content
 			,qna_secret	,qna_date
@@ -58,22 +79,14 @@ order by origin_no desc, gr_ord asc
 			(select nvl(max(qna_no),0)+1 from qna)
 			, #{qna_title}, #{ m_id}, #{qna_content}
 			, default ,default
+<choose>
+<when test="origin_no > 0">
 			, (select origin_no from qna where qna_no=#{origin_no})
-			, (select gr_ord+1 from qna where qna_no=#{origin_no})
-			, (select gr_layer+1 from qna where qna_no=#{origin_no})
+			, (select gr_ord+1 from qna where origin_no=#{origin_no} and gr_ord = #{gr_ord})
+			, (select gr_layer+1 from qna where origin_no=#{origin_no} and gr_ord = #{gr_ord})
 
 </when>
 <otherwise>
-	insert into qna (qna_no
-			,qna_title, m_id, qna_content
-			,qna_secret	,qna_date
-			,origin_no
-			,gr_ord
-			,gr_layer
-		) values ( 
-			(select nvl(max(qna_no),0)+1 from qna)
-			, #{qna_title}, #{ m_id}, #{qna_content}
-			, default ,default
 			,(select nvl(max(qna_no),0)+1 from qna)
 			,default
 			,default
@@ -82,6 +95,7 @@ order by origin_no desc, gr_ord asc
 ) 
 </insert> 
 
+<!-- 글 상세조회 -->
  <select id="selectQnaBoard" resultType="QnaBoard" parameterType="string">
 	select * from qna
 	where qna_no=#{qna_no}

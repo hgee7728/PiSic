@@ -211,7 +211,7 @@ $(document).on("click", ".delete_qna", function() {
 										<form action="<%=request.getContextPath() %>/qna/qnaWrite" method="post">
 										<!-- csrf 공격 방지 -->
            						 		<input id="csrf" type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">		
-										 	<input type="hidden" name="origin_no" value="${qnaBoard.qna_no }">
+										 	<input type="hidden" name="origin_no" value="${qnaBoard.origin_no }">
 										 	<input type="hidden" name="gr_ord" value="${qnaBoard.gr_ord }">
 											<div class="form-group">
 												<label for="qna_title" id="label_qna_title">제목</label> 
