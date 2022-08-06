@@ -37,7 +37,7 @@ public class QnaDao {
 		return sqlsession.insert("QnaBoard.insertQna",qnaBoard);
 	}
 	
-	// QNA OREDR 수정
+	// QNA OREDR 수정 - 글쓰기
 	public int updateQnaOrd(QnaBoard qnaBoard) {
 		return sqlsession.insert("QnaBoard.updateQnaOrd",qnaBoard);
 	}
@@ -46,8 +46,13 @@ public class QnaDao {
 		return sqlsession.update("QnaBoard.updateQna",qnaBoard);
 	}
 	// QNA 삭제
-	public int deleteQna(int qna_no) {
-		return sqlsession.delete("QnaBoard.deleteQna", qna_no);
+	public int deleteQna(QnaBoard qnaBoard) {
+		return sqlsession.delete("QnaBoard.deleteQna", qnaBoard);
+	}
+	
+	// QNA OREDR 수정 - 글삭제
+	public int updateDeleteQnaOrd(QnaBoard qnaBoard) {
+		return sqlsession.insert("QnaBoard.updateDeleteQnaOrd",qnaBoard);
 	}
 	
 

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@  taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +49,10 @@
 	padding: 100px;
 }
 
-.table th, td {
+.qna_list th, .qna_list td{
+	text-align: center;
+}
+.qna_list tbody tr td:nth-child(2){
 	text-align: left;
 }
 
@@ -113,7 +117,65 @@ text-decoration: none;
 display: none;
  } */
 </style>
+<script>
+let header = $("meta[name='_csrf_header']").attr('th:content');
+let token = $("meta[name='_csrf']").attr('th:content');
+let csrf_parameterName = '${_csrf.parameterName }';
+let csrf_token = '${_csrf.token }';
+$(function(){
+	
+	// 게시글 삭제하기
+	$(".delete_qna").click(function(){
+		let qna_no = $(this).nextAll("input[name=qna_no]").val();
+		let gr_ord = $(this).nextAll("input[name=gr_ord]").val();
+		let origin_no = $(this).nextAll("input[name=origin_no]").val();
+		// 원글인지 답변글인지 확인
+		if(gr_ord > 0){ // 답변글이면 답변글만 삭제
+			var confm = confirm("해당 글을 삭제 하시겠습니까?");
+	    	if (confm == false) {
+	    		alert("취소하셨습니다.");
+	    	} else {
+	    		deleteQna(qna_no, gr_ord, origin_no);
+	    	}
+		} else { // 원글이면 답변글까지 모두 삭제
+			var confm = confirm("해당 글을 삭제하면 모든 답변글도 같이 삭제됩니다. 삭제하시겠습니까?");
+	    	if (confm == false) {
+	    		alert("취소하셨습니다.");
+	    	} else {
+	    		deleteQna(qna_no, gr_ord);
+	    	}
+		}
+	});
+});
+function deleteQna(qna_no, gr_ord, origin_no){
+	
+	$.ajax({
+		url:"<%=request.getContextPath()%>/qna/delete",
+		type : "post",
+		data : {
+			qna_no: qna_no,
+			gr_ord: gr_ord,
+			origin_no: origin_no
+		},
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success : function(result) {
+			console.log(result);
+			if (result == 0) {
+				alert("QNA 삭제가 실패했습니다.");
 
+			} else {
+				alert("QNA가 삭제 되었습니다.");
+				location.reload();
+			}
+		},
+		error : function(error) {
+
+		}
+	});
+}
+</script>
 </head>
 <body>
 	<div class="container-scroller">
@@ -145,13 +207,15 @@ display: none;
 															</div>
 														</c:if>
 														<tr>
-															<th>NO.${qnaPaging.total}</th>
+															<th>NO</th>
 															<th>제목</th>
 															<th>작성자</th>
 															<th>등록날짜</th>
+															<sec:authorize access="hasRole('ROLE_ADMIN')">
+																<th>삭제</th>
+															</sec:authorize>
 														</tr>
 													</thead>
-													
 													<tbody>
 													<c:forEach items="${qnalist }" var="qnaBoard" varStatus="status">
 														<tr class="ctsSbj">
@@ -172,6 +236,14 @@ display: none;
 															</td>
 															<td>${qnaBoard.m_id }</td>
 															<td>${qnaBoard.qna_date }</td>
+															<sec:authorize access="hasRole('ROLE_ADMIN')">
+																<td>
+																	<button type="button" class="btn btn-info btn-sm delete_qna">삭제</button>
+																	<input type="hidden" name="gr_ord" value="${qnaBoard.gr_ord}">
+																	<input type="hidden" name="qna_no" value="${qnaBoard.qna_no}">
+																	<input type="hidden" name="origin_no" value="${qnaBoard.origin_no}">
+																</td>
+															</sec:authorize>
 														</tr>
 												</c:forEach>
 															

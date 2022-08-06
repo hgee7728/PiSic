@@ -12,6 +12,6 @@ public interface QnaService {
 	public QnaBoard selectQnaBoard(String qna_no);
 	public int insertQna(QnaBoard qnaBoard);
 	public int updateQna(QnaBoard qnaBoard);
-	public int deleteQna(int qna_no);
+	public int deleteQna(QnaBoard qnaBoard);
 	public int deleteQna(List<Integer> qna_no_list);
 }

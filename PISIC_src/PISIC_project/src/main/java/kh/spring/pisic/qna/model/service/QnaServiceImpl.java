@@ -50,9 +50,16 @@ public class QnaServiceImpl implements QnaService {
 		return dao.updateQna(qnaBoard);
 	}
 
+	// 글 삭제
 	@Override
-	public int deleteQna(int qna_no){
-		return dao.deleteQna(qna_no);
+	@Transactional
+	public int deleteQna(QnaBoard qnaBoard){
+		int result =  dao.deleteQna(qnaBoard);
+		if(result > 0 ) {
+			System.out.println("---------여기와-----");
+			dao.updateDeleteQnaOrd(qnaBoard);
+		}
+		return result;
 	}
 	
 	@Override

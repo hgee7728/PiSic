@@ -109,7 +109,7 @@ select t2.* from
 ]]>
 </update>
 
-<!-- QNA ORDER 수정 -->
+<!-- QNA ORDER 수정 - 글쓰기 -->
 <update id="updateQnaOrd">
 <![CDATA[
 	update qna set 
@@ -125,9 +125,27 @@ select t2.* from
 	where qna_no=#{qna_no}
 </update>
 
-<delete id="deleteQna" parameterType="string">
-	delete from qna where qna_no=#{qna_no}
+<!-- 글 삭제 -->
+<delete id="deleteQna" parameterType="QnaBoard">
+	<choose>
+		<when test="gr_ord > 0">
+			delete from qna where qna_no=#{qna_no}
+		</when>
+		<otherwise>
+			delete from qna where origin_no=#{qna_no}
+		</otherwise>
+	</choose>
 </delete>
+
+<!-- QNA ORDER 수정 - 글삭제 -->
+<update id="updateDeleteQnaOrd" parameterType="QnaBoard">
+<![CDATA[
+	update qna set 
+	gr_ord = gr_ord - 1 
+	where origin_no = #{origin_no} 
+		and gr_ord > #{gr_ord}
+]]>
+</update>
 
 
 

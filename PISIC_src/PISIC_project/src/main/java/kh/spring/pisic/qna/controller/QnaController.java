@@ -163,9 +163,9 @@ public class QnaController {
 		@ResponseBody
 		@PostMapping(value="/delete")
 		public int deleteQna(
-				@RequestParam(name="qna_no", required = false) int qna_no 
-				) throws Throwable {
-			int result = service.deleteQna(qna_no);
+				QnaBoard qnaBoard 
+				){
+			int result = service.deleteQna(qnaBoard);
 			// ajax인 경우 페이지 이동 설정이 필요없음. 이동할 데이터를 return에 실어주면됨.
 //			String msg="";
 			if (result == 0) {

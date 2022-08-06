@@ -592,17 +592,5 @@ public class AdminController {
 		}
 	}
 	
-	// QNA 리스트 - 페이징 - 관리자
-	@GetMapping("/qnaList")
-	public ModelAndView pageSelectQna(ModelAndView mv, Criteria cri) {
-        
-		
-		Paging paging = new Paging(cri, service.totalQnaBoard()); 
-		mv.addObject("qnaPaging", paging);
-		mv.addObject("qnalist", service.selectQnaList(cri));
-		mv.setViewName("admin/adminQnaList");
-		return mv;
-	}
-	
 	
 }
