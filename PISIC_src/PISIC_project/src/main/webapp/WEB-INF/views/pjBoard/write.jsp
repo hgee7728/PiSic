@@ -190,7 +190,7 @@ $(function() {
 				$("i.mdi").parent('a').css('color','#8f5fe8');
 				
 				// 수록곡 갯수 가져오기
-				let l_no = result.l_no;
+				let l_no = $("input[name=l_no]").val();
 				$.ajax({
 					url: "<%=request.getContextPath()%>/mymusic/totalCntPlaylistSound",
 					type: "post",
